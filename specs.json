@@ -20,7 +20,7 @@
       "source": {
         "host": "github",
         "account": "trustoverip",
-        "repo": "toip-template"
+        "repo": "dtgwg-vti-spec"
       },
       "external_specs": [
         {
