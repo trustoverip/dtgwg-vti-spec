@@ -23,4 +23,6 @@ Any hyperlinked term not included in this section is referenced from one of the 
 
 - [ToIP Main Glossary](https://glossary.trustoverip.org)
 - [ToIP General IT Glossary](https://trustoverip.github.io/ctwg-general-glossary)
-- {{DTG component specification glossaries, to be added as Spec-Up-T xrefs as the normative references are settled}}
+
+The glossaries of the DTG component specifications this document binds are
+added to that list as the normative references to them are settled.

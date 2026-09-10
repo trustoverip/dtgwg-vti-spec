@@ -1,5 +1,3 @@
-{{INSTRUCTIONS ABOUT THE USE OF THIS TEMPLATE: All editorial instructions are enclosed in {{double curly braces}} and MUST be either removed from or replaced in the specification document. All other text MUST be included in the specification document. NOTE: As of 2026, ToIP specifications are required to use [Spec-Up-T](https://trustoverip.github.io/spec-up-t-website/). It will automatically generate a table of contents for the entire specification document.}}
-
 # Verifiable Trust Infrastructure (VTI) Specification
 
 _Version:_ 0.1  
@@ -11,12 +9,10 @@ _Published:_ <https://trustoverip.github.io/dtgwg-vti-spec/>
 _Editors:_
 
 - Glenn Gore, Affinidi
-- {{additional editors, as the Working Group appoints them: full name, optional OrcID, official LF affiliation}}
 
 _Contributors:_
 
 - Geoff Turk, {{official LF affiliation}}
-- {{additional contributors: full name, official LF affiliation. All other acknowledgements go in the Acknowledgements Appendix at the end.}}
 
 **Abstract**
 
@@ -41,7 +37,6 @@ this document is where they are owned.
 
 This specification is provided under the [Joint Development Foundation (JDF) charter](https://cdn.platform.linuxfoundation.org/agreements/ToIP.pdf) for [Trust Over IP](https://trustoverip.org) (ToIP) and is subject to the intellectual property rights policy of the **{{insert name of}} Working Group**:
 
-{{modify the following bullets to reflect the IPR terms of the Working Group}}  
 _Copyright:_ [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)  
 _Patent:_ W3C Mode (based on the [W3C Patent Policy](https://www.w3.org/Consortium/Patent-Policy-20040205/))  
 _Source Code:_ [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
