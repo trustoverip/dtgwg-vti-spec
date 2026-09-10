@@ -5,7 +5,8 @@
 _Version:_ 0.1  
 _Document Status:_ Working Draft  
 _DOI:_ {{see [this wiki page](https://lf-toip.atlassian.net/wiki/spaces/HOME/pages/767787009/ToIP+Approved+Deliverable+Process#Persistent-DOI-Link) for instructions about how to add a DOI}}  
-_GitHub:_ <https://github.com/trustoverip/dtgwg-vti-spec>
+_GitHub:_ <https://github.com/trustoverip/dtgwg-vti-spec>  
+_Published:_ <https://trustoverip.github.io/dtgwg-vti-spec/>
 
 _Editors:_ {{MUST list the full names, optional OrcID and official LF affiliations of each editor.}}
 

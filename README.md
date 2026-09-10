@@ -1,5 +1,7 @@
 # Verifiable Trust Infrastructure (VTI) Specification
 
+**📖 Read the specification: <https://trustoverip.github.io/dtgwg-vti-spec/>**
+
 This repository holds the ToIP **Verifiable Trust Infrastructure**
 specification: the infrastructure layer at which Decentralized Trust Graph
 (DTG) components are composed into an operating trust system.
@@ -22,9 +24,13 @@ states how they compose.
 
 ## Reading the specification
 
-The rendered specification is published to GitHub Pages from `docs/`. The
-source lives in `spec/`, one file per chapter, rendered in the order given by
-`markdown_paths` in `specs.json`.
+The rendered specification is published at
+<https://trustoverip.github.io/dtgwg-vti-spec/> and is rebuilt automatically on
+every push to `main` by the *Render and Deploy* workflow, which renders to the
+`gh-pages` branch. `docs/` is build output and is never committed to `main`.
+
+The source lives in `spec/`, one file per chapter, rendered in the order given
+by `markdown_paths` in `specs.json`.
 
 ## Contributing
 
