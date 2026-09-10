@@ -81,9 +81,11 @@ an expiry.
 with the client's operator over a channel distinct from the one that delivered
 it.
 
-**VTI-CLT-016** — A client that authenticates and is refused for want of an
-entry MUST report that condition to its operator distinguishably from other
-authentication failures.
+**VTI-CLT-016** — A client that repeatedly fails to obtain standing after
+enrolment MUST report that condition to its operator distinguishably from a
+transport failure. A client MUST NOT rely on the node disclosing whether an
+entry exists, which VTI-SES-007 prohibits: the signal is the client's own
+knowledge that it enrolled and has not obtained standing.
 
 *Rationale for VTI-CLT-015 and VTI-CLT-016.* The enrolment channel is the weak
 point of the sequence, and the threat is substitution rather than disclosure:

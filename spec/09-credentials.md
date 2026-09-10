@@ -33,6 +33,11 @@ revoked.
 **VTI-CRD-013** — A status mechanism MUST NOT require a query that identifies
 the individual credential or its subject to the party answering it.
 
+**VTI-CRD-014** — The set a status query is answered over MUST be large enough
+that observing the query does not identify the subject, and an issuer MUST NOT
+allocate that set in a way that reconstructs the identification — by issuing a
+set per subject, per cohort, or in an order that follows issuance.
+
 *Rationale for VTI-CRD-013.* A status check that names the credential tells the
 issuer, on every use, which of its subjects is transacting and roughly with
 whom. The privacy cost is paid by the subject and collected by the issuer, and
@@ -82,3 +87,13 @@ NOT refuse a presentation solely because it was selectively disclosed.
 
 **VTI-CRD-042** — A verifier MUST NOT retain presented attributes beyond what
 the decision and its audit record require.
+
+**VTI-CRD-043** — A verifier MUST NOT disclose presented attributes, or the
+fact of a presentation, to a third party except where the decision requires it
+and the holder was told so before presenting.
+
+*Rationale for VTI-CRD-014.* A status list is a privacy measure only while the
+crowd is real. An issuer that allocates a list per subject, or allocates
+sequentially so that position implies issuance time, has built a mechanism with
+the shape of herd privacy and the behaviour of a unique identifier — and the
+verifier doing the responsible thing is the one generating the signal.

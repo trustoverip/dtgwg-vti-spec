@@ -114,6 +114,30 @@ argument uniform. Where a document is signed on one transport and merely
 authenticated on another, the deployment's real guarantee is the weaker of the
 two, and which transport carries it is not recorded anywhere. See Appendix F.
 
+### Replay
+
+**VTI-OPS-025** — Every operation document MUST carry an identifier unique to
+that document.
+
+**VTI-OPS-026** — A node MUST refuse a document whose identifier it has already
+accepted within the acceptance window of VTI-OPS-024.
+
+**VTI-OPS-027** — The record of accepted document identifiers MUST be shared
+across every binding a node exposes. A document accepted on one binding MUST NOT
+be acceptable on another.
+
+*Rationale.* Signing a document makes it durable evidence of intent, and
+durable evidence is replayable unless something remembers it. The acceptance
+window bounds how long the record must be kept; the identifier is what makes
+the record possible.
+
+VTI-OPS-027 closes the case a per-binding implementation misses. A document
+captured from one binding — a log, a proxy, a stored message — is a
+well-formed, correctly signed, correctly addressed document, and the second
+binding has no reason to doubt it. Where the two bindings do not share a
+record, the node's replay protection is exactly as good as its least-used
+transport.
+
 ### Responses and refusals
 
 **VTI-OPS-030** — A response MUST conform to the response definition of the task
@@ -131,6 +155,16 @@ as a generic failure.
 
 **VTI-OPS-034** — A refusal MUST be distinguishable by a caller from a transport
 failure and from a delivery failure.
+
+**VTI-OPS-035** — A refusal MUST NOT disclose information the caller is not
+authorized to learn. In particular, a refusal MUST NOT reveal the existence of
+a subject, a context, a credential or an entry to a caller with no authority
+over it.
+
+*Rationale for VTI-OPS-035.* A refusal is an answer, and a pair of refusals
+that differ tells the caller something even when neither says anything. The
+common form is a lookup that distinguishes *not found* from *not permitted*,
+which turns an authorization boundary into a directory.
 
 *Rationale for VTI-OPS-031.* A conformance check that validates only what an
 implementation sends measures its own fixtures rather than the service under
@@ -315,6 +349,21 @@ several are available SHOULD select the highest.
 **VTI-OPS-045** — A node that receives an operation at a version it does not
 serve MUST refuse it explicitly, naming the versions it does serve. It MUST NOT
 allow the request to fail by timeout.
+
+**VTI-OPS-046** — A caller MUST NOT select a version on the basis of an
+unauthenticated discovery response.
+
+**VTI-OPS-047** — A node MUST maintain a minimum acceptable version for each
+operation, MUST refuse a version below it, and MUST NOT negotiate below it on
+the request of a peer.
+
+*Rationale for VTI-OPS-046 and VTI-OPS-047.* Negotiation selects the version
+both parties can speak, which means an attacker who can influence what a peer
+appears to speak selects it instead. Authenticating the discovery response
+removes the first half; a floor that a peer cannot argue a node below removes
+the second. Without the floor, retiring a version is advisory: every peer that
+claims not to have upgraded is served anyway, which is precisely the claim an
+attacker makes.
 
 *Rationale for VTI-OPS-041 and VTI-OPS-042.* Negotiation is tractable only
 where a version number carries a promise. Semantic versioning below 1.0 makes

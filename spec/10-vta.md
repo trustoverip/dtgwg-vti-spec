@@ -24,6 +24,35 @@ meaningful. A caller that holds a key retains it after its authority is
 withdrawn; a caller that can ask for an operation loses the ability at the
 moment the entry changes.
 
+### The signing oracle
+
+A VTA signs on behalf of its principal at the request of a delegate. What it
+agrees to sign is therefore an authorization decision, not a cryptographic one.
+
+**VTI-VTA-004** — A VTA MUST NOT sign material whose structure it cannot parse
+and constrain. A request to sign opaque octets MUST be refused.
+
+**VTI-VTA-005** — Before signing, a VTA MUST verify that the material is
+well-formed for its stated type, that its stated issuer is the principal, and
+that its audience and subject are within what the requesting entry authorizes.
+
+**VTI-VTA-006** — A VTA MUST record what it signed, for which caller, under
+which authority.
+
+**VTI-VTA-007** — A capability to request signing of a constrained document
+type MUST be distinguishable from a capability to request signing generally,
+and a node MUST NOT satisfy a request of the second kind under a grant of the
+first.
+
+*Rationale.* A signing oracle that will sign anything is a general-purpose
+forgery service for its principal, reachable by whichever delegate holds the
+capability. The constraint is what makes delegation to an agent survivable: a
+compromised agent can produce documents of the shapes it was authorized to
+produce, addressed to the parties it was authorized to address, and nothing
+else. Blind signing removes every one of those bounds at once, and does so
+invisibly, because the resulting signature is indistinguishable from an
+intended one.
+
 ### Credentials held for the principal
 
 **VTI-VTA-010** — Every credential a VTA holds MUST belong to a trust context.
