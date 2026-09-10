@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-10T17:05:05.476Z"
+      "lastUpdated": "2026-09-10T17:24:32.844Z"
     }
   ]
 };</script>
@@ -3541,7 +3541,7 @@ sequenceDiagram
     M--&gt;&gt;C: Reachable
     Note over C,V: Everything above this line is free to fail.<br>The bootstrap entry is still authoritative.
     C-&gt;&gt;V: Swap: current subject + proof of control of new subject<br>VTI-CLT-025 – VTI-CLT-028
-    V-&gt;&gt;V: Verify caller = current subject;<br>new subject = proven holder;<br>authority preserved exactly
+    V-&gt;&gt;V: Verify caller is the current subject,<br>new subject is the proven holder,<br>authority preserved exactly
     V--&gt;&gt;C: Entry moved (audited, previous subject recorded)
     Note over C,V: COMMIT POINT. The bootstrap identity now has no standing<br>and the replacement key exists only in memory.
     C-&gt;&gt;C: Persist replacement key material<br>VTI-CLT-033
@@ -4486,8 +4486,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-10T17:05:05.112Z">
-                            Generated: 2026-09-10T17:05:05.112Z
+                        <time class="timestamp" datetime="2026-09-10T17:24:32.357Z">
+                            Generated: 2026-09-10T17:24:32.357Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
