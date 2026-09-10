@@ -13,10 +13,10 @@ _Editors:_
 - Glenn Gore, Affinidi
 - {{additional editors, as the Working Group appoints them: full name, optional OrcID, official LF affiliation}}
 
-_Contributors:_ {{MUST list the full names and official LF affiliations of each substantial contributor — all other acknowledgements go in the Acknowledgements Appendix at the end.}}
+_Contributors:_
 
-- {{Contributor 1, Org C}}
-- {{Contributor 2, Org A}}
+- Geoff Turk, {{official LF affiliation}}
+- {{additional contributors: full name, official LF affiliation. All other acknowledgements go in the Acknowledgements Appendix at the end.}}
 
 **Abstract**
 
