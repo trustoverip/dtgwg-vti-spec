@@ -2,10 +2,27 @@
 
 ## Terminology
 
-{{This section SHOULD include the most important terms required for a reader to understand the specification. These terms SHOULD be managed using the Spec-Up-T glossary features. This glossary MAY include terms that are in the referenced glossaries above if those terms are essential to understanding the specification—in that case those terms SHOULD use the Spec-Up-T transclusion (tref) feature. Alternatively, in the judgement of the editors, this section MAY be either: a) replaced, or b) supplemented with a separate glossary included as an Appendix.}}
+This section is informative.
+
+{{Terms are managed with the Spec-Up-T glossary tooling. A term already defined
+in a referenced glossary is transcluded with `tref` rather than redefined here.}}
+
+{{**Terms to be defined in this section:** verifiable trust infrastructure;
+verifiable trust agent (VTA); verifiable trust community (VTC); trust context;
+context path; principal; subject DID; access control entry; role; capability;
+act scope; approve scope; super-administrator; context administrator; approver;
+consumer; device; client; bootstrap identity; operator; holder; member; Trust
+Task; mediator; host; step-up; assurance level; composition;
+composition-owned requirement.}}
+
+{{**Two distinctions to fix early, because conflating either one has produced
+implementation defects:** *delegation* is not *authority* — being able to
+execute an action is not evidence that the authority to do so was granted; and
+an *attribute* is an attribute, a word that must not be used
+interchangeably with terms that name a different layer's concept.}}
 
 Any hyperlinked term not included in this section is referenced from one of the following glossaries:
 
 - [ToIP Main Glossary](https://glossary.trustoverip.org)
 - [ToIP General IT Glossary](https://trustoverip.github.io/ctwg-general-glossary)
-- {{any other external glossary included in Spec-Up-T xrefs}}
+- {{DTG component specification glossaries, added as Spec-Up-T xrefs}}
