@@ -22,6 +22,21 @@ normative chapters:
 This section states which profiles each target MUST implement, and which are
 OPTIONAL.}}
 
+### Requirement identifier areas
+
+{{Each normative statement carries an identifier of the form
+`VTI-<AREA>-<nnn>`. Areas allocated so far:
+
+| Area | Chapter |
+|---|---|
+| `CTX` | Trust contexts — identifiers, ancestry, lifecycle |
+| `ACL` | Access control entries, roles, capabilities, scopes, listing, delegation, revocation |
+| `APV` | Approvals, consent and step-up |
+| `AUD` | Audit |
+
+Further areas are allocated as the remaining chapters are drafted. An area is
+never renamed and an identifier is never reused.}}
+
 ### Requirement identifiers and coverage
 
 {{Every normative statement carries a stable identifier, and every identifier
