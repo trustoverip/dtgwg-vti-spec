@@ -1,8 +1,8 @@
 {
   "specs": [
     {
-      "title": "ToIP Specification Template",
-      "description": "Create technical specifications in markdown. Based on the original Spec-Up, extended with Terminology tooling",
+      "title": "Verifiable Trust Infrastructure (VTI) Specification",
+      "description": "Specification for Verifiable Trust Infrastructure: the trust contexts, authority model, nodes and composition requirements by which DTG components are operated together as a trust system.",
       "author": "Trust over IP Foundation",
       "spec_directory": "./spec",
       "spec_terms_directory": "terms-definitions",
@@ -11,7 +11,23 @@
         "header.md",
         "intro.md",
         "terms-and-definitions-intro.md",
-        "body.md",
+        "02-architecture.md",
+        "03-trust-contexts.md",
+        "04-identity-keys.md",
+        "05-transports.md",
+        "06-sessions-auth.md",
+        "07-clients.md",
+        "08-operations.md",
+        "09-credentials.md",
+        "10-vta.md",
+        "11-vtc.md",
+        "12-vtc-lifecycle.md",
+        "13-registries.md",
+        "14-composition.md",
+        "15-operational.md",
+        "90-considerations.md",
+        "95-conformance.md",
+        "96-references.md",
         "appendix.md"
       ],
       "logo": "https://raw.githubusercontent.com/trustoverip/spec-up-t/refs/heads/master/src/install-from-boilerplate/boilerplate/static/logo.svg",
@@ -30,7 +46,7 @@
         }
       ],
       "katex": false,
-      "anchor_symbol": "§"
+      "anchor_symbol": "\u00a7"
     }
   ]
 }
