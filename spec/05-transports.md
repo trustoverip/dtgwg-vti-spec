@@ -35,6 +35,36 @@ message itself, and MUST NOT rely on an assertion by the mediator.
 **VTI-TRN-022** — A node MUST NOT treat the ability to reach it through a
 particular mediator as conferring authority.
 
+### Metadata and correlation
+
+**VTI-TRN-025** — A sender MUST NOT place outside the encrypted envelope any
+metadata that reveals the nature of the operation being performed.
+
+**VTI-TRN-026** — Routing identifiers SHOULD differ per relationship, such that
+an intermediary cannot link two of a principal's contexts by their routing
+alone.
+
+**VTI-TRN-027** — Where a deployment's threat model includes traffic analysis,
+a node SHOULD apply padding, batching or cover traffic, and MUST document
+whether it does.
+
+**VTI-TRN-028** — A wake or push notification delivered through a third-party
+service MUST NOT carry content, and MUST NOT carry identifiers that reveal to
+that service the nature of the pending action or the parties to it.
+
+*Rationale.* A mediator is trusted to route and not to read, and the routing is
+the part it necessarily sees. What it must not be able to do is reconstruct a
+principal's activity across contexts from routing alone, which is what shared
+routing identifiers hand it for free. VTI-TRN-028 addresses the same hazard one
+layer out: a push service is an intermediary nobody in the trust system chose,
+and a notification that says what is waiting tells it more than the mediator
+learns.
+
+### Resource bounds
+
+**VTI-TRN-029** — A node MUST bound the resources any one subject can consume,
+and MUST bound those available to unauthenticated peers separately.
+
 ### Truthful send
 
 **VTI-TRN-030** — A send operation MUST NOT report success unless the message

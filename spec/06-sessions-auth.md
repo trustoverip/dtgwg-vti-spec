@@ -28,6 +28,19 @@ subject.
 **VTI-SES-006** — A node MUST refuse to issue a challenge to a subject with no
 effective access control entry.
 
+**VTI-SES-007** — The refusal required by VTI-SES-006 MUST NOT be
+distinguishable, by an unauthenticated caller, from the other refusals a
+challenge request can produce. A node MUST NOT disclose whether an entry exists
+for a subject to a caller that has not authenticated as that subject.
+
+*Rationale for VTI-SES-007.* A challenge endpoint that answers differently for
+a known and an unknown subject is an enumeration oracle: an attacker who can
+guess identifiers learns which ones a node holds authority for, which is the
+first step in targeting the humans behind them. The refusal is uniform, and the
+client's own signal — that it has repeatedly failed to obtain standing — is
+what reaches its operator (VTI-CLT-016), because a client knows it enrolled and
+an attacker probing identifiers does not.
+
 ### Authentication
 
 **VTI-SES-010** — The signer of an authentication response MUST be the subject
@@ -99,6 +112,9 @@ to invalidate an issued access credential before its expiry.
 
 **VTI-SES-041** — A node MUST audit the establishment, refresh, termination and
 failed establishment of a session.
+
+**VTI-SES-043** — A node MUST be able to enumerate the sessions active for a
+subject, and MUST be able to terminate them collectively.
 
 **VTI-SES-042** — Where the transport supports binding a session to a key held
 by the client, a node SHOULD bind it, and MUST refuse a request under a bound

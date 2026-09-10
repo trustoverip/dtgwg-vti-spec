@@ -45,7 +45,31 @@ requirements of its own; each item names the requirements that carry it.
 12. **Verification is not authority** (VTI-CMP-030). A cryptographically
     impeccable credential can be issued by a party that no longer holds the
     authority it asserts.
-13. **Containment cannot require cooperation** (VTI-OPR-022).
+13. **Containment cannot require cooperation** (VTI-OPR-022), and cannot
+    destroy the record of what it contained (VTI-OPR-023).
+14. **A signing oracle that signs anything is a forgery service.** A VTA parses
+    and constrains what it signs, checks that the issuer, audience and subject
+    are within the requesting entry's authority, and never signs opaque octets
+    (VTI-VTA-004 through VTI-VTA-007). Blind signing removes every bound at
+    once, and invisibly: the resulting signature is indistinguishable from an
+    intended one.
+15. **A signed document is replayable unless something remembers it**
+    (VTI-OPS-025 through VTI-OPS-027) — and the record has to be shared across
+    bindings, or the node's replay protection is as good as its least-used
+    transport.
+16. **Negotiation is an attacker's lever.** Discovery responses are
+    authenticated and each operation has a version floor a peer cannot argue a
+    node below (VTI-OPS-046, VTI-OPS-047); without the floor, retiring a
+    version is advisory.
+17. **Refusals are answers.** A refusal that distinguishes *not found* from
+    *not permitted* turns an authorization boundary into a directory
+    (VTI-OPS-035), and a challenge endpoint that answers differently for a
+    known subject is an enumeration oracle (VTI-SES-007).
+18. **What the approver saw must be what was committed to** (VTI-APV-013), and
+    unrestricted authority — the grant from which every other grant can be
+    made — requires a second party (VTI-APV-014).
+19. **An algorithm is retired at the moment it is broken**, not at the next
+    release (VTI-KEY-013).
 
 ## Privacy Considerations
 
@@ -71,10 +95,27 @@ This section is informative.
 7. **Erasure is a member's right that policy cannot downgrade**
    (VTI-MEM-032), and publication batching must not be repurposed to delay the
    effect of a departure (VTI-MEM-034).
-8. **The audit trail is itself personal data.** The requirements that make it
-   tamper-evident and reconstructable (VTI-OPR-030, VTI-OPR-032) are in tension
-   with erasure, and a deployment states its retention period (VTI-OPR-031) so
-   the tension is resolved deliberately rather than by default.
+8. **The audit trail is itself personal data.** Tamper-evidence and erasure are
+   in genuine tension, and it is resolved at write time: a record refers to
+   personal data rather than embedding it, so an erasure leaves the chain
+   verifiable (VTI-AUD-005). Reading the trail is a privileged act and is
+   itself audited (VTI-AUD-006), and retention has a stated maximum
+   (VTI-OPR-031).
+9. **An identifier that spans contexts defeats the context boundary** without
+   touching a credential: the observer only has to notice the same name twice.
+   Identifiers are per relationship where the relationship does not need a
+   public identity, and a client identifier is never reused across contexts
+   (VTI-KEY-005 through VTI-KEY-007).
+10. **Routing is the part the mediator necessarily sees.** Routing identifiers
+    differ per relationship so that an intermediary cannot reconstruct a
+    principal's activity across contexts from routing alone (VTI-TRN-026), and
+    operation-revealing metadata stays inside the envelope (VTI-TRN-025).
+11. **A push service is an intermediary nobody chose.** A wake notification
+    carries no content and nothing that reveals what is waiting (VTI-TRN-028).
+12. **Herd privacy is only privacy while the crowd is real.** A status list
+    allocated per subject, or in issuance order, has the shape of a herd and
+    the behaviour of a unique identifier (VTI-CRD-014).
+13. **A verifier learns things it may not pass on** (VTI-CRD-043).
 
 ## Governance Considerations
 

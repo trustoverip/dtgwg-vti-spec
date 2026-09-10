@@ -496,6 +496,26 @@ approving it.
 **VTI-APV-012** — A node MUST provide a means of removing an approval rule that
 has rendered itself unsatisfiable, and the use of that means MUST be audited.
 
+**VTI-APV-013** — What is presented to an approver MUST be derived from the
+same octets that are digested under VTI-APV-004. A node MUST NOT present a
+rendering produced from a different source than the one it commits to.
+
+**VTI-APV-014** — Creating an entry with unrestricted act scope, or widening an
+entry to unrestricted act scope, MUST require consent from a party other than
+the requester.
+
+*Rationale for VTI-APV-013.* An approval is only as good as the correspondence
+between what the human saw and what the system committed to. Where the display
+is rendered from one structure and the digest computed over another, the
+approver's decision is about a document that need not exist — and every part of
+the ceremony still functions, which is what makes the gap hard to notice.
+
+*Rationale for VTI-APV-014.* Unrestricted authority is the one grant from which
+every other grant can be made, including the removal of the controls that
+governed it. Requiring a second party is not a statement about the requester's
+trustworthiness; it is the recognition that a single compromised credential
+should not be able to end the deployment's ability to constrain anything.
+
 *Rationale for VTI-APV-005.* A design in which a third party ratifies an action
 and the requester's session is then elevated for a period is consent with the
 binding removed: the approver believes they approved one change, and what they
@@ -528,6 +548,26 @@ outcome.
 
 **VTI-AUD-004** — The audit trail MUST be tamper-evident: an observer MUST be
 able to detect the modification or removal of a previously recorded event.
+
+**VTI-AUD-005** — An audit record MUST NOT embed personal data in a form that
+cannot later be erased. Where a record must refer to personal data, it MUST do
+so by reference or by a salted commitment, such that erasing the data leaves
+the record's integrity verifiable.
+
+**VTI-AUD-006** — Access to the audit trail MUST itself be authorized, and MUST
+itself be audited.
+
+*Rationale for VTI-AUD-005.* Tamper-evidence and erasure are in genuine
+tension: a chain that cannot be altered cannot have a name removed from it. The
+tension is resolved at write time or not at all. A record that commits to a
+reference rather than embedding the data can honour an erasure without breaking
+the chain; a record that embedded the data leaves an operator choosing between
+two obligations, and whichever they choose they will be in breach of the other.
+
+*Rationale for VTI-AUD-006.* The audit trail is the most complete description
+of a principal's activity that a deployment holds. Reading it is a privileged
+act, and a control that records everything except who read it has a gap exactly
+where an insider would stand.
 
 *Rationale for VTI-AUD-003.* The refused attempts are the half of the record
 that answers whether a control is working, and a trail containing only

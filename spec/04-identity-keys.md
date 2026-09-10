@@ -30,6 +30,25 @@ anywhere to publish, so it has to be derivable from a key and nothing else.
 VTI-KEY-004 states what the durable position depends on, so that a future
 method can be evaluated against the requirement rather than against the name.
 
+### Correlation and identifier reuse
+
+**VTI-KEY-005** — A node SHOULD use a distinct identifier for each relationship
+it holds, where that relationship does not require a publicly resolvable
+identity.
+
+**VTI-KEY-006** — A client identifier MUST NOT be reused across trust contexts.
+
+**VTI-KEY-007** — A durable node identifier is publicly resolvable and
+therefore inherently correlatable. A node MUST NOT use its durable identifier
+for interactions in which correlation of the parties is not intended.
+
+*Rationale.* The context boundary is the deployment's primary privacy control,
+and an identifier that spans contexts defeats it without touching a single
+credential: the observer does not need to read anything, only to notice the
+same name in two places. This is the identifier-layer form of the composition
+requirement on privacy — a set of unlinkable credentials presented under one
+stable identifier composes into a linkable interaction.
+
 ### Cryptography
 
 **VTI-KEY-010** — Ed25519 for signatures and X25519 for key agreement are
@@ -40,6 +59,16 @@ peer supports any algorithm other than those in VTI-KEY-010.
 
 **VTI-KEY-012** — A node MUST identify the algorithm of every key it publishes,
 and MUST NOT infer the algorithm of a peer's key from context.
+
+**VTI-KEY-013** — A node MUST maintain a set of accepted algorithms, MUST
+refuse a proof whose algorithm is outside it, and MUST be able to retire an
+algorithm from that set without a software change.
+
+*Rationale for VTI-KEY-013.* An algorithm is retired at the moment it is broken,
+which is not a moment anyone schedules. A deployment that can only retire an
+algorithm by shipping a release will keep accepting it for as long as the
+release takes, and the decision will be made by whoever owns the build rather
+than by whoever owns the risk.
 
 *Rationale.* One mandatory suite is what makes two conforming nodes
 interoperable without negotiation. Everything else is a local optimisation that

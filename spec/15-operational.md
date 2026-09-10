@@ -42,6 +42,14 @@ say so.
 **VTI-OPR-022** — A containment action MUST NOT depend on the cooperation of the
 component being contained.
 
+**VTI-OPR-023** — Containment MUST be able to suspend a subject's authority
+without destroying the audit record of what that subject did.
+
+*Rationale for VTI-OPR-023.* The moment authority is withdrawn is the moment
+the record becomes evidence. A containment path that deletes the subject
+removes the account of the incident along with the access, and the deletion is
+irreversible at exactly the point where nobody yet knows what happened.
+
 *Rationale for VTI-OPR-022.* An agent that must acknowledge its own kill switch
 is contained only while it is behaving, which is the state in which containment
 is not needed. Withdrawal of authority is enforced by the node that grants it,
@@ -52,7 +60,9 @@ not by the party losing it.
 **VTI-OPR-030** — The audit trail MUST be tamper-evident, as required by
 VTI-AUD-004.
 
-**VTI-OPR-031** — A deployment MUST state its audit retention period.
+**VTI-OPR-031** — A deployment MUST state its audit retention period, and that
+period MUST have a maximum. Records beyond it MUST be erased or reduced to a
+form carrying no personal data.
 
 **VTI-OPR-032** — An auditor MUST be able to reconstruct, for a past moment,
 which subjects held which authority.
