@@ -87,8 +87,8 @@ where unresolved propositions are published with their status visible.
 
 | Chapter | State |
 |---|---|
-| Introduction and scope | outline |
-| Terminology | outline; VTI and VTC defined |
+| Introduction and scope | **drafted** |
+| Terminology | **drafted** — 29 terms, cross-linked, none dangling |
 | Architecture and conformance targets | **drafted** |
 | Trust contexts and the authority model | **drafted** (`CTX`, `ACL`, `APV`, `AUD`) |
 | Identity, DIDs and key management | **drafted** (`KEY`) |
@@ -105,25 +105,25 @@ where unresolved propositions are published with their status visible.
 | Operational and assurance | **drafted** (`OPR`) |
 | Considerations | **drafted** |
 | Conformance | **drafted** (`CNF`) |
-| References | outline |
-| Appendix A — client onboarding | outline |
-| Appendix B — entry schema | outline |
-| Appendix C — role and capability annex | outline |
+| References | **drafted**; some entries pending a stable citation |
+| Appendix A — client onboarding | **drafted** — diagrams, worked example, test vectors |
+| Appendix B — entry schema | **drafted** |
+| Appendix C — role and capability annex | **drafted as a proposal** for WG ratification |
 | Appendix D — context path grammar | **drafted** |
 | Appendix E — composition catalogue | **drafted** |
 
-Known gaps, each deliberate rather than overlooked:
+Known gaps. Every chapter and appendix now has text; what remains are the
+items only the working group can close:
 
 - **Editors and the IPR working-group name** in `spec/header.md`.
-- **Appendix C** — the role set and per-role capability ceiling. The chapters
-  reference it from VTI-ACL-010 and VTI-ACL-011 and are written so it can be
-  filled; the role names are a working-group decision.
-- **Appendix A and B** — sequence diagrams, worked example, test vectors, and
-  the entry schema.
+- **Ratification of Appendix C** — the role set and capability registry are
+  drafted as a proposal. The requirements referencing it (VTI-ACL-010,
+  VTI-ACL-011, VTI-ACL-030 through VTI-ACL-034) are written so the annex can be
+  settled without changing them.
 - **The minimum operation set** in the Operation Surface chapter, which needs
-  the canonical catalogue references settled first.
-- **References** — normative references to the component specifications, and
-  informative references for the composition evidence.
+  the canonical catalogue references fixed first.
+- **Reference locations** — the entries in the References chapter marked
+  *(pending)*, and confirmation of the rest against their published versions.
 - **The test suite** — location and governance (VTI-CNF-007 onward).
 
 ## Drafting sequence

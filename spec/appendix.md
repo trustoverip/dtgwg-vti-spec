@@ -2,26 +2,240 @@
 
 ### Appendix A: Client onboarding
 
-{{Sequence diagrams for the four-step onboarding flow, a worked example, and
-test vectors for the key roll — including the failure cases either side of the
-commit point.}}
+This appendix is informative. It illustrates the sequence specified in the
+Client Onboarding and Lifecycle chapter, and supplies test vectors for the
+parts of it that are decidable without a running node.
 
-### Appendix B: Access control entry schema
+#### A.1 Enrolment
 
-{{The entry shape referenced throughout the Trust Contexts chapter.}}
+```mermaid
+sequenceDiagram
+    autonumber
+    participant C as Client
+    participant H as Operator (human)
+    participant A as Administrator
+    participant V as VTA
+
+    C->>C: Generate key pair (CSPRNG)<br/>VTI-CLT-001, VTI-CLT-002
+    C->>C: Record as bootstrap identity<br/>VTI-CLT-004
+    C-->>H: Display did:key
+    H-->>A: Convey out-of-band (chat, email, QR)
+    A-->>H: Confirm over a second channel<br/>VTI-CLT-015
+    A->>V: Create entry: role, context, capabilities, expiry<br/>VTI-CLT-010 – VTI-CLT-014
+    V-->>A: Entry created (audited)
+```
+
+The out-of-band hop is the exposed step, and the threat there is substitution
+rather than disclosure — which is why step 5 exists, and why a client that
+authenticates and finds no entry has to say so distinguishably (VTI-CLT-016)
+rather than reporting an ordinary failure to connect.
+
+#### A.2 First connection and the key roll
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant C as Client
+    participant M as Mediator
+    participant V as VTA
+
+    C->>V: Authenticate as bootstrap identity
+    V-->>C: Session established
+    C->>C: Mint replacement key pair<br/>VTI-CLT-022
+    C->>M: Prove replacement is reachable (bounded)<br/>VTI-CLT-023
+    M-->>C: Reachable
+    Note over C,V: Everything above this line is free to fail.<br/>The bootstrap entry is still authoritative.
+    C->>V: Swap: current subject + proof of control of new subject<br/>VTI-CLT-025 – VTI-CLT-028
+    V->>V: Verify caller = current subject;<br/>new subject = proven holder;<br/>authority preserved exactly
+    V-->>C: Entry moved (audited, previous subject recorded)
+    Note over C,V: COMMIT POINT. The bootstrap identity now has no standing<br/>and the replacement key exists only in memory.
+    C->>C: Persist replacement key material<br/>VTI-CLT-033
+    C->>C: Destroy bootstrap private key<br/>VTI-CLT-034
+```
+
+Nothing optional may be placed between the commit point and the persist. The
+window cannot be removed, so the requirement is that nothing is put inside it.
+
+#### A.3 Worked example
+
+An AI-agent runtime is to summarise documents in one team's context and sign
+nothing else.
+
+| Step | Value |
+|---|---|
+| Bootstrap identity | `did:key:z6Mk…` minted by the runtime on first start |
+| Context | `acme/eng/team-a/summariser` — a leaf per purpose |
+| Role | the least role whose ceiling contains the capabilities below |
+| Capabilities | the read capability for the document store, and per-envelope task signing; nothing that mints a session credential or reaches the generic signing oracle |
+| Expiry | 30 days |
+| Approve scope | none |
+
+The context is a leaf of its own rather than `acme/eng/team-a`, because
+authority over a context reaches every descendant, and a grant at the team
+level would reach every purpose the team ever adds beneath it.
+
+#### A.4 Failure cases around the commit point
+
+| Failure | State afterwards | What the client does |
+|---|---|---|
+| Key generation fails | No change | Retry; nothing was communicated |
+| Enrolment never happens | No entry | Authentication is refused for want of an entry; report distinguishably (VTI-CLT-016) |
+| Reachability probe fails or times out | Bootstrap entry still authoritative | Report and retry when the transport is available (VTI-CLT-024, VTI-CLT-035) |
+| Swap refused (authority would change) | Bootstrap entry still authoritative | Do not retry as a transport failure; the request was wrong (VTI-CLT-029, VTI-CLT-043) |
+| Swap request lost, no reply | Unknown: the swap may have committed | Re-authenticate; if the replacement identifier has standing the swap committed, and the persisted key decides recoverability |
+| Crash after commit, before persist | Entry moved; replacement key lost | Unrecoverable for this client. Re-enrol (VTI-CLT-054). This is the case VTI-CLT-033 exists to make as small as possible |
+
+#### A.5 Test vectors — context paths
+
+Valid (VTI-CTX-010 – VTI-CTX-013):
+
+| Path | Note |
+|---|---|
+| `acme` | single segment |
+| `acme/eng` | two segments |
+| `acme/eng/team-a` | hyphen in a segment |
+| `a.b_c/d-e` | full stop, low line, hyphen |
+| `acme/..` | `..` is an ordinary segment name (VTI-CTX-014) |
+| `s1/s2/s3/s4/s5/s6/s7/s8` | eight segments, the maximum |
+
+Invalid:
+
+| Path | Violates |
+|---|---|
+| *(empty)* | VTI-CTX-010 |
+| `/acme` | leading separator, VTI-CTX-012 |
+| `acme/` | trailing separator, VTI-CTX-012 |
+| `acme//eng` | doubled separator, VTI-CTX-012 |
+| `acme/ev il` | space in a segment, VTI-CTX-011 |
+| `acme/eng/` + 65-byte segment | segment length, VTI-CTX-011 |
+| `s1/s2/s3/s4/s5/s6/s7/s8/s9` | nine segments, VTI-CTX-013 |
+
+#### A.6 Test vectors — ancestry
+
+`is_ancestor_or_self(a, d)`, per VTI-CTX-016:
+
+| a | d | Result | Note |
+|---|---|---|---|
+| `acme` | `acme` | true | self |
+| `acme` | `acme/eng` | true | descendant |
+| `acme` | `acme/eng/team-a` | true | deeper descendant |
+| `acme/eng` | `acme` | false | ancestry is not symmetric |
+| `acme` | `acme-evil` | **false** | shares a leading substring, not a leading segment |
+| `acme` | `acme-evil/eng` | **false** | as above |
+| `acme/eng` | `acme/engineering` | **false** | segment-wise, not prefix-wise |
+| `ACME` | `acme/eng` | false | comparison is octet by octet (VTI-CTX-015) |
+
+An implementation that returns true for any row marked **false** has the defect
+VTI-CTX-016 exists to prevent.
+
+#### A.7 Test vectors — act scope
+
+Per VTI-ACL-020, over the pair (role, contexts):
+
+| Role | Contexts | Act scope | Note |
+|---|---|---|---|
+| administrative | *(empty)* | unrestricted | this is how a super-administrator is spelled |
+| administrative | `["acme/eng"]` | `acme/eng` and descendants | a context administrator |
+| non-administrative | *(empty)* | none | authorized nowhere — **not** unrestricted |
+| non-administrative | `["acme/eng"]` | `acme/eng` and descendants | |
+| any | `["acme/eng", "beta"]` | both subtrees | |
+
+The third row is the one that has been implemented backwards. A test suite that
+omits it is not testing VTI-ACL-021.
+
+### Appendix B: Access control entry
+
+This appendix is informative, and illustrates the requirements in the Trust
+Contexts and the Authority Model chapter.
+
+A representative entry:
+
+```json
+{
+  "subject": "did:key:z6MkexampleClientIdentifier",
+  "role": "reader",
+  "scopes": ["acme/eng/team-a/summariser"],
+  "capabilities": ["vault-read", "sign-trust-task"],
+  "allowedKeys": ["key-3f2a"],
+  "approve": { "all": false, "scopes": [] },
+  "stepUp": { "require": "consent", "approver": "acme-approvers" },
+  "expiresAt": "2026-10-10T00:00:00Z",
+  "label": "summariser agent, laptop",
+  "createdAt": "2026-09-10T09:14:00Z",
+  "createdBy": "did:webvh:example.com:acme-admin",
+  "ext": {}
+}
+```
+
+| Member | Meaning | Rule |
+|---|---|---|
+| `subject` | the party the entry authorizes | VTI-ACL-002; stored under a one-way function where possible (VTI-ACL-008) |
+| `role` | the ceiling | VTI-ACL-010; an unrecognised role confers nothing (VTI-ACL-011) |
+| `scopes` | contexts the entry is scoped to | meaningful only paired with `role` (VTI-ACL-020, VTI-ACL-021) |
+| `capabilities` | narrowing within the ceiling | VTI-ACL-030, VTI-ACL-031 |
+| `allowedKeys` | narrowing to named keys | **absent ≠ empty** (VTI-ACL-006, VTI-ACL-007) |
+| `approve` | the approve axis | independent of act (VTI-ACL-040) |
+| `stepUp` | an additional-human requirement carried on the entry | Approvals section |
+| `expiresAt` | when the entry stops conferring | evaluated at every decision (VTI-ACL-004) |
+| `createdAt` / `createdBy` | provenance | VTI-ACL-002 |
+| `ext` | ecosystem-defined content | confers no authority (VTI-ACL-005) |
+
+Two invariants are worth restating beside the shape, because both have been
+implemented incorrectly from a correct-looking schema:
+
+1. `"scopes": []` on this entry would mean *authorized nowhere*, because the
+   role is not administrative. The same empty list on an administrative role
+   means *everywhere*.
+2. Omitting `allowedKeys` grants every key the scopes reach. Sending
+   `"allowedKeys": []` grants none. A serializer that drops empty collections
+   converts the second into the first.
 
 ### Appendix C: Role and capability annex
 
-{{The role set, and the versioned annex of registered capabilities, as of this
-version of this specification. The registry is extensible — see VTI-ACL-032 for
-the rule that makes extension safe.
+This appendix is informative. **The contents are a proposal for working-group
+ratification**; the normative requirements that reference it (VTI-ACL-010,
+VTI-ACL-011, VTI-ACL-030 through VTI-ACL-034) are written so that the annex can
+be settled without changing them.
 
-Table 1, roles: for each role, the capability ceiling it confers. Referenced by
-VTI-ACL-010 and VTI-ACL-011.
+#### C.1 Roles
 
-Table 2, capabilities: for each registered capability, its identifier, the
-power it gates, the roles whose ceiling includes it, and whether it is additive
-(VTI-ACL-033).}}
+| Role | Position |
+|---|---|
+| `administrator` | administers the contexts in scope, including the entries within them |
+| `initiator` | initiates operations that change state within scope |
+| `application` | a non-human consumer performing a defined function |
+| `reader` | reads within scope; changes nothing |
+| `monitor` | the least-privileged role; the safe default for an unspecified entry |
+
+#### C.2 Capability registry
+
+| Capability | Gates |
+|---|---|
+| `vault-read` | reading stored credentials and secrets |
+| `vault-write` | receiving credentials and writing stored secrets |
+| `credential-write` | changing the archival lifecycle of a stored credential |
+| `sign` | the generic signing oracle |
+| `sign-trust-task` | per-envelope task signing only |
+| `proxy-login` | minting a session credential on the principal's behalf |
+| `fill-release` | releasing a stored value into an authorized flow |
+| `key-mint` | creating new keys within scope |
+| `policy-admin` | changing policy, including approval rules |
+| `device-admin` | enrolling and managing devices |
+| `memory-read` | reading agent memory |
+| `memory-write` | writing or deleting agent memory |
+| `holder` *(additive)* | acting for the holder over their own identity across every context |
+
+`holder` is marked additive because no role implies it: it reaches above the
+context tree rather than within it, so deriving it from an administrative role
+would hand it to every context administrator on upgrade. Granting it requires
+unrestricted act authority (VTI-ACL-033).
+
+The separations in this table are deliberate and each has a reason worth
+keeping: `sign-trust-task` exists so that an agent can sign an envelope without
+holding the generic oracle; `credential-write` exists so that a consumer can
+receive credentials without being able to destroy them; `memory-read` and
+`memory-write` are split so that a read-only consumer of a context cannot
+rewrite what it reads.
 
 ### Appendix D: Context path grammar
 
