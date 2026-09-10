@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-10T17:52:33.831Z"
+      "lastUpdated": "2026-09-10T18:05:09.063Z"
     }
   ]
 };</script>
@@ -331,8 +331,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
             <main class="col-md-8 ms-sm-auto col-lg-9 px-md-4 pt-5">
                 <article id="content" class="" tabindex="-1">
                     <div id="terminology-section-utility-container" class="d-print-none alert alert-primary p-3"></div>
-                    <p>{{INSTRUCTIONS ABOUT THE USE OF THIS TEMPLATE: All editorial instructions are enclosed in {{double curly braces}} and MUST be either removed from or replaced in the specification document. All other text MUST be included in the specification document. NOTE: As of 2026, ToIP specifications are required to use <a href="https://trustoverip.github.io/spec-up-t-website/">Spec-Up-T</a>. It will automatically generate a table of contents for the entire specification document.}}</p>
-<h1 id="verifiable-trust-infrastructure-(vti)-specification" tabindex="-1"><a class="toc-anchor d-print-none" href="#verifiable-trust-infrastructure-(vti)-specification">§</a> Verifiable Trust Infrastructure (VTI) Specification</h1>
+                    <h1 id="verifiable-trust-infrastructure-(vti)-specification" tabindex="-1"><a class="toc-anchor d-print-none" href="#verifiable-trust-infrastructure-(vti)-specification">§</a> Verifiable Trust Infrastructure (VTI) Specification</h1>
 <p><em>Version:</em> 0.1<br>
 <em>Document Status:</em> Working Draft<br>
 <em>DOI:</em> {{see <a href="https://lf-toip.atlassian.net/wiki/spaces/HOME/pages/767787009/ToIP+Approved+Deliverable+Process#Persistent-DOI-Link">this wiki page</a> for instructions about how to add a DOI}}<br>
@@ -341,12 +340,10 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
 <p><em>Editors:</em></p>
 <ul>
 <li>Glenn Gore, Affinidi</li>
-<li>{{additional editors, as the Working Group appoints them: full name, optional OrcID, official LF affiliation}}</li>
 </ul>
 <p><em>Contributors:</em></p>
 <ul>
-<li>Geoff Turk, {{official LF affiliation}}</li>
-<li>{{additional contributors: full name, official LF affiliation. All other acknowledgements go in the Acknowledgements Appendix at the end.}}</li>
+<li>Geoff Turk, First Person Project</li>
 </ul>
 <p><strong>Abstract</strong></p>
 <p>Decentralized Trust Graph (DTG) specifications are deliberately modular: each
@@ -365,9 +362,8 @@ because some properties a relying party depends on cannot be established by
 inspecting a single specification: they are properties of the composition, and
 this document is where they are owned.</p>
 <p><strong>Intellectual Property Rights</strong></p>
-<p>This specification is provided under the <a href="https://cdn.platform.linuxfoundation.org/agreements/ToIP.pdf">Joint Development Foundation (JDF) charter</a> for <a href="https://trustoverip.org">Trust Over IP</a> (ToIP) and is subject to the intellectual property rights policy of the <strong>{{insert name of}} Working Group</strong>:</p>
-<p>{{modify the following bullets to reflect the IPR terms of the Working Group}}<br>
-<em>Copyright:</em> <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International (CC BY 4.0)</a><br>
+<p>This specification is provided under the <a href="https://cdn.platform.linuxfoundation.org/agreements/ToIP.pdf">Joint Development Foundation (JDF) charter</a> for <a href="https://trustoverip.org">Trust Over IP</a> (ToIP) and is subject to the intellectual property rights policy of the <strong>Trust over IP - Decentralized Trust Graph Working Group</strong>:</p>
+<p><em>Copyright:</em> <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International (CC BY 4.0)</a><br>
 <em>Patent:</em> W3C Mode (based on the <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/">W3C Patent Policy</a>)<br>
 <em>Source Code:</em> <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></p>
 <p>THESE MATERIALS ARE PROVIDED “AS IS.” The parties expressly disclaim any warranties (express, implied, or otherwise), including implied warranties of merchantability, non-infringement, fitness for a particular purpose, or title, related to the materials. The entire risk as to implementing or otherwise using the materials is assumed by the implementer and user. IN NO EVENT WILL THE PARTIES BE LIABLE TO ANY OTHER PARTY FOR LOST PROFITS OR ANY FORM OF INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF ANY CHARACTER FROM ANY CAUSES OF ACTION OF ANY KIND WITH RESPECT TO THIS DELIVERABLE OR ITS GOVERNING AGREEMENT, WHETHER BASED ON BREACH OF CONTRACT, TORT (INCLUDING NEGLIGENCE), OR OTHERWISE, AND WHETHER OR NOT THE OTHER MEMBER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
@@ -545,8 +541,9 @@ means the thing a credential asserts about its subject.</li>
 <ul>
 <li><a href="https://glossary.trustoverip.org">ToIP Main Glossary</a></li>
 <li><a href="https://trustoverip.github.io/ctwg-general-glossary">ToIP General IT Glossary</a></li>
-<li>{{DTG component specification glossaries, to be added as Spec-Up-T xrefs as the normative references are settled}}</li>
 </ul>
+<p>The glossaries of the DTG component specifications this document binds are
+added to that list as the normative references to them are settled.</p>
 <div id="terminology-section-start"></div>
 <!-- file: terms-definitions/access_control_entry.md -->
 <dl class="terms-and-definitions-list"><dt data-sourcefile="terms-definitions/access_control_entry.md" class="term-local"><span id="term:acl-entry"><span id="term:access-control-entry">ACL entry <span class="term-local-parenthetical-terms">(<span class="term-local-original-term term-original-term" title="original term">access control entry</span>)</span></span></span></dt><dd>
@@ -3394,8 +3391,9 @@ requests, as required by VTI-OPS-031.</p>
 <p><strong>VTI-CNF-008</strong> — Conformance MUST be claimed against a named version of this
 specification and a named profile set, and results MUST be published in a form
 that identifies which requirements were exercised.</p>
-<p>{{The location and governance of the test suite are to be settled by the
-working group.}}</p>
+<p>The location of the suite, and who may change it, are not yet settled. Until
+they are, a conformance claim identifies the suite it was run against by
+revision, so that a reader can tell which tests a claim rests on.</p>
 <h3 id="the-assessment-interface" tabindex="-1"><a class="toc-anchor d-print-none" href="#the-assessment-interface">§</a> The assessment interface</h3>
 <p>Assurance — whether a deployment’s properties hold in composition — is answered
 by evidence rather than by a test result, and more than one assessment
@@ -3439,11 +3437,10 @@ the conditions each assessment assumed. Recording only the preferred
 disposition destroys the more useful of the two facts.</p>
 <!-- file: 96-references.md -->
 <h2 id="references" tabindex="-1"><a class="toc-anchor d-print-none" href="#references">§</a> References</h2>
-<p>{{Editorial note: the entries below name the specifications this document
-binds. Their published locations and exact titles are to be confirmed against
-the current versions before this specification leaves Working Draft, and any
-entry marked <em>(pending)</em> names a specification whose stable reference the
-working group has yet to fix.}}</p>
+<p>The entries below name the specifications this document binds. An entry marked
+<em>(pending)</em> names one whose stable citation the working group has yet to fix;
+those, and the exact titles and locations of the rest, are confirmed against
+their current versions before this specification leaves Working Draft.</p>
 <h3 id="normative-references" tabindex="-1"><a class="toc-anchor d-print-none" href="#normative-references">§</a> Normative References</h3>
 <p><strong>Requirements language and notation</strong></p>
 <ul>
@@ -4094,10 +4091,10 @@ provenance or evidence, while the question of whether those semantics survive a
 multi-component interaction belongs here. Recording a requirement as jointly
 owned is not a step toward moving it into this specification.</p>
 <h4 id="evidence-families" tabindex="-1"><a class="toc-anchor d-print-none" href="#evidence-families">§</a> Evidence families</h4>
-<p>{{Each family records a set of related propositions carried through the same
+<p>Each family records a set of related propositions carried through the same
 path: threat proposition, falsifiable invariant, executable pressure test,
 legitimate counter-case, disposition. Families are added as the evidence is
-produced.}}</p>
+produced.</p>
 <p><strong>Family 1 — false independence.</strong> Seven threat classes sharing one unsafe
 inference, each with an executable test and a legitimate counter-case. Supports
 VTI-CMP-070 through VTI-CMP-074.</p>
@@ -4145,13 +4142,16 @@ completeness. The corpus equally preserves the opposite boundary — legitimate
 plurality, pseudonymity, shared infrastructure, transformation, coalitions,
 independent agreement, selective disclosure and privacy-preserving minimisation
 are not failures merely for resembling an adversarial pattern (VTI-CMP-074).</p>
-<p>{{Current disposition: <code>UNRESOLVED</code>, with strong <code>COMPOSITION-OWNED</code> evidence.
-Source material is cited in the Informative References.}}</p>
+<p>Current disposition: <code>UNRESOLVED</code>, with strong <code>COMPOSITION-OWNED</code> evidence.
+Source material is cited in the Informative References.</p>
 <h4 id="assessment-submissions" tabindex="-1"><a class="toc-anchor d-print-none" href="#assessment-submissions">§</a> Assessment submissions</h4>
-<p>{{Submissions received under the assessment interface defined in the
-Conformance chapter, each citing a requirement identifier, a disposition of
-<code>supported</code>, <code>refuted</code> or <code>indeterminate</code>, the method and artefacts, and the
-assessor and date. Where two submissions disagree, both are recorded.}}</p>
+<p>Submissions received under the assessment interface defined in the Conformance
+chapter are recorded here, each citing a requirement identifier, a disposition
+of <code>supported</code>, <code>refuted</code> or <code>indeterminate</code>, the method and artefacts, and the
+assessor and date. Where two submissions disagree, both are recorded.</p>
+<p>None have been received at the time of publication. An empty section here means
+no programme has submitted evidence, and not that evidence was sought and none
+found.</p>
 <h3 id="appendix-f%3A-divergence-register" tabindex="-1"><a class="toc-anchor d-print-none" href="#appendix-f%3A-divergence-register">§</a> Appendix F: Divergence register</h3>
 <p>This appendix is informative. It records known differences between this
 specification and implementations, per VTI-CNF-015.</p>
@@ -4373,7 +4373,10 @@ parameter as accepted-and-ignored when the node in question never accepted it.
 A register that quietly drops such entries teaches its readers not to trust the
 ones that remain.</p>
 <h3 id="appendix-g%3A-acknowledgements" tabindex="-1"><a class="toc-anchor d-print-none" href="#appendix-g%3A-acknowledgements">§</a> Appendix G: Acknowledgements</h3>
-<p>{{The final appendix should contain any additional acknowledgements}}</p>
+<p>This specification draws on composition-assurance work carried out elsewhere in
+the DTG portfolio, recorded in Appendix E, and on operational experience from
+implementations of the infrastructure it describes, recorded in Appendix F.</p>
+<p>Further acknowledgements are added here as the Working Group records them.</p>
 <p>Copyright © 2026 Trust Over IP (ToIP) Contributors<br>
 This work is licensed under a Creative Commons Attribution 4.0 International License.</p>
 
@@ -4494,8 +4497,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-10T17:52:33.331Z">
-                            Generated: 2026-09-10T17:52:33.331Z
+                        <time class="timestamp" datetime="2026-09-10T18:05:08.474Z">
+                            Generated: 2026-09-10T18:05:08.474Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
