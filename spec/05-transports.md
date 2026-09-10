@@ -1,33 +1,107 @@
 ## Transports, Messaging and Delivery
 
-{{This section is normative.}}
+This section is normative.
 
-This chapter specifies how VTI nodes reach each other, and — more importantly —
+This chapter specifies how VTI nodes reach each other, and — the harder half —
 what a sender is entitled to conclude when a send returns successfully.
 
-### Transport options
+### Transport independence
 
-{{The permitted transports, what each provides, and the rule that authorization
-outcomes are **transport-independent**: the same request under the same
-authority MUST produce the same decision on every transport.}}
+**VTI-TRN-001** — A node MUST support at least one of the transports defined by
+the referenced transport specifications, and MUST state which.
+
+**VTI-TRN-002** — An authorization decision MUST NOT depend on the transport a
+request arrived over. The same request under the same authority MUST produce
+the same decision on every transport a node exposes.
+
+**VTI-TRN-003** — A node MUST NOT expose an operation on one transport that it
+refuses on another for any reason other than the caller's authority.
+
+*Rationale.* Where transports carry different decisions, the weakest one is the
+node's real policy, and which transport that is will not be recorded anywhere.
 
 ### Liveness
 
-{{A node MUST retain at least one working transport; the requirement exists to
-prevent an administrative change from making a node permanently unreachable.}}
+**VTI-TRN-010** — A node MUST retain at least one working transport. A
+configuration change that would remove the last one MUST be refused.
 
-### Mediators and store-and-forward
+### Mediators
 
-{{The mediator's role, what it observes, and what it MUST NOT be able to
-observe.}}
+**VTI-TRN-020** — A mediator MUST NOT be able to read the content it forwards.
+
+**VTI-TRN-021** — A recipient MUST authenticate the sender of a message from the
+message itself, and MUST NOT rely on an assertion by the mediator.
+
+**VTI-TRN-022** — A node MUST NOT treat the ability to reach it through a
+particular mediator as conferring authority.
+
+### Truthful send
+
+**VTI-TRN-030** — A send operation MUST NOT report success unless the message
+has been transmitted or durably queued for transmission.
+
+**VTI-TRN-031** — Acceptance of a message by a hop MUST NOT be reported as
+delivery to the recipient.
+
+*Rationale.* A send that resolves successfully for a frame that was silently
+dropped — during a reconnect window, for instance — makes every layer above it
+wrong in the same direction: the application believes the message is gone, the
+retry machinery has nothing to retry, and the operator's health signal agrees
+with both. This requirement exists because that is a defect that has shipped
+repeatedly, in independent implementations, for the same reason each time.
 
 ### Delivery confirmation
 
-{{What counts as confirmed delivery, stated exactly: a transport-layer receipt,
-an outbox drain, or a protocol-level reply. An accepted frame is not an applied
-effect, and an implementation MUST NOT report the former as the latter.}}
+**VTI-TRN-040** — A sender MUST NOT treat a message as delivered except on one
+of the following classes of evidence, listed in descending strength:
 
-### Retry, idempotency and timeouts
+1. **A receipt from the recipient's delivery layer**, acknowledging durable
+   receipt. This is the only class that is end-to-end and does not rest on
+   trusting an intermediary's durability.
+2. **A protocol reply** correlated to the message.
+3. **Transport evidence that the recipient collected the message**, where the
+   transport provides it.
 
-{{Which layer owns retry; the idempotency contract for a retried operation; and
-the requirement that every network wait is bounded and fails closed.}}
+**VTI-TRN-041** — A sender MUST record which class of evidence a delivery was
+confirmed by.
+
+**VTI-TRN-042** — Where a stated delivery window passes without evidence, a
+sender MUST NOT assume delivery. It MUST escalate: re-resolve the recipient and
+attempt an alternate binding offered by the recipient's identifier document
+where one exists; otherwise mark the delivery failed and surface it to the
+operator.
+
+**VTI-TRN-043** — A receiver MUST deduplicate redelivered messages by their
+idempotency key, as required by VTI-OPS-061.
+
+*Rationale for VTI-TRN-040.* Store-and-forward transports are at-least-once
+buses. Acceptance by a mediator means durably queued, which is a genuine
+property and not the one the application needs: the mediator can still lose the
+message, and the recipient may never collect it. The three classes are kept
+distinct rather than collapsed because they close different windows, and a
+sender that records only "delivered" cannot later tell which window its claim
+rests on.
+
+*Rationale for VTI-TRN-042.* A dead mediator is not a dead peer. Re-resolving
+before failing is what distinguishes the two, and doing it in that order is what
+prevents a transport outage from being recorded as a peer that will not answer.
+
+### Bounded waits and honest health
+
+**VTI-TRN-050** — Every network operation MUST be bounded by a timeout.
+
+**VTI-TRN-051** — A failure to establish a transport MUST fail closed.
+
+**VTI-TRN-052** — A node's determination of its own reachability MUST be
+re-falsifiable. A node MUST NOT latch a reachability determination made at
+start-up.
+
+**VTI-TRN-053** — A health signal MUST reflect the node's current ability to
+send, and MUST NOT report the last known good state.
+
+*Rationale for VTI-TRN-052 and VTI-TRN-053.* A connection state decided once at
+boot is a claim about a moment that has passed, and a health endpoint built on
+it reports success for as long as the process survives. The failure mode is
+specific and expensive: the operator's dashboard is green, the messages are not
+arriving, and the signal designed to detect exactly that is the reason nobody
+is looking.
