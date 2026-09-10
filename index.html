@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-10T14:57:32.909Z"
+      "lastUpdated": "2026-09-10T15:06:18.913Z"
     }
   ]
 };</script>
@@ -318,7 +318,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
                     </div>
                     <nav id="toc" class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto"
                         aria-labelledby="sidebarMenuLabel">
-                        <ul class="toc"><li><a href="#introduction">Introduction</a><ul><li><a href="#what-this-specification-covers">What this specification covers</a></li><li><a href="#what-this-specification-does-not-cover">What this specification does not cover</a></li><li><a href="#structure-of-this-document">Structure of this document</a></li><li><a href="#requirement-identifiers">Requirement identifiers</a></li></ul></li><li><a href="#requirements-language">Requirements Language</a></li><li><a href="#terminology">Terminology</a></li><li><a href="#architecture-and-conformance-targets">Architecture and Conformance Targets</a><ul><li><a href="#the-problem-this-specification-addresses">The problem this specification addresses</a></li><li><a href="#conformance-targets">Conformance targets</a><ul><li><a href="#verifiable-trust-agent">Verifiable Trust Agent</a></li><li><a href="#verifiable-trust-community">Verifiable Trust Community</a></li><li><a href="#client">Client</a></li><li><a href="#mediator%2C-host%2C-registry">Mediator, host, registry</a></li></ul></li><li><a href="#the-trust-boundary">The trust boundary</a></li><li><a href="#layering">Layering</a></li><li><a href="#the-common-model">The common model</a></li><li><a href="#a-request%2C-end-to-end">A request, end to end</a></li><li><a href="#how-requirements-are-stated">How requirements are stated</a></li></ul></li><li><a href="#trust-contexts-and-the-authority-model">Trust Contexts and the Authority Model</a><ul><li><a href="#trust-contexts">Trust contexts</a></li><li><a href="#context-identifiers">Context identifiers</a><ul><li><a href="#ancestry">Ancestry</a></li><li><a href="#purity-of-the-authorization-gate">Purity of the authorization gate</a></li></ul></li><li><a href="#context-lifecycle">Context lifecycle</a></li><li><a href="#the-access-control-entry">The access control entry</a><ul><li><a href="#absent-is-not-empty">Absent is not empty</a></li><li><a href="#storage-of-subject-identifiers">Storage of subject identifiers</a></li></ul></li><li><a href="#roles">Roles</a></li><li><a href="#act-scope%3A-super-administrators-and-context-administrators">Act scope: super-administrators and context administrators</a></li><li><a href="#capabilities">Capabilities</a></li><li><a href="#approve-scope">Approve scope</a></li><li><a href="#visibility-and-management-of-entries">Visibility and management of entries</a></li><li><a href="#listing-entries-by-context">Listing entries by context</a></li><li><a href="#delegation">Delegation</a></li><li><a href="#revocation">Revocation</a></li><li><a href="#approvals%2C-consent-and-step-up">Approvals, consent and step-up</a></li><li><a href="#audit">Audit</a></li><li><a href="#where-authority-decisions-live">Where authority decisions live</a></li></ul></li><li><a href="#identity%2C-dids-and-key-management">Identity, DIDs and Key Management</a><ul><li><a href="#identifier-methods-by-node-type">Identifier methods by node type</a></li><li><a href="#mandatory-cryptography">Mandatory cryptography</a></li><li><a href="#key-purposes">Key purposes</a></li><li><a href="#derivation-and-context-binding">Derivation and context binding</a></li><li><a href="#rotation">Rotation</a></li><li><a href="#service-endpoints">Service endpoints</a></li><li><a href="#resolution%2C-caching-and-deactivation">Resolution, caching and deactivation</a></li></ul></li><li><a href="#transports%2C-messaging-and-delivery">Transports, Messaging and Delivery</a><ul><li><a href="#transport-options">Transport options</a></li><li><a href="#liveness">Liveness</a></li><li><a href="#mediators-and-store-and-forward">Mediators and store-and-forward</a></li><li><a href="#delivery-confirmation">Delivery confirmation</a></li><li><a href="#retry%2C-idempotency-and-timeouts">Retry, idempotency and timeouts</a></li></ul></li><li><a href="#sessions-and-authentication">Sessions and Authentication</a><ul><li><a href="#the-challenge">The challenge</a></li><li><a href="#authentication">Authentication</a></li><li><a href="#authority-resolution">Authority resolution</a></li><li><a href="#refresh">Refresh</a></li><li><a href="#session-state-and-audit">Session state and audit</a></li></ul></li><li><a href="#client-onboarding-and-lifecycle">Client Onboarding and Lifecycle</a><ul><li><a href="#client-classes">Client classes</a></li><li><a href="#step-1-%E2%80%94-mint-an-ephemeral-identifier-client-side">Step 1 — mint an ephemeral identifier client-side</a></li><li><a href="#step-2-%E2%80%94-enrol-the-identifier">Step 2 — enrol the identifier</a></li><li><a href="#step-3-%E2%80%94-connect%2C-then-roll-the-key">Step 3 — connect, then roll the key</a><ul><li><a href="#mint-the-replacement">Mint the replacement</a></li><li><a href="#prove-reachability-before-committing">Prove reachability before committing</a></li><li><a href="#swap-atomically">Swap atomically</a></li><li><a href="#commit%2C-then-persist%2C-before-anything-else">Commit, then persist, before anything else</a></li></ul></li><li><a href="#step-4-%E2%80%94-steady-state-use">Step 4 — steady-state use</a></li><li><a href="#lifecycle">Lifecycle</a></li><li><a href="#client-conformance-checklist">Client conformance checklist</a></li></ul></li><li><a href="#operation-surface">Operation Surface</a><ul><li><a href="#precedence">Precedence</a></li><li><a href="#extension-rather-than-divergence">Extension rather than divergence</a></li><li><a href="#the-operation-document">The operation document</a></li><li><a href="#responses-and-refusals">Responses and refusals</a></li><li><a href="#versioning-and-negotiation">Versioning and negotiation</a></li><li><a href="#the-policy-gate">The policy gate</a></li><li><a href="#retry%2C-idempotency-and-the-cost-of-a-lost-reply">Retry, idempotency and the cost of a lost reply</a></li><li><a href="#minimum-operation-set">Minimum operation set</a></li></ul></li><li><a href="#credentials-and-presentations">Credentials and Presentations</a><ul><li><a href="#what-a-node-issues%2C-holds-and-presents">What a node issues, holds and presents</a></li><li><a href="#status-and-revocation">Status and revocation</a></li><li><a href="#presentation-binding">Presentation binding</a></li><li><a href="#currency">Currency</a></li></ul></li><li><a href="#the-verifiable-trust-agent">The Verifiable Trust Agent</a><ul><li><a href="#custody">Custody</a></li><li><a href="#the-credential-store-and-holder-surface">The credential store and holder surface</a></li><li><a href="#context-and-key-authority">Context and key authority</a></li><li><a href="#provisioning-integrations">Provisioning integrations</a></li><li><a href="#delegation-to-software-agents">Delegation to software agents</a></li><li><a href="#backup%2C-restore-and-succession">Backup, restore and succession</a></li><li><a href="#the-operator-surface">The operator surface</a></li></ul></li><li><a href="#the-verifiable-trust-community">The Verifiable Trust Community</a><ul><li><a href="#what-a-vtc-is">What a VTC is</a></li><li><a href="#provisioning">Provisioning</a></li><li><a href="#which-authority-lives-where">Which authority lives where</a></li><li><a href="#the-community-access-control-model">The community access control model</a></li><li><a href="#governance-binding">Governance binding</a></li></ul></li><li><a href="#membership-lifecycle-and-community-credentials">Membership Lifecycle and Community Credentials</a><ul><li><a href="#admission">Admission</a></li><li><a href="#membership-credentials">Membership credentials</a></li><li><a href="#lifecycle-states">Lifecycle states</a></li><li><a href="#endorsement-and-relationship-credentials">Endorsement and relationship credentials</a></li><li><a href="#status-and-revocation-1">Status and revocation</a></li><li><a href="#member-identifier-rotation">Member identifier rotation</a></li></ul></li><li><a href="#trust-registries-and-cross-community-recognition">Trust Registries and Cross-Community Recognition</a><ul><li><a href="#publication-and-lookup">Publication and lookup</a></li><li><a href="#what-an-entry-asserts">What an entry asserts</a></li><li><a href="#recognition-between-communities">Recognition between communities</a></li><li><a href="#staleness-and-unavailability">Staleness and unavailability</a></li></ul></li><li><a href="#composition-requirements">Composition Requirements</a><ul><li><a href="#composition-integrity">Composition integrity</a></li><li><a href="#semantic-completion">Semantic completion</a></li><li><a href="#authority-is-not-verification">Authority is not verification</a></li><li><a href="#currency-of-state">Currency of state</a></li><li><a href="#delegation-lineage">Delegation lineage</a></li><li><a href="#privacy-across-composition">Privacy across composition</a></li><li><a href="#false-independence">False independence</a></li><li><a href="#indeterminacy">Indeterminacy</a></li><li><a href="#configuration-materiality">Configuration materiality</a></li><li><a href="#component-substitution">Component substitution</a></li><li><a href="#human-control">Human control</a></li><li><a href="#open-propositions">Open propositions</a></li></ul></li><li><a href="#operational-and-assurance-requirements">Operational and Assurance Requirements</a><ul><li><a href="#bootstrap">Bootstrap</a></li><li><a href="#backup%2C-restore-and-succession-1">Backup, restore and succession</a></li><li><a href="#protection-at-rest">Protection at rest</a></li><li><a href="#kill-switch-and-containment">Kill switch and containment</a></li><li><a href="#audit-trail-integrity">Audit trail integrity</a></li><li><a href="#time">Time</a></li><li><a href="#what-an-operator-must-be-able-to-answer">What an operator must be able to answer</a></li></ul></li><li><a href="#security-considerations">Security Considerations</a></li><li><a href="#privacy-considerations">Privacy Considerations</a></li><li><a href="#governance-considerations">Governance Considerations</a></li><li><a href="#internationalization-considerations">Internationalization Considerations</a></li><li><a href="#accessibility-considerations">Accessibility Considerations</a></li><li><a href="#conformance">Conformance</a><ul><li><a href="#conformance-targets-and-profiles">Conformance targets and profiles</a></li><li><a href="#requirement-identifier-areas">Requirement identifier areas</a></li><li><a href="#requirement-identifiers-and-coverage">Requirement identifiers and coverage</a></li><li><a href="#the-test-suite">The test suite</a></li><li><a href="#assessment-interface">Assessment interface</a></li><li><a href="#what-an-assessment-does-not-do">What an assessment does not do</a></li></ul></li><li><a href="#references">References</a><ul><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li><li><a href="#appendices">Appendices</a><ul><li><a href="#appendix-a%3A-client-onboarding">Appendix A: Client onboarding</a></li><li><a href="#appendix-b%3A-access-control-entry-schema">Appendix B: Access control entry schema</a></li><li><a href="#appendix-c%3A-role-and-capability-annex">Appendix C: Role and capability annex</a></li><li><a href="#appendix-d%3A-context-path-grammar">Appendix D: Context path grammar</a></li><li><a href="#appendix-e%3A-composition-proposition-catalogue">Appendix E: Composition proposition catalogue</a></li><li><a href="#appendix-f%3A-acknowledgements">Appendix F: Acknowledgements</a></li></ul></li></ul>
+                        <ul class="toc"><li><a href="#introduction">Introduction</a><ul><li><a href="#what-this-specification-covers">What this specification covers</a></li><li><a href="#what-this-specification-does-not-cover">What this specification does not cover</a></li><li><a href="#structure-of-this-document">Structure of this document</a></li><li><a href="#requirement-identifiers">Requirement identifiers</a></li></ul></li><li><a href="#requirements-language">Requirements Language</a></li><li><a href="#terminology">Terminology</a></li><li><a href="#architecture-and-conformance-targets">Architecture and Conformance Targets</a><ul><li><a href="#the-problem-this-specification-addresses">The problem this specification addresses</a></li><li><a href="#conformance-targets">Conformance targets</a><ul><li><a href="#verifiable-trust-agent">Verifiable Trust Agent</a></li><li><a href="#verifiable-trust-community">Verifiable Trust Community</a></li><li><a href="#client">Client</a></li><li><a href="#mediator%2C-host%2C-registry">Mediator, host, registry</a></li></ul></li><li><a href="#the-trust-boundary">The trust boundary</a></li><li><a href="#layering">Layering</a></li><li><a href="#the-common-model">The common model</a></li><li><a href="#a-request%2C-end-to-end">A request, end to end</a></li><li><a href="#how-requirements-are-stated">How requirements are stated</a></li></ul></li><li><a href="#trust-contexts-and-the-authority-model">Trust Contexts and the Authority Model</a><ul><li><a href="#trust-contexts">Trust contexts</a></li><li><a href="#context-identifiers">Context identifiers</a><ul><li><a href="#ancestry">Ancestry</a></li><li><a href="#purity-of-the-authorization-gate">Purity of the authorization gate</a></li></ul></li><li><a href="#context-lifecycle">Context lifecycle</a></li><li><a href="#the-access-control-entry">The access control entry</a><ul><li><a href="#absent-is-not-empty">Absent is not empty</a></li><li><a href="#storage-of-subject-identifiers">Storage of subject identifiers</a></li></ul></li><li><a href="#roles">Roles</a></li><li><a href="#act-scope%3A-super-administrators-and-context-administrators">Act scope: super-administrators and context administrators</a></li><li><a href="#capabilities">Capabilities</a></li><li><a href="#approve-scope">Approve scope</a></li><li><a href="#visibility-and-management-of-entries">Visibility and management of entries</a></li><li><a href="#listing-entries-by-context">Listing entries by context</a></li><li><a href="#delegation">Delegation</a></li><li><a href="#revocation">Revocation</a></li><li><a href="#approvals%2C-consent-and-step-up">Approvals, consent and step-up</a></li><li><a href="#audit">Audit</a></li><li><a href="#where-authority-decisions-live">Where authority decisions live</a></li></ul></li><li><a href="#identity%2C-dids-and-key-management">Identity, DIDs and Key Management</a><ul><li><a href="#identifier-methods-by-node-type">Identifier methods by node type</a></li><li><a href="#mandatory-cryptography">Mandatory cryptography</a></li><li><a href="#key-purposes">Key purposes</a></li><li><a href="#derivation-and-context-binding">Derivation and context binding</a></li><li><a href="#rotation">Rotation</a></li><li><a href="#service-endpoints">Service endpoints</a></li><li><a href="#resolution%2C-caching-and-deactivation">Resolution, caching and deactivation</a></li></ul></li><li><a href="#transports%2C-messaging-and-delivery">Transports, Messaging and Delivery</a><ul><li><a href="#transport-options">Transport options</a></li><li><a href="#liveness">Liveness</a></li><li><a href="#mediators-and-store-and-forward">Mediators and store-and-forward</a></li><li><a href="#delivery-confirmation">Delivery confirmation</a></li><li><a href="#retry%2C-idempotency-and-timeouts">Retry, idempotency and timeouts</a></li></ul></li><li><a href="#sessions-and-authentication">Sessions and Authentication</a><ul><li><a href="#the-challenge">The challenge</a></li><li><a href="#authentication">Authentication</a></li><li><a href="#authority-resolution">Authority resolution</a></li><li><a href="#refresh">Refresh</a></li><li><a href="#session-state-and-audit">Session state and audit</a></li></ul></li><li><a href="#client-onboarding-and-lifecycle">Client Onboarding and Lifecycle</a><ul><li><a href="#client-classes">Client classes</a></li><li><a href="#step-1-%E2%80%94-mint-an-ephemeral-identifier-client-side">Step 1 — mint an ephemeral identifier client-side</a></li><li><a href="#step-2-%E2%80%94-enrol-the-identifier">Step 2 — enrol the identifier</a></li><li><a href="#step-3-%E2%80%94-connect%2C-then-roll-the-key">Step 3 — connect, then roll the key</a><ul><li><a href="#mint-the-replacement">Mint the replacement</a></li><li><a href="#prove-reachability-before-committing">Prove reachability before committing</a></li><li><a href="#swap-atomically">Swap atomically</a></li><li><a href="#commit%2C-then-persist%2C-before-anything-else">Commit, then persist, before anything else</a></li></ul></li><li><a href="#step-4-%E2%80%94-steady-state-use">Step 4 — steady-state use</a></li><li><a href="#lifecycle">Lifecycle</a></li><li><a href="#client-conformance-checklist">Client conformance checklist</a></li></ul></li><li><a href="#operation-surface">Operation Surface</a><ul><li><a href="#precedence">Precedence</a></li><li><a href="#extension-rather-than-divergence">Extension rather than divergence</a></li><li><a href="#the-operation-document">The operation document</a></li><li><a href="#responses-and-refusals">Responses and refusals</a></li><li><a href="#versioning-and-negotiation">Versioning and negotiation</a></li><li><a href="#the-policy-gate">The policy gate</a></li><li><a href="#retry%2C-idempotency-and-the-cost-of-a-lost-reply">Retry, idempotency and the cost of a lost reply</a></li><li><a href="#minimum-operation-set">Minimum operation set</a></li></ul></li><li><a href="#credentials-and-presentations">Credentials and Presentations</a><ul><li><a href="#what-a-node-issues%2C-holds-and-presents">What a node issues, holds and presents</a></li><li><a href="#status-and-revocation">Status and revocation</a></li><li><a href="#presentation-binding">Presentation binding</a></li><li><a href="#currency">Currency</a></li></ul></li><li><a href="#the-verifiable-trust-agent">The Verifiable Trust Agent</a><ul><li><a href="#custody">Custody</a></li><li><a href="#the-credential-store-and-holder-surface">The credential store and holder surface</a></li><li><a href="#context-and-key-authority">Context and key authority</a></li><li><a href="#provisioning-integrations">Provisioning integrations</a></li><li><a href="#delegation-to-software-agents">Delegation to software agents</a></li><li><a href="#backup%2C-restore-and-succession">Backup, restore and succession</a></li><li><a href="#the-operator-surface">The operator surface</a></li></ul></li><li><a href="#the-verifiable-trust-community">The Verifiable Trust Community</a><ul><li><a href="#what-a-vtc-is">What a VTC is</a></li><li><a href="#provisioning">Provisioning</a></li><li><a href="#which-authority-lives-where">Which authority lives where</a></li><li><a href="#the-community-access-control-model">The community access control model</a></li><li><a href="#governance-binding">Governance binding</a></li></ul></li><li><a href="#membership-lifecycle-and-community-credentials">Membership Lifecycle and Community Credentials</a><ul><li><a href="#admission">Admission</a></li><li><a href="#membership-credentials">Membership credentials</a></li><li><a href="#lifecycle-states">Lifecycle states</a></li><li><a href="#endorsement-and-relationship-credentials">Endorsement and relationship credentials</a></li><li><a href="#status-and-revocation-1">Status and revocation</a></li><li><a href="#member-identifier-rotation">Member identifier rotation</a></li></ul></li><li><a href="#trust-registries-and-cross-community-recognition">Trust Registries and Cross-Community Recognition</a><ul><li><a href="#publication-and-lookup">Publication and lookup</a></li><li><a href="#what-an-entry-asserts">What an entry asserts</a></li><li><a href="#recognition-between-communities">Recognition between communities</a></li><li><a href="#staleness-and-unavailability">Staleness and unavailability</a></li></ul></li><li><a href="#composition-requirements">Composition Requirements</a><ul><li><a href="#how-a-composition-requirement-binds">How a composition requirement binds</a></li><li><a href="#composition-integrity">Composition integrity</a></li><li><a href="#semantic-completion">Semantic completion</a></li><li><a href="#authority-is-not-verification">Authority is not verification</a></li><li><a href="#currency-of-state">Currency of state</a></li><li><a href="#delegation-lineage">Delegation lineage</a></li><li><a href="#privacy-across-composition">Privacy across composition</a></li><li><a href="#false-independence">False independence</a></li><li><a href="#indeterminacy">Indeterminacy</a></li><li><a href="#configuration-materiality">Configuration materiality</a></li><li><a href="#component-substitution">Component substitution</a></li><li><a href="#human-control">Human control</a></li><li><a href="#open-propositions">Open propositions</a></li></ul></li><li><a href="#operational-and-assurance-requirements">Operational and Assurance Requirements</a><ul><li><a href="#bootstrap">Bootstrap</a></li><li><a href="#backup%2C-restore-and-succession-1">Backup, restore and succession</a></li><li><a href="#protection-at-rest">Protection at rest</a></li><li><a href="#kill-switch-and-containment">Kill switch and containment</a></li><li><a href="#audit-trail-integrity">Audit trail integrity</a></li><li><a href="#time">Time</a></li><li><a href="#what-an-operator-must-be-able-to-answer">What an operator must be able to answer</a></li></ul></li><li><a href="#security-considerations">Security Considerations</a></li><li><a href="#privacy-considerations">Privacy Considerations</a></li><li><a href="#governance-considerations">Governance Considerations</a></li><li><a href="#internationalization-considerations">Internationalization Considerations</a></li><li><a href="#accessibility-considerations">Accessibility Considerations</a></li><li><a href="#conformance">Conformance</a><ul><li><a href="#conformance-targets-and-profiles">Conformance targets and profiles</a></li><li><a href="#requirement-identifier-areas">Requirement identifier areas</a></li><li><a href="#requirement-identifiers-and-coverage">Requirement identifiers and coverage</a></li><li><a href="#the-test-suite">The test suite</a></li><li><a href="#assessment-interface">Assessment interface</a></li><li><a href="#what-an-assessment-does-not-do">What an assessment does not do</a></li></ul></li><li><a href="#references">References</a><ul><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li><li><a href="#appendices">Appendices</a><ul><li><a href="#appendix-a%3A-client-onboarding">Appendix A: Client onboarding</a></li><li><a href="#appendix-b%3A-access-control-entry-schema">Appendix B: Access control entry schema</a></li><li><a href="#appendix-c%3A-role-and-capability-annex">Appendix C: Role and capability annex</a></li><li><a href="#appendix-d%3A-context-path-grammar">Appendix D: Context path grammar</a></li><li><a href="#appendix-e%3A-composition-proposition-catalogue">Appendix E: Composition proposition catalogue</a><ul><li><a href="#ownership-classification">Ownership classification</a></li><li><a href="#evidence-families">Evidence families</a></li><li><a href="#assessment-submissions">Assessment submissions</a></li></ul></li><li><a href="#appendix-f%3A-acknowledgements">Appendix F: Acknowledgements</a></li></ul></li></ul>
                         <div class="spec-footer mt-3">
                             <a class="mx-auto p-2" href="https://github.com/trustoverip/spec-up-t"
                                 target="_blank" rel="noopener noreferrer">Powered By Spec-Up-T
@@ -1710,75 +1710,238 @@ cannot be reached. Proceeding as though the lookup had succeeded is not among
 the permitted options.}}</p>
 <!-- file: 14-composition.md -->
 <h2 id="composition-requirements" tabindex="-1"><a class="toc-anchor d-print-none" href="#composition-requirements">§</a> Composition Requirements</h2>
-<p>{{This section is normative.}}</p>
+<p>This section is normative.</p>
 <p>DTG component specifications are modular by design, and that modularity is what
-allows them to evolve independently. It also means that some properties a
-relying party depends on cannot be determined by inspecting any one of them.
-Those properties are owned here.</p>
-<p>Each requirement in this chapter is a property of the <strong>composed</strong> interaction.
-None can be established by a single component, and none is a defect in the
-component specifications it spans.</p>
+lets each of them evolve without waiting for the others. It also means that
+some properties a relying party depends on cannot be determined by inspecting
+any one of them. This chapter owns those properties.</p>
+<p>Every requirement here is a property of the <strong>composed</strong> interaction. None can
+be established by a single component, and none of them implies a defect in the
+component specifications it spans: a component can be entirely correct and the
+composition still fail to hold the property, because the property was never
+anyone’s to hold.</p>
+<h3 id="how-a-composition-requirement-binds" tabindex="-1"><a class="toc-anchor d-print-none" href="#how-a-composition-requirement-binds">§</a> How a composition requirement binds</h3>
+<p><strong>VTI-CMP-001</strong> — A requirement in this chapter binds the party making a
+relying decision and the deployment within which that decision is made. A
+component’s conformance to its own specification MUST NOT be treated as
+satisfying any requirement in this chapter.</p>
+<p><strong>VTI-CMP-002</strong> — A conformance claim against the Composition profile MUST
+state, for each requirement in this chapter, the evidence relied on. Appendix E
+records the ownership classification and evidence for each.</p>
+<p><em>Rationale.</em> The failure this chapter exists to prevent is not a component
+behaving incorrectly. It is every component behaving correctly and the system
+built from them holding a property none of them held.</p>
 <h3 id="composition-integrity" tabindex="-1"><a class="toc-anchor d-print-none" href="#composition-integrity">§</a> Composition integrity</h3>
-<p>{{A property established by one component MUST NOT be assumed to survive
-composition with another.}}</p>
+<p><strong>VTI-CMP-010</strong> — A property established by one component MUST NOT be assumed to
+survive composition with another.</p>
+<p><strong>VTI-CMP-011</strong> — A deployment MUST be able to identify, for each property a
+relying decision depends on, whether that property is established by a
+component or by the composition.</p>
 <h3 id="semantic-completion" tabindex="-1"><a class="toc-anchor d-print-none" href="#semantic-completion">§</a> Semantic completion</h3>
-<p>{{Successful protocol execution MUST NOT be treated as establishing the
-intended trust outcome. A task can complete at the protocol level while the
+<p><strong>VTI-CMP-020</strong> — Successful execution of a protocol MUST NOT be treated as
+establishing the trust outcome the protocol was invoked to achieve.</p>
+<p><strong>VTI-CMP-021</strong> — An implementation MUST distinguish, in what it reports to a
+relying party, the completion of an exchange from the establishment of its
+intended outcome.</p>
+<p><em>Rationale.</em> A task can complete exactly as specified — every message
+well-formed, every signature valid, every state transition correct — while the
 authority, policy, relationship or evidence conditions it presupposed remain
-unresolved.}}</p>
+unresolved. An interface that reports only “completed” gives a relying party no
+way to tell the two apart, and the relying party will reasonably assume the
+stronger reading.</p>
 <h3 id="authority-is-not-verification" tabindex="-1"><a class="toc-anchor d-print-none" href="#authority-is-not-verification">§</a> Authority is not verification</h3>
-<p>{{Cryptographic verification establishes provenance and integrity. It does not
-establish authority. Identity, authentication, credential verification,
-authority, authorisation and the trust decision MUST remain distinguishable in
-a composed flow, and an implementation MUST NOT collapse one into another.}}</p>
+<p><strong>VTI-CMP-030</strong> — Verification of a credential or a proof MUST be treated as
+establishing provenance and integrity, and MUST NOT be treated as establishing
+authority.</p>
+<p><strong>VTI-CMP-031</strong> — A composed flow MUST keep the following distinguishable:
+identity; authentication; credential verification; authority; authorisation;
+and the trust decision itself. An implementation MUST NOT collapse one into
+another.</p>
+<p><strong>VTI-CMP-032</strong> — Where a relying decision depends on the authority of an
+issuer or an actor, that authority MUST be established at the time of the
+decision from a source entitled to answer for it, and MUST NOT be inferred from
+the validity of a signature.</p>
+<p><em>Rationale.</em> A cryptographically impeccable credential can be issued by a party
+that never held, or no longer holds, the authority it asserts. Signature
+validity answers a question about the artefact; authority is a question about
+the world at the moment of relying, and only something entitled to answer for
+the world can answer it.</p>
 <h3 id="currency-of-state" tabindex="-1"><a class="toc-anchor d-print-none" href="#currency-of-state">§</a> Currency of state</h3>
-<p>{{Historical evidence of a relationship or an authority MUST NOT be interpreted
-as evidence of its current state.}}</p>
+<p><strong>VTI-CMP-040</strong> — Historical evidence of a relationship, an authority or a
+status MUST NOT be interpreted as evidence of its current state.</p>
+<p><strong>VTI-CMP-041</strong> — Evidence of currency MUST carry the time at which currency was
+determined, and a relying party MUST apply a stated freshness bound to it.</p>
+<p><strong>VTI-CMP-042</strong> — Where currency cannot be determined within the freshness
+bound, the outcome MUST be indeterminate as specified below, and MUST NOT
+default to the last known state.</p>
+<p><em>Rationale.</em> Every component in a composed flow may be reading a different
+vintage of the same fact: one has just resolved it, one is serving a cached
+answer, and one recorded it at issuance. Requiring the determination time to
+travel with the evidence is what lets a relying party notice that.</p>
 <h3 id="delegation-lineage" tabindex="-1"><a class="toc-anchor d-print-none" href="#delegation-lineage">§</a> Delegation lineage</h3>
-<p>{{An implementation MUST NOT derive broader authority from protocol capability
-than the applicable delegation granted. Scope, lineage, expiry, revocation and
-re-delegation MUST be determinable for any action taken by a delegate.}}</p>
+<p><strong>VTI-CMP-050</strong> — An implementation MUST NOT derive broader authority from
+protocol capability than the applicable delegation granted.</p>
+<p><strong>VTI-CMP-051</strong> — For any action taken by a delegate, the following MUST be
+determinable: the scope of the delegation, its lineage back to an authority
+that held what was delegated, its expiry, its revocation status, and any
+re-delegation in the chain.</p>
+<p><strong>VTI-CMP-052</strong> — A delegate’s authority MUST be evaluated against the
+delegator’s authority as it stands at the time of the action.</p>
+<p><strong>VTI-CMP-053</strong> — The identity of the acting delegate MUST reach the point of
+decision. A composed flow MUST NOT present a delegate’s action as the
+principal’s own without the delegation being determinable.</p>
+<p><em>Rationale for VTI-CMP-053.</em> An intermediate component that substitutes the
+principal for the delegate produces a flow in which every artefact is valid and
+the question “who actually did this” has no answer at the far end. The
+delegation may be entirely proper; the point is that the relying party cannot
+tell, and cannot apply any policy that depends on telling.</p>
 <h3 id="privacy-across-composition" tabindex="-1"><a class="toc-anchor d-print-none" href="#privacy-across-composition">§</a> Privacy across composition</h3>
-<p>{{Privacy MUST be evaluated over the complete interaction rather than per proof
-mechanism. An unlinkable proof carried alongside a stable identifier or
-observable metadata participates in a linkable interaction, and the composed
-result is what must be assessed.}}</p>
+<p><strong>VTI-CMP-060</strong> — Privacy properties MUST be evaluated over the complete
+interaction, and MUST NOT be evaluated at the level of an individual proof
+mechanism alone.</p>
+<p><strong>VTI-CMP-061</strong> — An interaction MUST NOT be described as unlinkable where any
+layer of it carries a stable identifier or observable metadata sufficient to
+re-link it.</p>
+<p><strong>VTI-CMP-062</strong> — A deployment MUST be able to identify the durable correlators
+it introduces, including those arising from naming, routing, lookup and session
+management rather than from credentials.</p>
+<p><strong>VTI-CMP-063</strong> — A composed interaction MUST NOT require disclosure beyond what
+the relying decision needs.</p>
+<p><em>Rationale.</em> An unlinkable proof carried beside a stable agent name, over a
+route observable to a mediator, preceded by a registry lookup that reveals who
+is asking about whom, is a linkable interaction containing an unlinkable proof.
+The proof mechanism is not defective. The composition is where the property was
+lost, and the composition is where it has to be assessed.</p>
 <h3 id="false-independence" tabindex="-1"><a class="toc-anchor d-print-none" href="#false-independence">§</a> False independence</h3>
-<p>{{Apparent multiplicity, provenance depth, threshold satisfaction, actor
-distinctness or artefact validity MUST NOT be upgraded into evidence
-<em>independence</em> or evidence <em>completeness</em>. Several identifiers may represent
-one effective actor; several issuers may share one governance root; several
-attestations may derive from one source; a threshold may be numerically
-satisfied without the independence the relying policy assumed; individually
-valid evidence may be materially incomplete.</p>
-<p>The converse boundary is equally normative. Legitimate plurality, pseudonymity,
-shared infrastructure, coalitions, independent agreement and privacy-preserving
-minimisation MUST NOT be treated as adversarial merely for resembling one of
-these patterns.}}</p>
+<p>Several distinct threat classes share one shape: something is observed
+multiple times, or at depth, or from apparently distinct sources, and that
+observation is upgraded into a conclusion about independence or completeness
+that it does not support.</p>
+<div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th>Threat class</th>
+<th>The unsafe inference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sybil</td>
+<td>multiplicity of identifiers implies multiplicity of actors</td>
+</tr>
+<tr>
+<td>False diversity</td>
+<td>nominal diversity implies governance independence</td>
+</tr>
+<tr>
+<td>Trust laundering</td>
+<td>provenance depth implies assurance depth</td>
+</tr>
+<tr>
+<td>Sock puppet</td>
+<td>persona multiplicity implies social independence</td>
+</tr>
+<tr>
+<td>Quorum capture</td>
+<td>threshold arithmetic implies independent approval</td>
+</tr>
+<tr>
+<td>Collusion</td>
+<td>distinct actors implies independent actors</td>
+</tr>
+<tr>
+<td>Selective evidence</td>
+<td>valid evidence implies complete evidence</td>
+</tr>
+</tbody>
+</table>
+</div><p><strong>VTI-CMP-070</strong> — Apparent multiplicity, provenance depth, threshold
+satisfaction, actor distinctness or artefact validity MUST NOT be upgraded into
+evidence independence or evidence completeness.</p>
+<p><strong>VTI-CMP-071</strong> — Where a relying policy depends on the independence of its
+inputs, that independence MUST be established by evidence, and MUST NOT be
+inferred from the inputs being separately identified.</p>
+<p><strong>VTI-CMP-072</strong> — Where a relying decision depends on the completeness of the
+evidence presented, an implementation MUST consider whether the presentation is
+complete for that decision, and MUST NOT treat the validity of what was
+presented as an answer to that question.</p>
+<p><strong>VTI-CMP-073</strong> — Where independence or completeness cannot be established, the
+outcome MUST be indeterminate. Uncertainty MUST NOT be converted into
+corroboration.</p>
+<p><strong>VTI-CMP-074</strong> — Legitimate plurality, pseudonymity, shared infrastructure,
+transformation of evidence, coalitions, independent agreement, selective
+disclosure and privacy-preserving minimisation MUST NOT be treated as
+adversarial merely because they resemble one of the patterns above.</p>
+<p><em>Rationale for VTI-CMP-074.</em> This requirement is not a caveat on the others; it
+is half of the property. A system that reads every pseudonym as a sock puppet
+and every coalition as collusion has not become safer, it has become unable to
+serve legitimate participants, and the pressure to relax it will come from the
+cases where it is wrong rather than the cases where it is right. Both boundaries
+have to be specified or only one of them will be implemented.</p>
 <h3 id="indeterminacy" tabindex="-1"><a class="toc-anchor d-print-none" href="#indeterminacy">§</a> Indeterminacy</h3>
-<p>{{Where evidence is insufficient to determine whether a trust condition holds,
-the disposition MUST remain indeterminate. It MUST NOT be silently converted
-into corroboration, and MUST NOT be silently converted into failure. This
-section specifies the required behaviour on an indeterminate disposition.}}</p>
+<p><strong>VTI-CMP-080</strong> — An implementation MUST support an indeterminate outcome as a
+first-class result of a trust evaluation, distinct from both success and
+failure.</p>
+<p><strong>VTI-CMP-081</strong> — An indeterminate outcome MUST NOT be silently converted into
+corroboration, and MUST NOT be silently converted into failure.</p>
+<p><strong>VTI-CMP-082</strong> — A relying policy MUST state what is to be done on an
+indeterminate outcome for each class of decision it governs. Where the policy
+is silent, the decision MUST be refused.</p>
+<p><em>Rationale.</em> Insufficient evidence is a different condition from evidence of
+absence, and collapsing the two loses information in whichever direction the
+implementation happened to choose. Requiring the policy to say what happens on
+indeterminate is what forces the choice to be made deliberately, once, by
+someone who can weigh it — rather than incidentally, per call site, by whoever
+wrote the error handling.</p>
 <h3 id="configuration-materiality" tabindex="-1"><a class="toc-anchor d-print-none" href="#configuration-materiality">§</a> Configuration materiality</h3>
-<p>{{A configuration change that alters trust, privacy, authority or security
-semantics is materially equivalent to an implementation change affecting those
-semantics, and MUST attract the same review, scrutiny and audit trail.}}</p>
+<p><strong>VTI-CMP-090</strong> — A configuration change that alters trust, privacy, authority
+or security semantics MUST be treated as materially equivalent to an
+implementation change affecting those semantics, and MUST attract the same
+review and audit.</p>
+<p><strong>VTI-CMP-091</strong> — A deployment MUST be able to reconstruct the effective
+configuration that governed a past decision.</p>
+<p><strong>VTI-CMP-092</strong> — Configuration that alters the semantics named in VTI-CMP-090
+MUST be identifiable as such, and MUST NOT be indistinguishable from
+configuration that does not.</p>
+<p><em>Rationale.</em> The nominal protocol is unchanged, every component remains
+conformant, and the trust behaviour of the deployment is different. Where the
+change is invisible to the review process that governs code, the composition’s
+properties can be altered by an edit that nobody assessed.</p>
 <h3 id="component-substitution" tabindex="-1"><a class="toc-anchor d-print-none" href="#component-substitution">§</a> Component substitution</h3>
-<p>{{Which trust, privacy, governance and lifecycle properties MUST remain
-invariant when one conformant implementation is replaced by another.}}</p>
+<p><strong>VTI-CMP-100</strong> — Where one conformant implementation is substituted for
+another, the deployment MUST re-establish the composition properties this
+chapter requires. Conformance of the substituted component MUST NOT be treated
+as carrying them.</p>
+<p><strong>VTI-CMP-101</strong> — A deployment MUST be able to state which trust, privacy,
+governance and lifecycle properties it requires to remain invariant across
+substitution.</p>
 <h3 id="human-control" tabindex="-1"><a class="toc-anchor d-print-none" href="#human-control">§</a> Human control</h3>
-<p>{{A protocol MUST NOT complete an action requiring a human principal’s
-authorisation without that authorisation having been meaningfully given.
-Cross-references: the approval and consent requirements in the Trust Contexts
-chapter, and the step-up handling in the Client Onboarding chapter.}}</p>
+<p><strong>VTI-CMP-110</strong> — An action requiring the authorisation of a human principal
+MUST NOT complete without that authorisation having been given.</p>
+<p><strong>VTI-CMP-111</strong> — The authorisation MUST be bound to the action it authorises.
+An authorisation MUST NOT admit actions other than the one presented.</p>
+<p><strong>VTI-CMP-112</strong> — The information presented to the authorising human MUST be
+sufficient for them to understand what they are authorising.</p>
+<p><strong>VTI-CMP-113</strong> — A delegate acting for a principal MUST NOT be able to satisfy
+that principal’s authorisation requirement.</p>
+<p><em>Rationale.</em> These are the composed-flow form of requirements that appear
+locally in the Trust Contexts and Client chapters. They are restated here
+because a flow can satisfy each node’s local rule and still complete without a
+human having meaningfully decided anything — the authorisation collected at one
+hop being reused, widened, or attributed to a principal by a component acting
+on their behalf.</p>
 <h3 id="open-propositions" tabindex="-1"><a class="toc-anchor d-print-none" href="#open-propositions">§</a> Open propositions</h3>
-<p>{{Several propositions in this chapter are, at the time of publication,
-supported by composition evidence but not yet resolved to an owner. They are
-published with that status visible rather than withheld: Appendix E records
-each one with its ownership classification, its supporting evidence and its
-counter-cases. A reader is entitled to know which requirements the working
-group considers settled and which it does not.}}</p>
+<p>The propositions in this chapter differ in how settled they are. Some are
+established requirements on the composition; others are supported by evidence
+but not yet resolved to an owner, and could belong to a component
+specification instead.</p>
+<p><strong>VTI-CMP-120</strong> — A published version of this specification MUST record, for
+each requirement in this chapter, its ownership classification, the evidence
+supporting it, and the counter-cases considered. Appendix E carries that record.</p>
+<p><em>Rationale.</em> Publishing the unresolved propositions with their status visible is
+deliberate. A reader is entitled to know which requirements the working group
+considers settled and which it does not, and a backlog stated in public is
+worth more than a chapter withheld until it is complete.</p>
 <!-- file: 15-operational.md -->
 <h2 id="operational-and-assurance-requirements" tabindex="-1"><a class="toc-anchor d-print-none" href="#operational-and-assurance-requirements">§</a> Operational and Assurance Requirements</h2>
 <p>{{This section is normative, except where marked RECOMMENDED.}}</p>
@@ -1912,6 +2075,10 @@ OPTIONAL.}}</p>
 <td><code>OPS</code></td>
 <td>Operation surface — precedence, documents, versioning, retry</td>
 </tr>
+<tr>
+<td><code>CMP</code></td>
+<td>Composition requirements</td>
+</tr>
 </tbody>
 </table>
 </div><p>Further areas are allocated as the remaining chapters are drafted. An area is
@@ -1989,11 +2156,105 @@ strings: <code>acme</code> is an ancestor-or-self of <code>acme/eng</code> and o
 an ancestor of <code>acme-evil</code>, which shares a leading substring but not a leading
 segment. See VTI-CTX-016.</p>
 <h3 id="appendix-e%3A-composition-proposition-catalogue" tabindex="-1"><a class="toc-anchor d-print-none" href="#appendix-e%3A-composition-proposition-catalogue">§</a> Appendix E: Composition proposition catalogue</h3>
-<p>{{Each proposition from the Composition Requirements chapter with its ownership
-classification (<code>COMPONENT-OWNED</code>, <code>COMPOSITION-OWNED</code>, <code>JOINTLY-OWNED</code>,
-<code>ASSURANCE-ONLY</code>, <code>UNRESOLVED</code>), its supporting evidence, its legitimate
-counter-cases, and pointers to any executable pressure test. Propositions that
-remain unresolved are published here with that status visible.}}</p>
+<p>This appendix is informative, and is the record required by VTI-CMP-120.</p>
+<p>Each requirement in the Composition Requirements chapter is recorded here with
+its ownership classification, the evidence supporting it, the legitimate
+counter-cases considered, and a pointer to any executable pressure test.</p>
+<h4 id="ownership-classification" tabindex="-1"><a class="toc-anchor d-print-none" href="#ownership-classification">§</a> Ownership classification</h4>
+<div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th>Classification</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>COMPONENT-OWNED</code></td>
+<td>The requirement belongs to a component specification, and appears here only as a cross-reference.</td>
+</tr>
+<tr>
+<td><code>COMPOSITION-OWNED</code></td>
+<td>No component can establish it; this specification owns it.</td>
+</tr>
+<tr>
+<td><code>JOINTLY-OWNED</code></td>
+<td>A component owns the underlying semantics, and this specification owns their survival across composition.</td>
+</tr>
+<tr>
+<td><code>ASSURANCE-ONLY</code></td>
+<td>Not a normative requirement on an implementation; a property an assessment programme examines.</td>
+</tr>
+<tr>
+<td><code>UNRESOLVED</code></td>
+<td>Supported by evidence, not yet resolved to an owner. Published with that status visible.</td>
+</tr>
+</tbody>
+</table>
+</div><p><code>JOINTLY-OWNED</code> carries most of the difficulty. A component specification may
+properly own the semantics of authority, delegation, lifecycle state, privacy,
+provenance or evidence, while the question of whether those semantics survive a
+multi-component interaction belongs here. Recording a requirement as jointly
+owned is not a step toward moving it into this specification.</p>
+<h4 id="evidence-families" tabindex="-1"><a class="toc-anchor d-print-none" href="#evidence-families">§</a> Evidence families</h4>
+<p>{{Each family records a set of related propositions carried through the same
+path: threat proposition, falsifiable invariant, executable pressure test,
+legitimate counter-case, disposition. Families are added as the evidence is
+produced.}}</p>
+<p><strong>Family 1 — false independence.</strong> Seven threat classes sharing one unsafe
+inference, each with an executable test and a legitimate counter-case. Supports
+VTI-CMP-070 through VTI-CMP-074.</p>
+<div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th>Threat class</th>
+<th>Preserved judgment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sybil</td>
+<td>multiplicity is not independence</td>
+</tr>
+<tr>
+<td>False diversity</td>
+<td>nominal diversity is not governance independence</td>
+</tr>
+<tr>
+<td>Trust laundering</td>
+<td>provenance depth is not assurance depth</td>
+</tr>
+<tr>
+<td>Sock puppet</td>
+<td>persona multiplicity is not social independence</td>
+</tr>
+<tr>
+<td>Quorum capture</td>
+<td>threshold arithmetic is not independent or legitimate approval</td>
+</tr>
+<tr>
+<td>Collusion</td>
+<td>distinct actors are not necessarily independent actors</td>
+</tr>
+<tr>
+<td>Selective evidence</td>
+<td>valid evidence is not necessarily complete evidence</td>
+</tr>
+</tbody>
+</table>
+</div><p>Corpus-level result: apparent multiplicity, depth, threshold satisfaction, actor
+distinctness or artefact validity is not evidence independence or evidence
+completeness. The corpus equally preserves the opposite boundary — legitimate
+plurality, pseudonymity, shared infrastructure, transformation, coalitions,
+independent agreement, selective disclosure and privacy-preserving minimisation
+are not failures merely for resembling an adversarial pattern (VTI-CMP-074).</p>
+<p>{{Current disposition: <code>UNRESOLVED</code>, with strong <code>COMPOSITION-OWNED</code> evidence.
+Source material is cited in the Informative References.}}</p>
+<h4 id="assessment-submissions" tabindex="-1"><a class="toc-anchor d-print-none" href="#assessment-submissions">§</a> Assessment submissions</h4>
+<p>{{Submissions received under the assessment interface defined in the
+Conformance chapter, each citing a requirement identifier, a disposition of
+<code>supported</code>, <code>refuted</code> or <code>indeterminate</code>, the method and artefacts, and the
+assessor and date. Where two submissions disagree, both are recorded.}}</p>
 <h3 id="appendix-f%3A-acknowledgements" tabindex="-1"><a class="toc-anchor d-print-none" href="#appendix-f%3A-acknowledgements">§</a> Appendix F: Acknowledgements</h3>
 <p>{{The final appendix should contain any additional acknowledgements}}</p>
 <p>Copyright © 2026 Trust Over IP (ToIP) Contributors<br>
@@ -2116,8 +2377,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-10T14:57:32.423Z">
-                            Generated: 2026-09-10T14:57:32.423Z
+                        <time class="timestamp" datetime="2026-09-10T15:06:18.397Z">
+                            Generated: 2026-09-10T15:06:18.397Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
