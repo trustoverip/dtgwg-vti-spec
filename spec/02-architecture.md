@@ -147,7 +147,8 @@ Every node type shares one model, defined in Part B:
 - **transports and delivery** — how nodes reach each other, and what a sender
   is entitled to conclude when a send returns;
 - **sessions** — how a client's authority is established for a period of use;
-- **the operation surface** — how operations are exposed and versioned;
+- **the operation surface** — the task catalogue that *is* the API, and the
+  transport bindings of it;
 - **credentials and presentations** — what a node issues, holds and presents,
   and what verifying one of them establishes.
 

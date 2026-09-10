@@ -2,40 +2,64 @@
 
 This section is normative.
 
-This chapter specifies how a VTI node exposes operations: the relationship
-between the canonical Trust Task catalogue and any interface a node defines for
-itself, what an operation document carries, how versions are selected, and what
-a caller may conclude when a reply does not arrive.
+Everything a VTI node exposes, it exposes as a [[ref: trust task]]. This
+chapter defines that surface: the catalogue as the API, the components every
+task is built from, how transports bind to it, how versions are selected, and
+what a caller may conclude when a reply does not arrive.
 
-### Precedence
+### The catalogue is the API
 
-**VTI-OPS-001** — Where a canonical Trust Task exists for an operation, a
-conforming node MUST expose that operation as that task.
+**VTI-OPS-001** — Every operation this specification requires of a node MUST be
+exposed as a Trust Task drawn from the canonical catalogue.
 
-**VTI-OPS-002** — A node MAY define a private interface for an operation only
-where no canonical task covers it.
+**VTI-OPS-002** — A node MUST NOT expose a second, parallel interface for an
+operation the catalogue already defines. There is no REST API, DIDComm protocol
+or TSP protocol *beside* the task catalogue; each is a binding of it.
 
-**VTI-OPS-003** — Where a node exposes both a private interface and the
-canonical task for the same operation, the canonical task MUST be
-authoritative, and the node MUST publish a retirement path for the private
-interface.
+**VTI-OPS-003** — A node MAY define a private task for an operation only where
+no canonical task covers it.
 
-**VTI-OPS-004** — A private interface MUST be identified within a namespace
-under the control of the party defining it, such that it cannot collide with a
-canonical task defined later.
+**VTI-OPS-004** — Where a node carries both a private task and a canonical task
+for the same operation, the canonical task MUST be authoritative and the node
+MUST publish a retirement path for the private one.
 
-**VTI-OPS-005** — A node MUST make the operations it exposes discoverable, so
-that a peer can determine what is available without attempting each one.
+**VTI-OPS-005** — A node MUST make the tasks and versions it serves
+discoverable, and the discovery response MUST itself be a task.
 
 **VTI-OPS-006** — Where a privately defined operation is of general
 applicability, its definer SHOULD propose it to the canonical catalogue.
 
-*Rationale.* The canonical catalogue is what makes two implementations
-interoperable without a bilateral agreement, and every private interface is a
-bilateral agreement wearing the same clothes. The rule is not that private
-interfaces are forbidden — an implementation always runs ahead of a
-specification somewhere — but that they are temporary by construction and
-identifiable as such. A private interface is a waiting room, not a destination.
+*Rationale.* One API surface is worth more than the sum of three good ones.
+Where a node grows an endpoint beside a task, the two acquire separate
+authorization paths, separate error vocabularies, separate versioning and
+separate tests — and the security argument then has to be made twice, by two
+people who do not necessarily agree. Every requirement in this specification
+about authorization, approval, idempotency and refusal is written once, against
+the task; making the task the only surface is what causes those requirements to
+hold on every path into the node rather than on the paths somebody remembered.
+
+The consequence for implementers is deliberate. Adding an operation means
+adding it to the catalogue, and adding it to the catalogue means writing down
+its payload, its refusals, its retry class and the authority it needs. An
+operation that is not worth that is not worth exposing.
+
+### Requirements on a private task
+
+**VTI-OPS-007** — A private task MUST be identified within a namespace its
+definer controls, so that it cannot collide with a canonical task defined
+later.
+
+**VTI-OPS-008** — A private task MUST use the shared components defined below,
+and MUST follow the envelope, refusal, versioning and retry requirements of
+this chapter.
+
+**VTI-OPS-009** — A private task MUST be discoverable under VTI-OPS-005, so
+that a peer can determine what a node offers without attempting each operation.
+
+*Rationale.* A private task is a waiting room, not a destination. The
+requirements above are what make it a waiting room: it is visible, it behaves
+like everything else, and its name cannot become an obstacle to the canonical
+definition that replaces it.
 
 ### Extension rather than divergence
 
@@ -118,6 +142,157 @@ peer depends on, and it is the half no producer-side test exercises.
 that defines no code for it leaves an implementation reporting it as a generic
 failure, which a caller cannot distinguish from a genuine error, so callers
 either treat a normal condition as an outage or paper over real ones.
+
+### Shared components
+
+A task definition is assembled from components defined once and referenced by
+every task that needs them:
+
+| Component | Carries |
+|---|---|
+| **Envelope** | the operation identifier and version, issuer, recipient, issue time, a unique document identifier, and the issuer's proof |
+| **Refusal** | a machine-readable reason from the defined set, with a discriminator in its details where the set has no code for the condition |
+| **Page request** / **page response** | a limit and an opaque cursor, with the cursor's binding rules |
+| **Scope filter** | a context path and a direction, as defined in the Trust Contexts chapter |
+| **Idempotency key** | the identifier under which a repeat of one logical operation is recognised |
+| **Entry**, **context record**, **credential reference** | the authority and object shapes the chapters define |
+| **Instant** | a point in time, in one format, UTC |
+
+**VTI-OPS-070** — A task definition MUST express these concepts by reference to
+the shared component, and MUST NOT restate or redefine one.
+
+**VTI-OPS-071** — A node MUST NOT accept a task-local variant of a shared
+component. A document carrying one MUST be refused.
+
+**VTI-OPS-072** — A concept that appears in more than one task MUST be promoted
+to a shared component before the second task is published.
+
+**VTI-OPS-073** — A change to a shared component is a change to every task that
+references it, and MUST be versioned as such.
+
+*Rationale.* The failure this prevents is silent divergence between two
+definitions of one idea. Where each task carries its own notion of a cursor, a
+refusal or a time, they begin identical and drift: one gains a binding rule,
+another gains a timezone, a third gains a member the others treat as unknown.
+Consumers then need per-task handling for concepts that are not per-task, and a
+security rule stated about "the cursor" turns out to hold for four cursors out
+of six.
+
+VTI-OPS-072 is what keeps the component set honest. The second occurrence is
+the moment a concept is shown to be general, and the last moment at which
+promoting it is cheap.
+
+### The required catalogue
+
+**VTI-OPS-080** — A conforming node MUST expose the operations listed for its
+profile below. The canonical identifier and payload of each is defined by the
+catalogue specification; this table states which operations a node is required
+to have.
+
+`Core` — every node:
+
+| Family | Operations |
+|---|---|
+| `discovery` | tasks and versions served; profiles and capabilities claimed |
+| `auth` | challenge; authenticate; refresh; terminate |
+| `acl` | create; get; update; delete; list *(scope filter, page)*; swap-key |
+| `contexts` | create; get; list *(scope filter, page)*; delete |
+| `keys` | create; get; list *(page)*; sign; rotate |
+| `credentials` | receive; get; list *(page)*; present; archival lifecycle |
+| `approvals` | list rules; set rule; delete rule; explain; request consent; approve; deny |
+| `audit` | query *(page)* |
+
+`Delivery` — every node that sends:
+
+| Family | Operations |
+|---|---|
+| `delivery` | receipt; status of an outbound message |
+
+`Community` — a VTC:
+
+| Family | Operations |
+|---|---|
+| `membership` | request admission; admit; reject; get; list *(page)*; suspend; reinstate; remove *(with disposition)*; renew; rotate |
+| `registry` | publish; withdraw; look up |
+| `recognition` | challenge; present |
+
+**VTI-OPS-081** — A node MUST refuse an operation it does not serve using the
+refusal component, naming the condition. It MUST NOT fail silently and MUST NOT
+allow the request to fail by timeout.
+
+**VTI-OPS-082** — A node MAY expose further catalogue tasks beyond those
+required for its profile.
+
+**VTI-OPS-083** — Every operation in the catalogue MUST state, as part of its
+definition, the authority its caller needs: the capability or role, and the
+context that authority must cover.
+
+**VTI-OPS-084** — Every operation MUST state its retry class, per VTI-OPS-060.
+
+*Rationale for VTI-OPS-083.* An operation whose authority requirement lives
+only in an implementation cannot be reviewed, cannot be tested by a party
+without the source, and cannot be relied on by a peer. Stating it in the
+definition makes the authorization surface of a node readable from the
+catalogue it claims to serve — which is also what allows VTI-OPR-050's
+questions to be answered without reading code.
+
+### Transport bindings
+
+**VTI-OPS-090** — A transport binding MUST define how the envelope, the refusal
+and the payload map onto that transport, and MUST NOT define operations of its
+own.
+
+**VTI-OPS-091** — A binding MUST NOT add, remove or rename a member of a task's
+payload or response.
+
+**VTI-OPS-092** — The same task invoked under the same authority MUST produce
+the same authorization decision and the same refusal on every binding, as
+required by VTI-TRN-002.
+
+**VTI-OPS-093** — A binding MUST NOT weaken the document requirements of this
+chapter on the basis of a property of the transport, as required by
+VTI-OPS-021.
+
+**VTI-OPS-094** — Where a binding cannot represent a component faithfully, the
+binding MUST be documented as not supporting the tasks that use it, rather than
+representing it approximately.
+
+*Rationale.* A binding is a mapping, not a dialect. Once a binding may add a
+parameter, that parameter exists only for callers of that binding: it either
+carries no authority, in which case it is noise, or it carries authority peers
+on other bindings cannot express, which makes a node's behaviour depend on how
+its caller arrived.
+
+### The catalogue and its registries
+
+Task identifiers, capability names and refusal codes are extension points.
+Extensibility without a registration policy produces collisions and private
+forks, so each has one.
+
+**VTI-OPS-100** — A canonical task identifier, capability name or refusal code
+MUST be registered before use. Registration MUST record the name, its meaning,
+the specification defining it, and its status.
+
+**VTI-OPS-101** — Registration of a canonical name MUST require a published
+specification of the thing named.
+
+**VTI-OPS-102** — A private name MUST be namespaced under a domain its definer
+controls, and MUST NOT be registered as canonical.
+
+**VTI-OPS-103** — A registered name MUST NOT be reused with a different
+meaning. A name that falls out of use MUST be marked retired and MUST retain
+its meaning.
+
+**VTI-OPS-104** — A consumer MUST NOT treat an unregistered name as equivalent
+to a registered one, and MUST NOT grant authority on the strength of an
+unrecognised capability name, per VTI-ACL-032.
+
+*Rationale.* The registries are where this specification's extension points
+either stay coherent or quietly stop meaning anything. Requiring a
+specification for a canonical name keeps the catalogue reviewable; requiring a
+namespace for a private one lets an implementation move quickly without taking
+a name someone else will need; and prohibiting reuse means a consumer built
+years after a producer can still rely on what a name meant.
 
 ### Versioning and negotiation
 
@@ -213,8 +388,20 @@ which builds a fresh document with a fresh key, which is a different operation
 as far as the node is concerned. It converts one operation retried into several
 operations performed, which is the precise failure the key exists to prevent.
 
-### Minimum operation set
+### Composing an operation
 
-{{The operations a conforming VTA and a conforming VTC each expose, by profile.
-To be completed once the canonical catalogue references are settled — see the
-References chapter.}}
+The requirements above compose into one rule worth stating on its own: a new
+operation is defined by naming it in the catalogue, assembling its payload from
+shared components, stating the authority it requires and its retry class, and
+publishing the versions a node serves. Nothing about it is decided at the
+transport, and nothing about it is decided in an implementation.
+
+**VTI-OPS-110** — A node MUST NOT expose behaviour that is not attributable to
+a defined operation. An input that changes what a node does MUST be part of a
+task's payload, and MUST be documented, versioned and authorized as such.
+
+*Rationale.* Undocumented inputs — a header a proxy adds, a query parameter one
+binding accepts, an environment variable that changes an authorization outcome
+— are the surface no review covers, because they belong to no definition. This
+requirement puts them inside the model or removes them, and the configuration
+form of the same hazard is covered by VTI-CMP-090.

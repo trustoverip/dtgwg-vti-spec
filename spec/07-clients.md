@@ -102,8 +102,9 @@ starts wide is rarely narrowed at all.
 ### Step 3 — connect, then roll the key
 
 **VTI-CLT-020** — A VTA MUST implement the rotation operation specified in this
-section, so that the decision whether to rotate belongs to the deployment
-rather than to the implementation.
+section — the `acl` family's key-swap operation in the required catalogue
+(VTI-OPS-080) — so that the decision whether to rotate belongs to the
+deployment rather than to the implementation.
 
 **VTI-CLT-021** — On its first successful authentication, a client SHOULD
 rotate off its bootstrap identifier onto a newly minted identifier and cause the
