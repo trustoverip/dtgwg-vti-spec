@@ -1,31 +1,54 @@
 ## Conformance
 
-{{This section is normative.}}
+This section is normative.
 
-This chapter separates two questions that are commonly conflated: whether an
+This chapter separates two questions that are routinely conflated: whether an
 implementation satisfies this specification, and whether a deployment holds its
-properties in composition. The first is conformance and is decided by tests.
-The second is assurance and is decided by evidence.
+properties in composition. The first is **conformance**, and it is decided by
+tests. The second is **assurance**, and it is decided by evidence. This
+specification defines the first and defines an interface for the second.
 
-### Conformance targets and profiles
+### Profiles
 
-{{Targets are those named in the Architecture chapter. Profiles group the
-normative chapters:
+A **profile** is a named set of chapters. Requirements bind to targets; profiles
+group them so that a target can state what it implements without enumerating
+requirement identifiers.
 
 | Profile | Chapters |
 |---|---|
-| `Core` | Trust contexts and authority, identity and keys, sessions, clients, operation surface, credentials |
+| `Core` | Trust contexts and the authority model; Identity, DIDs and key management; Sessions and authentication; Client onboarding and lifecycle; Operation surface; Credentials and presentations |
 | `Delivery` | Transports, messaging and delivery |
-| `Community` | Verifiable Trust Community, membership lifecycle, registries |
+| `Community` | The Verifiable Trust Community; Membership lifecycle and community credentials; Trust registries and cross-community recognition |
 | `Composition` | Composition requirements |
+| `Operations` | Operational and assurance requirements |
 
-This section states which profiles each target MUST implement, and which are
-OPTIONAL.}}
+### Targets
+
+| Target | `Core` | `Delivery` | `Community` | `Composition` | `Operations` |
+|---|---|---|---|---|---|
+| VTA | MUST | MUST | MAY | MUST | MUST |
+| VTC | MUST | MUST | MUST | MUST | MUST |
+| Client | MUST | MUST | MAY | MUST | MAY |
+| Mediator | MAY | MUST | MAY | MAY | MUST |
+| Host service | MAY | MUST | MAY | MAY | MUST |
+| Trust registry | MAY | MAY | MUST | MUST | MUST |
+
+**VTI-CNF-001** — A target MUST satisfy every requirement of every profile
+marked MUST for it that binds that target. A requirement that does not bind a
+target imposes nothing on it.
+
+**VTI-CNF-002** — An implementation claiming conformance MUST state: the
+version of this specification claimed against; the target or targets claimed;
+the profiles implemented; and any OPTIONAL behaviour it implements that a peer
+may rely on.
+
+**VTI-CNF-003** — An implementation MUST NOT claim conformance to a profile
+while implementing a subset of it.
 
 ### Requirement identifier areas
 
-{{Each normative statement carries an identifier of the form
-`VTI-<AREA>-<nnn>`. Areas allocated so far:
+Each normative statement carries an identifier of the form `VTI-<AREA>-<nnn>`.
+Areas allocated:
 
 | Area | Chapter |
 |---|---|
@@ -33,52 +56,85 @@ OPTIONAL.}}
 | `ACL` | Access control entries, roles, capabilities, scopes, listing, delegation, revocation |
 | `APV` | Approvals, consent and step-up |
 | `AUD` | Audit |
-| `CLT` | Client onboarding and lifecycle |
-| `OPS` | Operation surface — precedence, documents, versioning, retry |
-| `CMP` | Composition requirements |
 | `KEY` | Identity, DIDs and key management |
 | `TRN` | Transports, messaging and delivery |
 | `SES` | Sessions and authentication |
-| `VTA` | The Verifiable Trust Agent |
+| `CLT` | Client onboarding and lifecycle |
+| `OPS` | Operation surface — precedence, documents, versioning, retry |
 | `CRD` | Credentials and presentations |
+| `VTA` | The Verifiable Trust Agent |
 | `VTC` | The Verifiable Trust Community |
 | `MEM` | Membership lifecycle and community credentials |
 | `REG` | Trust registries and recognition |
+| `CMP` | Composition requirements |
+| `OPR` | Operational and assurance requirements |
+| `CNF` | Conformance |
 
-Further areas are allocated as the remaining chapters are drafted. An area is
-never renamed and an identifier is never reused.}}
+**VTI-CNF-004** — An identifier MUST NOT be reused. A withdrawn requirement MUST
+be marked withdrawn and MUST retain its identifier.
 
-### Requirement identifiers and coverage
+**VTI-CNF-005** — An area MUST NOT be renamed.
 
-{{Every normative statement carries a stable identifier, and every identifier
-maps to at least one conformance test. A requirement with no test is tracked as
-a defect in this specification rather than left silently unverifiable.}}
+### Coverage
+
+**VTI-CNF-006** — Every requirement in this specification MUST map to at least
+one conformance test. A requirement with no test MUST be recorded as a defect in
+this specification.
+
+*Rationale.* A requirement nobody can test is a requirement nobody can be held
+to, and the gap is invisible from inside the document. Recording it as a defect
+in the specification — rather than as a shortcoming of an implementation — puts
+it where it can be fixed.
 
 ### The test suite
 
-{{Executable, per-target, and covering requests **and responses** — a suite
-that validates only what an implementation sends measures its own fixtures
-rather than the service under test. Conformance is claimed against a named
-version of this specification and a named profile set, and results are
-published.}}
+**VTI-CNF-007** — A conformance test MUST validate responses as well as
+requests, as required by VTI-OPS-031.
 
-### Assessment interface
+**VTI-CNF-008** — Conformance MUST be claimed against a named version of this
+specification and a named profile set, and results MUST be published in a form
+that identifies which requirements were exercised.
 
-{{Assurance — whether a deployment's properties hold in composition — is
-answered by evidence rather than by a test result, and more than one assessment
-programme is expected to exist.
+{{The location and governance of the test suite are to be settled by the
+working group.}}
 
-This specification therefore defines the **interface** rather than naming an
-assessor. An assessment submission cites a requirement identifier, states a
-disposition of `supported`, `refuted` or `indeterminate`, names the method and
-the artefacts it rests on, and carries the assessor's identity and the date.
-Submissions accumulate in the catalogue in Appendix E.}}
+### The assessment interface
+
+Assurance — whether a deployment's properties hold in composition — is answered
+by evidence rather than by a test result, and more than one assessment
+programme is expected to exist. This specification therefore defines the
+interface and does not name an assessor.
+
+**VTI-CNF-010** — An assessment submission MUST cite the requirement identifier
+it concerns.
+
+**VTI-CNF-011** — A submission MUST state a disposition of `supported`,
+`refuted` or `indeterminate`.
+
+**VTI-CNF-012** — A submission MUST identify the method used, the artefacts the
+disposition rests on, the assessor, and the date.
+
+**VTI-CNF-013** — A submission concerning a composition property MUST identify
+the components composed and the versions assessed.
+
+Submissions are recorded in the catalogue in Appendix E.
 
 ### What an assessment does not do
 
-{{No assessment programme holds normative authority under this specification.
-Evidence does not alter a conformance status, and only the working group
-converts an open proposition into a requirement. Two assessments may reach
-different dispositions on the same proposition; a disagreement is recorded as a
-disagreement, which is itself useful signal, and does not resolve itself into a
-verdict.}}
+**VTI-CNF-020** — No assessment programme holds normative authority under this
+specification.
+
+**VTI-CNF-021** — An assessment MUST NOT alter a conformance status. Conformance
+is decided by the tests in this chapter.
+
+**VTI-CNF-022** — Only the working group converts an open proposition into a
+requirement.
+
+**VTI-CNF-023** — Where two assessments reach different dispositions on the same
+requirement, both MUST be recorded. A disagreement MUST NOT be resolved by
+selecting one of them.
+
+*Rationale for VTI-CNF-023.* Two competent assessments disagreeing about
+whether a property holds is information about the property, and usually about
+the conditions each assessment assumed. Recording only the preferred
+disposition destroys the more useful of the two facts.
