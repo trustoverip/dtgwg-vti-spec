@@ -83,6 +83,49 @@ where unresolved propositions are published with their status visible.
 | **D7** | Which identifier methods and algorithms are required? | **`did:webvh` and `did:key` are REQUIRED; all other methods OPTIONAL. Curve25519 is mandatory to implement** (Ed25519 signing, X25519 key agreement); all other algorithms OPTIONAL. |
 | **D8** | Publish the composition chapter with unresolved propositions in it? | **Yes.** A backlog stated in public is worth more than a chapter withheld until it is complete. |
 
+## Status
+
+| Chapter | State |
+|---|---|
+| Introduction and scope | outline |
+| Terminology | outline; VTI and VTC defined |
+| Architecture and conformance targets | **drafted** |
+| Trust contexts and the authority model | **drafted** (`CTX`, `ACL`, `APV`, `AUD`) |
+| Identity, DIDs and key management | **drafted** (`KEY`) |
+| Transports, messaging and delivery | **drafted** (`TRN`) |
+| Sessions and authentication | **drafted** (`SES`) |
+| Client onboarding and lifecycle | **drafted** (`CLT`) |
+| Operation surface | **drafted** (`OPS`) |
+| Credentials and presentations | **drafted** (`CRD`) |
+| The Verifiable Trust Agent | **drafted** (`VTA`) |
+| The Verifiable Trust Community | **drafted** (`VTC`) |
+| Membership lifecycle | **drafted** (`MEM`) |
+| Trust registries and recognition | **drafted** (`REG`) |
+| Composition requirements | **drafted** (`CMP`) |
+| Operational and assurance | **drafted** (`OPR`) |
+| Considerations | **drafted** |
+| Conformance | **drafted** (`CNF`) |
+| References | outline |
+| Appendix A — client onboarding | outline |
+| Appendix B — entry schema | outline |
+| Appendix C — role and capability annex | outline |
+| Appendix D — context path grammar | **drafted** |
+| Appendix E — composition catalogue | **drafted** |
+
+Known gaps, each deliberate rather than overlooked:
+
+- **Editors and the IPR working-group name** in `spec/header.md`.
+- **Appendix C** — the role set and per-role capability ceiling. The chapters
+  reference it from VTI-ACL-010 and VTI-ACL-011 and are written so it can be
+  filled; the role names are a working-group decision.
+- **Appendix A and B** — sequence diagrams, worked example, test vectors, and
+  the entry schema.
+- **The minimum operation set** in the Operation Surface chapter, which needs
+  the canonical catalogue references settled first.
+- **References** — normative references to the component specifications, and
+  informative references for the composition evidence.
+- **The test suite** — location and governance (VTI-CNF-007 onward).
+
 ## Drafting sequence
 
 1. Repo hygiene and the conformance targets in `02-architecture.md` — every
