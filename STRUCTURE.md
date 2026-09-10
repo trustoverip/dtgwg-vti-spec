@@ -131,7 +131,8 @@ where unresolved propositions are published with their status visible.
 Known gaps. Every chapter and appendix now has text; what remains are the
 items only the working group can close:
 
-- **Editors and the IPR working-group name** in `spec/header.md`.
+- **The IPR working-group name** in `spec/header.md`. The editor list has its
+  first entry; further editors are added as the Working Group appoints them.
 - **Ratification of Appendix C** — the role set and capability registry are
   drafted as a proposal. The requirements referencing it (VTI-ACL-010,
   VTI-ACL-011, VTI-ACL-030 through VTI-ACL-034) are written so the annex can be

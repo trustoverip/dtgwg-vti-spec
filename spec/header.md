@@ -8,10 +8,10 @@ _DOI:_ {{see [this wiki page](https://lf-toip.atlassian.net/wiki/spaces/HOME/pag
 _GitHub:_ <https://github.com/trustoverip/dtgwg-vti-spec>  
 _Published:_ <https://trustoverip.github.io/dtgwg-vti-spec/>
 
-_Editors:_ {{MUST list the full names, optional OrcID and official LF affiliations of each editor.}}
+_Editors:_
 
-- {{Editor 1, Org A}}
-- {{Editor 2, Org B}}
+- Glenn Gore, Affinidi
+- {{additional editors, as the Working Group appoints them: full name, optional OrcID, official LF affiliation}}
 
 _Contributors:_ {{MUST list the full names and official LF affiliations of each substantial contributor — all other acknowledgements go in the Acknowledgements Appendix at the end.}}
 
