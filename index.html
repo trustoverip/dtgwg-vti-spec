@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-10T15:56:39.633Z"
+      "lastUpdated": "2026-09-10T15:57:19.827Z"
     }
   ]
 };</script>
@@ -318,7 +318,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
                     </div>
                     <nav id="toc" class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto"
                         aria-labelledby="sidebarMenuLabel">
-                        <ul class="toc"><li><a href="#introduction">Introduction</a><ul><li><a href="#what-this-specification-covers">What this specification covers</a></li><li><a href="#what-this-specification-does-not-cover">What this specification does not cover</a></li><li><a href="#the-vocabulary-in-one-paragraph">The vocabulary in one paragraph</a></li><li><a href="#structure-of-this-document">Structure of this document</a></li><li><a href="#how-requirements-are-stated">How requirements are stated</a></li><li><a href="#reading-this-document-for-a-purpose">Reading this document for a purpose</a></li></ul></li><li><a href="#requirements-language">Requirements Language</a></li><li><a href="#terminology">Terminology</a></li><li><a href="#architecture-and-conformance-targets">Architecture and Conformance Targets</a><ul><li><a href="#the-problem-this-specification-addresses">The problem this specification addresses</a></li><li><a href="#conformance-targets">Conformance targets</a><ul><li><a href="#verifiable-trust-agent">Verifiable Trust Agent</a></li><li><a href="#verifiable-trust-community">Verifiable Trust Community</a></li><li><a href="#client">Client</a></li><li><a href="#mediator%2C-host%2C-registry">Mediator, host, registry</a></li></ul></li><li><a href="#the-trust-boundary">The trust boundary</a></li><li><a href="#layering">Layering</a></li><li><a href="#the-common-model">The common model</a></li><li><a href="#a-request%2C-end-to-end">A request, end to end</a></li><li><a href="#how-requirements-are-stated-1">How requirements are stated</a></li></ul></li><li><a href="#trust-contexts-and-the-authority-model">Trust Contexts and the Authority Model</a><ul><li><a href="#trust-contexts">Trust contexts</a></li><li><a href="#context-identifiers">Context identifiers</a><ul><li><a href="#ancestry">Ancestry</a></li><li><a href="#purity-of-the-authorization-gate">Purity of the authorization gate</a></li></ul></li><li><a href="#context-lifecycle">Context lifecycle</a></li><li><a href="#the-access-control-entry">The access control entry</a><ul><li><a href="#absent-is-not-empty">Absent is not empty</a></li><li><a href="#storage-of-subject-identifiers">Storage of subject identifiers</a></li></ul></li><li><a href="#roles">Roles</a></li><li><a href="#act-scope%3A-super-administrators-and-context-administrators">Act scope: super-administrators and context administrators</a></li><li><a href="#capabilities">Capabilities</a></li><li><a href="#approve-scope">Approve scope</a></li><li><a href="#visibility-and-management-of-entries">Visibility and management of entries</a></li><li><a href="#listing-entries-by-context">Listing entries by context</a></li><li><a href="#delegation">Delegation</a></li><li><a href="#revocation">Revocation</a></li><li><a href="#approvals%2C-consent-and-step-up">Approvals, consent and step-up</a></li><li><a href="#audit">Audit</a></li><li><a href="#where-authority-decisions-live">Where authority decisions live</a></li></ul></li><li><a href="#identity%2C-dids-and-key-management">Identity, DIDs and Key Management</a><ul><li><a href="#identifier-methods">Identifier methods</a></li><li><a href="#cryptography">Cryptography</a></li><li><a href="#key-purposes">Key purposes</a></li><li><a href="#derivation">Derivation</a></li><li><a href="#rotation">Rotation</a></li><li><a href="#service-endpoints">Service endpoints</a></li><li><a href="#resolution%2C-caching-and-deactivation">Resolution, caching and deactivation</a></li></ul></li><li><a href="#transports%2C-messaging-and-delivery">Transports, Messaging and Delivery</a><ul><li><a href="#transport-independence">Transport independence</a></li><li><a href="#liveness">Liveness</a></li><li><a href="#mediators">Mediators</a></li><li><a href="#truthful-send">Truthful send</a></li><li><a href="#delivery-confirmation">Delivery confirmation</a></li><li><a href="#bounded-waits-and-honest-health">Bounded waits and honest health</a></li></ul></li><li><a href="#sessions-and-authentication">Sessions and Authentication</a><ul><li><a href="#the-challenge">The challenge</a></li><li><a href="#authentication">Authentication</a></li><li><a href="#resolving-authority">Resolving authority</a></li><li><a href="#refresh">Refresh</a></li><li><a href="#session-lifecycle">Session lifecycle</a></li></ul></li><li><a href="#client-onboarding-and-lifecycle">Client Onboarding and Lifecycle</a><ul><li><a href="#client-classes">Client classes</a></li><li><a href="#step-1-%E2%80%94-mint-an-ephemeral-identifier-client-side">Step 1 — mint an ephemeral identifier client-side</a></li><li><a href="#step-2-%E2%80%94-enrol-the-identifier">Step 2 — enrol the identifier</a></li><li><a href="#step-3-%E2%80%94-connect%2C-then-roll-the-key">Step 3 — connect, then roll the key</a><ul><li><a href="#mint-the-replacement">Mint the replacement</a></li><li><a href="#prove-reachability-before-committing">Prove reachability before committing</a></li><li><a href="#swap-atomically">Swap atomically</a></li><li><a href="#commit%2C-then-persist%2C-before-anything-else">Commit, then persist, before anything else</a></li></ul></li><li><a href="#step-4-%E2%80%94-steady-state-use">Step 4 — steady-state use</a></li><li><a href="#lifecycle">Lifecycle</a></li><li><a href="#client-conformance-checklist">Client conformance checklist</a></li></ul></li><li><a href="#operation-surface">Operation Surface</a><ul><li><a href="#precedence">Precedence</a></li><li><a href="#extension-rather-than-divergence">Extension rather than divergence</a></li><li><a href="#the-operation-document">The operation document</a></li><li><a href="#responses-and-refusals">Responses and refusals</a></li><li><a href="#versioning-and-negotiation">Versioning and negotiation</a></li><li><a href="#the-policy-gate">The policy gate</a></li><li><a href="#retry%2C-idempotency-and-the-cost-of-a-lost-reply">Retry, idempotency and the cost of a lost reply</a></li><li><a href="#minimum-operation-set">Minimum operation set</a></li></ul></li><li><a href="#credentials-and-presentations">Credentials and Presentations</a><ul><li><a href="#issuance">Issuance</a></li><li><a href="#status-and-revocation">Status and revocation</a></li><li><a href="#presentation">Presentation</a></li><li><a href="#what-verification-establishes">What verification establishes</a></li><li><a href="#minimisation">Minimisation</a></li></ul></li><li><a href="#the-verifiable-trust-agent">The Verifiable Trust Agent</a><ul><li><a href="#custody">Custody</a></li><li><a href="#credentials-held-for-the-principal">Credentials held for the principal</a></li><li><a href="#context-and-key-authority">Context and key authority</a></li><li><a href="#provisioning-integrations">Provisioning integrations</a></li><li><a href="#delegation-to-software-agents">Delegation to software agents</a></li><li><a href="#backup%2C-restore-and-succession">Backup, restore and succession</a></li><li><a href="#the-operator-surface">The operator surface</a></li></ul></li><li><a href="#the-verifiable-trust-community">The Verifiable Trust Community</a><ul><li><a href="#provisioning-and-dependency">Provisioning and dependency</a></li><li><a href="#which-authority-lives-where">Which authority lives where</a></li><li><a href="#the-community-authority-model">The community authority model</a></li><li><a href="#governance-binding">Governance binding</a></li></ul></li><li><a href="#membership-lifecycle-and-community-credentials">Membership Lifecycle and Community Credentials</a><ul><li><a href="#lifecycle-states">Lifecycle states</a></li><li><a href="#admission">Admission</a></li><li><a href="#membership-credentials">Membership credentials</a></li><li><a href="#suspension-and-removal">Suspension and removal</a></li><li><a href="#renewal-and-rotation">Renewal and rotation</a></li></ul></li><li><a href="#trust-registries-and-cross-community-recognition">Trust Registries and Cross-Community Recognition</a><ul><li><a href="#publication">Publication</a></li><li><a href="#what-a-registry-answer-establishes">What a registry answer establishes</a></li><li><a href="#cross-community-recognition">Cross-community recognition</a></li></ul></li><li><a href="#composition-requirements">Composition Requirements</a><ul><li><a href="#how-a-composition-requirement-binds">How a composition requirement binds</a></li><li><a href="#composition-integrity">Composition integrity</a></li><li><a href="#semantic-completion">Semantic completion</a></li><li><a href="#authority-is-not-verification">Authority is not verification</a></li><li><a href="#currency-of-state">Currency of state</a></li><li><a href="#delegation-lineage">Delegation lineage</a></li><li><a href="#privacy-across-composition">Privacy across composition</a></li><li><a href="#false-independence">False independence</a></li><li><a href="#indeterminacy">Indeterminacy</a></li><li><a href="#configuration-materiality">Configuration materiality</a></li><li><a href="#component-substitution">Component substitution</a></li><li><a href="#human-control">Human control</a></li><li><a href="#open-propositions">Open propositions</a></li></ul></li><li><a href="#operational-and-assurance-requirements">Operational and Assurance Requirements</a><ul><li><a href="#bootstrap">Bootstrap</a></li><li><a href="#protection-at-rest">Protection at rest</a></li><li><a href="#containment">Containment</a></li><li><a href="#audit-1">Audit</a></li><li><a href="#time">Time</a></li><li><a href="#what-an-operator-must-be-able-to-answer">What an operator must be able to answer</a></li></ul></li><li><a href="#security-considerations">Security Considerations</a></li><li><a href="#privacy-considerations">Privacy Considerations</a></li><li><a href="#governance-considerations">Governance Considerations</a></li><li><a href="#internationalization-considerations">Internationalization Considerations</a></li><li><a href="#accessibility-considerations">Accessibility Considerations</a></li><li><a href="#conformance">Conformance</a><ul><li><a href="#profiles">Profiles</a></li><li><a href="#targets">Targets</a></li><li><a href="#requirement-identifier-areas">Requirement identifier areas</a></li><li><a href="#coverage">Coverage</a></li><li><a href="#the-test-suite">The test suite</a></li><li><a href="#the-assessment-interface">The assessment interface</a></li><li><a href="#what-an-assessment-does-not-do">What an assessment does not do</a></li></ul></li><li><a href="#references">References</a><ul><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li><li><a href="#appendices">Appendices</a><ul><li><a href="#appendix-a%3A-client-onboarding">Appendix A: Client onboarding</a><ul><li><a href="#a.1-enrolment">A.1 Enrolment</a></li><li><a href="#a.2-first-connection-and-the-key-roll">A.2 First connection and the key roll</a></li><li><a href="#a.3-worked-example">A.3 Worked example</a></li><li><a href="#a.4-failure-cases-around-the-commit-point">A.4 Failure cases around the commit point</a></li><li><a href="#a.5-test-vectors-%E2%80%94-context-paths">A.5 Test vectors — context paths</a></li><li><a href="#a.6-test-vectors-%E2%80%94-ancestry">A.6 Test vectors — ancestry</a></li><li><a href="#a.7-test-vectors-%E2%80%94-act-scope">A.7 Test vectors — act scope</a></li></ul></li><li><a href="#appendix-b%3A-access-control-entry">Appendix B: Access control entry</a></li><li><a href="#appendix-c%3A-role-and-capability-annex">Appendix C: Role and capability annex</a><ul><li><a href="#c.1-roles">C.1 Roles</a></li><li><a href="#c.2-capability-registry">C.2 Capability registry</a></li></ul></li><li><a href="#appendix-d%3A-context-path-grammar">Appendix D: Context path grammar</a></li><li><a href="#appendix-e%3A-composition-proposition-catalogue">Appendix E: Composition proposition catalogue</a><ul><li><a href="#ownership-classification">Ownership classification</a></li><li><a href="#evidence-families">Evidence families</a></li><li><a href="#assessment-submissions">Assessment submissions</a></li></ul></li><li><a href="#appendix-f%3A-acknowledgements">Appendix F: Acknowledgements</a></li></ul></li></ul>
+                        <ul class="toc"><li><a href="#introduction">Introduction</a><ul><li><a href="#what-this-specification-covers">What this specification covers</a></li><li><a href="#what-this-specification-does-not-cover">What this specification does not cover</a></li><li><a href="#the-vocabulary-in-one-paragraph">The vocabulary in one paragraph</a></li><li><a href="#this-specification-is-written-first">This specification is written first</a></li><li><a href="#structure-of-this-document">Structure of this document</a></li><li><a href="#how-requirements-are-stated">How requirements are stated</a></li><li><a href="#reading-this-document-for-a-purpose">Reading this document for a purpose</a></li></ul></li><li><a href="#requirements-language">Requirements Language</a></li><li><a href="#terminology">Terminology</a></li><li><a href="#architecture-and-conformance-targets">Architecture and Conformance Targets</a><ul><li><a href="#the-problem-this-specification-addresses">The problem this specification addresses</a></li><li><a href="#conformance-targets">Conformance targets</a><ul><li><a href="#verifiable-trust-agent">Verifiable Trust Agent</a></li><li><a href="#verifiable-trust-community">Verifiable Trust Community</a></li><li><a href="#client">Client</a></li><li><a href="#mediator%2C-host%2C-registry">Mediator, host, registry</a></li></ul></li><li><a href="#the-trust-boundary">The trust boundary</a></li><li><a href="#layering">Layering</a></li><li><a href="#the-common-model">The common model</a></li><li><a href="#a-request%2C-end-to-end">A request, end to end</a></li><li><a href="#how-requirements-are-stated-1">How requirements are stated</a></li></ul></li><li><a href="#trust-contexts-and-the-authority-model">Trust Contexts and the Authority Model</a><ul><li><a href="#trust-contexts">Trust contexts</a></li><li><a href="#context-identifiers">Context identifiers</a><ul><li><a href="#ancestry">Ancestry</a></li><li><a href="#purity-of-the-authorization-gate">Purity of the authorization gate</a></li></ul></li><li><a href="#context-lifecycle">Context lifecycle</a></li><li><a href="#the-access-control-entry">The access control entry</a><ul><li><a href="#every-grant-is-stated%2C-never-inferred-from-a-shape">Every grant is stated, never inferred from a shape</a></li><li><a href="#storage-of-subject-identifiers">Storage of subject identifiers</a></li></ul></li><li><a href="#roles">Roles</a></li><li><a href="#act-scope%3A-super-administrators-and-context-administrators">Act scope: super-administrators and context administrators</a></li><li><a href="#capabilities">Capabilities</a></li><li><a href="#approve-scope">Approve scope</a></li><li><a href="#visibility-and-management-of-entries">Visibility and management of entries</a></li><li><a href="#listing-entries-by-context">Listing entries by context</a></li><li><a href="#delegation">Delegation</a></li><li><a href="#revocation">Revocation</a></li><li><a href="#approvals%2C-consent-and-step-up">Approvals, consent and step-up</a></li><li><a href="#audit">Audit</a></li><li><a href="#where-authority-decisions-live">Where authority decisions live</a></li></ul></li><li><a href="#identity%2C-dids-and-key-management">Identity, DIDs and Key Management</a><ul><li><a href="#identifier-methods">Identifier methods</a></li><li><a href="#cryptography">Cryptography</a></li><li><a href="#key-purposes">Key purposes</a></li><li><a href="#derivation">Derivation</a></li><li><a href="#rotation">Rotation</a></li><li><a href="#service-endpoints">Service endpoints</a></li><li><a href="#resolution%2C-caching-and-deactivation">Resolution, caching and deactivation</a></li></ul></li><li><a href="#transports%2C-messaging-and-delivery">Transports, Messaging and Delivery</a><ul><li><a href="#transport-independence">Transport independence</a></li><li><a href="#liveness">Liveness</a></li><li><a href="#mediators">Mediators</a></li><li><a href="#truthful-send">Truthful send</a></li><li><a href="#delivery-confirmation">Delivery confirmation</a></li><li><a href="#bounded-waits-and-honest-health">Bounded waits and honest health</a></li></ul></li><li><a href="#sessions-and-authentication">Sessions and Authentication</a><ul><li><a href="#the-challenge">The challenge</a></li><li><a href="#authentication">Authentication</a></li><li><a href="#resolving-authority">Resolving authority</a></li><li><a href="#refresh">Refresh</a></li><li><a href="#session-lifecycle">Session lifecycle</a></li></ul></li><li><a href="#client-onboarding-and-lifecycle">Client Onboarding and Lifecycle</a><ul><li><a href="#client-classes">Client classes</a></li><li><a href="#step-1-%E2%80%94-mint-an-ephemeral-identifier-client-side">Step 1 — mint an ephemeral identifier client-side</a></li><li><a href="#step-2-%E2%80%94-enrol-the-identifier">Step 2 — enrol the identifier</a></li><li><a href="#step-3-%E2%80%94-connect%2C-then-roll-the-key">Step 3 — connect, then roll the key</a><ul><li><a href="#mint-the-replacement">Mint the replacement</a></li><li><a href="#prove-reachability-before-committing">Prove reachability before committing</a></li><li><a href="#swap-atomically">Swap atomically</a></li><li><a href="#commit%2C-then-persist%2C-before-anything-else">Commit, then persist, before anything else</a></li></ul></li><li><a href="#step-4-%E2%80%94-steady-state-use">Step 4 — steady-state use</a></li><li><a href="#lifecycle">Lifecycle</a></li><li><a href="#client-conformance-checklist">Client conformance checklist</a></li></ul></li><li><a href="#operation-surface">Operation Surface</a><ul><li><a href="#precedence">Precedence</a></li><li><a href="#extension-rather-than-divergence">Extension rather than divergence</a></li><li><a href="#the-operation-document">The operation document</a></li><li><a href="#responses-and-refusals">Responses and refusals</a></li><li><a href="#versioning-and-negotiation">Versioning and negotiation</a></li><li><a href="#the-policy-gate">The policy gate</a></li><li><a href="#retry%2C-idempotency-and-the-cost-of-a-lost-reply">Retry, idempotency and the cost of a lost reply</a></li><li><a href="#minimum-operation-set">Minimum operation set</a></li></ul></li><li><a href="#credentials-and-presentations">Credentials and Presentations</a><ul><li><a href="#issuance">Issuance</a></li><li><a href="#status-and-revocation">Status and revocation</a></li><li><a href="#presentation">Presentation</a></li><li><a href="#what-verification-establishes">What verification establishes</a></li><li><a href="#minimisation">Minimisation</a></li></ul></li><li><a href="#the-verifiable-trust-agent">The Verifiable Trust Agent</a><ul><li><a href="#custody">Custody</a></li><li><a href="#credentials-held-for-the-principal">Credentials held for the principal</a></li><li><a href="#context-and-key-authority">Context and key authority</a></li><li><a href="#provisioning-integrations">Provisioning integrations</a></li><li><a href="#delegation-to-software-agents">Delegation to software agents</a></li><li><a href="#backup%2C-restore-and-succession">Backup, restore and succession</a></li><li><a href="#the-operator-surface">The operator surface</a></li></ul></li><li><a href="#the-verifiable-trust-community">The Verifiable Trust Community</a><ul><li><a href="#provisioning-and-dependency">Provisioning and dependency</a></li><li><a href="#which-authority-lives-where">Which authority lives where</a></li><li><a href="#the-community-authority-model">The community authority model</a></li><li><a href="#governance-binding">Governance binding</a></li></ul></li><li><a href="#membership-lifecycle-and-community-credentials">Membership Lifecycle and Community Credentials</a><ul><li><a href="#lifecycle-states">Lifecycle states</a></li><li><a href="#admission">Admission</a></li><li><a href="#membership-credentials">Membership credentials</a></li><li><a href="#suspension-and-removal">Suspension and removal</a></li><li><a href="#renewal-and-rotation">Renewal and rotation</a></li></ul></li><li><a href="#trust-registries-and-cross-community-recognition">Trust Registries and Cross-Community Recognition</a><ul><li><a href="#publication">Publication</a></li><li><a href="#what-a-registry-answer-establishes">What a registry answer establishes</a></li><li><a href="#cross-community-recognition">Cross-community recognition</a></li></ul></li><li><a href="#composition-requirements">Composition Requirements</a><ul><li><a href="#how-a-composition-requirement-binds">How a composition requirement binds</a></li><li><a href="#composition-integrity">Composition integrity</a></li><li><a href="#semantic-completion">Semantic completion</a></li><li><a href="#authority-is-not-verification">Authority is not verification</a></li><li><a href="#currency-of-state">Currency of state</a></li><li><a href="#delegation-lineage">Delegation lineage</a></li><li><a href="#privacy-across-composition">Privacy across composition</a></li><li><a href="#false-independence">False independence</a></li><li><a href="#indeterminacy">Indeterminacy</a></li><li><a href="#configuration-materiality">Configuration materiality</a></li><li><a href="#component-substitution">Component substitution</a></li><li><a href="#human-control">Human control</a></li><li><a href="#open-propositions">Open propositions</a></li></ul></li><li><a href="#operational-and-assurance-requirements">Operational and Assurance Requirements</a><ul><li><a href="#bootstrap">Bootstrap</a></li><li><a href="#protection-at-rest">Protection at rest</a></li><li><a href="#containment">Containment</a></li><li><a href="#audit-1">Audit</a></li><li><a href="#time">Time</a></li><li><a href="#what-an-operator-must-be-able-to-answer">What an operator must be able to answer</a></li></ul></li><li><a href="#security-considerations">Security Considerations</a></li><li><a href="#privacy-considerations">Privacy Considerations</a></li><li><a href="#governance-considerations">Governance Considerations</a></li><li><a href="#internationalization-considerations">Internationalization Considerations</a></li><li><a href="#accessibility-considerations">Accessibility Considerations</a></li><li><a href="#conformance">Conformance</a><ul><li><a href="#profiles">Profiles</a></li><li><a href="#targets">Targets</a></li><li><a href="#requirement-identifier-areas">Requirement identifier areas</a></li><li><a href="#coverage">Coverage</a></li><li><a href="#the-test-suite">The test suite</a></li><li><a href="#the-assessment-interface">The assessment interface</a></li><li><a href="#divergence-from-implementations">Divergence from implementations</a></li><li><a href="#what-an-assessment-does-not-do">What an assessment does not do</a></li></ul></li><li><a href="#references">References</a><ul><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li><li><a href="#appendices">Appendices</a><ul><li><a href="#appendix-a%3A-client-onboarding">Appendix A: Client onboarding</a><ul><li><a href="#a.1-enrolment">A.1 Enrolment</a></li><li><a href="#a.2-first-connection-and-the-key-roll">A.2 First connection and the key roll</a></li><li><a href="#a.3-worked-example">A.3 Worked example</a></li><li><a href="#a.4-failure-cases-around-the-commit-point">A.4 Failure cases around the commit point</a></li><li><a href="#a.5-test-vectors-%E2%80%94-context-paths">A.5 Test vectors — context paths</a></li><li><a href="#a.6-test-vectors-%E2%80%94-ancestry">A.6 Test vectors — ancestry</a></li><li><a href="#a.7-test-vectors-%E2%80%94-act-scope">A.7 Test vectors — act scope</a></li></ul></li><li><a href="#appendix-b%3A-access-control-entry">Appendix B: Access control entry</a></li><li><a href="#appendix-c%3A-role-and-capability-annex">Appendix C: Role and capability annex</a><ul><li><a href="#c.1-roles">C.1 Roles</a></li><li><a href="#c.2-capability-registry">C.2 Capability registry</a></li></ul></li><li><a href="#appendix-d%3A-context-path-grammar">Appendix D: Context path grammar</a></li><li><a href="#appendix-e%3A-composition-proposition-catalogue">Appendix E: Composition proposition catalogue</a><ul><li><a href="#ownership-classification">Ownership classification</a></li><li><a href="#evidence-families">Evidence families</a></li><li><a href="#assessment-submissions">Assessment submissions</a></li></ul></li><li><a href="#appendix-f%3A-divergence-register">Appendix F: Divergence register</a><ul><li><a href="#f.1-authority-encoding">F.1 Authority encoding</a></li><li><a href="#f.2-operations-and-versioning">F.2 Operations and versioning</a></li><li><a href="#f.3-transports%2C-sessions-and-resolution">F.3 Transports, sessions and resolution</a></li><li><a href="#f.4-how-to-add-an-entry">F.4 How to add an entry</a></li></ul></li><li><a href="#appendix-g%3A-acknowledgements">Appendix G: Acknowledgements</a></li></ul></li></ul>
                         <div class="spec-footer mt-3">
                             <a class="mx-auto p-2" href="https://github.com/trustoverip/spec-up-t"
                                 target="_blank" rel="noopener noreferrer">Powered By Spec-Up-T
@@ -419,6 +419,23 @@ component can establish on its own is a
 <a class="term-reference" href="#term:composition-owned-requirement">composition-owned requirement</a>. Where the evidence does not settle a
 question, the answer is <a class="term-reference" href="#term:indeterminate">indeterminate</a>, which is a result rather than
 an error.</p>
+<h3 id="this-specification-is-written-first" tabindex="-1"><a class="toc-anchor d-print-none" href="#this-specification-is-written-first">§</a> This specification is written first</h3>
+<p>This document states how a Verifiable Trust Infrastructure is to work. It is
+not a description of any existing implementation, and where a running system
+behaves differently, it is the system that diverges.</p>
+<p>That direction matters more here than it does for a specification written after
+the fact. Several requirements in this document prohibit an encoding or a
+default that is easy to implement, widely used, and wrong in a way that only
+appears under adversarial conditions — an authority inferred from an empty
+collection, a query direction supplied by default, a send reported as
+successful because nothing objected. A specification written to describe such
+an implementation would record the behaviour and add a warning. This one states
+the behaviour that is correct and treats the difference as work to be done.</p>
+<p>Known divergences between this specification and implementations are recorded
+in Appendix F. The register exists so that the difference is visible and
+tracked rather than argued about, and so that a reader evaluating an
+implementation knows which requirements to ask about. An entry in it is a
+statement about the implementation, never a qualification of the requirement.</p>
 <h3 id="structure-of-this-document" tabindex="-1"><a class="toc-anchor d-print-none" href="#structure-of-this-document">§</a> Structure of this document</h3>
 <p>The specification is in four parts.</p>
 <div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
@@ -882,6 +899,11 @@ LOW LINE (<code>_</code>) and HYPHEN-MINUS (<code>-</code>).</p>
 <p><strong>VTI-CTX-012</strong> — A context identifier MUST NOT contain a leading separator, a
 trailing separator, or two consecutive separators.</p>
 <p><strong>VTI-CTX-013</strong> — A context identifier MUST NOT exceed 8 segments.</p>
+<p><em>Note.</em> The depth and segment-length limits are fixed by this specification
+rather than left to implementations, so that an identifier valid at one node is
+valid at every node. A limit chosen per deployment would make a context
+creatable in one place and unaddressable in another, which is a failure that
+appears only once the two are federated.</p>
 <p><strong>VTI-CTX-014</strong> — An implementation MUST NOT assign relative-path semantics to
 any segment. A segment consisting of <code>.</code> or <code>..</code> is an ordinary segment naming
 an ordinary context and MUST NOT be interpreted as a reference to the context
@@ -931,9 +953,18 @@ derivation base of its parent.</p>
 descendants, or delete the entire subtree. An implementation MUST document
 which behaviour it implements, and MUST NOT delete a context while leaving any
 descendant reachable.</p>
-<p><strong>VTI-CTX-024</strong> — An implementation conforming to this version of this
-specification MUST NOT support re-parenting a context. A context identifier is
-stable for the lifetime of the context.</p>
+<p><strong>VTI-CTX-024</strong> — A context identifier MUST be stable for the lifetime of the
+context. A node MUST NOT support re-parenting a context, and MUST NOT rewrite
+an existing context’s identifier.</p>
+<p><em>Rationale.</em> Identifier stability is what allows a grant, an audit record and a
+derived key to refer to the same context years apart without a translation
+step. Re-parenting is not deferred for want of effort: moving a subtree
+rewrites every descendant identifier and every grant that names one, which
+means an authority statement written yesterday no longer resolves, and the
+window during which it resolves to the wrong thing is exactly the window an
+attacker would choose. A deployment that needs a different shape creates the
+new context and migrates into it, where each step is an audited grant rather
+than a silent rewrite.</p>
 <p><strong>VTI-CTX-025</strong> — A context identifier MUST NOT be reused for a new context
 while any access control entry names it. Reuse of an identifier after deletion
 is NOT RECOMMENDED in any case.</p>
@@ -959,21 +990,27 @@ evaluated at every authorization decision, and MUST NOT be evaluated only when
 a session is established.</p>
 <p><strong>VTI-ACL-005</strong> — A node MUST NOT interpret an ecosystem-defined extension
 member as conferring authority.</p>
-<h4 id="absent-is-not-empty" tabindex="-1"><a class="toc-anchor d-print-none" href="#absent-is-not-empty">§</a> Absent is not empty</h4>
-<p>Two entry fields have an empty case that differs from their absent case, and
-conflating them inverts the grant.</p>
-<p><strong>VTI-ACL-006</strong> — Where an entry carries a narrowed set of key identifiers, an
-absent set and a present-but-empty set MUST be treated as distinct: absent
-means every key reachable through the entry’s context scope, and
-present-but-empty means no key at all.</p>
-<p><strong>VTI-ACL-007</strong> — An implementation MUST NOT serialize a present-but-empty set
-of key identifiers as an absent member.</p>
-<p><em>Rationale.</em> Omitting an empty collection from the wire is a common and usually
-harmless serialization convention. Applied to this member it converts the
-narrowest grant expressible into the widest one, silently, on the wire, with
-both ends conforming to their own understanding of the shape.</p>
+<h4 id="every-grant-is-stated%2C-never-inferred-from-a-shape" tabindex="-1"><a class="toc-anchor d-print-none" href="#every-grant-is-stated%2C-never-inferred-from-a-shape">§</a> Every grant is stated, never inferred from a shape</h4>
+<p><strong>VTI-ACL-006</strong> — Where an entry narrows the keys its subject may reach, the
+narrowing MUST be stated explicitly as one of <code>all</code>, <code>none</code>, or a non-empty
+list of key identifiers.</p>
+<p><strong>VTI-ACL-007</strong> — A node MUST NOT infer a key grant from the absence of a
+member or from an empty list. An entry carrying neither an explicit key
+narrowing nor an explicit statement that it is unnarrowed MUST be refused.</p>
+<p><strong>VTI-ACL-008</strong> — More generally, a node MUST NOT derive any element of
+authority from the absence of a member, the emptiness of a collection, or a
+default applied by a serializer.</p>
+<p><em>Rationale.</em> Omitting an empty collection is a common and usually harmless
+serialization convention. Applied to a grant it is not harmless: it converts
+the narrowest authority expressible into the widest, silently, on the wire,
+with both ends conforming to their own understanding of the shape and neither
+in a position to notice.</p>
+<p>The general form is VTI-ACL-008, and it is the rule the two specific ones are
+instances of. A grant is a statement about authority; a shape is a property of
+an encoder. Where the second is allowed to imply the first, the authority a
+deployment holds depends on a library’s configuration.</p>
 <h4 id="storage-of-subject-identifiers" tabindex="-1"><a class="toc-anchor d-print-none" href="#storage-of-subject-identifiers">§</a> Storage of subject identifiers</h4>
-<p><strong>VTI-ACL-008</strong> — A node SHOULD store the subject identifier of an entry under
+<p><strong>VTI-ACL-009</strong> — A node SHOULD store the subject identifier of an entry under
 a one-way function rather than in the clear, and MUST be able to answer an
 authorization question without disclosing the set of subjects it holds entries
 for.</p>
@@ -991,29 +1028,32 @@ role.</p>
 in Appendix C.</p>
 <h3 id="act-scope%3A-super-administrators-and-context-administrators" tabindex="-1"><a class="toc-anchor d-print-none" href="#act-scope%3A-super-administrators-and-context-administrators">§</a> Act scope: super-administrators and context administrators</h3>
 <p>The <strong>act scope</strong> of an entry answers: in which contexts may this subject make
-a change? It takes exactly three values — none, unrestricted, or a named set of
-contexts — and it is derived from the pair (role, scoped contexts) rather than
-from either alone.</p>
-<p><strong>VTI-ACL-020</strong> — The act scope of an entry MUST be computed as follows: an
-administrative role with an empty context set has unrestricted act scope; any
-other role with an empty context set has act scope none; any role with a
-non-empty context set has act scope over the named contexts and their
-descendants.</p>
-<p><strong>VTI-ACL-021</strong> — An implementation MUST NOT derive any authorization decision
-from the emptiness of an entry’s context set without also considering the
-entry’s role.</p>
-<p><strong>VTI-ACL-022</strong> — An entry with unrestricted act scope — a <strong>super-administrator</strong>
-— MUST be able to act in every context of the node. An entry with act scope
-over named contexts — a <strong>context administrator</strong>, where the role is
-administrative — MUST be able to administer those contexts and every descendant
-of them, and MUST NOT be able to act anywhere else.</p>
-<p><em>Rationale for VTI-ACL-021.</em> An empty context set means “everywhere” for an
-administrator and “nowhere” for every other role. A call site that tests the
-set alone therefore gets one of those two backwards, and which one it gets
-wrong depends on which entry it is looking at. Both known occurrences were
-privilege defects: an entry authorized nowhere displayed as unrestricted on the
-screen operators use to audit grants, and the same entry shape admitted to a
-credential store in every context on the node.</p>
+a change? It takes exactly three values: <code>none</code>, <code>all</code>, or a named set of
+contexts.</p>
+<p><strong>VTI-ACL-020</strong> — An entry MUST state its act scope explicitly, as one of
+<code>none</code>, <code>all</code>, or a non-empty list of context paths.</p>
+<p><strong>VTI-ACL-021</strong> — An implementation MUST NOT infer act scope from the presence,
+absence or emptiness of a list. In particular, an empty list MUST NOT be read
+as <code>all</code>, and MUST NOT be read as <code>none</code>: it is not a valid act scope and MUST
+be refused.</p>
+<p><strong>VTI-ACL-022</strong> — An entry whose act scope is <code>all</code> is a
+<strong>super-administrator</strong>, and MUST be able to act in every context of the node.
+An entry whose act scope names contexts, and whose role is administrative, is a
+<strong>context administrator</strong> of those contexts: it MUST be able to administer them
+and every descendant of them, and MUST NOT be able to act anywhere else.</p>
+<p><strong>VTI-ACL-023</strong> — Act scope and role are independent members. A node MUST NOT
+compute either from the other, and MUST refuse an entry that omits either.</p>
+<p><em>Rationale.</em> Authority is the thing this model exists to state, so it is stated
+rather than encoded. An encoding in which the same empty list means “everywhere”
+for one role and “nowhere” for another cannot be read correctly without knowing
+both members, which means every call site is one omission away from inverting a
+grant — and the two readings are not adjacent errors, they are opposites.</p>
+<p>Requiring the explicit form removes the class rather than warning about it: a
+reader that sees <code>"act": "all"</code> cannot mistake it for <code>"act": "none"</code>, and a
+reader that sees an empty list has encountered a malformed entry rather than a
+grant it must interpret. Appendix F records the encoding a current
+implementation uses instead, and the migration that follows from this
+requirement.</p>
 <h3 id="capabilities" tabindex="-1"><a class="toc-anchor d-print-none" href="#capabilities">§</a> Capabilities</h3>
 <p>A <strong>capability</strong> names a single power that can be gated separately from the
 role that ordinarily implies it.</p>
@@ -1100,7 +1140,8 @@ direction with the following values:</p>
 </tr>
 </tbody>
 </table>
-</div><p><strong>VTI-ACL-061</strong> — Where no direction is given, a node MUST apply <code>acting-in</code>.</p>
+</div><p><strong>VTI-ACL-061</strong> — A node MUST refuse a listing that filters by context without
+stating a direction. A node MUST NOT apply a default direction.</p>
 <p><strong>VTI-ACL-062</strong> — A node MUST refuse a direction value it does not recognise,
 and the refusal MUST name the valid values. A node MUST NOT substitute a
 default for an unrecognised direction.</p>
@@ -1119,6 +1160,12 @@ leaf-scoped grants the sweep exists to cut. The answer is short rather than
 empty, so it looks complete. Once nested contexts exist the natural
 least-privilege layout is a leaf context per purpose, which is exactly the
 layout that makes the omission total.</p>
+<p>There is no default direction because there is no safe one. Either default
+answers a question the caller did not ask, in a form indistinguishable from the
+question they did ask, and the caller most likely to be harmed is the one
+performing a revocation. Requiring the direction costs a parameter; supplying
+one costs a containment failure. Appendix F records that a current
+implementation defaults to <code>acting-in</code>.</p>
 <p>The two edges in VTI-ACL-064 and VTI-ACL-065 are deliberate. An unrestricted
 entry names no context, so it is not a grant <em>of</em> the branch; including it
 would hand a caller revoking a compromised branch its own super-administrator
@@ -1156,12 +1203,16 @@ every entry scoped to a descendant of that context.</p>
 entry granting authority within the revoked scope remains effective. Where a
 sweep cannot remove such an entry, the node MUST report the revocation as
 incomplete and MUST identify the entries that remain.</p>
-<p><em>Rationale for VTI-ACL-082.</em> This is the containment failure the direction
-requirements exist to prevent, and it has occurred: a grant scoped one level
-beneath a swept context survived the sweep and continued to sign, while the
-operator was told the revocation had succeeded. A containment control that
-reports success without having contained anything is worse than no control,
-because it ends the incident response.</p>
+<p><em>Rationale for VTI-ACL-082.</em> A containment control that reports success without
+having contained anything is worse than no control, because it ends the
+response that would otherwise have found what it missed. The failure mode is
+specific: a grant scoped one level beneath the swept context is not returned by
+a query that reads up the tree, so a sweep built on that query removes the
+ancestors and leaves the leaves — and reports the removals it performed. This
+requirement makes the report answer the question the operator asked, which is
+whether authority within the scope still exists, rather than the question the
+implementation happened to answer, which is whether the entries it found were
+deleted.</p>
 <h3 id="approvals%2C-consent-and-step-up" tabindex="-1"><a class="toc-anchor d-print-none" href="#approvals%2C-consent-and-step-up">§</a> Approvals, consent and step-up</h3>
 <p>Some operations are not safely authorized by a single credential. A node
 expresses that with <strong>approval rules</strong>, evaluated before the operation runs.</p>
@@ -1357,13 +1408,15 @@ identifier.</p>
 <p><strong>VTI-KEY-063</strong> — A deactivated identifier MUST be treated as conferring
 nothing.</p>
 <p><em>Rationale for VTI-KEY-061.</em> A negative cache entry outlives the condition that
-produced it, and the resulting symptom is an identifier that “cannot be
-resolved” long after it can — indistinguishable, from the caller’s side, from
-an identifier that does not exist. The case that produced this requirement was
-a day-long negative cache in front of newly created identifiers: everything
-downstream reported a missing subject, and the subject was there the whole time.
-Caching the transport failure is the specific error, because a transport
-failure is evidence about the network and none at all about the identifier.</p>
+produced it, and the symptom is an identifier that cannot be resolved long
+after it can — indistinguishable, from the caller’s side, from one that does
+not exist. A newly published identifier is the common case: it is looked up
+before it exists, and the answer is then remembered for as long as the cache
+holds it.</p>
+<p>Caching a transport failure is the specific error the second half prohibits. A
+timeout is evidence about the network and none at all about the identifier, so
+recording it as a fact about the identifier converts a transient condition into
+a durable wrong answer.</p>
 <!-- file: 05-transports.md -->
 <h2 id="transports%2C-messaging-and-delivery" tabindex="-1"><a class="toc-anchor d-print-none" href="#transports%2C-messaging-and-delivery">§</a> Transports, Messaging and Delivery</h2>
 <p>This section is normative.</p>
@@ -1393,12 +1446,14 @@ particular mediator as conferring authority.</p>
 has been transmitted or durably queued for transmission.</p>
 <p><strong>VTI-TRN-031</strong> — Acceptance of a message by a hop MUST NOT be reported as
 delivery to the recipient.</p>
-<p><em>Rationale.</em> A send that resolves successfully for a frame that was silently
-dropped — during a reconnect window, for instance — makes every layer above it
-wrong in the same direction: the application believes the message is gone, the
-retry machinery has nothing to retry, and the operator’s health signal agrees
-with both. This requirement exists because that is a defect that has shipped
-repeatedly, in independent implementations, for the same reason each time.</p>
+<p><em>Rationale.</em> A send that resolves successfully for a frame that was dropped
+makes every layer above it wrong in the same direction: the application
+believes the message is gone, the retry machinery has nothing to retry, and the
+health signal agrees with both. Nothing in the system disagrees, so nothing
+raises an alarm.</p>
+<p>The requirement is stated at the send because that is the only place the truth
+is still available. A layer above can observe that no reply came, which is
+consistent with delivery; only the sending layer knows whether anything left.</p>
 <h3 id="delivery-confirmation" tabindex="-1"><a class="toc-anchor d-print-none" href="#delivery-confirmation">§</a> Delivery confirmation</h3>
 <p><strong>VTI-TRN-040</strong> — A sender MUST NOT treat a message as delivered except on one
 of the following classes of evidence, listed in descending strength:</p>
@@ -1726,12 +1781,14 @@ and MUST take effect as required by VTI-ACL-080.</p>
 <p><strong>VTI-CLT-054</strong> — A node MUST NOT move an entry to a new subject without a proof
 of control from that subject. Recovery of a lost client key MUST be performed by
 enrolling a new identifier.</p>
-<p><em>Rationale for VTI-CLT-052.</em> A shared identity cannot be revoked
-per-instance — withdrawing it stops every instance, so in practice it is not
-withdrawn — and it is a durable correlator across every device that carries it.
-Machine images are called out because that is how sharing usually happens: not
-by a decision to share, but by an instance being cloned from a template that
-was captured after enrolment.</p>
+<p><em>Rationale for VTI-CLT-052.</em> A shared identity cannot be revoked per instance:
+withdrawing it stops every instance that holds it, so the operator facing one
+compromised host is choosing between an outage and leaving the compromise in
+place. It is also a durable correlator across every device carrying it, which
+defeats the context boundary the rest of this model rests on.</p>
+<p>Machine images are named explicitly because sharing is rarely a decision. An
+image captured after enrolment carries the key, and every instance started from
+it is the same subject as far as the node is concerned.</p>
 <p><em>Rationale for VTI-CLT-054.</em> An administrative move without proof of control is
 a way to hand a grant to a subject that never asked for it and cannot be shown
 to control it, which is the same power as forging the client. Deleting the
@@ -1834,15 +1891,15 @@ member it acts on, and MUST refuse a document where it does not.</p>
 recipient, and MUST refuse a document addressed elsewhere.</p>
 <p><strong>VTI-OPS-024</strong> — A node MUST refuse a document whose time of issue lies outside
 its acceptance window.</p>
-<p><em>Rationale for VTI-OPS-021.</em> This requirement records a defect rather than a
-preference. An implementation shipped the consumer half of the rule — enforcing
-recipient, proof and issue time — while its producer built unsigned, unaddressed
-documents on precisely the two transports whose sender authentication made the
-guard appear unnecessary. Every request over those transports was refused, and
-the refusal named a different condition on each one, so the same defect was
-diagnosed twice as two problems. Transport-level sender authentication and
-document-level proof answer different questions: the first says who opened the
-connection, the second says who authored this document and what it covers.</p>
+<p><em>Rationale for VTI-OPS-021.</em> Transport-level sender authentication and
+document-level proof answer different questions. The first says who opened this
+connection; the second says who authored this document, what it covers, and to
+whom it was addressed. Only the second survives the message being stored,
+forwarded, replayed on another transport, or produced in evidence afterwards.</p>
+<p>Making the requirement uniform across transports is what keeps the security
+argument uniform. Where a document is signed on one transport and merely
+authenticated on another, the deployment’s real guarantee is the weaker of the
+two, and which transport carries it is not recorded anywhere. See Appendix F.</p>
 <h3 id="responses-and-refusals" tabindex="-1"><a class="toc-anchor d-print-none" href="#responses-and-refusals">§</a> Responses and refusals</h3>
 <p><strong>VTI-OPS-030</strong> — A response MUST conform to the response definition of the task
 it answers.</p>
@@ -1857,10 +1914,9 @@ as a generic failure.</p>
 failure and from a delivery failure.</p>
 <p><em>Rationale for VTI-OPS-031.</em> A conformance check that validates only what an
 implementation sends measures its own fixtures rather than the service under
-test. When this gap was closed in one implementation, a request-only check that
-had been reporting clean was found to have been passing over a substantial body
-of real violations, and a large set of requirements turned out never to have had
-a response proof at all.</p>
+test: the requests were built by the same codebase the check is meant to
+assess, so agreement between them establishes nothing. A response is the half a
+peer depends on, and it is the half no producer-side test exercises.</p>
 <p><em>Rationale for VTI-OPS-033.</em> “Not found” is the recurring example: a framework
 that defines no code for it leaves an implementation reporting it as a generic
 failure, which a caller cannot distinguish from a genuine error, so callers
@@ -1880,14 +1936,16 @@ several are available SHOULD select the highest.</p>
 <p><strong>VTI-OPS-045</strong> — A node that receives an operation at a version it does not
 serve MUST refuse it explicitly, naming the versions it does serve. It MUST NOT
 allow the request to fail by timeout.</p>
-<p><em>Rationale for VTI-OPS-041 and VTI-OPS-042.</em> Semantic versioning below 1.0
-promises nothing, which is correct as a convention and useless as a
-compatibility contract: a catalogue following it correctly can ship a breaking
-wire change as a minor bump, and has. The concrete case was a set of enumerated
-values renamed across two minor versions of one task, with the payload shape
-untouched — a change no schema comparison would flag and every peer would fail
-on. Negotiation is tractable only where versions carry a promise, so this
-specification requires the promise rather than the notation.</p>
+<p><em>Rationale for VTI-OPS-041 and VTI-OPS-042.</em> Negotiation is tractable only
+where a version number carries a promise. Semantic versioning below 1.0 makes
+no promise — correctly, by its own definition — so a catalogue following it
+faithfully can ship a breaking wire change as a minor increment, and a peer
+that trusted the increment has no way to discover this except by failing.</p>
+<p>VTI-OPS-042 exists because the compatibility question is about accepted values,
+not about shapes. Renaming the permitted values of a member leaves the payload
+structurally identical: no schema comparison flags it, and every peer built
+against the previous set fails on it. A contract that covers only structure
+covers the easy half.</p>
 <p><em>Rationale for VTI-OPS-045.</em> Where the unsupported version is not refused
 explicitly, an asynchronous transport turns it into a timeout with no
 explanation — an outcome the caller cannot distinguish from an unreachable
@@ -2869,6 +2927,11 @@ Areas allocated:</p>
 </table>
 </div><p><strong>VTI-CNF-004</strong> — An identifier MUST NOT be reused. A withdrawn requirement MUST
 be marked withdrawn and MUST retain its identifier.</p>
+<p><em>Note.</em> Identifier stability binds from the first Working Group Approved
+Deliverable. While this specification is a Working Draft, a requirement may
+still be revised in place as the working group settles its substance; each such
+revision is recorded in the change log. Implementers tracking a Working Draft
+should pin the version they built against.</p>
 <p><strong>VTI-CNF-005</strong> — An area MUST NOT be renamed.</p>
 <h3 id="coverage" tabindex="-1"><a class="toc-anchor d-print-none" href="#coverage">§</a> Coverage</h3>
 <p><strong>VTI-CNF-006</strong> — Every requirement in this specification MUST map to at least
@@ -2900,6 +2963,19 @@ disposition rests on, the assessor, and the date.</p>
 <p><strong>VTI-CNF-013</strong> — A submission concerning a composition property MUST identify
 the components composed and the versions assessed.</p>
 <p>Submissions are recorded in the catalogue in Appendix E.</p>
+<h3 id="divergence-from-implementations" tabindex="-1"><a class="toc-anchor d-print-none" href="#divergence-from-implementations">§</a> Divergence from implementations</h3>
+<p><strong>VTI-CNF-014</strong> — A divergence between this specification and an implementation
+MUST NOT be read as qualifying the requirement. An implementation that diverges
+does not conform to the requirement it diverges from, whatever the reason.</p>
+<p><strong>VTI-CNF-015</strong> — An implementer MAY record a known divergence in the register
+in Appendix F, stating the requirement, the observed behaviour and the intended
+resolution. Recording a divergence MUST NOT be treated as an exemption from it.</p>
+<p><em>Rationale.</em> A register of known divergences is useful in two directions: it
+tells a reader evaluating an implementation which requirements to ask about,
+and it tells the working group where a requirement is being resisted — which is
+sometimes evidence that the requirement is wrong, and is always evidence worth
+having. It is stated as non-exempting because a register that grants exemptions
+becomes the specification.</p>
 <h3 id="what-an-assessment-does-not-do" tabindex="-1"><a class="toc-anchor d-print-none" href="#what-an-assessment-does-not-do">§</a> What an assessment does not do</h3>
 <p><strong>VTI-CNF-020</strong> — No assessment programme holds normative authority under this
 specification.</p>
@@ -3248,51 +3324,70 @@ level would reach every purpose the team ever adds beneath it.</p>
 </div><p>An implementation that returns true for any row marked <strong>false</strong> has the defect
 VTI-CTX-016 exists to prevent.</p>
 <h4 id="a.7-test-vectors-%E2%80%94-act-scope" tabindex="-1"><a class="toc-anchor d-print-none" href="#a.7-test-vectors-%E2%80%94-act-scope">§</a> A.7 Test vectors — act scope</h4>
-<p>Per VTI-ACL-020, over the pair (role, contexts):</p>
+<p>Per VTI-ACL-020 and VTI-ACL-021, act scope is stated, not derived:</p>
 <div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
 <thead>
 <tr>
-<th>Role</th>
-<th>Contexts</th>
-<th>Act scope</th>
+<th><code>act</code></th>
+<th><code>role</code></th>
+<th>Result</th>
 <th>Note</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td><code>"all"</code></td>
 <td>administrative</td>
-<td><em>(empty)</em></td>
-<td>unrestricted</td>
-<td>this is how a super-administrator is spelled</td>
+<td>acts in every context</td>
+<td>a super-administrator</td>
 </tr>
 <tr>
-<td>administrative</td>
+<td><code>"all"</code></td>
+<td>non-administrative</td>
+<td>acts in every context, bounded by the role’s ceiling</td>
+<td>scope and role are independent (VTI-ACL-023)</td>
+</tr>
+<tr>
 <td><code>["acme/eng"]</code></td>
+<td>administrative</td>
 <td><code>acme/eng</code> and descendants</td>
 <td>a context administrator</td>
 </tr>
 <tr>
-<td>non-administrative</td>
-<td><em>(empty)</em></td>
-<td>none</td>
-<td>authorized nowhere — <strong>not</strong> unrestricted</td>
-</tr>
-<tr>
-<td>non-administrative</td>
 <td><code>["acme/eng"]</code></td>
+<td>non-administrative</td>
 <td><code>acme/eng</code> and descendants</td>
 <td></td>
 </tr>
 <tr>
-<td>any</td>
 <td><code>["acme/eng", "beta"]</code></td>
+<td>any</td>
 <td>both subtrees</td>
 <td></td>
 </tr>
+<tr>
+<td><code>"none"</code></td>
+<td>any</td>
+<td>acts nowhere</td>
+<td>valid, and the shape of a least-privilege approver</td>
+</tr>
+<tr>
+<td><code>[]</code></td>
+<td>any</td>
+<td><strong>refused</strong></td>
+<td>an empty list is not an act scope (VTI-ACL-021)</td>
+</tr>
+<tr>
+<td><em>(absent)</em></td>
+<td>any</td>
+<td><strong>refused</strong></td>
+<td>authority is stated, never defaulted (VTI-ACL-008, VTI-ACL-023)</td>
+</tr>
 </tbody>
 </table>
-</div><p>The third row is the one that has been implemented backwards. A test suite that
-omits it is not testing VTI-ACL-021.</p>
+</div><p>The last two rows are the ones a test suite is most likely to omit and most
+needs. An implementation that accepts either — resolving it to any scope at all
+— has reintroduced the inference this model removes.</p>
 <h3 id="appendix-b%3A-access-control-entry" tabindex="-1"><a class="toc-anchor d-print-none" href="#appendix-b%3A-access-control-entry">§</a> Appendix B: Access control entry</h3>
 <p>This appendix is informative, and illustrates the requirements in the Trust
 Contexts and the Authority Model chapter.</p>
@@ -3300,10 +3395,10 @@ Contexts and the Authority Model chapter.</p>
 <pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
   <span class="token property">"subject"</span><span class="token operator">:</span> <span class="token string">"did:key:z6MkexampleClientIdentifier"</span><span class="token punctuation">,</span>
   <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"reader"</span><span class="token punctuation">,</span>
-  <span class="token property">"scopes"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"acme/eng/team-a/summariser"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"act"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"acme/eng/team-a/summariser"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
   <span class="token property">"capabilities"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"vault-read"</span><span class="token punctuation">,</span> <span class="token string">"sign-trust-task"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token property">"allowedKeys"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"key-3f2a"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token property">"approve"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"all"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token property">"scopes"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"keys"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"key-3f2a"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"approve"</span><span class="token operator">:</span> <span class="token string">"none"</span><span class="token punctuation">,</span>
   <span class="token property">"stepUp"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"require"</span><span class="token operator">:</span> <span class="token string">"consent"</span><span class="token punctuation">,</span> <span class="token property">"approver"</span><span class="token operator">:</span> <span class="token string">"acme-approvers"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token property">"expiresAt"</span><span class="token operator">:</span> <span class="token string">"2026-10-10T00:00:00Z"</span><span class="token punctuation">,</span>
   <span class="token property">"label"</span><span class="token operator">:</span> <span class="token string">"summariser agent, laptop"</span><span class="token punctuation">,</span>
@@ -3324,17 +3419,17 @@ Contexts and the Authority Model chapter.</p>
 <tr>
 <td><code>subject</code></td>
 <td>the party the entry authorizes</td>
-<td>VTI-ACL-002; stored under a one-way function where possible (VTI-ACL-008)</td>
+<td>VTI-ACL-002; stored under a one-way function where possible (VTI-ACL-009)</td>
 </tr>
 <tr>
 <td><code>role</code></td>
-<td>the ceiling</td>
+<td>the capability ceiling</td>
 <td>VTI-ACL-010; an unrecognised role confers nothing (VTI-ACL-011)</td>
 </tr>
 <tr>
-<td><code>scopes</code></td>
-<td>contexts the entry is scoped to</td>
-<td>meaningful only paired with <code>role</code> (VTI-ACL-020, VTI-ACL-021)</td>
+<td><code>act</code></td>
+<td>where the subject may make a change: <code>"all"</code>, <code>"none"</code>, or a non-empty list</td>
+<td>stated, never inferred (VTI-ACL-020, VTI-ACL-021, VTI-ACL-023)</td>
 </tr>
 <tr>
 <td><code>capabilities</code></td>
@@ -3342,14 +3437,14 @@ Contexts and the Authority Model chapter.</p>
 <td>VTI-ACL-030, VTI-ACL-031</td>
 </tr>
 <tr>
-<td><code>allowedKeys</code></td>
-<td>narrowing to named keys</td>
-<td><strong>absent ≠ empty</strong> (VTI-ACL-006, VTI-ACL-007)</td>
+<td><code>keys</code></td>
+<td>which keys the subject may reach: <code>"all"</code>, <code>"none"</code>, or a non-empty list</td>
+<td>VTI-ACL-006, VTI-ACL-007</td>
 </tr>
 <tr>
 <td><code>approve</code></td>
-<td>the approve axis</td>
-<td>independent of act (VTI-ACL-040)</td>
+<td>where the subject may bless another’s change</td>
+<td>independent of <code>act</code> (VTI-ACL-040)</td>
 </tr>
 <tr>
 <td><code>stepUp</code></td>
@@ -3373,16 +3468,14 @@ Contexts and the Authority Model chapter.</p>
 </tr>
 </tbody>
 </table>
-</div><p>Two invariants are worth restating beside the shape, because both have been
-implemented incorrectly from a correct-looking schema:</p>
-<ol>
-<li><code>"scopes": []</code> on this entry would mean <em>authorized nowhere</em>, because the
-role is not administrative. The same empty list on an administrative role
-means <em>everywhere</em>.</li>
-<li>Omitting <code>allowedKeys</code> grants every key the scopes reach. Sending
-<code>"allowedKeys": []</code> grants none. A serializer that drops empty collections
-converts the second into the first.</li>
-</ol>
+</div><p>Every authority-bearing member is a three-valued statement rather than a
+collection whose emptiness carries meaning. <code>"act": []</code> is not a narrower grant
+than <code>"act": ["acme"]</code>; it is a malformed entry, and so is an entry with no
+<code>act</code> member at all. The same holds for <code>keys</code> and <code>approve</code>.</p>
+<p>This shape is deliberately more verbose than the encoding it replaces, in which
+authority was recovered by pairing a role with a possibly-empty list. The
+verbosity is the point: a member that says <code>"none"</code> cannot be mistaken for a
+member that says <code>"all"</code>, and neither can be produced by a serializer’s default.</p>
 <h3 id="appendix-c%3A-role-and-capability-annex" tabindex="-1"><a class="toc-anchor d-print-none" href="#appendix-c%3A-role-and-capability-annex">§</a> Appendix C: Role and capability annex</h3>
 <p>This appendix is informative. <strong>The contents are a proposal for working-group
 ratification</strong>; the normative requirements that reference it (VTI-ACL-010,
@@ -3612,7 +3705,141 @@ Source material is cited in the Informative References.}}</p>
 Conformance chapter, each citing a requirement identifier, a disposition of
 <code>supported</code>, <code>refuted</code> or <code>indeterminate</code>, the method and artefacts, and the
 assessor and date. Where two submissions disagree, both are recorded.}}</p>
-<h3 id="appendix-f%3A-acknowledgements" tabindex="-1"><a class="toc-anchor d-print-none" href="#appendix-f%3A-acknowledgements">§</a> Appendix F: Acknowledgements</h3>
+<h3 id="appendix-f%3A-divergence-register" tabindex="-1"><a class="toc-anchor d-print-none" href="#appendix-f%3A-divergence-register">§</a> Appendix F: Divergence register</h3>
+<p>This appendix is informative. It records known differences between this
+specification and implementations, per VTI-CNF-015.</p>
+<p>An entry states what the specification requires, what an implementation is
+reported to do instead, and the resolution. <strong>An entry is a statement about an
+implementation, never a qualification of a requirement</strong> (VTI-CNF-014): an
+implementation listed here does not conform to the requirement listed beside
+it. Entries are contributed by implementers and by the working group, and are
+removed when the divergence is closed.</p>
+<p>The register is deliberately part of the specification rather than a separate
+document. A divergence that is written down is one an evaluator can ask about
+and a maintainer can plan against; a divergence that is only known is one that
+gets rediscovered by whoever is composing the system next.</p>
+<h4 id="f.1-authority-encoding" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.1-authority-encoding">§</a> F.1 Authority encoding</h4>
+<div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th>Requirement</th>
+<th>This specification requires</th>
+<th>Reported behaviour</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VTI-ACL-020, VTI-ACL-021, VTI-ACL-023</td>
+<td>Act scope stated explicitly as <code>all</code>, <code>none</code>, or a non-empty list, independent of role</td>
+<td>Act scope recovered from the pair (role, context list), where an empty list means <em>unrestricted</em> for an administrative role and <em>nowhere</em> for every other</td>
+<td>Add the explicit member to the stored and transmitted forms; refuse an empty list on write; retain the derivation only for reading entries written before the migration</td>
+</tr>
+<tr>
+<td>VTI-ACL-006, VTI-ACL-007, VTI-ACL-008</td>
+<td>Key narrowing stated explicitly as <code>all</code>, <code>none</code>, or a non-empty list</td>
+<td>Absent and present-but-empty distinguished by serializer discipline, with absent meaning every reachable key</td>
+<td>Add the explicit member; treat absent as malformed once written entries have been migrated</td>
+</tr>
+<tr>
+<td>VTI-ACL-061</td>
+<td>A context-filtered listing without a direction is refused</td>
+<td>An absent direction is treated as <code>acting-in</code></td>
+<td>Require the direction; a transition may warn before refusing, but MUST NOT ship as the long-term behaviour</td>
+</tr>
+<tr>
+<td>VTI-ACL-060</td>
+<td>Every context-filtered listing can express both directions</td>
+<td>At least one canonical listing operation defines no direction member, and its payload is closed, so the subtree question cannot be asked through it at all</td>
+<td>A change to the operation definition; until then a subtree sweep cannot be performed through that operation and MUST NOT be reported as complete</td>
+</tr>
+<tr>
+<td>VTI-ACL-066</td>
+<td>A pagination cursor binds the direction it was minted under</td>
+<td>At least one paginated listing does not bind direction, so a resumed listing can change question mid-sweep</td>
+<td>Include the direction in the cursor binding and refuse a mismatched resume</td>
+</tr>
+</tbody>
+</table>
+</div><h4 id="f.2-operations-and-versioning" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.2-operations-and-versioning">§</a> F.2 Operations and versioning</h4>
+<div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th>Requirement</th>
+<th>This specification requires</th>
+<th>Reported behaviour</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VTI-OPS-021</td>
+<td>Document addressing and proof on every transport</td>
+<td>Addressing and signing applied on the transports without sender authentication, and omitted on those with it</td>
+<td>Apply uniformly; the transport’s own authentication is not a substitute</td>
+</tr>
+<tr>
+<td>VTI-OPS-041, VTI-OPS-042</td>
+<td>A breaking change increments the major version, at every version number, including changes to permitted values</td>
+<td>Catalogues published below 1.0 relying on the <code>0.x</code> exemption; changes to enumerated values shipped as minor increments</td>
+<td>Drop the exemption; re-publish affected families at a major increment</td>
+</tr>
+<tr>
+<td>VTI-OPS-043 – VTI-OPS-045</td>
+<td>Served versions published, a common version selected, and an unsupported version refused explicitly</td>
+<td>Discovery exists; run-time selection does not. An unsupported version surfaces as a timeout on asynchronous transports</td>
+<td>Implement selection, and refuse explicitly naming the versions served</td>
+</tr>
+<tr>
+<td>VTI-CLT-026</td>
+<td>The rotation request carries proof of control of the replacement identifier</td>
+<td>The proof is optional in the operation definition and required by deployment policy</td>
+<td>Make it required in the definition; a security property that depends on configuration is not a property</td>
+</tr>
+</tbody>
+</table>
+</div><h4 id="f.3-transports%2C-sessions-and-resolution" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.3-transports%2C-sessions-and-resolution">§</a> F.3 Transports, sessions and resolution</h4>
+<div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th>Requirement</th>
+<th>This specification requires</th>
+<th>Reported behaviour</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VTI-TRN-052, VTI-TRN-053</td>
+<td>Reachability is re-falsifiable; health reports current ability to send</td>
+<td>Reachability latched at start-up in some components; health reporting last-known state</td>
+<td>Re-evaluate on use and on failure</td>
+</tr>
+<tr>
+<td>VTI-SES-042</td>
+<td>Where a session is bound to a client-held key, a request that does not demonstrate the key is refused</td>
+<td>The binding is honoured by some services and silently ignored by others that accept the field</td>
+<td>Implement uniformly, or refuse the field where it is not enforced. Accepting a security parameter and ignoring it is worse than not offering it</td>
+</tr>
+<tr>
+<td>VTI-KEY-061</td>
+<td>Negative resolution results cached briefly, and never when the failure was a transport failure</td>
+<td>Long-lived negative caching that does not distinguish the two</td>
+<td>Bound the lifetime; never cache a transport failure</td>
+</tr>
+</tbody>
+</table>
+</div><h4 id="f.4-how-to-add-an-entry" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.4-how-to-add-an-entry">§</a> F.4 How to add an entry</h4>
+<p>An entry needs the requirement identifier, the behaviour observed, and the
+intended resolution. It does not need the implementation to be named — the
+register describes behaviour so that it is useful to every implementer facing
+the same question — and it does not need the divergence to be resolved before
+it is recorded.</p>
+<p>Where a divergence is evidence that the requirement itself is wrong rather than
+the implementation, that is a change proposal against the requirement, not an
+entry here. Both are welcome; they are different things, and conflating them is
+how a register turns into a set of exemptions.</p>
+<h3 id="appendix-g%3A-acknowledgements" tabindex="-1"><a class="toc-anchor d-print-none" href="#appendix-g%3A-acknowledgements">§</a> Appendix G: Acknowledgements</h3>
 <p>{{The final appendix should contain any additional acknowledgements}}</p>
 <p>Copyright © 2026 Trust Over IP (ToIP) Contributors<br>
 This work is licensed under a Creative Commons Attribution 4.0 International License.</p>
@@ -3734,8 +3961,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-10T15:56:39.205Z">
-                            Generated: 2026-09-10T15:56:39.205Z
+                        <time class="timestamp" datetime="2026-09-10T15:57:19.414Z">
+                            Generated: 2026-09-10T15:57:19.414Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
