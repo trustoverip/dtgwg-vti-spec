@@ -2,7 +2,7 @@
 
 This section is normative.
 
-This chapter binds the DTG credential specifications to VTI's requirements. It
+This chapter binds the DTG [[ref: VC]] specifications to VTI's requirements. It
 does not restate credential data models: it states what a VTI node does when it
 issues, holds, presents or verifies one.
 
