@@ -3,7 +3,9 @@
 This section is normative.
 
 This chapter specifies authentication once, for every transport: challenge,
-authenticate, refresh. A session is a period during which a node accepts a
+authenticate, refresh. Each is an operation of the `auth` family in the
+required catalogue (VTI-OPS-080), and every requirement here binds that
+operation on every binding of it. A session is a period during which a node accepts a
 subject's requests without repeating the proof of control that opened it, and
 every requirement here exists to bound what that period can be relied on to
 mean.

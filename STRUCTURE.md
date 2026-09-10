@@ -136,8 +136,10 @@ items only the working group can close:
   drafted as a proposal. The requirements referencing it (VTI-ACL-010,
   VTI-ACL-011, VTI-ACL-030 through VTI-ACL-034) are written so the annex can be
   settled without changing them.
-- **The minimum operation set** in the Operation Surface chapter, which needs
-  the canonical catalogue references fixed first.
+- **Canonical identifiers for the required catalogue.** The Operation Surface
+  chapter now states which operations a conforming node exposes, by family and
+  operation; binding those to canonical task identifiers needs the catalogue
+  specification reference fixed.
 - **Reference locations** — the entries in the References chapter marked
   *(pending)*, and confirmation of the rest against their published versions.
 - **The test suite** — location and governance (VTI-CNF-007 onward).
