@@ -52,11 +52,65 @@ segment. See VTI-CTX-016.
 
 ### Appendix E: Composition proposition catalogue
 
-{{Each proposition from the Composition Requirements chapter with its ownership
-classification (`COMPONENT-OWNED`, `COMPOSITION-OWNED`, `JOINTLY-OWNED`,
-`ASSURANCE-ONLY`, `UNRESOLVED`), its supporting evidence, its legitimate
-counter-cases, and pointers to any executable pressure test. Propositions that
-remain unresolved are published here with that status visible.}}
+This appendix is informative, and is the record required by VTI-CMP-120.
+
+Each requirement in the Composition Requirements chapter is recorded here with
+its ownership classification, the evidence supporting it, the legitimate
+counter-cases considered, and a pointer to any executable pressure test.
+
+#### Ownership classification
+
+| Classification | Meaning |
+|---|---|
+| `COMPONENT-OWNED` | The requirement belongs to a component specification, and appears here only as a cross-reference. |
+| `COMPOSITION-OWNED` | No component can establish it; this specification owns it. |
+| `JOINTLY-OWNED` | A component owns the underlying semantics, and this specification owns their survival across composition. |
+| `ASSURANCE-ONLY` | Not a normative requirement on an implementation; a property an assessment programme examines. |
+| `UNRESOLVED` | Supported by evidence, not yet resolved to an owner. Published with that status visible. |
+
+`JOINTLY-OWNED` carries most of the difficulty. A component specification may
+properly own the semantics of authority, delegation, lifecycle state, privacy,
+provenance or evidence, while the question of whether those semantics survive a
+multi-component interaction belongs here. Recording a requirement as jointly
+owned is not a step toward moving it into this specification.
+
+#### Evidence families
+
+{{Each family records a set of related propositions carried through the same
+path: threat proposition, falsifiable invariant, executable pressure test,
+legitimate counter-case, disposition. Families are added as the evidence is
+produced.}}
+
+**Family 1 — false independence.** Seven threat classes sharing one unsafe
+inference, each with an executable test and a legitimate counter-case. Supports
+VTI-CMP-070 through VTI-CMP-074.
+
+| Threat class | Preserved judgment |
+|---|---|
+| Sybil | multiplicity is not independence |
+| False diversity | nominal diversity is not governance independence |
+| Trust laundering | provenance depth is not assurance depth |
+| Sock puppet | persona multiplicity is not social independence |
+| Quorum capture | threshold arithmetic is not independent or legitimate approval |
+| Collusion | distinct actors are not necessarily independent actors |
+| Selective evidence | valid evidence is not necessarily complete evidence |
+
+Corpus-level result: apparent multiplicity, depth, threshold satisfaction, actor
+distinctness or artefact validity is not evidence independence or evidence
+completeness. The corpus equally preserves the opposite boundary — legitimate
+plurality, pseudonymity, shared infrastructure, transformation, coalitions,
+independent agreement, selective disclosure and privacy-preserving minimisation
+are not failures merely for resembling an adversarial pattern (VTI-CMP-074).
+
+{{Current disposition: `UNRESOLVED`, with strong `COMPOSITION-OWNED` evidence.
+Source material is cited in the Informative References.}}
+
+#### Assessment submissions
+
+{{Submissions received under the assessment interface defined in the
+Conformance chapter, each citing a requirement identifier, a disposition of
+`supported`, `refuted` or `indeterminate`, the method and artefacts, and the
+assessor and date. Where two submissions disagree, both are recorded.}}
 
 ### Appendix F: Acknowledgements
 
