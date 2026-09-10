@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-10T17:24:32.844Z"
+      "lastUpdated": "2026-09-10T17:50:21.083Z"
     }
   ]
 };</script>
@@ -4249,10 +4249,10 @@ different thing from a requirement that is met.</p>
 <td>Make it required in the definition; a security property that depends on configuration is not a property</td>
 </tr>
 <tr>
-<td>VTI-OPS-026, VTI-OPS-027 <em>(observed)</em></td>
-<td>A repeat of an accepted document is refused, and the record of accepted identifiers is shared across bindings</td>
-<td>Documents carry a unique identifier, and nothing consults it. De-duplication is keyed on a caller-supplied idempotency key, applies only to operations classified as keyed, and returns the recorded response rather than refusing</td>
-<td>Reject a repeated document identifier within the acceptance window, in a record shared by every binding. The identifier is already on the wire, so this is a consumer-side change</td>
+<td>VTI-OPS-027 <em>(observed, corrected)</em></td>
+<td>The record of accepted document identifiers is shared across every binding a node exposes</td>
+<td>A replay guard claims each document identifier with its digest, on the dispatch path every binding shares, bounded by an acceptance window tied to the record’s retention — so the requirement holds <strong>within a process</strong>. The guard is in memory, so a horizontally scaled deployment holds one record per replica and can accept the same document once per replica</td>
+<td>Share the record across replicas. Note that the acceptance window and the retention are one bound: widening either alone reopens the gap</td>
 </tr>
 <tr>
 <td>VTI-OPS-046, VTI-OPS-047 <em>(open)</em></td>
@@ -4307,8 +4307,8 @@ different thing from a requirement that is met.</p>
 <tr>
 <td>VTI-VTA-004, VTI-VTA-005 <em>(observed)</em></td>
 <td>A signing oracle parses and constrains what it signs, and refuses opaque octets</td>
-<td>The constrained path validates the envelope’s shape, its issuer against the entry’s principal, the absence of a prior proof, and expiry. A second, general path signs an arbitrary octet string under a separate capability, subject to key and context authorization but to no structural constraint</td>
-<td>Constrain or retire the general path. Key-level and context-level authorization bound <em>which key</em> signs, not <em>what is signed</em>, and blind signing is what turns a delegated capability into a general forgery capability for the principal</td>
+<td>Three caller classes share one general path that signs an arbitrary octet string. The task-signing path constrains its input — envelope shape, issuer against the entry’s principal, no prior proof, expiry. An in-process proof constructor presents canonicalised octets it has already constrained, one layer above the oracle. An externally reachable operation accepts an octet string from any authorized caller with no structural constraint at all, subject only to key and context authorization</td>
+<td>Constrain the externally reachable path, which means either parsing what it is given or applying domain separation to what it produces. Both change what verifiers see, so this is a breaking change to a published operation and a decision for the maintainer rather than a repair. Key-level and context-level authorization bound <em>which key</em> signs, never <em>what is signed</em>, and that is the distinction the requirement turns on</td>
 </tr>
 <tr>
 <td>VTI-SES-007 <em>(observed)</em></td>
@@ -4317,10 +4317,10 @@ different thing from a requirement that is met.</p>
 <td>Make the refusal uniform, and rate-limit by source as well as by subject. The client’s own signal is what reaches its operator (VTI-CLT-016)</td>
 </tr>
 <tr>
-<td>VTI-SES-042 <em>(observed)</em></td>
+<td>VTI-SES-042 <em>(observed, corrected)</em></td>
 <td>Where a session is bound to a client-held key, a request that does not demonstrate the key is refused</td>
-<td>The binding member exists in the authentication input and is set to absent at every call site of one node type, so a value supplied by a client is accepted and discarded</td>
-<td>Enforce the binding, or refuse the member. Accepting a security parameter and ignoring it is worse than not offering it, because a client cannot tell the difference</td>
+<td>Not implemented at one node type: its challenge request carries no such member, the internal field is set to absent at every call site, and no request path enforces a binding. The shared session type carries the member and other node types populate it, so the plumbing exists and this node does not use it</td>
+<td>Implement the binding, or state that this node type does not offer it. This is an unimplemented SHOULD rather than a parameter accepted and ignored — the earlier entry said otherwise and was wrong</td>
 </tr>
 <tr>
 <td>VTI-AUD-004 <em>(observed)</em></td>
@@ -4364,6 +4364,14 @@ it is recorded.</p>
 the implementation, that is a change proposal against the requirement, not an
 entry here. Both are welcome; they are different things, and conflating them is
 how a register turns into a set of exemptions.</p>
+<p><strong>Correct an entry that turns out to be wrong, and mark it corrected.</strong> An
+entry is a factual claim about an implementation, and one made from a partial
+reading is worth exactly what it costs to check. Entries in this register have
+already been corrected: one reported a replay defence as absent when the
+mechanism existed and the gap was narrower, and one described a security
+parameter as accepted-and-ignored when the node in question never accepted it.
+A register that quietly drops such entries teaches its readers not to trust the
+ones that remain.</p>
 <h3 id="appendix-g%3A-acknowledgements" tabindex="-1"><a class="toc-anchor d-print-none" href="#appendix-g%3A-acknowledgements">§</a> Appendix G: Acknowledgements</h3>
 <p>{{The final appendix should contain any additional acknowledgements}}</p>
 <p>Copyright © 2026 Trust Over IP (ToIP) Contributors<br>
@@ -4486,8 +4494,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-10T17:24:32.357Z">
-                            Generated: 2026-09-10T17:24:32.357Z
+                        <time class="timestamp" datetime="2026-09-10T17:50:20.542Z">
+                            Generated: 2026-09-10T17:50:20.542Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
