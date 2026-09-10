@@ -79,15 +79,16 @@ recipient, and MUST refuse a document addressed elsewhere.
 **VTI-OPS-024** — A node MUST refuse a document whose time of issue lies outside
 its acceptance window.
 
-*Rationale for VTI-OPS-021.* This requirement records a defect rather than a
-preference. An implementation shipped the consumer half of the rule — enforcing
-recipient, proof and issue time — while its producer built unsigned, unaddressed
-documents on precisely the two transports whose sender authentication made the
-guard appear unnecessary. Every request over those transports was refused, and
-the refusal named a different condition on each one, so the same defect was
-diagnosed twice as two problems. Transport-level sender authentication and
-document-level proof answer different questions: the first says who opened the
-connection, the second says who authored this document and what it covers.
+*Rationale for VTI-OPS-021.* Transport-level sender authentication and
+document-level proof answer different questions. The first says who opened this
+connection; the second says who authored this document, what it covers, and to
+whom it was addressed. Only the second survives the message being stored,
+forwarded, replayed on another transport, or produced in evidence afterwards.
+
+Making the requirement uniform across transports is what keeps the security
+argument uniform. Where a document is signed on one transport and merely
+authenticated on another, the deployment's real guarantee is the weaker of the
+two, and which transport carries it is not recorded anywhere. See Appendix F.
 
 ### Responses and refusals
 
@@ -109,10 +110,9 @@ failure and from a delivery failure.
 
 *Rationale for VTI-OPS-031.* A conformance check that validates only what an
 implementation sends measures its own fixtures rather than the service under
-test. When this gap was closed in one implementation, a request-only check that
-had been reporting clean was found to have been passing over a substantial body
-of real violations, and a large set of requirements turned out never to have had
-a response proof at all.
+test: the requests were built by the same codebase the check is meant to
+assess, so agreement between them establishes nothing. A response is the half a
+peer depends on, and it is the half no producer-side test exercises.
 
 *Rationale for VTI-OPS-033.* "Not found" is the recurring example: a framework
 that defines no code for it leaves an implementation reporting it as a generic
@@ -141,14 +141,17 @@ several are available SHOULD select the highest.
 serve MUST refuse it explicitly, naming the versions it does serve. It MUST NOT
 allow the request to fail by timeout.
 
-*Rationale for VTI-OPS-041 and VTI-OPS-042.* Semantic versioning below 1.0
-promises nothing, which is correct as a convention and useless as a
-compatibility contract: a catalogue following it correctly can ship a breaking
-wire change as a minor bump, and has. The concrete case was a set of enumerated
-values renamed across two minor versions of one task, with the payload shape
-untouched — a change no schema comparison would flag and every peer would fail
-on. Negotiation is tractable only where versions carry a promise, so this
-specification requires the promise rather than the notation.
+*Rationale for VTI-OPS-041 and VTI-OPS-042.* Negotiation is tractable only
+where a version number carries a promise. Semantic versioning below 1.0 makes
+no promise — correctly, by its own definition — so a catalogue following it
+faithfully can ship a breaking wire change as a minor increment, and a peer
+that trusted the increment has no way to discover this except by failing.
+
+VTI-OPS-042 exists because the compatibility question is about accepted values,
+not about shapes. Renaming the permitted values of a member leaves the payload
+structurally identical: no schema comparison flags it, and every peer built
+against the previous set fails on it. A contract that covers only structure
+covers the easy half.
 
 *Rationale for VTI-OPS-045.* Where the unsupported version is not refused
 explicitly, an asynchronous transport turns it into a timeout with no

@@ -73,6 +73,12 @@ Areas allocated:
 **VTI-CNF-004** — An identifier MUST NOT be reused. A withdrawn requirement MUST
 be marked withdrawn and MUST retain its identifier.
 
+*Note.* Identifier stability binds from the first Working Group Approved
+Deliverable. While this specification is a Working Draft, a requirement may
+still be revised in place as the working group settles its substance; each such
+revision is recorded in the change log. Implementers tracking a Working Draft
+should pin the version they built against.
+
 **VTI-CNF-005** — An area MUST NOT be renamed.
 
 ### Coverage
@@ -118,6 +124,23 @@ disposition rests on, the assessor, and the date.
 the components composed and the versions assessed.
 
 Submissions are recorded in the catalogue in Appendix E.
+
+### Divergence from implementations
+
+**VTI-CNF-014** — A divergence between this specification and an implementation
+MUST NOT be read as qualifying the requirement. An implementation that diverges
+does not conform to the requirement it diverges from, whatever the reason.
+
+**VTI-CNF-015** — An implementer MAY record a known divergence in the register
+in Appendix F, stating the requirement, the observed behaviour and the intended
+resolution. Recording a divergence MUST NOT be treated as an exemption from it.
+
+*Rationale.* A register of known divergences is useful in two directions: it
+tells a reader evaluating an implementation which requirements to ask about,
+and it tells the working group where a requirement is being resisted — which is
+sometimes evidence that the requirement is wrong, and is always evidence worth
+having. It is stated as non-exempting because a register that grants exemptions
+becomes the specification.
 
 ### What an assessment does not do
 

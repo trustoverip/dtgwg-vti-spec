@@ -245,12 +245,15 @@ and MUST take effect as required by VTI-ACL-080.
 of control from that subject. Recovery of a lost client key MUST be performed by
 enrolling a new identifier.
 
-*Rationale for VTI-CLT-052.* A shared identity cannot be revoked
-per-instance — withdrawing it stops every instance, so in practice it is not
-withdrawn — and it is a durable correlator across every device that carries it.
-Machine images are called out because that is how sharing usually happens: not
-by a decision to share, but by an instance being cloned from a template that
-was captured after enrolment.
+*Rationale for VTI-CLT-052.* A shared identity cannot be revoked per instance:
+withdrawing it stops every instance that holds it, so the operator facing one
+compromised host is choosing between an outage and leaving the compromise in
+place. It is also a durable correlator across every device carrying it, which
+defeats the context boundary the rest of this model rests on.
+
+Machine images are named explicitly because sharing is rarely a decision. An
+image captured after enrolment carries the key, and every instance started from
+it is the same subject as far as the node is concerned.
 
 *Rationale for VTI-CLT-054.* An administrative move without proof of control is
 a way to hand a grant to a subject that never asked for it and cannot be shown

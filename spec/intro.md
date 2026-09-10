@@ -52,6 +52,27 @@ component can establish on its own is a
 question, the answer is [[ref: indeterminate]], which is a result rather than
 an error.
 
+### This specification is written first
+
+This document states how a Verifiable Trust Infrastructure is to work. It is
+not a description of any existing implementation, and where a running system
+behaves differently, it is the system that diverges.
+
+That direction matters more here than it does for a specification written after
+the fact. Several requirements in this document prohibit an encoding or a
+default that is easy to implement, widely used, and wrong in a way that only
+appears under adversarial conditions — an authority inferred from an empty
+collection, a query direction supplied by default, a send reported as
+successful because nothing objected. A specification written to describe such
+an implementation would record the behaviour and add a warning. This one states
+the behaviour that is correct and treats the difference as work to be done.
+
+Known divergences between this specification and implementations are recorded
+in Appendix F. The register exists so that the difference is visible and
+tracked rather than argued about, and so that a reader evaluating an
+implementation knows which requirements to ask about. An entry in it is a
+statement about the implementation, never a qualification of the requirement.
+
 ### Structure of this document
 
 The specification is in four parts.

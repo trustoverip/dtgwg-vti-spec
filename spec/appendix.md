@@ -130,18 +130,22 @@ VTI-CTX-016 exists to prevent.
 
 #### A.7 Test vectors — act scope
 
-Per VTI-ACL-020, over the pair (role, contexts):
+Per VTI-ACL-020 and VTI-ACL-021, act scope is stated, not derived:
 
-| Role | Contexts | Act scope | Note |
+| `act` | `role` | Result | Note |
 |---|---|---|---|
-| administrative | *(empty)* | unrestricted | this is how a super-administrator is spelled |
-| administrative | `["acme/eng"]` | `acme/eng` and descendants | a context administrator |
-| non-administrative | *(empty)* | none | authorized nowhere — **not** unrestricted |
-| non-administrative | `["acme/eng"]` | `acme/eng` and descendants | |
-| any | `["acme/eng", "beta"]` | both subtrees | |
+| `"all"` | administrative | acts in every context | a super-administrator |
+| `"all"` | non-administrative | acts in every context, bounded by the role's ceiling | scope and role are independent (VTI-ACL-023) |
+| `["acme/eng"]` | administrative | `acme/eng` and descendants | a context administrator |
+| `["acme/eng"]` | non-administrative | `acme/eng` and descendants | |
+| `["acme/eng", "beta"]` | any | both subtrees | |
+| `"none"` | any | acts nowhere | valid, and the shape of a least-privilege approver |
+| `[]` | any | **refused** | an empty list is not an act scope (VTI-ACL-021) |
+| *(absent)* | any | **refused** | authority is stated, never defaulted (VTI-ACL-008, VTI-ACL-023) |
 
-The third row is the one that has been implemented backwards. A test suite that
-omits it is not testing VTI-ACL-021.
+The last two rows are the ones a test suite is most likely to omit and most
+needs. An implementation that accepts either — resolving it to any scope at all
+— has reintroduced the inference this model removes.
 
 ### Appendix B: Access control entry
 
@@ -154,10 +158,10 @@ A representative entry:
 {
   "subject": "did:key:z6MkexampleClientIdentifier",
   "role": "reader",
-  "scopes": ["acme/eng/team-a/summariser"],
+  "act": ["acme/eng/team-a/summariser"],
   "capabilities": ["vault-read", "sign-trust-task"],
-  "allowedKeys": ["key-3f2a"],
-  "approve": { "all": false, "scopes": [] },
+  "keys": ["key-3f2a"],
+  "approve": "none",
   "stepUp": { "require": "consent", "approver": "acme-approvers" },
   "expiresAt": "2026-10-10T00:00:00Z",
   "label": "summariser agent, laptop",
@@ -169,26 +173,26 @@ A representative entry:
 
 | Member | Meaning | Rule |
 |---|---|---|
-| `subject` | the party the entry authorizes | VTI-ACL-002; stored under a one-way function where possible (VTI-ACL-008) |
-| `role` | the ceiling | VTI-ACL-010; an unrecognised role confers nothing (VTI-ACL-011) |
-| `scopes` | contexts the entry is scoped to | meaningful only paired with `role` (VTI-ACL-020, VTI-ACL-021) |
+| `subject` | the party the entry authorizes | VTI-ACL-002; stored under a one-way function where possible (VTI-ACL-009) |
+| `role` | the capability ceiling | VTI-ACL-010; an unrecognised role confers nothing (VTI-ACL-011) |
+| `act` | where the subject may make a change: `"all"`, `"none"`, or a non-empty list | stated, never inferred (VTI-ACL-020, VTI-ACL-021, VTI-ACL-023) |
 | `capabilities` | narrowing within the ceiling | VTI-ACL-030, VTI-ACL-031 |
-| `allowedKeys` | narrowing to named keys | **absent ≠ empty** (VTI-ACL-006, VTI-ACL-007) |
-| `approve` | the approve axis | independent of act (VTI-ACL-040) |
+| `keys` | which keys the subject may reach: `"all"`, `"none"`, or a non-empty list | VTI-ACL-006, VTI-ACL-007 |
+| `approve` | where the subject may bless another's change | independent of `act` (VTI-ACL-040) |
 | `stepUp` | an additional-human requirement carried on the entry | Approvals section |
 | `expiresAt` | when the entry stops conferring | evaluated at every decision (VTI-ACL-004) |
 | `createdAt` / `createdBy` | provenance | VTI-ACL-002 |
 | `ext` | ecosystem-defined content | confers no authority (VTI-ACL-005) |
 
-Two invariants are worth restating beside the shape, because both have been
-implemented incorrectly from a correct-looking schema:
+Every authority-bearing member is a three-valued statement rather than a
+collection whose emptiness carries meaning. `"act": []` is not a narrower grant
+than `"act": ["acme"]`; it is a malformed entry, and so is an entry with no
+`act` member at all. The same holds for `keys` and `approve`.
 
-1. `"scopes": []` on this entry would mean *authorized nowhere*, because the
-   role is not administrative. The same empty list on an administrative role
-   means *everywhere*.
-2. Omitting `allowedKeys` grants every key the scopes reach. Sending
-   `"allowedKeys": []` grants none. A serializer that drops empty collections
-   converts the second into the first.
+This shape is deliberately more verbose than the encoding it replaces, in which
+authority was recovered by pairing a role with a possibly-empty list. The
+verbosity is the point: a member that says `"none"` cannot be mistaken for a
+member that says `"all"`, and neither can be produced by a serializer's default.
 
 ### Appendix C: Role and capability annex
 
@@ -326,7 +330,64 @@ Conformance chapter, each citing a requirement identifier, a disposition of
 `supported`, `refuted` or `indeterminate`, the method and artefacts, and the
 assessor and date. Where two submissions disagree, both are recorded.}}
 
-### Appendix F: Acknowledgements
+### Appendix F: Divergence register
+
+This appendix is informative. It records known differences between this
+specification and implementations, per VTI-CNF-015.
+
+An entry states what the specification requires, what an implementation is
+reported to do instead, and the resolution. **An entry is a statement about an
+implementation, never a qualification of a requirement** (VTI-CNF-014): an
+implementation listed here does not conform to the requirement listed beside
+it. Entries are contributed by implementers and by the working group, and are
+removed when the divergence is closed.
+
+The register is deliberately part of the specification rather than a separate
+document. A divergence that is written down is one an evaluator can ask about
+and a maintainer can plan against; a divergence that is only known is one that
+gets rediscovered by whoever is composing the system next.
+
+#### F.1 Authority encoding
+
+| Requirement | This specification requires | Reported behaviour | Resolution |
+|---|---|---|---|
+| VTI-ACL-020, VTI-ACL-021, VTI-ACL-023 | Act scope stated explicitly as `all`, `none`, or a non-empty list, independent of role | Act scope recovered from the pair (role, context list), where an empty list means *unrestricted* for an administrative role and *nowhere* for every other | Add the explicit member to the stored and transmitted forms; refuse an empty list on write; retain the derivation only for reading entries written before the migration |
+| VTI-ACL-006, VTI-ACL-007, VTI-ACL-008 | Key narrowing stated explicitly as `all`, `none`, or a non-empty list | Absent and present-but-empty distinguished by serializer discipline, with absent meaning every reachable key | Add the explicit member; treat absent as malformed once written entries have been migrated |
+| VTI-ACL-061 | A context-filtered listing without a direction is refused | An absent direction is treated as `acting-in` | Require the direction; a transition may warn before refusing, but MUST NOT ship as the long-term behaviour |
+| VTI-ACL-060 | Every context-filtered listing can express both directions | At least one canonical listing operation defines no direction member, and its payload is closed, so the subtree question cannot be asked through it at all | A change to the operation definition; until then a subtree sweep cannot be performed through that operation and MUST NOT be reported as complete |
+| VTI-ACL-066 | A pagination cursor binds the direction it was minted under | At least one paginated listing does not bind direction, so a resumed listing can change question mid-sweep | Include the direction in the cursor binding and refuse a mismatched resume |
+
+#### F.2 Operations and versioning
+
+| Requirement | This specification requires | Reported behaviour | Resolution |
+|---|---|---|---|
+| VTI-OPS-021 | Document addressing and proof on every transport | Addressing and signing applied on the transports without sender authentication, and omitted on those with it | Apply uniformly; the transport's own authentication is not a substitute |
+| VTI-OPS-041, VTI-OPS-042 | A breaking change increments the major version, at every version number, including changes to permitted values | Catalogues published below 1.0 relying on the `0.x` exemption; changes to enumerated values shipped as minor increments | Drop the exemption; re-publish affected families at a major increment |
+| VTI-OPS-043 – VTI-OPS-045 | Served versions published, a common version selected, and an unsupported version refused explicitly | Discovery exists; run-time selection does not. An unsupported version surfaces as a timeout on asynchronous transports | Implement selection, and refuse explicitly naming the versions served |
+| VTI-CLT-026 | The rotation request carries proof of control of the replacement identifier | The proof is optional in the operation definition and required by deployment policy | Make it required in the definition; a security property that depends on configuration is not a property |
+
+#### F.3 Transports, sessions and resolution
+
+| Requirement | This specification requires | Reported behaviour | Resolution |
+|---|---|---|---|
+| VTI-TRN-052, VTI-TRN-053 | Reachability is re-falsifiable; health reports current ability to send | Reachability latched at start-up in some components; health reporting last-known state | Re-evaluate on use and on failure |
+| VTI-SES-042 | Where a session is bound to a client-held key, a request that does not demonstrate the key is refused | The binding is honoured by some services and silently ignored by others that accept the field | Implement uniformly, or refuse the field where it is not enforced. Accepting a security parameter and ignoring it is worse than not offering it |
+| VTI-KEY-061 | Negative resolution results cached briefly, and never when the failure was a transport failure | Long-lived negative caching that does not distinguish the two | Bound the lifetime; never cache a transport failure |
+
+#### F.4 How to add an entry
+
+An entry needs the requirement identifier, the behaviour observed, and the
+intended resolution. It does not need the implementation to be named — the
+register describes behaviour so that it is useful to every implementer facing
+the same question — and it does not need the divergence to be resolved before
+it is recorded.
+
+Where a divergence is evidence that the requirement itself is wrong rather than
+the implementation, that is a change proposal against the requirement, not an
+entry here. Both are welcome; they are different things, and conflating them is
+how a register turns into a set of exemptions.
+
+### Appendix G: Acknowledgements
 
 {{The final appendix should contain any additional acknowledgements}}
 
