@@ -40,6 +40,10 @@ OPTIONAL.}}
 | `TRN` | Transports, messaging and delivery |
 | `SES` | Sessions and authentication |
 | `VTA` | The Verifiable Trust Agent |
+| `CRD` | Credentials and presentations |
+| `VTC` | The Verifiable Trust Community |
+| `MEM` | Membership lifecycle and community credentials |
+| `REG` | Trust registries and recognition |
 
 Further areas are allocated as the remaining chapters are drafted. An area is
 never renamed and an identifier is never reused.}}
