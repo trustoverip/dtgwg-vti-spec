@@ -46,7 +46,7 @@ sequenceDiagram
     M-->>C: Reachable
     Note over C,V: Everything above this line is free to fail.<br/>The bootstrap entry is still authoritative.
     C->>V: Swap: current subject + proof of control of new subject<br/>VTI-CLT-025 – VTI-CLT-028
-    V->>V: Verify caller = current subject;<br/>new subject = proven holder;<br/>authority preserved exactly
+    V->>V: Verify caller is the current subject,<br/>new subject is the proven holder,<br/>authority preserved exactly
     V-->>C: Entry moved (audited, previous subject recorded)
     Note over C,V: COMMIT POINT. The bootstrap identity now has no standing<br/>and the replacement key exists only in memory.
     C->>C: Persist replacement key material<br/>VTI-CLT-033
