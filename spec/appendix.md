@@ -347,6 +347,12 @@ document. A divergence that is written down is one an evaluator can ask about
 and a maintainer can plan against; a divergence that is only known is one that
 gets rediscovered by whoever is composing the system next.
 
+Each entry states how it was established. An entry marked *reported* rests on a
+maintainer's account; one marked *observed* rests on an inspection of a running
+implementation's source at a stated point in time. An entry marked *open*
+records a requirement whose status has not been established, which is a
+different thing from a requirement that is met.
+
 #### F.1 Authority encoding
 
 | Requirement | This specification requires | Reported behaviour | Resolution |
@@ -365,6 +371,8 @@ gets rediscovered by whoever is composing the system next.
 | VTI-OPS-041, VTI-OPS-042 | A breaking change increments the major version, at every version number, including changes to permitted values | Catalogues published below 1.0 relying on the `0.x` exemption; changes to enumerated values shipped as minor increments | Drop the exemption; re-publish affected families at a major increment |
 | VTI-OPS-043 – VTI-OPS-045 | Served versions published, a common version selected, and an unsupported version refused explicitly | Discovery exists; run-time selection does not. An unsupported version surfaces as a timeout on asynchronous transports | Implement selection, and refuse explicitly naming the versions served |
 | VTI-CLT-026 | The rotation request carries proof of control of the replacement identifier | The proof is optional in the operation definition and required by deployment policy | Make it required in the definition; a security property that depends on configuration is not a property |
+| VTI-OPS-026, VTI-OPS-027 *(observed)* | A repeat of an accepted document is refused, and the record of accepted identifiers is shared across bindings | Documents carry a unique identifier, and nothing consults it. De-duplication is keyed on a caller-supplied idempotency key, applies only to operations classified as keyed, and returns the recorded response rather than refusing | Reject a repeated document identifier within the acceptance window, in a record shared by every binding. The identifier is already on the wire, so this is a consumer-side change |
+| VTI-OPS-046, VTI-OPS-047 *(open)* | Discovery responses are authenticated, and each operation has a version floor a peer cannot argue a node below | Not established | Determine whether discovery is authenticated on each binding, and whether a floor exists |
 
 #### F.3 Transports, sessions and resolution
 
@@ -374,10 +382,23 @@ gets rediscovered by whoever is composing the system next.
 | VTI-SES-042 | Where a session is bound to a client-held key, a request that does not demonstrate the key is refused | The binding is honoured by some services and silently ignored by others that accept the field | Implement uniformly, or refuse the field where it is not enforced. Accepting a security parameter and ignoring it is worse than not offering it |
 | VTI-KEY-061 | Negative resolution results cached briefly, and never when the failure was a transport failure | Long-lived negative caching that does not distinguish the two | Bound the lifetime; never cache a transport failure |
 
-#### F.4 How to add an entry
+#### F.4 Signing, audit and identifiers
 
-An entry needs the requirement identifier, the behaviour observed, and the
-intended resolution. It does not need the implementation to be named — the
+| Requirement | This specification requires | Reported behaviour | Resolution |
+|---|---|---|---|
+| VTI-VTA-004, VTI-VTA-005 *(observed)* | A signing oracle parses and constrains what it signs, and refuses opaque octets | The constrained path validates the envelope's shape, its issuer against the entry's principal, the absence of a prior proof, and expiry. A second, general path signs an arbitrary octet string under a separate capability, subject to key and context authorization but to no structural constraint | Constrain or retire the general path. Key-level and context-level authorization bound *which key* signs, not *what is signed*, and blind signing is what turns a delegated capability into a general forgery capability for the principal |
+| VTI-SES-007 *(observed)* | A challenge refusal does not reveal whether an entry exists | The challenge path resolves the caller's entry first and refuses on absence, so a request for an unknown subject is distinguishable from one for a known subject | Make the refusal uniform, and rate-limit by source as well as by subject. The client's own signal is what reaches its operator (VTI-CLT-016) |
+| VTI-SES-042 *(observed)* | Where a session is bound to a client-held key, a request that does not demonstrate the key is refused | The binding member exists in the authentication input and is set to absent at every call site of one node type, so a value supplied by a client is accepted and discarded | Enforce the binding, or refuse the member. Accepting a security parameter and ignoring it is worse than not offering it, because a client cannot tell the difference |
+| VTI-AUD-004 *(observed)* | The audit trail is tamper-evident | One node type chains each entry to its predecessor by digest; another's default sink is flat and unchained, so a compromised node can rewrite its own history undetectably. The pluggable sink admits a chained backend; the default is not one | Chain by default. A tamper-evidence property that depends on the operator having installed something is not a property of the deployment |
+| VTI-AUD-005 *(observed)* | An audit record refers to personal data rather than embedding it, so erasure leaves the chain verifiable | Records embed subject identifiers directly. Where the log is chained, an erasure breaks the chain; where it is not, the erasure is undetectable | Commit to a reference or a salted digest. This is the entry most worth resolving before a deployment carries personal data at scale, because it cannot be fixed retroactively for records already written |
+| VTI-AUD-006 *(open)* | Reading the audit trail is authorized and audited | The read operation exists; whether the read is itself recorded has not been established | Establish, and record the read |
+| VTI-KEY-006 *(observed)* | A client identifier is not reused across trust contexts | A client holds one identifier per node it is enrolled with, used in every context that entry is scoped to | Derive a client identifier per context, or scope a client to one context. Until then a node can link a client's activity across every context it reaches, and so can anything that observes two of them |
+| VTI-KEY-013, VTI-TRN-026, VTI-APV-013 *(open)* | Retirable algorithms; per-relationship routing identifiers; the approver sees the octets that are digested | Not established | Establish each. VTI-APV-013 is the one to establish first: it is the requirement whose failure is invisible to everyone including the approver |
+
+#### F.5 How to add an entry
+
+An entry needs the requirement identifier, how the behaviour was established,
+the behaviour itself, and the intended resolution. It does not need the implementation to be named — the
 register describes behaviour so that it is useful to every implementer facing
 the same question — and it does not need the divergence to be resolved before
 it is recorded.
