@@ -101,8 +101,9 @@ requests, as required by VTI-OPS-031.
 specification and a named profile set, and results MUST be published in a form
 that identifies which requirements were exercised.
 
-{{The location and governance of the test suite are to be settled by the
-working group.}}
+The location of the suite, and who may change it, are not yet settled. Until
+they are, a conformance claim identifies the suite it was run against by
+revision, so that a reader can tell which tests a claim rests on.
 
 ### The assessment interface
 

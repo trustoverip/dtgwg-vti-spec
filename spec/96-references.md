@@ -1,10 +1,9 @@
 ## References
 
-{{Editorial note: the entries below name the specifications this document
-binds. Their published locations and exact titles are to be confirmed against
-the current versions before this specification leaves Working Draft, and any
-entry marked *(pending)* names a specification whose stable reference the
-working group has yet to fix.}}
+The entries below name the specifications this document binds. An entry marked
+*(pending)* names one whose stable citation the working group has yet to fix;
+those, and the exact titles and locations of the rest, are confirmed against
+their current versions before this specification leaves Working Draft.
 
 ### Normative References
 

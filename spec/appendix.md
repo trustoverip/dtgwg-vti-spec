@@ -294,10 +294,10 @@ owned is not a step toward moving it into this specification.
 
 #### Evidence families
 
-{{Each family records a set of related propositions carried through the same
+Each family records a set of related propositions carried through the same
 path: threat proposition, falsifiable invariant, executable pressure test,
 legitimate counter-case, disposition. Families are added as the evidence is
-produced.}}
+produced.
 
 **Family 1 — false independence.** Seven threat classes sharing one unsafe
 inference, each with an executable test and a legitimate counter-case. Supports
@@ -320,15 +320,19 @@ plurality, pseudonymity, shared infrastructure, transformation, coalitions,
 independent agreement, selective disclosure and privacy-preserving minimisation
 are not failures merely for resembling an adversarial pattern (VTI-CMP-074).
 
-{{Current disposition: `UNRESOLVED`, with strong `COMPOSITION-OWNED` evidence.
-Source material is cited in the Informative References.}}
+Current disposition: `UNRESOLVED`, with strong `COMPOSITION-OWNED` evidence.
+Source material is cited in the Informative References.
 
 #### Assessment submissions
 
-{{Submissions received under the assessment interface defined in the
-Conformance chapter, each citing a requirement identifier, a disposition of
-`supported`, `refuted` or `indeterminate`, the method and artefacts, and the
-assessor and date. Where two submissions disagree, both are recorded.}}
+Submissions received under the assessment interface defined in the Conformance
+chapter are recorded here, each citing a requirement identifier, a disposition
+of `supported`, `refuted` or `indeterminate`, the method and artefacts, and the
+assessor and date. Where two submissions disagree, both are recorded.
+
+None have been received at the time of publication. An empty section here means
+no programme has submitted evidence, and not that evidence was sought and none
+found.
 
 ### Appendix F: Divergence register
 
@@ -419,7 +423,11 @@ ones that remain.
 
 ### Appendix G: Acknowledgements
 
-{{The final appendix should contain any additional acknowledgements}}
+This specification draws on composition-assurance work carried out elsewhere in
+the DTG portfolio, recorded in Appendix E, and on operational experience from
+implementations of the infrastructure it describes, recorded in Appendix F.
+
+Further acknowledgements are added here as the Working Group records them.
 
 Copyright © 2026 Trust Over IP (ToIP) Contributors  
 This work is licensed under a Creative Commons Attribution 4.0 International License.
