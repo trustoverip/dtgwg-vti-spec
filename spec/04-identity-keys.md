@@ -111,10 +111,13 @@ identifier.
 nothing.
 
 *Rationale for VTI-KEY-061.* A negative cache entry outlives the condition that
-produced it, and the resulting symptom is an identifier that "cannot be
-resolved" long after it can — indistinguishable, from the caller's side, from
-an identifier that does not exist. The case that produced this requirement was
-a day-long negative cache in front of newly created identifiers: everything
-downstream reported a missing subject, and the subject was there the whole time.
-Caching the transport failure is the specific error, because a transport
-failure is evidence about the network and none at all about the identifier.
+produced it, and the symptom is an identifier that cannot be resolved long
+after it can — indistinguishable, from the caller's side, from one that does
+not exist. A newly published identifier is the common case: it is looked up
+before it exists, and the answer is then remembered for as long as the cache
+holds it.
+
+Caching a transport failure is the specific error the second half prohibits. A
+timeout is evidence about the network and none at all about the identifier, so
+recording it as a fact about the identifier converts a transient condition into
+a durable wrong answer.

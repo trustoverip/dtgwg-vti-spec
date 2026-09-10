@@ -62,6 +62,21 @@ implementation's conformance claim, and any number of independent assessment
 programmes all cite the same thing without any of them having to agree on
 document structure.
 
+## Specification-first
+
+This document states how VTI is to work. It is not a description of an existing
+implementation, and where a running system behaves differently it is the system
+that diverges. Known divergences are recorded in Appendix F of the
+specification, with the requirement, the observed behaviour and the intended
+resolution. An entry there is a statement about an implementation and never a
+qualification of a requirement.
+
+The practical consequence for contributors: a proposal that weakens a
+requirement because an implementation does something else belongs in a change
+proposal against the requirement, argued on its merits. A proposal that records
+what the implementation does belongs in the register. The two are different and
+should not arrive as the same pull request.
+
 ## Ownership tags
 
 Every candidate requirement carries an ownership classification while it is
@@ -111,6 +126,7 @@ where unresolved propositions are published with their status visible.
 | Appendix C — role and capability annex | **drafted as a proposal** for WG ratification |
 | Appendix D — context path grammar | **drafted** |
 | Appendix E — composition catalogue | **drafted** |
+| Appendix F — divergence register | **drafted**; seeded, and open for implementer entries |
 
 Known gaps. Every chapter and appendix now has text; what remains are the
 items only the working group can close:

@@ -43,12 +43,15 @@ has been transmitted or durably queued for transmission.
 **VTI-TRN-031** — Acceptance of a message by a hop MUST NOT be reported as
 delivery to the recipient.
 
-*Rationale.* A send that resolves successfully for a frame that was silently
-dropped — during a reconnect window, for instance — makes every layer above it
-wrong in the same direction: the application believes the message is gone, the
-retry machinery has nothing to retry, and the operator's health signal agrees
-with both. This requirement exists because that is a defect that has shipped
-repeatedly, in independent implementations, for the same reason each time.
+*Rationale.* A send that resolves successfully for a frame that was dropped
+makes every layer above it wrong in the same direction: the application
+believes the message is gone, the retry machinery has nothing to retry, and the
+health signal agrees with both. Nothing in the system disagrees, so nothing
+raises an alarm.
+
+The requirement is stated at the send because that is the only place the truth
+is still available. A layer above can observe that no reply came, which is
+consistent with delivery; only the sending layer knows whether anything left.
 
 ### Delivery confirmation
 

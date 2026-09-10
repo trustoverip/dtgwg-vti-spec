@@ -46,6 +46,12 @@ trailing separator, or two consecutive separators.
 
 **VTI-CTX-013** — A context identifier MUST NOT exceed 8 segments.
 
+*Note.* The depth and segment-length limits are fixed by this specification
+rather than left to implementations, so that an identifier valid at one node is
+valid at every node. A limit chosen per deployment would make a context
+creatable in one place and unaddressable in another, which is a failure that
+appears only once the two are federated.
+
 **VTI-CTX-014** — An implementation MUST NOT assign relative-path semantics to
 any segment. A segment consisting of `.` or `..` is an ordinary segment naming
 an ordinary context and MUST NOT be interpreted as a reference to the context
@@ -111,9 +117,19 @@ descendants, or delete the entire subtree. An implementation MUST document
 which behaviour it implements, and MUST NOT delete a context while leaving any
 descendant reachable.
 
-**VTI-CTX-024** — An implementation conforming to this version of this
-specification MUST NOT support re-parenting a context. A context identifier is
-stable for the lifetime of the context.
+**VTI-CTX-024** — A context identifier MUST be stable for the lifetime of the
+context. A node MUST NOT support re-parenting a context, and MUST NOT rewrite
+an existing context's identifier.
+
+*Rationale.* Identifier stability is what allows a grant, an audit record and a
+derived key to refer to the same context years apart without a translation
+step. Re-parenting is not deferred for want of effort: moving a subtree
+rewrites every descendant identifier and every grant that names one, which
+means an authority statement written yesterday no longer resolves, and the
+window during which it resolves to the wrong thing is exactly the window an
+attacker would choose. A deployment that needs a different shape creates the
+new context and migrates into it, where each step is an audited grant rather
+than a silent rewrite.
 
 **VTI-CTX-025** — A context identifier MUST NOT be reused for a new context
 while any access control entry names it. Reuse of an identifier after deletion
@@ -149,27 +165,34 @@ a session is established.
 **VTI-ACL-005** — A node MUST NOT interpret an ecosystem-defined extension
 member as conferring authority.
 
-#### Absent is not empty
+#### Every grant is stated, never inferred from a shape
 
-Two entry fields have an empty case that differs from their absent case, and
-conflating them inverts the grant.
+**VTI-ACL-006** — Where an entry narrows the keys its subject may reach, the
+narrowing MUST be stated explicitly as one of `all`, `none`, or a non-empty
+list of key identifiers.
 
-**VTI-ACL-006** — Where an entry carries a narrowed set of key identifiers, an
-absent set and a present-but-empty set MUST be treated as distinct: absent
-means every key reachable through the entry's context scope, and
-present-but-empty means no key at all.
+**VTI-ACL-007** — A node MUST NOT infer a key grant from the absence of a
+member or from an empty list. An entry carrying neither an explicit key
+narrowing nor an explicit statement that it is unnarrowed MUST be refused.
 
-**VTI-ACL-007** — An implementation MUST NOT serialize a present-but-empty set
-of key identifiers as an absent member.
+**VTI-ACL-008** — More generally, a node MUST NOT derive any element of
+authority from the absence of a member, the emptiness of a collection, or a
+default applied by a serializer.
 
-*Rationale.* Omitting an empty collection from the wire is a common and usually
-harmless serialization convention. Applied to this member it converts the
-narrowest grant expressible into the widest one, silently, on the wire, with
-both ends conforming to their own understanding of the shape.
+*Rationale.* Omitting an empty collection is a common and usually harmless
+serialization convention. Applied to a grant it is not harmless: it converts
+the narrowest authority expressible into the widest, silently, on the wire,
+with both ends conforming to their own understanding of the shape and neither
+in a position to notice.
+
+The general form is VTI-ACL-008, and it is the rule the two specific ones are
+instances of. A grant is a statement about authority; a shape is a property of
+an encoder. Where the second is allowed to imply the first, the authority a
+deployment holds depends on a library's configuration.
 
 #### Storage of subject identifiers
 
-**VTI-ACL-008** — A node SHOULD store the subject identifier of an entry under
+**VTI-ACL-009** — A node SHOULD store the subject identifier of an entry under
 a one-way function rather than in the clear, and MUST be able to answer an
 authorization question without disclosing the set of subjects it holds entries
 for.
@@ -194,33 +217,38 @@ in Appendix C.
 ### Act scope: super-administrators and context administrators
 
 The **act scope** of an entry answers: in which contexts may this subject make
-a change? It takes exactly three values — none, unrestricted, or a named set of
-contexts — and it is derived from the pair (role, scoped contexts) rather than
-from either alone.
+a change? It takes exactly three values: `none`, `all`, or a named set of
+contexts.
 
-**VTI-ACL-020** — The act scope of an entry MUST be computed as follows: an
-administrative role with an empty context set has unrestricted act scope; any
-other role with an empty context set has act scope none; any role with a
-non-empty context set has act scope over the named contexts and their
-descendants.
+**VTI-ACL-020** — An entry MUST state its act scope explicitly, as one of
+`none`, `all`, or a non-empty list of context paths.
 
-**VTI-ACL-021** — An implementation MUST NOT derive any authorization decision
-from the emptiness of an entry's context set without also considering the
-entry's role.
+**VTI-ACL-021** — An implementation MUST NOT infer act scope from the presence,
+absence or emptiness of a list. In particular, an empty list MUST NOT be read
+as `all`, and MUST NOT be read as `none`: it is not a valid act scope and MUST
+be refused.
 
-**VTI-ACL-022** — An entry with unrestricted act scope — a **super-administrator**
-— MUST be able to act in every context of the node. An entry with act scope
-over named contexts — a **context administrator**, where the role is
-administrative — MUST be able to administer those contexts and every descendant
-of them, and MUST NOT be able to act anywhere else.
+**VTI-ACL-022** — An entry whose act scope is `all` is a
+**super-administrator**, and MUST be able to act in every context of the node.
+An entry whose act scope names contexts, and whose role is administrative, is a
+**context administrator** of those contexts: it MUST be able to administer them
+and every descendant of them, and MUST NOT be able to act anywhere else.
 
-*Rationale for VTI-ACL-021.* An empty context set means "everywhere" for an
-administrator and "nowhere" for every other role. A call site that tests the
-set alone therefore gets one of those two backwards, and which one it gets
-wrong depends on which entry it is looking at. Both known occurrences were
-privilege defects: an entry authorized nowhere displayed as unrestricted on the
-screen operators use to audit grants, and the same entry shape admitted to a
-credential store in every context on the node.
+**VTI-ACL-023** — Act scope and role are independent members. A node MUST NOT
+compute either from the other, and MUST refuse an entry that omits either.
+
+*Rationale.* Authority is the thing this model exists to state, so it is stated
+rather than encoded. An encoding in which the same empty list means "everywhere"
+for one role and "nowhere" for another cannot be read correctly without knowing
+both members, which means every call site is one omission away from inverting a
+grant — and the two readings are not adjacent errors, they are opposites.
+
+Requiring the explicit form removes the class rather than warning about it: a
+reader that sees `"act": "all"` cannot mistake it for `"act": "none"`, and a
+reader that sees an empty list has encountered a malformed entry rather than a
+grant it must interpret. Appendix F records the encoding a current
+implementation uses instead, and the migration that follows from this
+requirement.
 
 ### Capabilities
 
@@ -312,7 +340,8 @@ direction with the following values:
 | `subtree` | What is granted beneath this context? | the queried context is an ancestor-or-self of the entry's scope |
 | `any` | Whose authority touches this subtree? | either predicate holds |
 
-**VTI-ACL-061** — Where no direction is given, a node MUST apply `acting-in`.
+**VTI-ACL-061** — A node MUST refuse a listing that filters by context without
+stating a direction. A node MUST NOT apply a default direction.
 
 **VTI-ACL-062** — A node MUST refuse a direction value it does not recognise,
 and the refusal MUST name the valid values. A node MUST NOT substitute a
@@ -337,6 +366,13 @@ leaf-scoped grants the sweep exists to cut. The answer is short rather than
 empty, so it looks complete. Once nested contexts exist the natural
 least-privilege layout is a leaf context per purpose, which is exactly the
 layout that makes the omission total.
+
+There is no default direction because there is no safe one. Either default
+answers a question the caller did not ask, in a form indistinguishable from the
+question they did ask, and the caller most likely to be harmed is the one
+performing a revocation. Requiring the direction costs a parameter; supplying
+one costs a containment failure. Appendix F records that a current
+implementation defaults to `acting-in`.
 
 The two edges in VTI-ACL-064 and VTI-ACL-065 are deliberate. An unrestricted
 entry names no context, so it is not a grant *of* the branch; including it
@@ -387,12 +423,16 @@ entry granting authority within the revoked scope remains effective. Where a
 sweep cannot remove such an entry, the node MUST report the revocation as
 incomplete and MUST identify the entries that remain.
 
-*Rationale for VTI-ACL-082.* This is the containment failure the direction
-requirements exist to prevent, and it has occurred: a grant scoped one level
-beneath a swept context survived the sweep and continued to sign, while the
-operator was told the revocation had succeeded. A containment control that
-reports success without having contained anything is worse than no control,
-because it ends the incident response.
+*Rationale for VTI-ACL-082.* A containment control that reports success without
+having contained anything is worse than no control, because it ends the
+response that would otherwise have found what it missed. The failure mode is
+specific: a grant scoped one level beneath the swept context is not returned by
+a query that reads up the tree, so a sweep built on that query removes the
+ancestors and leaves the leaves — and reports the removals it performed. This
+requirement makes the report answer the question the operator asked, which is
+whether authority within the scope still exists, rather than the question the
+implementation happened to answer, which is whether the entries it found were
+deleted.
 
 ### Approvals, consent and step-up
 
