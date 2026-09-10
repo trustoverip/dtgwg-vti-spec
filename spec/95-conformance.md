@@ -33,6 +33,8 @@ OPTIONAL.}}
 | `ACL` | Access control entries, roles, capabilities, scopes, listing, delegation, revocation |
 | `APV` | Approvals, consent and step-up |
 | `AUD` | Audit |
+| `CLT` | Client onboarding and lifecycle |
+| `OPS` | Operation surface — precedence, documents, versioning, retry |
 
 Further areas are allocated as the remaining chapters are drafted. An area is
 never renamed and an identifier is never reused.}}
