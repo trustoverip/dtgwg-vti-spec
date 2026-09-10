@@ -36,6 +36,10 @@ OPTIONAL.}}
 | `CLT` | Client onboarding and lifecycle |
 | `OPS` | Operation surface — precedence, documents, versioning, retry |
 | `CMP` | Composition requirements |
+| `KEY` | Identity, DIDs and key management |
+| `TRN` | Transports, messaging and delivery |
+| `SES` | Sessions and authentication |
+| `VTA` | The Verifiable Trust Agent |
 
 Further areas are allocated as the remaining chapters are drafted. An area is
 never renamed and an identifier is never reused.}}
