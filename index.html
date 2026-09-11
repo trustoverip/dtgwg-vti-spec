@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-11T15:46:23.083Z"
+      "lastUpdated": "2026-09-11T18:54:33.475Z"
     }
   ]
 };</script>
@@ -318,7 +318,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
                     </div>
                     <nav id="toc" class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto"
                         aria-labelledby="sidebarMenuLabel">
-                        <ul class="toc"><li><a href="#introduction">Introduction</a><ul><li><a href="#what-this-specification-covers">What this specification covers</a></li><li><a href="#what-this-specification-does-not-cover">What this specification does not cover</a></li><li><a href="#the-vocabulary-in-one-paragraph">The vocabulary in one paragraph</a></li><li><a href="#this-specification-is-written-first">This specification is written first</a></li><li><a href="#structure-of-this-document">Structure of this document</a></li><li><a href="#how-requirements-are-stated">How requirements are stated</a></li><li><a href="#reading-this-document-for-a-purpose">Reading this document for a purpose</a></li></ul></li><li><a href="#requirements-language">Requirements Language</a></li><li><a href="#terminology">Terminology</a></li><li><a href="#architecture-and-conformance-targets">Architecture and Conformance Targets</a><ul><li><a href="#the-problem-this-specification-addresses">The problem this specification addresses</a></li><li><a href="#conformance-targets">Conformance targets</a><ul><li><a href="#verifiable-trust-agent">Verifiable Trust Agent</a></li><li><a href="#verifiable-trust-community">Verifiable Trust Community</a></li><li><a href="#client">Client</a></li><li><a href="#mediator%2C-host%2C-registry">Mediator, host, registry</a></li></ul></li><li><a href="#the-trust-boundary">The trust boundary</a></li><li><a href="#layering">Layering</a></li><li><a href="#the-common-model">The common model</a></li><li><a href="#a-request%2C-end-to-end">A request, end to end</a></li><li><a href="#how-requirements-are-stated-1">How requirements are stated</a></li></ul></li><li><a href="#trust-contexts-and-the-authority-model">Trust Contexts and the Authority Model</a><ul><li><a href="#trust-contexts">Trust contexts</a></li><li><a href="#context-identifiers">Context identifiers</a><ul><li><a href="#ancestry">Ancestry</a></li><li><a href="#purity-of-the-authorization-gate">Purity of the authorization gate</a></li></ul></li><li><a href="#context-lifecycle">Context lifecycle</a></li><li><a href="#the-access-control-entry">The access control entry</a><ul><li><a href="#every-grant-is-stated%2C-never-inferred-from-a-shape">Every grant is stated, never inferred from a shape</a></li><li><a href="#storage-of-subject-identifiers">Storage of subject identifiers</a></li></ul></li><li><a href="#roles">Roles</a></li><li><a href="#act-scope%3A-super-administrators-and-context-administrators">Act scope: super-administrators and context administrators</a></li><li><a href="#capabilities">Capabilities</a></li><li><a href="#approve-scope">Approve scope</a></li><li><a href="#visibility-and-management-of-entries">Visibility and management of entries</a></li><li><a href="#listing-entries-by-context">Listing entries by context</a></li><li><a href="#delegation">Delegation</a></li><li><a href="#revocation">Revocation</a></li><li><a href="#approvals%2C-consent-and-step-up">Approvals, consent and step-up</a></li><li><a href="#audit">Audit</a></li><li><a href="#where-authority-decisions-live">Where authority decisions live</a></li></ul></li><li><a href="#identity%2C-dids-and-key-management">Identity, DIDs and Key Management</a><ul><li><a href="#identifier-methods">Identifier methods</a></li><li><a href="#correlation-and-identifier-reuse">Correlation and identifier reuse</a></li><li><a href="#cryptography">Cryptography</a></li><li><a href="#key-purposes">Key purposes</a></li><li><a href="#derivation">Derivation</a></li><li><a href="#rotation">Rotation</a></li><li><a href="#service-endpoints">Service endpoints</a></li><li><a href="#resolution%2C-caching-and-deactivation">Resolution, caching and deactivation</a></li></ul></li><li><a href="#transports%2C-messaging-and-delivery">Transports, Messaging and Delivery</a><ul><li><a href="#transport-independence">Transport independence</a></li><li><a href="#liveness">Liveness</a></li><li><a href="#mediators">Mediators</a></li><li><a href="#metadata-and-correlation">Metadata and correlation</a></li><li><a href="#resource-bounds">Resource bounds</a></li><li><a href="#truthful-send">Truthful send</a></li><li><a href="#delivery-confirmation">Delivery confirmation</a></li><li><a href="#bounded-waits-and-honest-health">Bounded waits and honest health</a></li></ul></li><li><a href="#sessions-and-authentication">Sessions and Authentication</a><ul><li><a href="#the-challenge">The challenge</a></li><li><a href="#authentication">Authentication</a></li><li><a href="#resolving-authority">Resolving authority</a></li><li><a href="#refresh">Refresh</a></li><li><a href="#session-lifecycle">Session lifecycle</a></li></ul></li><li><a href="#client-onboarding-and-lifecycle">Client Onboarding and Lifecycle</a><ul><li><a href="#client-classes">Client classes</a></li><li><a href="#step-1-%E2%80%94-mint-an-ephemeral-identifier-client-side">Step 1 — mint an ephemeral identifier client-side</a></li><li><a href="#step-2-%E2%80%94-enrol-the-identifier">Step 2 — enrol the identifier</a></li><li><a href="#step-3-%E2%80%94-connect%2C-then-roll-the-key">Step 3 — connect, then roll the key</a><ul><li><a href="#mint-the-replacement">Mint the replacement</a></li><li><a href="#prove-reachability-before-committing">Prove reachability before committing</a></li><li><a href="#swap-atomically">Swap atomically</a></li><li><a href="#commit%2C-then-persist%2C-before-anything-else">Commit, then persist, before anything else</a></li></ul></li><li><a href="#step-4-%E2%80%94-steady-state-use">Step 4 — steady-state use</a></li><li><a href="#lifecycle">Lifecycle</a></li><li><a href="#client-conformance-checklist">Client conformance checklist</a></li></ul></li><li><a href="#operation-surface">Operation Surface</a><ul><li><a href="#the-catalogue-is-the-api">The catalogue is the API</a></li><li><a href="#requirements-on-a-private-task">Requirements on a private task</a></li><li><a href="#extension-rather-than-divergence">Extension rather than divergence</a></li><li><a href="#the-operation-document">The operation document</a></li><li><a href="#replay">Replay</a></li><li><a href="#responses-and-refusals">Responses and refusals</a></li><li><a href="#shared-components">Shared components</a></li><li><a href="#the-required-catalogue">The required catalogue</a></li><li><a href="#transport-bindings">Transport bindings</a></li><li><a href="#the-catalogue-and-its-registries">The catalogue and its registries</a></li><li><a href="#versioning-and-negotiation">Versioning and negotiation</a></li><li><a href="#the-policy-gate">The policy gate</a></li><li><a href="#retry%2C-idempotency-and-the-cost-of-a-lost-reply">Retry, idempotency and the cost of a lost reply</a></li><li><a href="#composing-an-operation">Composing an operation</a></li></ul></li><li><a href="#credentials-and-presentations">Credentials and Presentations</a><ul><li><a href="#issuance">Issuance</a></li><li><a href="#status-and-revocation">Status and revocation</a></li><li><a href="#presentation">Presentation</a></li><li><a href="#what-verification-establishes">What verification establishes</a></li><li><a href="#minimisation">Minimisation</a></li></ul></li><li><a href="#the-verifiable-trust-agent">The Verifiable Trust Agent</a><ul><li><a href="#custody">Custody</a></li><li><a href="#the-signing-oracle">The signing oracle</a></li><li><a href="#credentials-held-for-the-principal">Credentials held for the principal</a></li><li><a href="#context-and-key-authority">Context and key authority</a></li><li><a href="#provisioning-integrations">Provisioning integrations</a></li><li><a href="#delegation-to-software-agents">Delegation to software agents</a></li><li><a href="#backup%2C-restore-and-succession">Backup, restore and succession</a></li><li><a href="#the-operator-surface">The operator surface</a></li></ul></li><li><a href="#the-verifiable-trust-community">The Verifiable Trust Community</a><ul><li><a href="#provisioning-and-dependency">Provisioning and dependency</a></li><li><a href="#which-authority-lives-where">Which authority lives where</a></li><li><a href="#the-community-authority-model">The community authority model</a></li><li><a href="#governance-binding">Governance binding</a></li></ul></li><li><a href="#membership-lifecycle-and-community-credentials">Membership Lifecycle and Community Credentials</a><ul><li><a href="#lifecycle-states">Lifecycle states</a></li><li><a href="#admission">Admission</a></li><li><a href="#membership-credentials">Membership credentials</a></li><li><a href="#suspension-and-removal">Suspension and removal</a></li><li><a href="#renewal-and-rotation">Renewal and rotation</a></li></ul></li><li><a href="#trust-registries-and-cross-community-recognition">Trust Registries and Cross-Community Recognition</a><ul><li><a href="#publication">Publication</a></li><li><a href="#what-a-registry-answer-establishes">What a registry answer establishes</a></li><li><a href="#cross-community-recognition">Cross-community recognition</a></li></ul></li><li><a href="#composition-requirements">Composition Requirements</a><ul><li><a href="#how-a-composition-requirement-binds">How a composition requirement binds</a></li><li><a href="#composition-integrity">Composition integrity</a></li><li><a href="#semantic-completion">Semantic completion</a></li><li><a href="#authority-is-not-verification">Authority is not verification</a></li><li><a href="#currency-of-state">Currency of state</a></li><li><a href="#delegation-lineage">Delegation lineage</a></li><li><a href="#privacy-across-composition">Privacy across composition</a></li><li><a href="#false-independence">False independence</a></li><li><a href="#indeterminacy">Indeterminacy</a></li><li><a href="#configuration-materiality">Configuration materiality</a></li><li><a href="#component-substitution">Component substitution</a></li><li><a href="#human-control">Human control</a></li><li><a href="#open-propositions">Open propositions</a></li></ul></li><li><a href="#operational-and-assurance-requirements">Operational and Assurance Requirements</a><ul><li><a href="#bootstrap">Bootstrap</a></li><li><a href="#protection-at-rest">Protection at rest</a></li><li><a href="#containment">Containment</a></li><li><a href="#audit-1">Audit</a></li><li><a href="#time">Time</a></li><li><a href="#what-an-operator-must-be-able-to-answer">What an operator must be able to answer</a></li></ul></li><li><a href="#security-considerations">Security Considerations</a></li><li><a href="#privacy-considerations">Privacy Considerations</a></li><li><a href="#governance-considerations">Governance Considerations</a></li><li><a href="#internationalization-considerations">Internationalization Considerations</a></li><li><a href="#accessibility-considerations">Accessibility Considerations</a></li><li><a href="#conformance">Conformance</a><ul><li><a href="#profiles">Profiles</a></li><li><a href="#targets">Targets</a></li><li><a href="#requirement-identifier-areas">Requirement identifier areas</a></li><li><a href="#coverage">Coverage</a></li><li><a href="#the-test-suite">The test suite</a></li><li><a href="#the-assessment-interface">The assessment interface</a></li><li><a href="#divergence-from-implementations">Divergence from implementations</a></li><li><a href="#what-an-assessment-does-not-do">What an assessment does not do</a></li></ul></li><li><a href="#references">References</a><ul><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li><li><a href="#appendices">Appendices</a><ul><li><a href="#appendix-a%3A-client-onboarding">Appendix A: Client onboarding</a><ul><li><a href="#a.1-enrolment">A.1 Enrolment</a></li><li><a href="#a.2-first-connection-and-the-key-roll">A.2 First connection and the key roll</a></li><li><a href="#a.3-worked-example">A.3 Worked example</a></li><li><a href="#a.4-failure-cases-around-the-commit-point">A.4 Failure cases around the commit point</a></li><li><a href="#a.5-test-vectors-%E2%80%94-context-paths">A.5 Test vectors — context paths</a></li><li><a href="#a.6-test-vectors-%E2%80%94-ancestry">A.6 Test vectors — ancestry</a></li><li><a href="#a.7-test-vectors-%E2%80%94-act-scope">A.7 Test vectors — act scope</a></li></ul></li><li><a href="#appendix-b%3A-access-control-entry">Appendix B: Access control entry</a></li><li><a href="#appendix-c%3A-role-and-capability-annex">Appendix C: Role and capability annex</a><ul><li><a href="#c.1-roles">C.1 Roles</a></li><li><a href="#c.2-capability-registry">C.2 Capability registry</a></li></ul></li><li><a href="#appendix-d%3A-context-path-grammar">Appendix D: Context path grammar</a></li><li><a href="#appendix-e%3A-composition-proposition-catalogue">Appendix E: Composition proposition catalogue</a><ul><li><a href="#ownership-classification">Ownership classification</a></li><li><a href="#evidence-families">Evidence families</a></li><li><a href="#assessment-submissions">Assessment submissions</a></li></ul></li><li><a href="#appendix-f%3A-divergence-register">Appendix F: Divergence register</a><ul><li><a href="#f.1-authority-encoding">F.1 Authority encoding</a></li><li><a href="#f.2-operations-and-versioning">F.2 Operations and versioning</a></li><li><a href="#f.3-transports%2C-sessions-and-resolution">F.3 Transports, sessions and resolution</a></li><li><a href="#f.4-signing%2C-audit-and-identifiers">F.4 Signing, audit and identifiers</a></li><li><a href="#f.5-closed">F.5 Closed</a></li><li><a href="#f.6-how-to-add-an-entry">F.6 How to add an entry</a></li></ul></li><li><a href="#appendix-g%3A-acknowledgements">Appendix G: Acknowledgements</a></li></ul></li></ul>
+                        <ul class="toc"><li><a href="#introduction">Introduction</a><ul><li><a href="#the-idea-in-plain-terms">The idea in plain terms</a><ul><li><a href="#the-three-things-that-go-wrong">The three things that go wrong</a></li><li><a href="#why-the-writing-is-careful">Why the writing is careful</a></li></ul></li><li><a href="#what-this-specification-covers">What this specification covers</a></li><li><a href="#what-this-specification-does-not-cover">What this specification does not cover</a></li><li><a href="#the-vocabulary-in-one-paragraph">The vocabulary in one paragraph</a></li><li><a href="#this-specification-is-written-first">This specification is written first</a></li><li><a href="#structure-of-this-document">Structure of this document</a></li><li><a href="#how-requirements-are-stated">How requirements are stated</a></li><li><a href="#reading-this-document-for-a-purpose">Reading this document for a purpose</a></li></ul></li><li><a href="#requirements-language">Requirements Language</a></li><li><a href="#terminology">Terminology</a></li><li><a href="#architecture-and-conformance-targets">Architecture and Conformance Targets</a><ul><li><a href="#the-problem-this-specification-addresses">The problem this specification addresses</a></li><li><a href="#conformance-targets">Conformance targets</a><ul><li><a href="#verifiable-trust-agent">Verifiable Trust Agent</a></li><li><a href="#verifiable-trust-community">Verifiable Trust Community</a></li><li><a href="#client">Client</a></li><li><a href="#mediator%2C-host%2C-registry">Mediator, host, registry</a></li></ul></li><li><a href="#the-trust-boundary">The trust boundary</a></li><li><a href="#layering">Layering</a></li><li><a href="#the-common-model">The common model</a></li><li><a href="#a-request%2C-end-to-end">A request, end to end</a></li><li><a href="#how-requirements-are-stated-1">How requirements are stated</a></li></ul></li><li><a href="#trust-contexts-and-the-authority-model">Trust Contexts and the Authority Model</a><ul><li><a href="#in-plain-terms">In plain terms</a></li><li><a href="#what-this-chapter-defines">What this chapter defines</a></li><li><a href="#trust-contexts">Trust contexts</a></li><li><a href="#context-identifiers">Context identifiers</a><ul><li><a href="#ancestry">Ancestry</a></li><li><a href="#purity-of-the-authorization-gate">Purity of the authorization gate</a></li></ul></li><li><a href="#context-lifecycle">Context lifecycle</a></li><li><a href="#the-access-control-entry">The access control entry</a><ul><li><a href="#every-grant-is-stated%2C-never-inferred-from-a-shape">Every grant is stated, never inferred from a shape</a></li><li><a href="#storage-of-subject-identifiers">Storage of subject identifiers</a></li></ul></li><li><a href="#roles">Roles</a></li><li><a href="#act-scope%3A-super-administrators-and-context-administrators">Act scope: super-administrators and context administrators</a></li><li><a href="#capabilities">Capabilities</a></li><li><a href="#approve-scope">Approve scope</a></li><li><a href="#visibility-and-management-of-entries">Visibility and management of entries</a></li><li><a href="#listing-entries-by-context">Listing entries by context</a></li><li><a href="#delegation">Delegation</a></li><li><a href="#revocation">Revocation</a></li><li><a href="#approvals%2C-consent-and-step-up">Approvals, consent and step-up</a></li><li><a href="#audit">Audit</a></li><li><a href="#where-authority-decisions-live">Where authority decisions live</a></li></ul></li><li><a href="#identity%2C-dids-and-key-management">Identity, DIDs and Key Management</a><ul><li><a href="#identifier-methods">Identifier methods</a></li><li><a href="#correlation-and-identifier-reuse">Correlation and identifier reuse</a></li><li><a href="#cryptography">Cryptography</a></li><li><a href="#key-purposes">Key purposes</a></li><li><a href="#derivation">Derivation</a></li><li><a href="#rotation">Rotation</a></li><li><a href="#service-endpoints">Service endpoints</a></li><li><a href="#resolution%2C-caching-and-deactivation">Resolution, caching and deactivation</a></li></ul></li><li><a href="#transports%2C-messaging-and-delivery">Transports, Messaging and Delivery</a><ul><li><a href="#in-plain-terms-1">In plain terms</a></li><li><a href="#what-this-chapter-defines-1">What this chapter defines</a></li><li><a href="#transport-independence">Transport independence</a></li><li><a href="#liveness">Liveness</a></li><li><a href="#mediators">Mediators</a></li><li><a href="#metadata-and-correlation">Metadata and correlation</a></li><li><a href="#resource-bounds">Resource bounds</a></li><li><a href="#truthful-send">Truthful send</a></li><li><a href="#delivery-confirmation">Delivery confirmation</a></li><li><a href="#bounded-waits-and-honest-health">Bounded waits and honest health</a></li></ul></li><li><a href="#sessions-and-authentication">Sessions and Authentication</a><ul><li><a href="#in-plain-terms-2">In plain terms</a></li><li><a href="#what-this-chapter-defines-2">What this chapter defines</a></li><li><a href="#the-challenge">The challenge</a></li><li><a href="#authentication">Authentication</a></li><li><a href="#resolving-authority">Resolving authority</a></li><li><a href="#refresh">Refresh</a></li><li><a href="#session-lifecycle">Session lifecycle</a></li></ul></li><li><a href="#client-onboarding-and-lifecycle">Client Onboarding and Lifecycle</a><ul><li><a href="#in-plain-terms-3">In plain terms</a></li><li><a href="#what-this-chapter-defines-3">What this chapter defines</a></li><li><a href="#client-classes">Client classes</a></li><li><a href="#step-1-%E2%80%94-mint-an-ephemeral-identifier-client-side">Step 1 — mint an ephemeral identifier client-side</a></li><li><a href="#step-2-%E2%80%94-enrol-the-identifier">Step 2 — enrol the identifier</a></li><li><a href="#step-3-%E2%80%94-connect%2C-then-roll-the-key">Step 3 — connect, then roll the key</a><ul><li><a href="#mint-the-replacement">Mint the replacement</a></li><li><a href="#prove-reachability-before-committing">Prove reachability before committing</a></li><li><a href="#swap-atomically">Swap atomically</a></li><li><a href="#commit%2C-then-persist%2C-before-anything-else">Commit, then persist, before anything else</a></li></ul></li><li><a href="#step-4-%E2%80%94-steady-state-use">Step 4 — steady-state use</a></li><li><a href="#lifecycle">Lifecycle</a></li><li><a href="#client-conformance-checklist">Client conformance checklist</a></li></ul></li><li><a href="#operation-surface">Operation Surface</a><ul><li><a href="#in-plain-terms-4">In plain terms</a></li><li><a href="#what-this-chapter-defines-4">What this chapter defines</a></li><li><a href="#the-catalogue-is-the-api">The catalogue is the API</a></li><li><a href="#requirements-on-a-private-task">Requirements on a private task</a></li><li><a href="#extension-rather-than-divergence">Extension rather than divergence</a></li><li><a href="#the-operation-document">The operation document</a></li><li><a href="#replay">Replay</a></li><li><a href="#responses-and-refusals">Responses and refusals</a></li><li><a href="#shared-components">Shared components</a></li><li><a href="#the-required-catalogue">The required catalogue</a></li><li><a href="#transport-bindings">Transport bindings</a></li><li><a href="#the-catalogue-and-its-registries">The catalogue and its registries</a></li><li><a href="#versioning-and-negotiation">Versioning and negotiation</a></li><li><a href="#the-policy-gate">The policy gate</a></li><li><a href="#retry%2C-idempotency-and-the-cost-of-a-lost-reply">Retry, idempotency and the cost of a lost reply</a></li><li><a href="#composing-an-operation">Composing an operation</a></li></ul></li><li><a href="#credentials-and-presentations">Credentials and Presentations</a><ul><li><a href="#in-plain-terms-5">In plain terms</a></li><li><a href="#what-this-chapter-defines-5">What this chapter defines</a></li><li><a href="#issuance">Issuance</a></li><li><a href="#status-and-revocation">Status and revocation</a></li><li><a href="#presentation">Presentation</a></li><li><a href="#what-verification-establishes">What verification establishes</a></li><li><a href="#minimisation">Minimisation</a></li></ul></li><li><a href="#the-verifiable-trust-agent">The Verifiable Trust Agent</a><ul><li><a href="#in-plain-terms-6">In plain terms</a></li><li><a href="#what-this-chapter-defines-6">What this chapter defines</a></li><li><a href="#custody">Custody</a></li><li><a href="#the-signing-oracle">The signing oracle</a></li><li><a href="#credentials-held-for-the-principal">Credentials held for the principal</a></li><li><a href="#context-and-key-authority">Context and key authority</a></li><li><a href="#provisioning-integrations">Provisioning integrations</a></li><li><a href="#delegation-to-software-agents">Delegation to software agents</a></li><li><a href="#backup%2C-restore-and-succession">Backup, restore and succession</a></li><li><a href="#the-operator-surface">The operator surface</a></li></ul></li><li><a href="#the-verifiable-trust-community">The Verifiable Trust Community</a><ul><li><a href="#in-plain-terms-7">In plain terms</a></li><li><a href="#what-this-chapter-defines-7">What this chapter defines</a></li><li><a href="#provisioning-and-dependency">Provisioning and dependency</a></li><li><a href="#which-authority-lives-where">Which authority lives where</a></li><li><a href="#the-community-authority-model">The community authority model</a></li><li><a href="#governance-binding">Governance binding</a></li></ul></li><li><a href="#membership-lifecycle-and-community-credentials">Membership Lifecycle and Community Credentials</a><ul><li><a href="#lifecycle-states">Lifecycle states</a></li><li><a href="#admission">Admission</a></li><li><a href="#membership-credentials">Membership credentials</a></li><li><a href="#suspension-and-removal">Suspension and removal</a></li><li><a href="#renewal-and-rotation">Renewal and rotation</a></li></ul></li><li><a href="#trust-registries-and-cross-community-recognition">Trust Registries and Cross-Community Recognition</a><ul><li><a href="#publication">Publication</a></li><li><a href="#what-a-registry-answer-establishes">What a registry answer establishes</a></li><li><a href="#cross-community-recognition">Cross-community recognition</a></li></ul></li><li><a href="#composition-requirements">Composition Requirements</a><ul><li><a href="#in-plain-terms-8">In plain terms</a></li><li><a href="#what-this-chapter-defines-8">What this chapter defines</a></li><li><a href="#how-a-composition-requirement-binds">How a composition requirement binds</a></li><li><a href="#composition-integrity">Composition integrity</a></li><li><a href="#semantic-completion">Semantic completion</a></li><li><a href="#authority-is-not-verification">Authority is not verification</a></li><li><a href="#currency-of-state">Currency of state</a></li><li><a href="#delegation-lineage">Delegation lineage</a></li><li><a href="#privacy-across-composition">Privacy across composition</a></li><li><a href="#false-independence">False independence</a></li><li><a href="#indeterminacy">Indeterminacy</a></li><li><a href="#configuration-materiality">Configuration materiality</a></li><li><a href="#component-substitution">Component substitution</a></li><li><a href="#human-control">Human control</a></li><li><a href="#open-propositions">Open propositions</a></li></ul></li><li><a href="#operational-and-assurance-requirements">Operational and Assurance Requirements</a><ul><li><a href="#in-plain-terms-9">In plain terms</a></li><li><a href="#what-this-chapter-defines-9">What this chapter defines</a></li><li><a href="#bootstrap">Bootstrap</a></li><li><a href="#protection-at-rest">Protection at rest</a></li><li><a href="#containment">Containment</a></li><li><a href="#audit-1">Audit</a></li><li><a href="#time">Time</a></li><li><a href="#what-an-operator-must-be-able-to-answer">What an operator must be able to answer</a></li></ul></li><li><a href="#security-considerations">Security Considerations</a></li><li><a href="#privacy-considerations">Privacy Considerations</a></li><li><a href="#governance-considerations">Governance Considerations</a></li><li><a href="#internationalization-considerations">Internationalization Considerations</a></li><li><a href="#accessibility-considerations">Accessibility Considerations</a></li><li><a href="#conformance">Conformance</a><ul><li><a href="#profiles">Profiles</a></li><li><a href="#targets">Targets</a></li><li><a href="#requirement-identifier-areas">Requirement identifier areas</a></li><li><a href="#coverage">Coverage</a></li><li><a href="#the-test-suite">The test suite</a></li><li><a href="#the-assessment-interface">The assessment interface</a></li><li><a href="#divergence-from-implementations">Divergence from implementations</a></li><li><a href="#what-an-assessment-does-not-do">What an assessment does not do</a></li></ul></li><li><a href="#references">References</a><ul><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li><li><a href="#appendices">Appendices</a><ul><li><a href="#appendix-a%3A-client-onboarding">Appendix A: Client onboarding</a><ul><li><a href="#a.1-enrolment">A.1 Enrolment</a></li><li><a href="#a.2-first-connection-and-the-key-roll">A.2 First connection and the key roll</a></li><li><a href="#a.3-worked-example">A.3 Worked example</a></li><li><a href="#a.4-failure-cases-around-the-commit-point">A.4 Failure cases around the commit point</a></li><li><a href="#a.5-test-vectors-%E2%80%94-context-paths">A.5 Test vectors — context paths</a></li><li><a href="#a.6-test-vectors-%E2%80%94-ancestry">A.6 Test vectors — ancestry</a></li><li><a href="#a.7-test-vectors-%E2%80%94-act-scope">A.7 Test vectors — act scope</a></li></ul></li><li><a href="#appendix-b%3A-access-control-entry">Appendix B: Access control entry</a></li><li><a href="#appendix-c%3A-role-and-capability-annex">Appendix C: Role and capability annex</a><ul><li><a href="#c.1-roles">C.1 Roles</a></li><li><a href="#c.2-capability-registry">C.2 Capability registry</a></li></ul></li><li><a href="#appendix-d%3A-context-path-grammar">Appendix D: Context path grammar</a></li><li><a href="#appendix-e%3A-composition-proposition-catalogue">Appendix E: Composition proposition catalogue</a><ul><li><a href="#ownership-classification">Ownership classification</a></li><li><a href="#evidence-families">Evidence families</a></li><li><a href="#assessment-submissions">Assessment submissions</a></li></ul></li><li><a href="#appendix-f%3A-divergence-register">Appendix F: Divergence register</a><ul><li><a href="#f.1-authority-encoding">F.1 Authority encoding</a></li><li><a href="#f.2-operations-and-versioning">F.2 Operations and versioning</a></li><li><a href="#f.3-transports%2C-sessions-and-resolution">F.3 Transports, sessions and resolution</a></li><li><a href="#f.4-signing%2C-audit-and-identifiers">F.4 Signing, audit and identifiers</a></li><li><a href="#f.5-closed">F.5 Closed</a></li><li><a href="#f.6-how-to-add-an-entry">F.6 How to add an entry</a></li></ul></li><li><a href="#appendix-g%3A-acknowledgements">Appendix G: Acknowledgements</a></li></ul></li></ul>
                         <div class="spec-footer mt-3">
                             <a class="mx-auto p-2" href="https://github.com/trustoverip/spec-up-t"
                                 target="_blank" rel="noopener noreferrer">Powered By Spec-Up-T
@@ -370,6 +370,53 @@ this document is where they are owned.</p>
 <!-- file: intro.md -->
 <h2 id="introduction" tabindex="-1"><a class="toc-anchor d-print-none" href="#introduction">§</a> Introduction</h2>
 <p>This section is informative.</p>
+<h3 id="the-idea-in-plain-terms" tabindex="-1"><a class="toc-anchor d-print-none" href="#the-idea-in-plain-terms">§</a> The idea in plain terms</h3>
+<p>Imagine a company where every employee has a keyring. One key opens the
+stationery cupboard, another the server cabinet, another the safe. Nobody carries
+a master key, because a master key is one lost keyring away from a disaster.
+When someone joins a team they get the keys that team needs, and when they
+leave, those keys stop working — not because they hand them back, but because
+the locks stop recognising them.</p>
+<p>Now imagine the same company has to work with a hundred other companies, none
+of whom share a building, a keyring, or a security desk. Someone from another
+firm arrives and says they are authorised to collect a document. How do you
+check? You can look at their card. You can ring their office. What you cannot
+do is assume that because their card is genuine, they still work there, or
+that the person holding it is the person it was issued to.</p>
+<p>That is the problem this specification is about. The keys are cryptographic,
+the buildings are organisations, and the cards are credentials — but the
+questions are the old ones: <strong>who is this, what are they allowed to do, who
+says so, and is that still true right now?</strong></p>
+<h4 id="the-three-things-that-go-wrong" tabindex="-1"><a class="toc-anchor d-print-none" href="#the-three-things-that-go-wrong">§</a> The three things that go wrong</h4>
+<p>Almost everything in this document exists to prevent one of three failures,
+and each is easier to understand than the machinery that prevents it.</p>
+<p><strong>A key that opens too much.</strong> The simplest failure and the most common. An
+application is given access to everything because giving it access to exactly
+what it needs was harder. This specification’s answer is the <strong>trust context</strong>:
+a boundary you put things inside, so that authority is always authority over
+<em>something in particular</em> rather than authority as such.</p>
+<p><strong>A credential that says more than it knows.</strong> A signature proves who wrote a
+document and that nobody changed it. It does not prove that the writer was
+entitled to write it, that they still are, or that the thing they described is
+still the case. A letter signed by a manager who left last year is perfectly
+genuine and completely worthless. Much of this document is about keeping <em>this
+was signed by them</em> and <em>they are allowed to do this</em> as separate questions,
+because systems that merge them fail in ways that look like success.</p>
+<p><strong>A system that works in pieces and fails as a whole.</strong> Every component can be
+correct and the arrangement still be wrong. A privacy-preserving proof, carried
+under a name that never changes, is not private. A task that completes exactly
+as specified has not necessarily achieved what it was invoked to achieve. This
+is the hardest of the three, because there is nobody to blame: each part is
+doing its job. The Composition Requirements chapter exists for it.</p>
+<h4 id="why-the-writing-is-careful" tabindex="-1"><a class="toc-anchor d-print-none" href="#why-the-writing-is-careful">§</a> Why the writing is careful</h4>
+<p>Several requirements here prohibit something that is easy to build, widely
+done, and wrong only under conditions you will not meet during testing. Those
+requirements are written as prohibitions rather than recommendations, and each
+carries a <em>Rationale</em> paragraph saying what goes wrong without it — usually
+because the obvious simpler version has already been built somewhere and has
+already failed.</p>
+<p>If a requirement seems fussy, the rationale is where to look before deciding it
+is.</p>
 <h3 id="what-this-specification-covers" tabindex="-1"><a class="toc-anchor d-print-none" href="#what-this-specification-covers">§</a> What this specification covers</h3>
 <p>A <a class="term-reference" href="#term:vti">VTI</a> is the running infrastructure in which Decentralized Trust Graph
 (DTG) components are composed into an operating trust system. This
@@ -583,7 +630,7 @@ added to that list as the normative references to them are settled.</p>
 </dd><dd>
 <p>Step-up involves no third party. Where the requirement is that a different party agrees, the mechanism is <a class="term-reference" href="#term:consent">consent</a>.</p>
 </dd><dt data-sourcefile="terms-definitions/recognition.md" class="term-local"><span id="term:recognition"><span class="term-local-original-term term-original-term" title="original term">recognition</span></span></dt><dd>The acceptance by one <a class="term-reference" href="#term:vtc">VTC</a> of a <a class="term-reference" href="#term:member">member</a> of another. Recognition requires proof of possession of the presented credentials, agreement of their subjects, a status check with the issuing community, and an explicit mapping from the foreign role to local authority. Recognition is not transitive.</dd><dt data-sourcefile="terms-definitions/role.md" class="term-local"><span id="term:role"><span class="term-local-original-term term-original-term" title="original term">role</span></span></dt><dd>A coarse position named by an <a class="term-reference" href="#term:access-control-entry">access control entry</a>, which determines the maximum set of <a class="term-reference" href="#term:capability">capability</a> values that entry can carry. A role is a ceiling rather than a grant: an entry may hold less than its role permits and never more.</dd><dt data-sourcefile="terms-definitions/subject.md" class="term-local"><span id="term:subject"><span class="term-local-original-term term-original-term" title="original term">subject</span></span></dt><dd>The party an <a class="term-reference" href="#term:access-control-entry">access control entry</a> names — the identifier whose authority the entry states. A subject is not necessarily a person: a client, a device and a software agent are each subjects of their own entries.</dd><dt data-sourcefile="terms-definitions/super_administrator.md" class="term-local"><span id="term:super-administrator"><span class="term-local-original-term term-original-term" title="original term">super-administrator</span></span></dt><dd>An <a class="term-reference" href="#term:access-control-entry">access control entry</a> with unrestricted <a class="term-reference" href="#term:act-scope">act scope</a> — an administrative <a class="term-reference" href="#term:role">role</a> naming no <a class="term-reference" href="#term:trust-context">trust context</a>. A super-administrator may act in every context of the node.</dd><dt data-sourcefile="terms-definitions/trust_context.md" class="term-local"><span id="term:trust-context"><span class="term-local-original-term term-original-term" title="original term">trust context</span></span></dt><dd>
-<p>The isolation boundary within which a <a class="term-reference" href="#term:vta">VTA</a> holds keys, credentials, stored data, agent memory and delegations, and the unit in which authority is granted.</p>
+<p>The isolation boundary — a partition — within which a <a class="term-reference" href="#term:vta">VTA</a> holds keys, credentials, stored data, agent memory and delegations, and the unit in which authority is granted. Distinct from a data room, which is a shared space with its own membership; a trust context partitions what one node holds.</p>
 </dd><dd>
 <p>Compromise of a credential authorized in one trust context reaches what that context holds and nothing else. Contexts are nested: a context identifier is its <a class="term-reference" href="#term:context-path">context path</a>, and authority over a context extends to every descendant of it.</p>
 </dd><dt data-sourcefile="terms-definitions/trust_registry.md" class="term-local"><span id="term:trust-registry"><span class="term-local-original-term term-original-term" title="original term">trust registry</span></span></dt><dd>The authority lookup for issuers and communities. Presence in a trust registry is not evidence of current authority, and unavailability of a registry is not evidence of absence from it.</dd><dt data-sourcefile="terms-definitions/trust_task.md" class="term-local"><span id="term:trust-task"><span class="term-local-original-term term-original-term" title="original term">trust task</span></span></dt><dd>A canonically defined operation, identified by a versioned identifier, that a node exposes and a peer invokes. Where a canonical trust task exists for an operation, a conforming node exposes that operation as that task; a private interface is permitted only where no canonical task covers it.</dd><dt data-sourcefile="terms-definitions/verifiable_credential.md" class="term-local"><span id="term:verifiable-credential"><span id="term:vc">verifiable credential <span class="term-local-parenthetical-terms">(<span class="term-local-original-term term-original-term" title="original term">VC</span>)</span></span></span></dt><dd>
@@ -865,6 +912,28 @@ reasonably concluding that the obvious simpler formulation would do.</p>
 <!-- file: 03-trust-contexts.md -->
 <h2 id="trust-contexts-and-the-authority-model" tabindex="-1"><a class="toc-anchor d-print-none" href="#trust-contexts-and-the-authority-model">§</a> Trust Contexts and the Authority Model</h2>
 <p>This section is normative.</p>
+<h3 id="in-plain-terms" tabindex="-1"><a class="toc-anchor d-print-none" href="#in-plain-terms">§</a> In plain terms</h3>
+<p>A trust context is a <strong>partition</strong>. Everything a node holds — keys,
+credentials, data, the authority it has delegated — belongs to one of them, and
+a grant is always a grant over particular partitions rather than over the node.</p>
+<p>Think of the bulkheads in a ship. They are not there to keep things tidy; they
+are there so that a breach floods one compartment instead of the hull. The
+payoff comes on the bad day: a credential that leaks reaches what its
+partitions hold and nothing else, so “how bad is this?” is a question you
+answer from the grant itself rather than by auditing everything its holder ever
+touched.</p>
+<p>Partitions nest, and authority over one reaches everything beneath it. That is
+why the way a partition’s name is compared matters so much: <code>acme</code> contains
+<code>acme/eng</code>, and must not be read as containing <code>acme-evil</code>, which merely starts
+with the same letters. One careless string comparison hands an organisation’s
+authority to anyone who can register a similar-looking name — which is why the
+first requirement in this chapter is written as a prohibition.</p>
+<p>Two other ideas run through what follows. A <strong>role</strong> is a ceiling, not a grant:
+it says the most an entry could be allowed, and the entry can hold less.
+And <strong>acting</strong> is separate from <strong>approving</strong> — the person who writes the
+cheque and the person who countersigns it are doing different jobs, and an
+approver who can also act is not a control.</p>
+<h3 id="what-this-chapter-defines" tabindex="-1"><a class="toc-anchor d-print-none" href="#what-this-chapter-defines">§</a> What this chapter defines</h3>
 <p>This chapter defines the boundary a VTI node organises everything it holds
 into, and the model by which authority over those boundaries is granted,
 narrowed, exercised, approved and withdrawn. The Sessions, Client, Verifiable
@@ -1472,6 +1541,18 @@ a durable wrong answer.</p>
 <!-- file: 05-transports.md -->
 <h2 id="transports%2C-messaging-and-delivery" tabindex="-1"><a class="toc-anchor d-print-none" href="#transports%2C-messaging-and-delivery">§</a> Transports, Messaging and Delivery</h2>
 <p>This section is normative.</p>
+<h3 id="in-plain-terms-1" tabindex="-1"><a class="toc-anchor d-print-none" href="#in-plain-terms-1">§</a> In plain terms</h3>
+<p>The post office accepting your letter is not the recipient reading it.</p>
+<p>Most of this chapter is that sentence applied carefully. A send that returns
+without error has, at best, handed the message to something that promised to
+carry it. Treating that as delivery is how a system ends up confident that
+something happened when it did not — and the failure is silent, because
+everything reported success.</p>
+<p>So this chapter is exact about what counts as evidence that a message arrived,
+and requires a sender to record <em>which</em> evidence it has. It also requires a
+node’s health signal to answer “can I send right now?” rather than “did I
+manage to once, when I started”.</p>
+<h3 id="what-this-chapter-defines-1" tabindex="-1"><a class="toc-anchor d-print-none" href="#what-this-chapter-defines-1">§</a> What this chapter defines</h3>
 <p>This chapter specifies how VTI nodes reach each other, and — the harder half —
 what a sender is entitled to conclude when a send returns successfully.</p>
 <h3 id="transport-independence" tabindex="-1"><a class="toc-anchor d-print-none" href="#transport-independence">§</a> Transport independence</h3>
@@ -1575,6 +1656,22 @@ is looking.</p>
 <!-- file: 06-sessions-auth.md -->
 <h2 id="sessions-and-authentication" tabindex="-1"><a class="toc-anchor d-print-none" href="#sessions-and-authentication">§</a> Sessions and Authentication</h2>
 <p>This section is normative.</p>
+<h3 id="in-plain-terms-2" tabindex="-1"><a class="toc-anchor d-print-none" href="#in-plain-terms-2">§</a> In plain terms</h3>
+<p>Signing in is a conversation of three steps: the node sends a number nobody can
+guess, the caller signs it with the key only they hold, and the node hands back
+something that stands in for that proof for a while.</p>
+<p>The last part is where the care goes. That stand-in — a session — is a
+convenience, not a grant. It says <em>this caller proved who they were a moment
+ago</em>; it does not say they are still allowed to do anything. So the node looks
+up what they are allowed to do again every time the session is extended, which
+is what makes withdrawing someone’s access take effect in minutes rather than
+whenever their session happened to end.</p>
+<p>One rule in this chapter looks pedantic and is not: the node must not tell an
+unauthenticated caller whether it has ever heard of the subject they named.
+Otherwise anyone who can guess identifiers can ask a node which of them it
+holds authority for, which is the first step in targeting the people behind
+them.</p>
+<h3 id="what-this-chapter-defines-2" tabindex="-1"><a class="toc-anchor d-print-none" href="#what-this-chapter-defines-2">§</a> What this chapter defines</h3>
 <p>This chapter specifies authentication once, for every transport: challenge,
 authenticate, refresh. Each is an operation of the <code>auth</code> family in the
 required catalogue (VTI-OPS-080), and every requirement here binds that
@@ -1662,6 +1759,26 @@ session that does not demonstrate that key.</p>
 <!-- file: 07-clients.md -->
 <h2 id="client-onboarding-and-lifecycle" tabindex="-1"><a class="toc-anchor d-print-none" href="#client-onboarding-and-lifecycle">§</a> Client Onboarding and Lifecycle</h2>
 <p>This section is normative.</p>
+<h3 id="in-plain-terms-3" tabindex="-1"><a class="toc-anchor d-print-none" href="#in-plain-terms-3">§</a> In plain terms</h3>
+<p>A new client is a contractor arriving at reception with no pass.</p>
+<p>It makes its own temporary pass — the node never sees the key behind it, so a
+compromised node cannot impersonate its own clients. It reads out the pass
+number to an administrator, who writes it into the register with the partitions
+it reaches and the hours it is good for. That number travelled by whatever channel was handy:
+chat, email, a photograph of a screen. It has been seen by people whose
+interest in it nobody checked.</p>
+<p>So on first arrival the contractor trades the temporary pass for a permanent
+one and the temporary number stops working. The order matters more than it
+looks: the new pass is checked at the door <em>before</em> the old one is cancelled,
+because a pass that has been cancelled in favour of one that does not work
+leaves someone standing outside with no way back in. Everything in Step 3 is
+about that sequence.</p>
+<p>The threat this does <em>not</em> solve is worth naming. If someone alters the message
+carrying the pass number, the administrator enrols an impostor — and rotation
+does not help, because the impostor simply rotates onto another pass of their
+own. What helps is confirming the number by a second route, and noticing that
+the real contractor never got in.</p>
+<h3 id="what-this-chapter-defines-3" tabindex="-1"><a class="toc-anchor d-print-none" href="#what-this-chapter-defines-3">§</a> What this chapter defines</h3>
 <p>This chapter specifies how a client obtains standing against a VTA, and how it
 holds that standing over time. The onboarding sequence has four steps, and the
 order carries the security properties, so the chapter is written in that order.</p>
@@ -1926,6 +2043,19 @@ cases either side of the commit point — appear in Appendix A.</p>
 <!-- file: 08-operations.md -->
 <h2 id="operation-surface" tabindex="-1"><a class="toc-anchor d-print-none" href="#operation-surface">§</a> Operation Surface</h2>
 <p>This section is normative.</p>
+<h3 id="in-plain-terms-4" tabindex="-1"><a class="toc-anchor d-print-none" href="#in-plain-terms-4">§</a> In plain terms</h3>
+<p>A node has one front door.</p>
+<p>Every operation it offers is a defined task with a name, a shape and a stated
+authority, and the different transports — a web request, a message, whatever
+comes next — are doors into the same building rather than separate premises
+with separate rules. When a node grows a second, private way in, everything written
+about the first has to be written again about the second, by someone who may
+not know it exists.</p>
+<p>That is also why the pieces tasks are built from are defined once: a page
+cursor, a refusal, a timestamp. Left to themselves they start identical and
+drift apart, and a rule stated about “the cursor” quietly becomes true of four
+cursors out of six.</p>
+<h3 id="what-this-chapter-defines-4" tabindex="-1"><a class="toc-anchor d-print-none" href="#what-this-chapter-defines-4">§</a> What this chapter defines</h3>
 <p>Everything a VTI node exposes, it exposes as a <a class="term-reference" href="#term:trust-task">trust task</a>. This
 chapter defines that surface: the catalogue as the API, the components every
 task is built from, how transports bind to it, how versions are selected, and
@@ -1966,8 +2096,8 @@ and MUST follow the envelope, refusal, versioning and retry requirements of
 this chapter.</p>
 <p><strong>VTI-OPS-009</strong> — A private task MUST be discoverable under VTI-OPS-005, so
 that a peer can determine what a node offers without attempting each operation.</p>
-<p><em>Rationale.</em> A private task is a waiting room, not a destination. The
-requirements above are what make it a waiting room: it is visible, it behaves
+<p><em>Rationale.</em> A private task is a staging post, not a destination. The
+requirements above are what make it one: it is visible, it behaves
 like everything else, and its name cannot become an obstacle to the canonical
 definition that replaces it.</p>
 <h3 id="extension-rather-than-divergence" tabindex="-1"><a class="toc-anchor d-print-none" href="#extension-rather-than-divergence">§</a> Extension rather than divergence</h3>
@@ -2359,6 +2489,18 @@ form of the same hazard is covered by VTI-CMP-090.</p>
 <!-- file: 09-credentials.md -->
 <h2 id="credentials-and-presentations" tabindex="-1"><a class="toc-anchor d-print-none" href="#credentials-and-presentations">§</a> Credentials and Presentations</h2>
 <p>This section is normative.</p>
+<h3 id="in-plain-terms-5" tabindex="-1"><a class="toc-anchor d-print-none" href="#in-plain-terms-5">§</a> In plain terms</h3>
+<p>A credential is a letter someone signed about somebody else.</p>
+<p>Checking the signature tells you the letter is genuine and unaltered. It does
+not tell you three things you probably wanted to know: whether the signer was
+entitled to write it, whether they still are, and whether the person handing it
+to you is the person it was written about.</p>
+<p>The last of those is why presenting a credential is a conversation rather than
+a delivery. The verifier picks a fresh number, the holder proves control of the
+subject over it, and only then does the letter count for anything. Without that
+step a credential is a bearer token: whoever picks it up — from a log, a relayed
+message, a stolen laptop — can present it as their own.</p>
+<h3 id="what-this-chapter-defines-5" tabindex="-1"><a class="toc-anchor d-print-none" href="#what-this-chapter-defines-5">§</a> What this chapter defines</h3>
 <p>This chapter binds the DTG <a class="term-reference" href="#term:vc">VC</a> specifications to VTI’s requirements. It
 does not restate credential data models: it states what a VTI node does when it
 issues, holds, presents or verifies one.</p>
@@ -2431,6 +2573,18 @@ verifier doing the responsible thing is the one generating the signal.</p>
 <!-- file: 10-vta.md -->
 <h2 id="the-verifiable-trust-agent" tabindex="-1"><a class="toc-anchor d-print-none" href="#the-verifiable-trust-agent">§</a> The Verifiable Trust Agent</h2>
 <p>This section is normative.</p>
+<h3 id="in-plain-terms-6" tabindex="-1"><a class="toc-anchor d-print-none" href="#in-plain-terms-6">§</a> In plain terms</h3>
+<p>A VTA is the safe, and the person who operates it on your behalf.</p>
+<p>It holds the keys, so the first rule is that the keys do not leave: a caller
+asks it to sign something rather than asking for the key to sign with. That
+difference is what makes withdrawing access mean anything — take away a key
+someone is holding and they still have it, while taking away permission to ask
+takes effect immediately.</p>
+<p>It also delegates. An assistant acting for you gets its own identity, its own
+narrow permissions and its own record, rather than borrowing yours. An
+assistant using your credentials is not a delegate; it is a copy of you, and
+you cannot revoke it without revoking yourself.</p>
+<h3 id="what-this-chapter-defines-6" tabindex="-1"><a class="toc-anchor d-print-none" href="#what-this-chapter-defines-6">§</a> What this chapter defines</h3>
 <p>This chapter specifies what a VTA does beyond the common model. It is the key,
 credential and authority root for its principal, and every requirement here
 follows from something else in a deployment depending on that.</p>
@@ -2538,6 +2692,18 @@ the software rather than to the principal it acts for.</p>
 <!-- file: 11-vtc.md -->
 <h2 id="the-verifiable-trust-community" tabindex="-1"><a class="toc-anchor d-print-none" href="#the-verifiable-trust-community">§</a> The Verifiable Trust Community</h2>
 <p>This section is normative.</p>
+<h3 id="in-plain-terms-7" tabindex="-1"><a class="toc-anchor d-print-none" href="#in-plain-terms-7">§</a> In plain terms</h3>
+<p>A community is a club, and a VTC is its membership secretary.</p>
+<p>It decides who joins, records who is currently in good standing, and tells
+other clubs what it will vouch for. What it deliberately does not do is hold
+the members’ keys: those belong to each member’s own agent. A compromised
+secretary can wrongly admit someone, wrongly expel someone, and wrongly vouch
+for a stranger — all serious, and all recoverable. A secretary who held
+everyone’s keys would be a different kind of disaster.</p>
+<p>That division is the reason this chapter spends its time saying which decisions
+belong to the community and which to the agent underneath it. A decision with
+two plausible owners is a decision that gets made twice, differently.</p>
+<h3 id="what-this-chapter-defines-7" tabindex="-1"><a class="toc-anchor d-print-none" href="#what-this-chapter-defines-7">§</a> What this chapter defines</h3>
 <p>This chapter specifies the community node: what it is, how it is stood up, and
 which authority decisions belong to it rather than to the VTA beneath it.</p>
 <h3 id="provisioning-and-dependency" tabindex="-1"><a class="toc-anchor d-print-none" href="#provisioning-and-dependency">§</a> Provisioning and dependency</h3>
@@ -2705,6 +2871,31 @@ which is the same outcome with someone accountable for it.</p>
 <!-- file: 14-composition.md -->
 <h2 id="composition-requirements" tabindex="-1"><a class="toc-anchor d-print-none" href="#composition-requirements">§</a> Composition Requirements</h2>
 <p>This section is normative.</p>
+<h3 id="in-plain-terms-8" tabindex="-1"><a class="toc-anchor d-print-none" href="#in-plain-terms-8">§</a> In plain terms</h3>
+<p>Every part of a car can pass its own test and the car still be unsafe. The
+brakes work, the steering works, the tyres are within spec — and the
+combination understeers into a hedge. Nobody’s component is faulty; the
+assembly was never assessed.</p>
+<p>That is this chapter. DTG components are specified separately so they can
+evolve separately, and the price is that some things a relying party depends on
+are true of the arrangement rather than of any part.</p>
+<p>Three examples, each of which has a requirement below:</p>
+<ul>
+<li>A proof that reveals nothing about who presented it, carried under a name
+that never changes, is not anonymous. The proof is fine. The interaction is
+not.</li>
+<li>A message exchange that completes exactly as specified has not necessarily
+achieved what it was for. “The protocol succeeded” and “the thing you wanted
+is now true” are different claims, and only one of them is testable by the
+protocol.</li>
+<li>Several signatures from several parties may look like independent
+corroboration and be four copies of one opinion. Counting them does not make
+them independent; establishing that they are is separate work.</li>
+</ul>
+<p>The last one is the hardest, because the fix is not “check more”. It is
+<strong>knowing what you have not established</strong> — and being willing to answer “we
+cannot tell” rather than rounding it to yes or no.</p>
+<h3 id="what-this-chapter-defines-8" tabindex="-1"><a class="toc-anchor d-print-none" href="#what-this-chapter-defines-8">§</a> What this chapter defines</h3>
 <p>DTG component specifications are modular by design, and that modularity is what
 lets each of them evolve without waiting for the others. It also means that
 some properties a relying party depends on cannot be determined by inspecting
@@ -2939,6 +3130,17 @@ worth more than a chapter withheld until it is complete.</p>
 <!-- file: 15-operational.md -->
 <h2 id="operational-and-assurance-requirements" tabindex="-1"><a class="toc-anchor d-print-none" href="#operational-and-assurance-requirements">§</a> Operational and Assurance Requirements</h2>
 <p>This section is normative.</p>
+<h3 id="in-plain-terms-9" tabindex="-1"><a class="toc-anchor d-print-none" href="#in-plain-terms-9">§</a> In plain terms</h3>
+<p>This chapter is the questions somebody will ask during an incident, written
+down in advance.</p>
+<p>Who can do what, right now? What has that agent been doing? If we take this
+credential away this minute, what stops working? Which version of which policy
+allowed that decision last March?</p>
+<p>A deployment that cannot answer those does not acquire the ability while the
+incident is running. So they are requirements rather than advice: the
+interfaces that answer them have to exist before anyone needs them, and the
+record they read from has to still be there and still be trustworthy.</p>
+<h3 id="what-this-chapter-defines-9" tabindex="-1"><a class="toc-anchor d-print-none" href="#what-this-chapter-defines-9">§</a> What this chapter defines</h3>
 <p>This chapter states what an operator of a VTI deployment is required to be able
 to do, and what a deployment is required to be able to demonstrate about
 itself.</p>
@@ -4510,8 +4712,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-11T15:46:22.567Z">
-                            Generated: 2026-09-11T15:46:22.567Z
+                        <time class="timestamp" datetime="2026-09-11T18:54:32.853Z">
+                            Generated: 2026-09-11T18:54:32.853Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
