@@ -8,8 +8,8 @@ A new client is a contractor arriving at reception with no pass.
 
 It makes its own temporary pass — the node never sees the key behind it, so a
 compromised node cannot impersonate its own clients. It reads out the pass
-number to an administrator, who writes it into the register with the rooms and
-the hours it is good for. That number travelled by whatever channel was handy:
+number to an administrator, who writes it into the register with the partitions
+it reaches and the hours it is good for. That number travelled by whatever channel was handy:
 chat, email, a photograph of a screen. It has been seen by people whose
 interest in it nobody checked.
 

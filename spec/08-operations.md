@@ -8,8 +8,8 @@ A node has one front door.
 
 Every operation it offers is a defined task with a name, a shape and a stated
 authority, and the different transports — a web request, a message, whatever
-comes next — are doors into the same room rather than separate buildings with
-separate rules. When a node grows a second, private way in, everything written
+comes next — are doors into the same building rather than separate premises
+with separate rules. When a node grows a second, private way in, everything written
 about the first has to be written again about the second, by someone who may
 not know it exists.
 
@@ -74,8 +74,8 @@ this chapter.
 **VTI-OPS-009** — A private task MUST be discoverable under VTI-OPS-005, so
 that a peer can determine what a node offers without attempting each operation.
 
-*Rationale.* A private task is a waiting room, not a destination. The
-requirements above are what make it a waiting room: it is visible, it behaves
+*Rationale.* A private task is a staging post, not a destination. The
+requirements above are what make it one: it is visible, it behaves
 like everything else, and its name cannot become an obstacle to the canonical
 definition that replaces it.
 

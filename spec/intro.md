@@ -5,7 +5,7 @@ This section is informative.
 ### The idea in plain terms
 
 Imagine a company where every employee has a keyring. One key opens the
-stationery cupboard, another the server room, another the safe. Nobody carries
+stationery cupboard, another the server cabinet, another the safe. Nobody carries
 a master key, because a master key is one lost keyring away from a disaster.
 When someone joins a team they get the keys that team needs, and when they
 leave, those keys stop working — not because they hand them back, but because
