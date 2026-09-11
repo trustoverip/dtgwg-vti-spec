@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-11T15:45:45.185Z"
+      "lastUpdated": "2026-09-11T15:46:23.083Z"
     }
   ]
 };</script>
@@ -4305,28 +4305,10 @@ different thing from a requirement that is met.</p>
 </thead>
 <tbody>
 <tr>
-<td>VTI-VTA-004, VTI-VTA-005 <em>(observed, resolution in review)</em></td>
-<td>A signing oracle parses and constrains what it signs, and refuses opaque octets</td>
-<td>Three caller classes share one general path that signs an arbitrary octet string. The task-signing path constrains its input — envelope shape, issuer against the entry’s principal, no prior proof, expiry. An in-process proof constructor presents canonicalised octets it has already constrained, one layer above the oracle. An externally reachable operation accepts an octet string from any authorized caller with no structural constraint at all, subject only to key and context authorization</td>
-<td><strong>Domain separation</strong>, chosen over parsing what is presented. The externally reachable path frames the payload under a versioned tag before signing, so the signature verifies as a payload of that operation and as nothing else. The in-process proof constructor is <em>excluded by name</em>: its bytes carry a meaning its own specification has established, and framing them again produces a proof a conforming verifier rejects — so the domain is an argument every call site states rather than a prefix applied to all of them. Breaking for verifiers of previously produced signatures, deliberately and without a compatibility mode, since one would restore what is being removed</td>
-</tr>
-<tr>
 <td>VTI-SES-042 <em>(observed, corrected)</em></td>
 <td>Where a session is bound to a client-held key, a request that does not demonstrate the key is refused</td>
 <td>Not implemented at one node type: its challenge request carries no such member, the internal field is set to absent at every call site, and no request path enforces a binding. The shared session type carries the member and other node types populate it, so the plumbing exists and this node does not use it</td>
 <td>Implement the binding, or state that this node type does not offer it. This is an unimplemented SHOULD rather than a parameter accepted and ignored — the earlier entry said otherwise and was wrong</td>
-</tr>
-<tr>
-<td>VTI-AUD-004 <em>(observed, in progress)</em></td>
-<td>The audit trail is tamper-evident</td>
-<td>One node type chains each entry to its predecessor by digest; another’s default sink is flat and unchained, so a compromised node can rewrite its own history undetectably. The pluggable sink admits a chained backend; the default is not one</td>
-<td>Chain by default, reusing the chaining the other node type already runs rather than adding a second scheme. Settled while preparing it: the chain’s first entry is the creation of the key that chains it, so a verifier reading from the start learns which key the following entries are hashed under from an entry hashed under that same key; and rotation takes the same shape, each key’s segment opening with the record of why the key changed</td>
-</tr>
-<tr>
-<td>VTI-AUD-005 <em>(observed, in progress)</em></td>
-<td>An audit record refers to personal data rather than embedding it, so erasure leaves the chain verifiable</td>
-<td>Records embed subject identifiers directly. Where the log is chained, an erasure breaks the chain; where it is not, the erasure is undetectable</td>
-<td>Commit to the identifier under a keyed hash and keep the plaintext beside it, so an erasure nulls the plaintext while the commitment keeps the row correlatable and the chain digest — which excludes the plaintext members — still verifies. <strong>The key is randomly generated rather than derived from the node’s master seed</strong>: derivation would make the recovery phrase an audit-key backup, so an erasure would be reversible by brute force, over the small candidate space of identifiers that node has seen, for anyone holding it. Still the entry most worth resolving before a deployment carries personal data at scale, because it cannot be fixed retroactively for records already written</td>
 </tr>
 <tr>
 <td>VTI-AUD-006 <em>(open)</em></td>
@@ -4352,6 +4334,13 @@ different thing from a requirement that is met.</p>
 <p>An entry leaves the tables above when the divergence is closed, and is recorded
 here so that a reader can tell a register that is being worked from one that has
 been abandoned.</p>
+<p>A closed entry says the divergence was addressed, not that the requirement can
+no longer be violated. Two of the entries below were closed by changes whose
+own limits are worth carrying: domain separation makes a signature unusable
+outside the domain it was requested in without making the signing of
+unparseable material safe, and a retention watermark restores verification
+across an honest sweep while resting on a record held in the same store as the
+log it vouches for.</p>
 <div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
 <thead>
 <tr>
@@ -4363,6 +4352,18 @@ been abandoned.</p>
 <tr>
 <td>VTI-SES-006, VTI-SES-007</td>
 <td>The challenge operation now answers every caller identically and persists a session only for an enrolled subject; the refusal moves to authentication, which requires the subject’s private key. Every failure reachable without that key renders one message, so the disclosure does not reappear at the other end of the flow</td>
+</tr>
+<tr>
+<td>VTI-VTA-004, VTI-VTA-005</td>
+<td>Payloads the node cannot parse are framed under a versioned domain tag before signing, so a signature obtained from the general operation verifies as a payload of that operation and as nothing else. The in-process proof constructor is excluded by name, because its bytes carry a meaning its own specification established and framing them again would produce a proof a conforming verifier rejects — so the domain is stated at each call site rather than applied to all of them</td>
+</tr>
+<tr>
+<td>VTI-AUD-004</td>
+<td>The log is written as a hash chain, reusing the scheme the other node type already ran rather than adding a second. Its first entry is the creation of the key that chains it, so a verifier reading from the start learns which key the entries after it are hashed under from an entry hashed under that same key. A retention sweep leaves a watermark and verification resumes from it, because deleting the oldest entries otherwise leaves the remainder indistinguishable from one an entry was removed from</td>
+</tr>
+<tr>
+<td>VTI-AUD-005</td>
+<td>Actor and target identifiers are committed under a keyed hash with the plaintext beside them: an erasure nulls the plaintext, the commitment keeps the row correlatable, and the chain digest excludes the plaintext members so it still verifies. The key is generated rather than derived from the node’s seed, so the recovery phrase is not also an audit-key backup</td>
 </tr>
 </tbody>
 </table>
@@ -4509,8 +4510,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-11T15:45:44.663Z">
-                            Generated: 2026-09-11T15:45:44.663Z
+                        <time class="timestamp" datetime="2026-09-11T15:46:22.567Z">
+                            Generated: 2026-09-11T15:46:22.567Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
