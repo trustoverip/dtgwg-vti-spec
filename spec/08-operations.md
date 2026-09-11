@@ -2,6 +2,24 @@
 
 This section is normative.
 
+### In plain terms
+
+A node has one front door.
+
+Every operation it offers is a defined task with a name, a shape and a stated
+authority, and the different transports — a web request, a message, whatever
+comes next — are doors into the same room rather than separate buildings with
+separate rules. When a node grows a second, private way in, everything written
+about the first has to be written again about the second, by someone who may
+not know it exists.
+
+That is also why the pieces tasks are built from are defined once: a page
+cursor, a refusal, a timestamp. Left to themselves they start identical and
+drift apart, and a rule stated about "the cursor" quietly becomes true of four
+cursors out of six.
+
+### What this chapter defines
+
 Everything a VTI node exposes, it exposes as a [[ref: trust task]]. This
 chapter defines that surface: the catalogue as the API, the components every
 task is built from, how transports bind to it, how versions are selected, and

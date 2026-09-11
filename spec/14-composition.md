@@ -2,6 +2,36 @@
 
 This section is normative.
 
+### In plain terms
+
+Every part of a car can pass its own test and the car still be unsafe. The
+brakes work, the steering works, the tyres are within spec — and the
+combination understeers into a hedge. Nobody's component is faulty; the
+assembly was never assessed.
+
+That is this chapter. DTG components are specified separately so they can
+evolve separately, and the price is that some things a relying party depends on
+are true of the arrangement rather than of any part.
+
+Three examples, each of which has a requirement below:
+
+- A proof that reveals nothing about who presented it, carried under a name
+  that never changes, is not anonymous. The proof is fine. The interaction is
+  not.
+- A message exchange that completes exactly as specified has not necessarily
+  achieved what it was for. "The protocol succeeded" and "the thing you wanted
+  is now true" are different claims, and only one of them is testable by the
+  protocol.
+- Several signatures from several parties may look like independent
+  corroboration and be four copies of one opinion. Counting them does not make
+  them independent; establishing that they are is separate work.
+
+The last one is the hardest, because the fix is not "check more". It is
+**knowing what you have not established** — and being willing to answer "we
+cannot tell" rather than rounding it to yes or no.
+
+### What this chapter defines
+
 DTG component specifications are modular by design, and that modularity is what
 lets each of them evolve without waiting for the others. It also means that
 some properties a relying party depends on cannot be determined by inspecting

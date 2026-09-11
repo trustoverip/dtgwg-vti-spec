@@ -2,6 +2,32 @@
 
 This section is normative.
 
+### In plain terms
+
+A new client is a contractor arriving at reception with no pass.
+
+It makes its own temporary pass — the node never sees the key behind it, so a
+compromised node cannot impersonate its own clients. It reads out the pass
+number to an administrator, who writes it into the register with the rooms and
+the hours it is good for. That number travelled by whatever channel was handy:
+chat, email, a photograph of a screen. It has been seen by people whose
+interest in it nobody checked.
+
+So on first arrival the contractor trades the temporary pass for a permanent
+one and the temporary number stops working. The order matters more than it
+looks: the new pass is checked at the door *before* the old one is cancelled,
+because a pass that has been cancelled in favour of one that does not work
+leaves someone standing outside with no way back in. Everything in Step 3 is
+about that sequence.
+
+The threat this does *not* solve is worth naming. If someone alters the message
+carrying the pass number, the administrator enrols an impostor — and rotation
+does not help, because the impostor simply rotates onto another pass of their
+own. What helps is confirming the number by a second route, and noticing that
+the real contractor never got in.
+
+### What this chapter defines
+
 This chapter specifies how a client obtains standing against a VTA, and how it
 holds that standing over time. The onboarding sequence has four steps, and the
 order carries the security properties, so the chapter is written in that order.

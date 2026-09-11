@@ -2,6 +2,65 @@
 
 This section is informative.
 
+### The idea in plain terms
+
+Imagine a company where every employee has a keyring. One key opens the
+stationery cupboard, another the server room, another the safe. Nobody carries
+a master key, because a master key is one lost keyring away from a disaster.
+When someone joins a team they get the keys that team needs, and when they
+leave, those keys stop working — not because they hand them back, but because
+the locks stop recognising them.
+
+Now imagine the same company has to work with a hundred other companies, none
+of whom share a building, a keyring, or a security desk. Someone from another
+firm arrives and says they are authorised to collect a document. How do you
+check? You can look at their card. You can ring their office. What you cannot
+do is assume that because their card is genuine, they still work there, or
+that the person holding it is the person it was issued to.
+
+That is the problem this specification is about. The keys are cryptographic,
+the buildings are organisations, and the cards are credentials — but the
+questions are the old ones: **who is this, what are they allowed to do, who
+says so, and is that still true right now?**
+
+#### The three things that go wrong
+
+Almost everything in this document exists to prevent one of three failures,
+and each is easier to understand than the machinery that prevents it.
+
+**A key that opens too much.** The simplest failure and the most common. An
+application is given access to everything because giving it access to exactly
+what it needs was harder. This specification's answer is the **trust context**:
+a boundary you put things inside, so that authority is always authority over
+*something in particular* rather than authority as such.
+
+**A credential that says more than it knows.** A signature proves who wrote a
+document and that nobody changed it. It does not prove that the writer was
+entitled to write it, that they still are, or that the thing they described is
+still the case. A letter signed by a manager who left last year is perfectly
+genuine and completely worthless. Much of this document is about keeping *this
+was signed by them* and *they are allowed to do this* as separate questions,
+because systems that merge them fail in ways that look like success.
+
+**A system that works in pieces and fails as a whole.** Every component can be
+correct and the arrangement still be wrong. A privacy-preserving proof, carried
+under a name that never changes, is not private. A task that completes exactly
+as specified has not necessarily achieved what it was invoked to achieve. This
+is the hardest of the three, because there is nobody to blame: each part is
+doing its job. The Composition Requirements chapter exists for it.
+
+#### Why the writing is careful
+
+Several requirements here prohibit something that is easy to build, widely
+done, and wrong only under conditions you will not meet during testing. Those
+requirements are written as prohibitions rather than recommendations, and each
+carries a *Rationale* paragraph saying what goes wrong without it — usually
+because the obvious simpler version has already been built somewhere and has
+already failed.
+
+If a requirement seems fussy, the rationale is where to look before deciding it
+is.
+
 ### What this specification covers
 
 A [[ref: VTI]] is the running infrastructure in which Decentralized Trust Graph

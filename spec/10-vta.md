@@ -2,6 +2,23 @@
 
 This section is normative.
 
+### In plain terms
+
+A VTA is the safe, and the person who operates it on your behalf.
+
+It holds the keys, so the first rule is that the keys do not leave: a caller
+asks it to sign something rather than asking for the key to sign with. That
+difference is what makes withdrawing access mean anything — take away a key
+someone is holding and they still have it, while taking away permission to ask
+takes effect immediately.
+
+It also delegates. An assistant acting for you gets its own identity, its own
+narrow permissions and its own record, rather than borrowing yours. An
+assistant using your credentials is not a delegate; it is a copy of you, and
+you cannot revoke it without revoking yourself.
+
+### What this chapter defines
+
 This chapter specifies what a VTA does beyond the common model. It is the key,
 credential and authority root for its principal, and every requirement here
 follows from something else in a deployment depending on that.

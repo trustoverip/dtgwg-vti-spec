@@ -2,6 +2,22 @@
 
 This section is normative.
 
+### In plain terms
+
+This chapter is the questions somebody will ask during an incident, written
+down in advance.
+
+Who can do what, right now? What has that agent been doing? If we take this
+credential away this minute, what stops working? Which version of which policy
+allowed that decision last March?
+
+A deployment that cannot answer those does not acquire the ability while the
+incident is running. So they are requirements rather than advice: the
+interfaces that answer them have to exist before anyone needs them, and the
+record they read from has to still be there and still be trustworthy.
+
+### What this chapter defines
+
 This chapter states what an operator of a VTI deployment is required to be able
 to do, and what a deployment is required to be able to demonstrate about
 itself.

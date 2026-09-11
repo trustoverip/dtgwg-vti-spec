@@ -2,6 +2,32 @@
 
 This section is normative.
 
+### In plain terms
+
+A trust context is a room. Everything a node holds — keys, credentials, data,
+the authority it has delegated — sits in one of them, and a grant is always a
+grant over particular rooms rather than over the building.
+
+The payoff is what happens when something goes wrong. A credential that leaks
+opens the rooms it was granted for and no others, so the question "how bad is
+this?" has an answer you can work out from the grant itself rather than by
+auditing everything the holder ever touched.
+
+Rooms nest, and authority over a room reaches everything inside it. That is why
+the way a room's name is compared matters so much: `acme` contains `acme/eng`,
+and must not be read as containing `acme-evil`, which merely starts with the
+same letters. A single careless string comparison hands one organisation's
+authority to anyone who can register a similar-looking name — which is the
+first requirement in this chapter, written as a prohibition for that reason.
+
+Two other ideas run through what follows. A **role** is a ceiling, not a grant:
+it says the most an entry could be allowed, and the entry can hold less.
+And **acting** is separate from **approving** — the person who writes the
+cheque and the person who countersigns it are doing different jobs, and an
+approver who can also act is not a control.
+
+### What this chapter defines
+
 This chapter defines the boundary a VTI node organises everything it holds
 into, and the model by which authority over those boundaries is granted,
 narrowed, exercised, approved and withdrawn. The Sessions, Client, Verifiable
