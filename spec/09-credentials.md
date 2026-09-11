@@ -2,6 +2,23 @@
 
 This section is normative.
 
+### In plain terms
+
+A credential is a letter someone signed about somebody else.
+
+Checking the signature tells you the letter is genuine and unaltered. It does
+not tell you three things you probably wanted to know: whether the signer was
+entitled to write it, whether they still are, and whether the person handing it
+to you is the person it was written about.
+
+The last of those is why presenting a credential is a conversation rather than
+a delivery. The verifier picks a fresh number, the holder proves control of the
+subject over it, and only then does the letter count for anything. Without that
+step a credential is a bearer token: whoever picks it up — from a log, a relayed
+message, a stolen laptop — can present it as their own.
+
+### What this chapter defines
+
 This chapter binds the DTG [[ref: VC]] specifications to VTI's requirements. It
 does not restate credential data models: it states what a VTI node does when it
 issues, holds, presents or verifies one.

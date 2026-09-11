@@ -2,6 +2,23 @@
 
 This section is normative.
 
+### In plain terms
+
+A community is a club, and a VTC is its membership secretary.
+
+It decides who joins, records who is currently in good standing, and tells
+other clubs what it will vouch for. What it deliberately does not do is hold
+the members' keys: those belong to each member's own agent. A compromised
+secretary can wrongly admit someone, wrongly expel someone, and wrongly vouch
+for a stranger — all serious, and all recoverable. A secretary who held
+everyone's keys would be a different kind of disaster.
+
+That division is the reason this chapter spends its time saying which decisions
+belong to the community and which to the agent underneath it. A decision with
+two plausible owners is a decision that gets made twice, differently.
+
+### What this chapter defines
+
 This chapter specifies the community node: what it is, how it is stood up, and
 which authority decisions belong to it rather than to the VTA beneath it.
 

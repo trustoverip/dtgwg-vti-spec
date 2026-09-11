@@ -2,6 +2,23 @@
 
 This section is normative.
 
+### In plain terms
+
+The post office accepting your letter is not the recipient reading it.
+
+Most of this chapter is that sentence applied carefully. A send that returns
+without error has, at best, handed the message to something that promised to
+carry it. Treating that as delivery is how a system ends up confident that
+something happened when it did not — and the failure is silent, because
+everything reported success.
+
+So this chapter is exact about what counts as evidence that a message arrived,
+and requires a sender to record *which* evidence it has. It also requires a
+node's health signal to answer "can I send right now?" rather than "did I
+manage to once, when I started".
+
+### What this chapter defines
+
 This chapter specifies how VTI nodes reach each other, and — the harder half —
 what a sender is entitled to conclude when a send returns successfully.
 

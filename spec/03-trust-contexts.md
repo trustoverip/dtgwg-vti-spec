@@ -2,6 +2,34 @@
 
 This section is normative.
 
+### In plain terms
+
+A trust context is a **partition**. Everything a node holds — keys,
+credentials, data, the authority it has delegated — belongs to one of them, and
+a grant is always a grant over particular partitions rather than over the node.
+
+Think of the bulkheads in a ship. They are not there to keep things tidy; they
+are there so that a breach floods one compartment instead of the hull. The
+payoff comes on the bad day: a credential that leaks reaches what its
+partitions hold and nothing else, so "how bad is this?" is a question you
+answer from the grant itself rather than by auditing everything its holder ever
+touched.
+
+Partitions nest, and authority over one reaches everything beneath it. That is
+why the way a partition's name is compared matters so much: `acme` contains
+`acme/eng`, and must not be read as containing `acme-evil`, which merely starts
+with the same letters. One careless string comparison hands an organisation's
+authority to anyone who can register a similar-looking name — which is why the
+first requirement in this chapter is written as a prohibition.
+
+Two other ideas run through what follows. A **role** is a ceiling, not a grant:
+it says the most an entry could be allowed, and the entry can hold less.
+And **acting** is separate from **approving** — the person who writes the
+cheque and the person who countersigns it are doing different jobs, and an
+approver who can also act is not a control.
+
+### What this chapter defines
+
 This chapter defines the boundary a VTI node organises everything it holds
 into, and the model by which authority over those boundaries is granted,
 narrowed, exercised, approved and withdrawn. The Sessions, Client, Verifiable

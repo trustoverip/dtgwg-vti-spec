@@ -2,6 +2,27 @@
 
 This section is normative.
 
+### In plain terms
+
+Signing in is a conversation of three steps: the node sends a number nobody can
+guess, the caller signs it with the key only they hold, and the node hands back
+something that stands in for that proof for a while.
+
+The last part is where the care goes. That stand-in — a session — is a
+convenience, not a grant. It says *this caller proved who they were a moment
+ago*; it does not say they are still allowed to do anything. So the node looks
+up what they are allowed to do again every time the session is extended, which
+is what makes withdrawing someone's access take effect in minutes rather than
+whenever their session happened to end.
+
+One rule in this chapter looks pedantic and is not: the node must not tell an
+unauthenticated caller whether it has ever heard of the subject they named.
+Otherwise anyone who can guess identifiers can ask a node which of them it
+holds authority for, which is the first step in targeting the people behind
+them.
+
+### What this chapter defines
+
 This chapter specifies authentication once, for every transport: challenge,
 authenticate, refresh. Each is an operation of the `auth` family in the
 required catalogue (VTI-OPS-080), and every requirement here binds that
