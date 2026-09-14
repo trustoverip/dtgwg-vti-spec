@@ -53,6 +53,16 @@ their current versions before this specification leaves Working Draft.
   <https://datatracker.ietf.org/doc/html/rfc6973>
 - [TOIP-GOV] *ToIP Governance Metamodel Specification.*
   <https://trustoverip.org/wp-content/uploads/ToIP-Governance-Metamodel-Specification-V1.0-2021-12-21.pdf>
+- [AS] *Autonomous system (Internet)* — the aggregation and announcement model
+  the Verifiable Trust Network chapter draws its comparison from.
+  <https://en.wikipedia.org/wiki/Autonomous_system_(Internet)>
+- [AYRA] *Ayra.* <https://ayra.forum/about/> — named in the Verifiable Trust
+  Network chapter to illustrate a conformance and interoperability body in the
+  position of a network owner.
+- [FIRSTPERSON] *First Person Network*, First Person Collective.
+  <https://www.firstperson.network/> — named in the Verifiable Trust Network
+  chapter to illustrate a curation criterion that is neither a sector nor a
+  jurisdiction.
 - [TOIP-GLOSSARY] *ToIP Main Glossary.* <https://glossary.trustoverip.org>
 - [TOIP-IT-GLOSSARY] *ToIP General IT Glossary.*
   <https://trustoverip.github.io/ctwg-general-glossary>

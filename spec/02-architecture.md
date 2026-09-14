@@ -38,6 +38,7 @@ implements.
 |---|---|
 | **Verifiable Trust Agent (VTA)** | The key, credential and authority root for a principal — a person, an organisation, or a software agent. Owns the trust context tree and key derivation within it. |
 | **Verifiable Trust Community (VTC)** | A community authority: admission, membership state, recognition and publication. Provisioned on top of an existing VTA. |
+| **Verifiable Trust Network (VTN)** | A curation authority: which communities and which other networks it lists, under an identified owner and a governance framework. Aggregates communities; grants them nothing. *Provisional — see the Conformance chapter.* |
 | **Client** | Any consumer acting under authority granted by a VTA or VTC: an interactive operator client, a headless application, an AI-agent runtime, or a mobile authorizer. |
 | **Mediator** | A store-and-forward transport node. Observes routing metadata; does not observe content. |
 | **Host service** | An identifier-log host, a witness, a push gateway, or a room host — infrastructure a node depends on but does not embody. |
@@ -67,6 +68,33 @@ so this specification states it rather than leaving it to be inferred: the VTA
 is the key and context authority, and the VTC is the membership authority. A
 VTC references context identifiers as membership metadata; it does not create
 contexts and does not derive keys.
+
+#### Verifiable Trust Network
+
+A [[ref: VTN]] aggregates communities. It curates a published set of
+[[ref: VTC]]s and of other VTNs, under an identified owner and a governance
+framework, so that a relying party can discover many communities through one
+list rather than through a relationship with each of them. The Internet
+comparison is deliberate: a VTN is to communities roughly what an autonomous
+system is to networks — the unit at which a set is aggregated, announced
+and found.
+
+It sits above the VTC in aggregation and not in authority. A VTN is not a
+parent of the communities it lists: it creates no contexts, derives no keys,
+and does not decide who is a member of any community in it. Removing a
+community from a network's list removes nothing from that community's members.
+
+One difference from the VTC is structural rather than a matter of degree. A
+[[ref: listing]] may be one-sided — a network may list a party that never asked
+to be listed, where community membership requires both parties to agree — so an
+entry carries whether the listed party has acknowledged it. Networks are
+expected to nest (state, national, global) and to overlap (several networks
+curating the same subject, with different owners and criteria), and neither
+nesting nor overlap changes what an entry establishes.
+
+No implementation exists at the time of publication, and whether a VTN is a
+distinct node type or a VTC operating in a curation role is an open question
+recorded in that chapter. The target is therefore marked provisional.
 
 #### Client
 

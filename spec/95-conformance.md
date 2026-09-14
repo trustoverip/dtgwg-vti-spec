@@ -19,19 +19,29 @@ requirement identifiers.
 | `Core` | Trust contexts and the authority model; Identity, DIDs and key management; Sessions and authentication; Client onboarding and lifecycle; Operation surface; Credentials and presentations |
 | `Delivery` | Transports, messaging and delivery |
 | `Community` | The Verifiable Trust Community; Membership lifecycle and community credentials; Trust registries and cross-community recognition |
+| `Network` | The Verifiable Trust Network |
 | `Composition` | Composition requirements |
 | `Operations` | Operational and assurance requirements |
 
 ### Targets
 
-| Target | `Core` | `Delivery` | `Community` | `Composition` | `Operations` |
-|---|---|---|---|---|---|
-| VTA | MUST | MUST | MAY | MUST | MUST |
-| VTC | MUST | MUST | MUST | MUST | MUST |
-| Client | MUST | MUST | MAY | MUST | MAY |
-| Mediator | MAY | MUST | MAY | MAY | MUST |
-| Host service | MAY | MUST | MAY | MAY | MUST |
-| Trust registry | MAY | MAY | MUST | MUST | MUST |
+| Target | `Core` | `Delivery` | `Community` | `Network` | `Composition` | `Operations` |
+|---|---|---|---|---|---|---|
+| VTA | MUST | MUST | MAY | MAY | MUST | MUST |
+| VTC | MUST | MUST | MUST | MAY | MUST | MUST |
+| VTN *(provisional)* | MUST | MUST | MAY | MUST | MUST | MUST |
+| Client | MUST | MUST | MAY | MAY | MUST | MAY |
+| Mediator | MAY | MUST | MAY | MAY | MAY | MUST |
+| Host service | MAY | MUST | MAY | MAY | MAY | MUST |
+| Trust registry | MAY | MAY | MUST | MAY | MUST | MUST |
+
+*Note on the VTN target.* The Verifiable Trust Network has no implementation at
+the time of publication, and whether it is a distinct target or a role of the
+VTC is an open question stated in its chapter. The target is listed so that the
+`Network` profile has something to bind to and so that a first implementation
+can claim against it. Should the working group resolve the question the other
+way, the target is withdrawn and the `Network` profile binds a VTC claiming the
+curation role; no requirement identifier changes either way.
 
 **VTI-CNF-001** — A target MUST satisfy every requirement of every profile
 marked MUST for it that binds that target. A requirement that does not bind a
@@ -64,6 +74,7 @@ Areas allocated:
 | `CRD` | Credentials and presentations |
 | `VTA` | The Verifiable Trust Agent |
 | `VTC` | The Verifiable Trust Community |
+| `VTN` | The Verifiable Trust Network |
 | `MEM` | Membership lifecycle and community credentials |
 | `REG` | Trust registries and recognition |
 | `CMP` | Composition requirements |

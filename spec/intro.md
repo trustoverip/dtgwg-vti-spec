@@ -71,9 +71,9 @@ specification defines:
   authority model built over them, identity and keys, transports and delivery,
   sessions, the [[ref: client]] lifecycle, the operation surface, and credential
   handling;
-- **the nodes** themselves — the [[ref: VTA]], the [[ref: VTC]] and the
-  supporting hosts — and, where two of them could each plausibly own an
-  authority decision, which one actually does;
+- **the nodes** themselves — the [[ref: VTA]], the [[ref: VTC]], the
+  [[ref: VTN]] and the supporting hosts — and, where two of them could each
+  plausibly own an authority decision, which one actually does;
 - **the composition requirements** — properties that must hold across a
   complete interaction and that no single component specification can
   establish.
@@ -104,10 +104,12 @@ is run by an [[ref: operator]] — the boundary within which two services are on
 trust domain. A [[ref: VTC]] decides
 who is a [[ref: member]] of a community and publishes to a
 [[ref: trust registry]] so that other communities can extend
-[[ref: recognition]]. Everything above is a component or a node; what happens
-when they are operated together is [[ref: composition]], and a property that no
-component can establish on its own is a
-[[ref: composition-owned requirement]]. Where the evidence does not settle a
+[[ref: recognition]]. A [[ref: VTN]] aggregates communities and other networks
+into a curated set, where an entry — a [[ref: listing]] — is the network's to
+make and need not be agreed to by the party listed. Everything above is a
+component or a node; what happens when they are operated together is
+[[ref: composition]], and a property that no component can establish on its own
+is a [[ref: composition-owned requirement]]. Where the evidence does not settle a
 question, the answer is [[ref: indeterminate]], which is a result rather than
 an error.
 
@@ -140,7 +142,7 @@ The specification is in four parts.
 |---|---|---|
 | **A — Foundations** | Introduction; Terminology; Architecture and conformance targets | nothing normatively; fixes the vocabulary and names the targets |
 | **B — The common model** | Trust contexts and the authority model; Identity, DIDs and key management; Transports, messaging and delivery; Sessions and authentication; Client onboarding and lifecycle; Operation surface; Credentials and presentations | every node type |
-| **C — Node specifications** | The Verifiable Trust Agent; The Verifiable Trust Community; Membership lifecycle and community credentials; Trust registries and cross-community recognition | the named node |
+| **C — Node specifications** | The Verifiable Trust Agent; The Verifiable Trust Community; The Verifiable Trust Network; Membership lifecycle and community credentials; Trust registries and cross-community recognition | the named node |
 | **D — System properties** | Composition requirements; Operational and assurance requirements; Considerations; Conformance | the deployment and the relying party |
 
 A node type's chapter in Part C states what it adds to the common model, not
@@ -173,7 +175,8 @@ formulation is one that has already been implemented, and has already failed.
 | Deciding whether VTI fits your ecosystem | This chapter, then Architecture and conformance targets |
 | Implementing a client | Client onboarding and lifecycle; Sessions and authentication; Operation surface |
 | Implementing or operating a VTA | Trust contexts and the authority model; The Verifiable Trust Agent; Operational and assurance requirements |
-| Implementing or operating a VTC | Trust contexts and the authority model; the three Part C community chapters |
+| Implementing or operating a VTC | Trust contexts and the authority model; the Part C community chapters |
+| Curating communities into a network | The Verifiable Trust Network; Trust registries and cross-community recognition |
 | Assessing a deployment | Composition requirements; Conformance; Appendix E |
 | Writing a governance framework | Trust contexts and the authority model; Governance Considerations |
 

@@ -8,7 +8,8 @@ rendered specification.
 
 VTI is the **system specification**: it defines the infrastructure that DTG
 components are composed into, and it specifies the nodes of that
-infrastructure — including the Verifiable Trust Community in full. It does not
+infrastructure — including the Verifiable Trust Community in full, and the
+Verifiable Trust Network ahead of any implementation of it. It does not
 restate the component specifications it binds (identifier methods, credential
 data models, Trust Task definitions, transports); it references them and
 states how they compose.
@@ -18,7 +19,7 @@ Three bodies of normative material:
 1. **The common model** — trust contexts and the authority model built over
    them, identity and keys, transports and delivery, sessions, the client
    lifecycle, the operation surface, credential handling. Binds to every node.
-2. **The node specifications** — VTA, VTC, supporting hosts — and, where two
+2. **The node specifications** — VTA, VTC, VTN, supporting hosts — and, where two
    nodes could each plausibly own an authority decision, which one does.
 3. **The composition requirements** — properties that must hold across a
    complete interaction and that no single component can establish.
@@ -39,6 +40,7 @@ Three bodies of normative material:
 | | Credentials and presentations | `spec/09-credentials.md` |
 | C — Nodes | The Verifiable Trust Agent | `spec/10-vta.md` |
 | | The Verifiable Trust Community | `spec/11-vtc.md` |
+| | The Verifiable Trust Network | `spec/11a-vtn.md` |
 | | Membership lifecycle and community credentials | `spec/12-vtc-lifecycle.md` |
 | | Trust registries and cross-community recognition | `spec/13-registries.md` |
 | D — System properties | Composition requirements | `spec/14-composition.md` |
@@ -50,6 +52,12 @@ Three bodies of normative material:
 
 One chapter per file, because `markdown_paths` order is the rendered order and
 the file split becomes the working group's unit of assignment and review.
+
+The rendered order is the order in `markdown_paths`, not the filenames, so a
+chapter inserted between two existing ones takes a suffixed name —
+`11a-vtn.md` — rather than renumbering every file after it. Renumbering costs
+the history of every file it touches and buys nothing the ordering in
+`specs.json` does not already give.
 
 ## Requirement identifiers
 
@@ -97,13 +105,15 @@ where unresolved propositions are published with their status visible.
 | **D6** | Are capabilities a closed set or a registry? | **Extensible registry**, with a versioned annex (Appendix C) recording the set at publication. Extension is made safe by the rule that an unrecognised capability MUST NOT be treated as granted. |
 | **D7** | Which identifier methods and algorithms are required? | **`did:webvh` and `did:key` are REQUIRED; all other methods OPTIONAL. Curve25519 is mandatory to implement** (Ed25519 signing, X25519 key agreement); all other algorithms OPTIONAL. |
 | **D8** | Publish the composition chapter with unresolved propositions in it? | **Yes.** A backlog stated in public is worth more than a chapter withheld until it is complete. |
+| **D9** | Is the VTN a distinct node type or a role of the VTC? | **Open.** The chapter is written so either resolution is reachable: it states what a network must do, not what it is built from. The `VTN` area is allocated and the conformance target is marked provisional. Closing it either way leaves the requirement identifiers untouched. |
+| **D10** | Does listing require the listed party's agreement? | **No — and the asymmetry is the point.** A VTN may list a party that never asked, which is what makes curation possible at all. The cost is paid in `VTI-VTN-011` and `VTI-VTN-012`: an entry carries its acknowledgement state, and repudiations are published alongside it. |
 
 ## Status
 
 | Chapter | State |
 |---|---|
 | Introduction and scope | **drafted** |
-| Terminology | **drafted** — 29 terms, cross-linked, none dangling |
+| Terminology | **drafted** — 31 terms, cross-linked, none dangling |
 | Architecture and conformance targets | **drafted** |
 | Trust contexts and the authority model | **drafted** (`CTX`, `ACL`, `APV`, `AUD`) |
 | Identity, DIDs and key management | **drafted** (`KEY`) |
@@ -114,6 +124,7 @@ where unresolved propositions are published with their status visible.
 | Credentials and presentations | **drafted** (`CRD`) |
 | The Verifiable Trust Agent | **drafted** (`VTA`) |
 | The Verifiable Trust Community | **drafted** (`VTC`) |
+| The Verifiable Trust Network | **drafted** (`VTN`) — specification-first; no implementation, and D9 open |
 | Membership lifecycle | **drafted** (`MEM`) |
 | Trust registries and recognition | **drafted** (`REG`) |
 | Composition requirements | **drafted** (`CMP`) |
@@ -144,6 +155,10 @@ items only the working group can close:
 - **Reference locations** — the entries in the References chapter marked
   *(pending)*, and confirmation of the rest against their published versions.
 - **The test suite** — location and governance (VTI-CNF-007 onward).
+- **D9, the VTN's status as a target.** The network chapter is drafted and its
+  requirements are stated; whether the VTN is its own conformance target or a
+  curation role of the VTC is for the working group. The conformance table
+  carries the target as provisional until it decides.
 
 ## Drafting sequence
 

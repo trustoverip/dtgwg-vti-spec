@@ -3,7 +3,9 @@
 This section is normative.
 
 This chapter specifies how communities publish, how they look each other up,
-and the limits of what a registry answer establishes.
+and the limits of what a registry answer establishes. It applies equally to the
+answers a [[ref: VTN]] publishes about the parties it lists; the network chapter
+states what it adds.
 
 ### Publication
 
