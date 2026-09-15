@@ -180,6 +180,25 @@ formulation is one that has already been implemented, and has already failed.
 | Assessing a deployment | Composition requirements; Conformance; Appendix E |
 | Writing a governance framework | Trust contexts and the authority model; Governance Considerations |
 
+### Specification Versioning
+
+This specification distinguishes two version numbers that read as if they mean the same thing but do not:
+
+- **`_Version:_`** states the version of VTI that the working group is converging toward — the number a wider ratifying body confirms when this specification reaches Working Group Approved Deliverable or ToIP Approved Deliverable status. It changes only when the specification is re-targeted, not with each Working Draft revision.
+- **`_Document Status:_`** carries the semantic version of *this Working Draft* — `Working Draft MAJOR.MINOR.PATCH` — and is what editors and implementers use to coordinate day-to-day while the specification converges.
+
+Document Status follows [Semantic Versioning 2.0.0](https://semver.org/):
+
+- **MAJOR** — a change that breaks conformance for existing implementations, such as removing or tightening a MUST requirement, changing the semantics of an existing requirement, or withdrawing a conformance target or profile.
+- **MINOR** — a backward-compatible addition, such as a new OPTIONAL or MAY requirement, a new profile, or a new informative chapter.
+- **PATCH** — an editorial or clarifying change with no effect on conformance.
+
+> **Note on cross-specification versioning:** VTI composes companion specifications — including [DTG-CRED] and [TRUST-TASKS] (see [References](#references)) — that are versioned independently of VTI and of each other, each using the same `_Version:_` / `_Document Status:_` split; a MAJOR release of one does not imply, require, or correspond to any particular release of another. Where this specification's conformance requirements depend on a mechanism defined by a companion specification, this specification states the minimum Document Status of that companion specification with which VTI's stated Document Status is compatible, and the companion specification is expected to do the same in reverse. Implementers integrating multiple specifications MUST check the stated minimums rather than assuming that matching or adjacent version numbers imply compatibility. The [DTG-CRED] and [TRUST-TASKS] citations are marked *(pending)* in [References](#references); minimum-version notes against them will be added once the working group fixes those citations.
+>
+> `_Version:_` is set to `1.0`, the release VTI is converging toward; it is not yet ratified.
+
+This section governs the version of *this document*. Compatibility between peers at the operation level — negotiating a common operation version, refusing one that is unsupported, and maintaining a version floor — is a separate, already-specified concern: see VTI-OPS-005 and VTI-OPS-043 through VTI-OPS-047 in [Operation Surface](#operation-surface), and the conformance-claim rules VTI-CNF-002 and VTI-CNF-008 in [Conformance](#conformance).
+
 ## Requirements Language
 
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in [IETF RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
