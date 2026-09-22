@@ -93,6 +93,10 @@ nothing further. See VTI-CMP-030.
 the time of the decision, the verifier MUST establish that separately, as
 required by VTI-CMP-032.
 
+**VTI-CRD-032** — Successful verification of a credential that cites a Trust
+Task exchange MUST NOT be treated as establishing that the exchange completed.
+Completion is established only by the outcome evidence VTI-CMP-022 requires.
+
 ### Minimisation
 
 **VTI-CRD-040** — A verifier MUST NOT require disclosure beyond what the

@@ -83,6 +83,29 @@ unresolved. An interface that reports only "completed" gives a relying party no
 way to tell the two apart, and the relying party will reasonably assume the
 stronger reading.
 
+**VTI-CMP-022** — A credential that cites a Trust Task exchange as the exchange
+attesting what it states — in [DTG-CRED], a credential carrying `taskContext` —
+MUST NOT be treated as evidence that the cited exchange completed unless the
+relying party also holds outcome evidence for that exchange satisfying the
+checks of [TRUST-TASKS], *Evidence That a Cited Exchange Completed*.
+
+**VTI-CMP-023** — Where a relying decision depends on a cited exchange having
+completed, the outcome evidence MUST travel with the presentation of the
+credential. A relying party that does not receive it MUST treat the credential
+as not evidencing completion, and MUST NOT report the credential's successful
+verification as though it were.
+
+*Rationale for VTI-CMP-022 and VTI-CMP-023.* The two properties belong to
+different components. Whether a credential is valid is decided under
+[DTG-CRED]; whether the exchange it cites reached its terminal success state is
+decided under [TRUST-TASKS], over documents the credential does not contain.
+Each component can be correct and the composition still wrong: a witness
+credential verifies in full — signature, status, predicate, profile — for a
+session that was cancelled, or that never completed, because nothing in the
+credential records how the session ended. The failure is a relying party
+reading the first property as the second, and it is a composition failure
+because neither specification can prevent it on its own.
+
 ### Authority is not verification
 
 **VTI-CMP-030** — Verification of a credential or a proof MUST be treated as
@@ -161,6 +184,13 @@ management rather than from credentials.
 
 **VTI-CMP-063** — A composed interaction MUST NOT require disclosure beyond what
 the relying decision needs.
+
+**VTI-CMP-064** — A deployment MUST count the outcome evidence a presentation
+carries (VTI-CMP-023) among the durable correlators it introduces under
+VTI-CMP-062. Outcome evidence consists of whole Trust Task documents: it
+discloses the cited exchange's document and thread identifiers and both parties'
+identifiers to every party that evaluates it, however private the credential's
+own proof mechanism.
 
 *Rationale.* An unlinkable proof carried beside a stable agent name, over a
 route observable to a mediator, preceded by a registry lookup that reveals who
