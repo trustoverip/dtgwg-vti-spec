@@ -323,6 +323,31 @@ are not failures merely for resembling an adversarial pattern (VTI-CMP-074).
 Current disposition: `UNRESOLVED`, with strong `COMPOSITION-OWNED` evidence.
 Source material is cited in the Informative References.
 
+**Family 2 — validity is not completion.** One unsafe inference: that a
+credential citing a Trust Task exchange, having verified, shows the exchange
+completed. Supports VTI-CMP-022, VTI-CMP-023 and VTI-CMP-064.
+
+| Proposition | Pressure test | Legitimate counter-case |
+|---|---|---|
+| A credential verifies in full for an exchange that never completed | A statement credential passing signature, status, predicate and every profile constraint, citing a session with no terminal document | A credential that cites an exchange only to identify it, not as evidence it completed, is not a failure |
+| Outcome evidence of the wrong kind reads as completion | A cancelled session's control response, a response signed by the holder itself, an error response, and a counterfeit initiating document reusing the cited `id`, each checked against the pairing rule | An exchange closed by the response to a task conducted on its thread under another specification is complete when that response is the declared outcome evidence |
+| Completion evidence is private because the credential's proof is | Outcome evidence carried beside a selectively disclosed credential, measured for the identifiers it discloses | A relying decision that does not depend on completion needs no outcome evidence, and carries none |
+
+Ownership: `JOINTLY-OWNED` — [DTG-CRED] owns credential validity and
+[TRUST-TASKS] owns the outcome-evidence checks; whether a relying party keeps
+the two apart holds only across their composition. Executable pressure test for
+the second proposition: [KEYRING-REF-07G], which runs four pairing rules
+against seven exchanges built from real Trust Task documents and proofs. The
+first and third propositions have no published pressure test yet.
+
+Current disposition: `UNRESOLVED`, with `JOINTLY-OWNED` evidence.
+
+> **Note on this appendix's status:** Family 2 is recorded here as VTI-CMP-120
+> currently requires, with Appendix E in its present informative form. [Issue
+> #32](https://github.com/trustoverip/dtgwg-vti-spec/issues/32) questions
+> whether this appendix should be reclassified or restructured; if it is, this
+> entry moves with it.
+
 #### Assessment submissions
 
 Submissions received under the assessment interface defined in the Conformance
