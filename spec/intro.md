@@ -175,7 +175,7 @@ formulation is one that has already been implemented, and has already failed.
 | Deciding whether VTI fits your ecosystem | This chapter, then Architecture and conformance targets |
 | Implementing a client | Client onboarding and lifecycle; Sessions and authentication; Operation surface |
 | Implementing or operating a VTA | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; The Verifiable Trust Agent; Operational and assurance requirements |
-| Implementing or operating a VTC | Trust contexts; Access control and authority; Approvals, consent and step-up; The Verifiable Trust Community; Membership lifecycle and community credentials; Trust registries and cross-community recognition |
+| Implementing or operating a VTC | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; The Verifiable Trust Community; Membership lifecycle and community credentials; Trust registries and cross-community recognition |
 | Curating communities into a network | The Verifiable Trust Network; Trust registries and cross-community recognition |
 | Assessing a deployment | Composition requirements; Conformance; Appendix E |
 | Writing a governance framework | Access control and authority; Approvals, consent and step-up; Governance Considerations |
