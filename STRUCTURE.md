@@ -31,7 +31,10 @@ Three bodies of normative material:
 | A — Foundations | Introduction and scope | `spec/intro.md` |
 | | Terminology | `spec/terms-and-definitions-intro.md` |
 | | Architecture and conformance targets | `spec/02-architecture.md` |
-| B — Common model | Trust contexts and the authority model | `spec/03-trust-contexts.md` |
+| B — Common model | Trust contexts | `spec/03-trust-contexts.md` |
+| | Access control and authority | `spec/03a-access-control.md` |
+| | Approvals, consent and step-up | `spec/03b-approvals.md` |
+| | Audit | `spec/03c-audit.md` |
 | | Identity, DIDs and key management | `spec/04-identity-keys.md` |
 | | Transports, messaging and delivery | `spec/05-transports.md` |
 | | Sessions and authentication | `spec/06-sessions-auth.md` |
@@ -51,13 +54,31 @@ Three bodies of normative material:
 | | Appendices A–F | `spec/appendix.md` |
 
 One chapter per file, because `markdown_paths` order is the rendered order and
-the file split becomes the working group's unit of assignment and review.
+the file split becomes the working group's unit of assignment and review. This
+is a deliberate departure from the sibling DTGWG specifications
+(`dtgwg-cred-spec`, `dtgwg-trust-tasks-spec`), which each keep their body in a
+single `body.md`: VTI is several times their length, and a single file would
+make every review touch every chapter. The cost is that the chapter list lives
+in three places — `markdown_paths` in `specs.json`, the "Structure of this
+document" table in `spec/intro.md`, and the chapter map above — and a change
+that adds, removes or moves a chapter updates all three in the same pull
+request. The profile table in `spec/95-conformance.md` names chapters too, and
+changes with them when a chapter in a profile is split or renamed.
+
+One requirement area per chapter. Every area in the Conformance chapter's area
+table has a chapter of its own, so that a reader looking for an area's
+requirements finds them under its name. The Trust Contexts chapter originally
+carried four areas (`CTX`, `ACL`, `APV`, `AUD`) and was split along them
+([#32](https://github.com/trustoverip/dtgwg-vti-spec/issues/32)); no requirement
+identifier changed.
 
 The rendered order is the order in `markdown_paths`, not the filenames, so a
 chapter inserted between two existing ones takes a suffixed name —
-`11a-vtn.md` — rather than renumbering every file after it. Renumbering costs
-the history of every file it touches and buys nothing the ordering in
-`specs.json` does not already give.
+`11a-vtn.md`, `03a-access-control.md` — rather than renumbering every file
+after it. Renumbering costs the history of every file it touches and buys
+nothing the ordering in `specs.json` does not already give. Filenames are not
+identifiers: nothing in the rendered document or in a requirement identifier
+refers to one.
 
 ## Requirement identifiers
 
@@ -115,7 +136,10 @@ where unresolved propositions are published with their status visible.
 | Introduction and scope | **drafted** |
 | Terminology | **drafted** — 31 terms, cross-linked, none dangling |
 | Architecture and conformance targets | **drafted** |
-| Trust contexts and the authority model | **drafted** (`CTX`, `ACL`, `APV`, `AUD`) |
+| Trust contexts | **drafted** (`CTX`) |
+| Access control and authority | **drafted** (`ACL`) |
+| Approvals, consent and step-up | **drafted** (`APV`) |
+| Audit | **drafted** (`AUD`) |
 | Identity, DIDs and key management | **drafted** (`KEY`) |
 | Transports, messaging and delivery | **drafted** (`TRN`) |
 | Sessions and authentication | **drafted** (`SES`) |
@@ -136,7 +160,7 @@ where unresolved propositions are published with their status visible.
 | Appendix B — entry schema | **drafted** |
 | Appendix C — role and capability annex | **drafted as a proposal** for WG ratification |
 | Appendix D — context path grammar | **drafted** |
-| Appendix E — composition catalogue | **drafted** |
+| Appendix E — composition catalogue | **drafted** — E.1 (record form) normative, the rest informative |
 | Appendix F — divergence register | **drafted**; seeded, and open for implementer entries |
 
 Known gaps. Every chapter and appendix now has text; what remains are the
@@ -154,7 +178,9 @@ items only the working group can close:
   specification reference fixed.
 - **Reference locations** — the entries in the References chapter marked
   *(pending)*, and confirmation of the rest against their published versions.
-- **The test suite** — location and governance (VTI-CNF-007 onward).
+- **The test suite** — location and governance (VTI-CNF-007 onward). Until
+  it exists, VTI-CNF-006's coverage obligation is an open defect of the
+  specification, not a condition on any implementation.
 - **D9, the VTN's status as a target.** The network chapter is drafted and its
   requirements are stated; whether the VTN is its own conformance target or a
   curation role of the VTC is for the working group. The conformance table
@@ -165,7 +191,8 @@ items only the working group can close:
 1. Repo hygiene and the conformance targets in `02-architecture.md` — every
    later requirement binds to those names and to the identifier scheme.
 2. `03-trust-contexts.md` — the largest gap, and a prerequisite for the
-   sessions, client, VTA and VTC chapters.
+   sessions, client, VTA and VTC chapters. Drafted as one chapter and since
+   split into `03`–`03c` along its four requirement areas.
 3. `07-clients.md` — the smallest self-contained normative chapter with
    running implementations behind it; the first real test of the structure.
 4. `08-operations.md` — settles Trust Task precedence early, before more

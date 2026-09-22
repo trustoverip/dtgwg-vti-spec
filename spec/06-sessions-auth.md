@@ -134,9 +134,9 @@ to invalidate an issued access credential before its expiry.
 **VTI-SES-041** — A node MUST audit the establishment, refresh, termination and
 failed establishment of a session.
 
-**VTI-SES-043** — A node MUST be able to enumerate the sessions active for a
-subject, and MUST be able to terminate them collectively.
-
 **VTI-SES-042** — Where the transport supports binding a session to a key held
 by the client, a node SHOULD bind it, and MUST refuse a request under a bound
 session that does not demonstrate that key.
+
+**VTI-SES-043** — A node MUST be able to enumerate the sessions active for a
+subject, and MUST be able to terminate them collectively.

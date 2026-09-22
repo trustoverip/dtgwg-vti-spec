@@ -22,6 +22,14 @@ two plausible owners is a decision that gets made twice, differently.
 This chapter specifies the community node: what it is, how it is stood up, and
 which authority decisions belong to it rather than to the VTA beneath it.
 
+It is the first of three chapters on the community. What a community does once
+it is stood up is specified in the two that follow the Verifiable Trust Network
+chapter: Membership Lifecycle and Community Credentials, for how a subject
+becomes, remains and ceases to be a member; and Trust Registries and
+Cross-Community Recognition, for what a community publishes and how
+communities recognise each other. An implementer of the VTC target needs all
+three.
+
 ### Provisioning and dependency
 
 **VTI-VTC-001** — A VTC MUST be provisioned on an existing VTA and MUST derive
@@ -57,11 +65,12 @@ and cannot take a member's keys.
 ### The community authority model
 
 **VTI-VTC-020** — A VTC MUST express its own roles, capabilities, approve scope
-and approval rules using the model defined in the Trust Contexts chapter, and
-MUST NOT define a parallel model.
+and approval rules using the model defined in the Access Control and Authority
+and the Approvals, Consent and Step-Up chapters, and MUST NOT define a parallel
+model.
 
 **VTI-VTC-021** — An administrative action on the community MUST be subject to
-the approval requirements of that chapter.
+the approval requirements of the Approvals, Consent and Step-Up chapter.
 
 ### Governance binding
 

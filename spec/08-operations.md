@@ -205,7 +205,7 @@ every task that needs them:
 | **Envelope** | the operation identifier and version, issuer, recipient, issue time, a unique document identifier, and the issuer's proof |
 | **Refusal** | a machine-readable reason from the defined set, with a discriminator in its details where the set has no code for the condition |
 | **Page request** / **page response** | a limit and an opaque cursor, with the cursor's binding rules |
-| **Scope filter** | a context path and a direction, as defined in the Trust Contexts chapter |
+| **Scope filter** | a context path and a direction, as defined in the Access Control and Authority chapter |
 | **Idempotency key** | the identifier under which a repeat of one logical operation is recognised |
 | **Entry**, **context record**, **credential reference** | the authority and object shapes the chapters define |
 | **Instant** | a point in time, in one format, UTC |

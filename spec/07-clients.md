@@ -86,7 +86,7 @@ The bootstrap identifier is conveyed out-of-band to an administrator — a chat
 message, an email, a scanned code — who records an access control entry for it.
 
 **VTI-CLT-010** — Enrolment MUST result in an access control entry as defined
-in the Trust Contexts chapter. A node MUST NOT grant a client standing by any
+in the Access Control and Authority chapter. A node MUST NOT grant a client standing by any
 other means.
 
 **VTI-CLT-011** — The enrolling administrator MUST hold act authority covering

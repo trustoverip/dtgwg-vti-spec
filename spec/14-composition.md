@@ -51,8 +51,9 @@ component's conformance to its own specification MUST NOT be treated as
 satisfying any requirement in this chapter.
 
 **VTI-CMP-002** — A conformance claim against the Composition profile MUST
-state, for each requirement in this chapter, the evidence relied on. Appendix E
-records the ownership classification and evidence for each.
+state, for each requirement in this chapter, the evidence relied on. The
+ownership classification of each requirement, and the working group's evidence
+for it, are recorded in Appendix E in the form defined in Appendix E.1.
 
 *Rationale.* The failure this chapter exists to prevent is not a component
 behaving incorrectly. It is every component behaving correctly and the system
@@ -309,8 +310,8 @@ sufficient for them to understand what they are authorising.
 that principal's authorisation requirement.
 
 *Rationale.* These are the composed-flow form of requirements that appear
-locally in the Trust Contexts and Client chapters. They are restated here
-because a flow can satisfy each node's local rule and still complete without a
+locally in the Approvals, Consent and Step-Up and Client chapters. They are
+restated here because a flow can satisfy each node's local rule and still complete without a
 human having meaningfully decided anything — the authorisation collected at one
 hop being reused, widened, or attributed to a principal by a component acting
 on their behalf.
@@ -324,7 +325,8 @@ specification instead.
 
 **VTI-CMP-120** — A published version of this specification MUST record, for
 each requirement in this chapter, its ownership classification, the evidence
-supporting it, and the counter-cases considered. Appendix E carries that record.
+supporting it, and the counter-cases considered, as a record in the form
+defined in Appendix E.1. Appendix E carries those records.
 
 *Rationale.* Publishing the unresolved propositions with their status visible is
 deliberate. A reader is entitled to know which requirements the working group
