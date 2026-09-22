@@ -1,18 +1,23 @@
 # Verifiable Trust Infrastructure (VTI) Specification
 
 _Version:_ 1.0  
-_Document Status:_ Working Draft 0.1.0  
+_Document Status:_ Working Draft 0.2.0  
 _DOI:_ {{see [this wiki page](https://lf-toip.atlassian.net/wiki/spaces/HOME/pages/767787009/ToIP+Approved+Deliverable+Process#Persistent-DOI-Link) for instructions about how to add a DOI}}  
 _GitHub:_ <https://github.com/trustoverip/dtgwg-vti-spec>  
 _Published:_ <https://trustoverip.github.io/dtgwg-vti-spec/>
 
 _Editors:_
 
+- Alberto Leon, Applied Technology Lab at Harvard University
+- Brendan A. Miller, Applied Technology Lab at Harvard University
+- Drummond Reed, First Person Cooperative
 - Glenn Gore, Affinidi
 
 _Contributors:_
 
 - Geoff Turk, First Person Project
+- Sankarshan Mukhopadhyay, QBF Consulting LLP
+- The participants of the Decentralized Trust Graph Working Group (DTGWG)
 
 **Abstract**
 
