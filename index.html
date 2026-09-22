@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-15T17:56:48.471Z"
+      "lastUpdated": "2026-09-22T14:31:12.745Z"
     }
   ]
 };</script>
@@ -585,7 +585,7 @@ formulation is one that has already been implemented, and has already failed.</p
 </ul>
 <p>Before this specification’s first ratification, a breaking change MAY be released as a MINOR increment instead of a MAJOR one, and <code>Document Status</code>’s MAJOR component MUST NOT advance past <code>0</code> until ratification — SemVer 2.0.0 §4 already treats <code>0.y.z</code> as carrying no compatibility guarantee, so there is no need to spend a MAJOR increment confirming that. See <a href="#ratification-and-the-stable-release-line">Ratification and the Stable Release Line</a> below for what happens to <code>Document Status</code> and <code>_Version:_</code> at and after ratification.</p>
 <blockquote>
-<p><strong>Note on cross-specification versioning:</strong> VTI composes companion specifications — including [DTG-CRED] and [TRUST-TASKS] (see <a href="#references">References</a>) — that are versioned independently of VTI and of each other, each using the same <code>_Version:_</code> / <code>_Document Status:_</code> split; a MAJOR release of one does not imply, require, or correspond to any particular release of another. Where this specification’s conformance requirements depend on a mechanism defined by a companion specification, this specification states the minimum Document Status of that companion specification with which VTI’s stated Document Status is compatible, and the companion specification is expected to do the same in reverse. Implementers integrating multiple specifications MUST check the stated minimums rather than assuming that matching or adjacent version numbers imply compatibility. The [DTG-CRED] and [TRUST-TASKS] citations are marked <em>(pending)</em> in <a href="#references">References</a>; minimum-version notes against them will be added once the working group fixes those citations.</p>
+<p><strong>Note on cross-specification versioning:</strong> VTI composes companion specifications — including [DTG-CRED] and [TRUST-TASKS] (see <a href="#references">References</a>) — that are versioned independently of VTI and of each other, each using the same <code>_Version:_</code> / <code>_Document Status:_</code> split; a MAJOR release of one does not imply, require, or correspond to any particular release of another. Where this specification’s conformance requirements depend on a mechanism defined by a companion specification, this specification states the minimum Document Status of that companion specification with which VTI’s stated Document Status is compatible, and the companion specification is expected to do the same in reverse. Implementers integrating multiple specifications MUST check the stated minimums rather than assuming that matching or adjacent version numbers imply compatibility. Minimum compatible versions for [DTG-CRED] and [TRUST-TASKS], whose citations are fixed in <a href="#references">References</a>: VTI-CMP-022, VTI-CMP-023 and VTI-CRD-032 require the first Document Status of [DTG-CRED] that defines <code>taskDigestMultibase</code>, and the first Document Status of [TRUST-TASKS] that defines outcome evidence for a cited exchange. <em>Editor’s note: both minimums are pending — each definition is proposed for its specification and not yet released; the Document Status values are recorded here once they are.</em></p>
 <p><code>_Version:_</code> is set to <code>1.0</code>, the release VTI is converging toward; it is not yet ratified.</p>
 </blockquote>
 <h4 id="ratification-and-the-stable-release-line" tabindex="-1"><a class="toc-anchor d-print-none" href="#ratification-and-the-stable-release-line">§</a> Ratification and the Stable Release Line</h4>
@@ -2610,6 +2610,9 @@ nothing further. See VTI-CMP-030.</p>
 <p><strong>VTI-CRD-031</strong> — Where a relying decision depends on the issuer’s authority at
 the time of the decision, the verifier MUST establish that separately, as
 required by VTI-CMP-032.</p>
+<p><strong>VTI-CRD-032</strong> — Successful verification of a credential that cites a Trust
+Task exchange MUST NOT be treated as establishing that the exchange completed.
+Completion is established only by the outcome evidence VTI-CMP-022 requires.</p>
 <h3 id="minimisation" tabindex="-1"><a class="toc-anchor d-print-none" href="#minimisation">§</a> Minimisation</h3>
 <p><strong>VTI-CRD-040</strong> — A verifier MUST NOT require disclosure beyond what the
 relying decision needs.</p>
@@ -3272,6 +3275,26 @@ authority, policy, relationship or evidence conditions it presupposed remain
 unresolved. An interface that reports only “completed” gives a relying party no
 way to tell the two apart, and the relying party will reasonably assume the
 stronger reading.</p>
+<p><strong>VTI-CMP-022</strong> — A credential that cites a Trust Task exchange as the exchange
+attesting what it states — in [DTG-CRED], a credential carrying <code>taskContext</code> —
+MUST NOT be treated as evidence that the cited exchange completed unless the
+relying party also holds outcome evidence for that exchange satisfying the
+checks of [TRUST-TASKS], <em>Evidence That a Cited Exchange Completed</em>.</p>
+<p><strong>VTI-CMP-023</strong> — Where a relying decision depends on a cited exchange having
+completed, the outcome evidence MUST travel with the presentation of the
+credential. A relying party that does not receive it MUST treat the credential
+as not evidencing completion, and MUST NOT report the credential’s successful
+verification as though it were.</p>
+<p><em>Rationale for VTI-CMP-022 and VTI-CMP-023.</em> The two properties belong to
+different components. Whether a credential is valid is decided under
+[DTG-CRED]; whether the exchange it cites reached its terminal success state is
+decided under [TRUST-TASKS], over documents the credential does not contain.
+Each component can be correct and the composition still wrong: a witness
+credential verifies in full — signature, status, predicate, profile — for a
+session that was cancelled, or that never completed, because nothing in the
+credential records how the session ended. The failure is a relying party
+reading the first property as the second, and it is a composition failure
+because neither specification can prevent it on its own.</p>
 <h3 id="authority-is-not-verification" tabindex="-1"><a class="toc-anchor d-print-none" href="#authority-is-not-verification">§</a> Authority is not verification</h3>
 <p><strong>VTI-CMP-030</strong> — Verification of a credential or a proof MUST be treated as
 establishing provenance and integrity, and MUST NOT be treated as establishing
@@ -3330,6 +3353,12 @@ it introduces, including those arising from naming, routing, lookup and session
 management rather than from credentials.</p>
 <p><strong>VTI-CMP-063</strong> — A composed interaction MUST NOT require disclosure beyond what
 the relying decision needs.</p>
+<p><strong>VTI-CMP-064</strong> — A deployment MUST count the outcome evidence a presentation
+carries (VTI-CMP-023) among the durable correlators it introduces under
+VTI-CMP-062. Outcome evidence consists of whole Trust Task documents: it
+discloses the cited exchange’s document and thread identifiers and both parties’
+identifiers to every party that evaluates it, however private the credential’s
+own proof mechanism.</p>
 <p><em>Rationale.</em> An unlinkable proof carried beside a stable agent name, over a
 route observable to a mediator, preceded by a registry lookup that reveals who
 is asking about whom, is a linkable interaction containing an unlinkable proof.
@@ -4034,15 +4063,21 @@ identities by VTI-KEY-001.</li>
 <ul>
 <li>[VC-DATA-MODEL] <em>Verifiable Credentials Data Model.</em>
 <a href="https://www.w3.org/TR/vc-data-model/">https://www.w3.org/TR/vc-data-model/</a></li>
-<li>[DTG-CRED] <em>DTG Credentials Specification</em> — the credential families a VTI
-node issues, holds and presents. <em>(pending)</em></li>
+<li>[DTG-CRED] <em>Decentralized Trust Graph Credentials — Core Specification</em> — the
+credential families a VTI node issues, holds and presents, and the
+<code>taskContext</code> and <code>taskDigestMultibase</code> properties by which a credential
+cites the exchange that attests it (VTI-CMP-022).
+<a href="https://github.com/trustoverip/dtgwg-cred-spec">https://github.com/trustoverip/dtgwg-cred-spec</a></li>
 <li>[STATUS] The credential status mechanism relied on by VTI-CRD-010 through
 VTI-CRD-013. <em>(pending)</em></li>
 </ul>
 <p><strong>Operations and transports</strong></p>
 <ul>
-<li>[TRUST-TASKS] <em>Trust Tasks Specification</em> — the canonical operation
-catalogue whose precedence is required by VTI-OPS-001. <em>(pending)</em></li>
+<li>[TRUST-TASKS] <em>Trust Tasks Specification</em> — the framework every Trust Task
+specification conforms to, including the outcome evidence of a cited exchange
+(VTI-CMP-022), with the canonical operation catalogue whose precedence is
+required by VTI-OPS-001 published in its registry at <a href="https://trusttasks.org/">https://trusttasks.org/</a>.
+<a href="https://github.com/trustoverip/dtgwg-trust-tasks-spec">https://github.com/trustoverip/dtgwg-trust-tasks-spec</a></li>
 <li>[DIDCOMM] <em>DIDComm Messaging v2.</em></li>
 <li>[TSP] <em>Trust Spanning Protocol.</em> <em>(pending)</em></li>
 </ul>
@@ -4072,6 +4107,11 @@ jurisdiction.</li>
 <li>[TOIP-GLOSSARY] <em>ToIP Main Glossary.</em> <a href="https://glossary.trustoverip.org">https://glossary.trustoverip.org</a></li>
 <li>[TOIP-IT-GLOSSARY] <em>ToIP General IT Glossary.</em>
 <a href="https://trustoverip.github.io/ctwg-general-glossary">https://trustoverip.github.io/ctwg-general-glossary</a></li>
+<li>[KEYRING-REF-07G] <em>Keyring reference implementation,
+<code>tsp-reference/ref-07g-outcome-evidence-pairing</code></em> — the executable
+pressure test for Appendix E, Family 2: four pairing rules run
+against seven exchanges built from real Trust Task documents and proofs.
+<a href="https://github.com/berkmancenter/keyring-wallet/tree/c3a7f1d2a547d7a602cf93b87f5672d7a158d4c1/tsp-reference/ref-07g-outcome-evidence-pairing">https://github.com/berkmancenter/keyring-wallet/tree/c3a7f1d2a547d7a602cf93b87f5672d7a158d4c1/tsp-reference/ref-07g-outcome-evidence-pairing</a></li>
 <li>[COMPOSITION-EVIDENCE] Composition assurance evidence informing the
 Composition Requirements chapter and Appendix E, including the
 false-independence corpus recorded there. <em>(pending — the working group is to
@@ -4725,6 +4765,49 @@ independent agreement, selective disclosure and privacy-preserving minimisation
 are not failures merely for resembling an adversarial pattern (VTI-CMP-074).</p>
 <p>Current disposition: <code>UNRESOLVED</code>, with strong <code>COMPOSITION-OWNED</code> evidence.
 Source material is cited in the Informative References.</p>
+<p><strong>Family 2 — validity is not completion.</strong> One unsafe inference: that a
+credential citing a Trust Task exchange, having verified, shows the exchange
+completed. Supports VTI-CMP-022, VTI-CMP-023 and VTI-CMP-064.</p>
+<div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th>Proposition</th>
+<th>Pressure test</th>
+<th>Legitimate counter-case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A credential verifies in full for an exchange that never completed</td>
+<td>A statement credential passing signature, status, predicate and every profile constraint, citing a session with no terminal document</td>
+<td>A credential that cites an exchange only to identify it, not as evidence it completed, is not a failure</td>
+</tr>
+<tr>
+<td>Outcome evidence of the wrong kind reads as completion</td>
+<td>A cancelled session’s control response, a response signed by the holder itself, an error response, and a counterfeit initiating document reusing the cited <code>id</code>, each checked against the pairing rule</td>
+<td>An exchange closed by the response to a task conducted on its thread under another specification is complete when that response is the declared outcome evidence</td>
+</tr>
+<tr>
+<td>Completion evidence is private because the credential’s proof is</td>
+<td>Outcome evidence carried beside a selectively disclosed credential, measured for the identifiers it discloses</td>
+<td>A relying decision that does not depend on completion needs no outcome evidence, and carries none</td>
+</tr>
+</tbody>
+</table>
+</div><p>Ownership: <code>JOINTLY-OWNED</code> — [DTG-CRED] owns credential validity and
+[TRUST-TASKS] owns the outcome-evidence checks; whether a relying party keeps
+the two apart holds only across their composition. Executable pressure test for
+the second proposition: [KEYRING-REF-07G], which runs four pairing rules
+against seven exchanges built from real Trust Task documents and proofs. The
+first and third propositions have no published pressure test yet.</p>
+<p>Current disposition: <code>UNRESOLVED</code>, with <code>JOINTLY-OWNED</code> evidence.</p>
+<blockquote>
+<p><strong>Note on this appendix’s status:</strong> Family 2 is recorded here as VTI-CMP-120
+currently requires, with Appendix E in its present informative form. <a href="https://github.com/trustoverip/dtgwg-vti-spec/issues/32">Issue
+#32</a> questions
+whether this appendix should be reclassified or restructured; if it is, this
+entry moves with it.</p>
+</blockquote>
 <h4 id="assessment-submissions" tabindex="-1"><a class="toc-anchor d-print-none" href="#assessment-submissions">§</a> Assessment submissions</h4>
 <p>Submissions received under the assessment interface defined in the Conformance
 chapter are recorded here, each citing a requirement identifier, a disposition
@@ -5084,15 +5167,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 15 September 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 22 September 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-15T17:56:47.907Z">
-                            Generated: 2026-09-15T17:56:47.907Z
+                        <time class="timestamp" datetime="2026-09-22T14:31:12.130Z">
+                            Generated: 2026-09-22T14:31:12.130Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
