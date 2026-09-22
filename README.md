@@ -45,6 +45,10 @@ by `markdown_paths` in `specs.json`.
 - Terminology is managed with
   [Spec-Up-T](https://trustoverip.github.io/spec-up-t-website/); a term already
   defined in a referenced glossary is transcluded rather than redefined.
+- Per the DTGWG's Joint Development Foundation charter, source code
+  contributions to this repository are subject to the [Developer Certificate
+  of Origin version 1.1](http://developercertificate.org/). Sign off each
+  commit (`git commit -s`) to certify it.
 
 ## Building locally
 
