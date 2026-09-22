@@ -149,8 +149,8 @@ needs. An implementation that accepts either — resolving it to any scope at al
 
 ### Appendix B: Access control entry
 
-This appendix is informative, and illustrates the requirements in the Trust
-Contexts and the Authority Model chapter.
+This appendix is informative, and illustrates the requirements in the Access
+Control and Authority chapter.
 
 A representative entry:
 
@@ -270,13 +270,31 @@ segment. See VTI-CTX-016.
 
 ### Appendix E: Composition proposition catalogue
 
-This appendix is informative, and is the record required by VTI-CMP-120.
+This appendix is the record required by VTI-CMP-120. Section E.1 is
+normative: it fixes the form of that record and the classification vocabulary,
+which VTI-CMP-002 and VTI-CMP-120 rely on. The remainder of the appendix is
+informative — it is the record itself, and its content changes as evidence is
+produced without changing any requirement.
 
-Each requirement in the Composition Requirements chapter is recorded here with
-its ownership classification, the evidence supporting it, the legitimate
-counter-cases considered, and a pointer to any executable pressure test.
+#### E.1 Record form
 
-#### Ownership classification
+This section is normative.
+
+Each requirement in the Composition Requirements chapter is recorded in this
+appendix. A record consists of:
+
+- the requirement identifier or identifiers it covers;
+- an ownership classification, which is exactly one of the values in the table
+  below;
+- the evidence supporting the requirement;
+- the legitimate counter-cases considered — behaviour that resembles the
+  failure the requirement prevents but is not one;
+- a pointer to each executable pressure test, or a statement that none is
+  published; and
+- the current disposition.
+
+Several requirements supported by the same evidence may share one record, as
+the evidence families in E.2 do.
 
 | Classification | Meaning |
 |---|---|
@@ -292,12 +310,14 @@ provenance or evidence, while the question of whether those semantics survive a
 multi-component interaction belongs here. Recording a requirement as jointly
 owned is not a step toward moving it into this specification.
 
-#### Evidence families
+#### E.2 Evidence families
 
-Each family records a set of related propositions carried through the same
-path: threat proposition, falsifiable invariant, executable pressure test,
-legitimate counter-case, disposition. Families are added as the evidence is
-produced.
+This section is informative.
+
+Each family is a record in the form of E.1. It carries a set of related
+propositions through the same path: threat proposition, falsifiable invariant,
+executable pressure test, legitimate counter-case, disposition. Families are
+added as the evidence is produced.
 
 **Family 1 — false independence.** Seven threat classes sharing one unsafe
 inference, each with an executable test and a legitimate counter-case. Supports
@@ -342,13 +362,9 @@ first and third propositions have no published pressure test yet.
 
 Current disposition: `UNRESOLVED`, with `JOINTLY-OWNED` evidence.
 
-> **Note on this appendix's status:** Family 2 is recorded here as VTI-CMP-120
-> currently requires, with Appendix E in its present informative form. [Issue
-> #32](https://github.com/trustoverip/dtgwg-vti-spec/issues/32) questions
-> whether this appendix should be reclassified or restructured; if it is, this
-> entry moves with it.
+#### E.3 Assessment submissions
 
-#### Assessment submissions
+This section is informative.
 
 Submissions received under the assessment interface defined in the Conformance
 chapter are recorded here, each citing a requirement identifier, a disposition

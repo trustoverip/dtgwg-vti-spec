@@ -34,7 +34,8 @@ entry in a network's published set is a [[ref: listing]], and most of what
 follows is about what one does and does not assert.
 
 It defines no new authority model, publication mechanism or credential family.
-A VTN uses the model in the Trust Contexts chapter, publishes under the Trust
+A VTN uses the model in the Trust Contexts, Access Control and Authority, and
+Approvals, Consent and Step-Up chapters, publishes under the Trust
 Registries chapter, and issues and presents under the Credentials chapter.
 
 ### Position in the architecture
@@ -74,11 +75,12 @@ it.
 relationship to the network, using a method satisfying VTI-KEY-001.
 
 **VTI-VTN-004** — A VTN MUST express its own roles, capabilities, approve scope
-and approval rules using the model defined in the Trust Contexts chapter, and
-MUST NOT define a parallel model.
+and approval rules using the model defined in the Access Control and Authority
+and the Approvals, Consent and Step-Up chapters, and MUST NOT define a parallel
+model.
 
 **VTI-VTN-005** — An administrative action on the network MUST be subject to the
-approval requirements of that chapter.
+approval requirements of the Approvals, Consent and Step-Up chapter.
 
 *Rationale for VTI-VTN-002.* A curated set is a published assertion about other
 parties, made without their agreement. The owner is what makes such an

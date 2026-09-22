@@ -16,7 +16,7 @@ requirement identifiers.
 
 | Profile | Chapters |
 |---|---|
-| `Core` | Trust contexts and the authority model; Identity, DIDs and key management; Sessions and authentication; Client onboarding and lifecycle; Operation surface; Credentials and presentations |
+| `Core` | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; Identity, DIDs and key management; Sessions and authentication; Client onboarding and lifecycle; Operation surface; Credentials and presentations |
 | `Delivery` | Transports, messaging and delivery |
 | `Community` | The Verifiable Trust Community; Membership lifecycle and community credentials; Trust registries and cross-community recognition |
 | `Network` | The Verifiable Trust Network |
@@ -63,7 +63,7 @@ Areas allocated:
 | Area | Chapter |
 |---|---|
 | `CTX` | Trust contexts — identifiers, ancestry, lifecycle |
-| `ACL` | Access control entries, roles, capabilities, scopes, listing, delegation, revocation |
+| `ACL` | Access control and authority — entries, roles, capabilities, scopes, listing, delegation, revocation |
 | `APV` | Approvals, consent and step-up |
 | `AUD` | Audit |
 | `KEY` | Identity, DIDs and key management |
@@ -97,6 +97,12 @@ should pin the version they built against.
 **VTI-CNF-006** — Every requirement in this specification MUST map to at least
 one conformance test. A requirement with no test MUST be recorded as a defect in
 this specification.
+
+*Note.* VTI-CNF-006 binds this specification and its test suite, not any
+conformance target: under VTI-CNF-001 it imposes nothing on an implementation,
+and an implementation's conformance does not depend on it. Until the location
+of the suite is settled (see below), no requirement yet maps to a test, and the
+absence of the suite is itself the recorded defect.
 
 *Rationale.* A requirement nobody can test is a requirement nobody can be held
 to, and the gap is invisible from inside the document. Recording it as a defect

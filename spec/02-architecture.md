@@ -203,14 +203,14 @@ each step.
 4. **The VTA locates the authority.** It resolves the entry again, computes the
    effective capability set from the role's ceiling and the entry's own
    narrowing, and checks that the target key is in a context the entry's scope
-   covers. *Trust contexts and the authority model.*
+   covers. *Trust contexts; access control and authority.*
 5. **The VTA evaluates approval rules.** If a rule names this operation, the
    VTA requires either re-authentication of the caller or consent from a
-   different party, and does so before the operation's handler runs. *Trust
-   contexts and the authority model.*
+   different party, and does so before the operation's handler runs. *Approvals,
+   consent and step-up.*
 6. **The operation runs, or is refused.** Either outcome is audited, and a
    refusal names the rule that produced it so the agent can distinguish "not
-   permitted" from "not yet approved" from "failed". *Trust contexts; operation
+   permitted" from "not yet approved" from "failed". *Audit; operation
    surface.*
 7. **The reply reaches the agent, or does not.** The agent concludes delivery
    only on the evidence the transport chapter says counts as delivery, and
