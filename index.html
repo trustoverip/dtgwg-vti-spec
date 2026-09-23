@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-23T09:30:09.880Z"
+      "lastUpdated": "2026-09-23T09:34:44.797Z"
     }
   ]
 };</script>
@@ -5018,12 +5018,6 @@ different thing from a requirement that is met.</p>
 <td>Bind each of these tasks in the document dispatcher, which accepts a signed operation document, verifies its proof, checks its time of issue and records its identifier. Keep the bearer route only as a documented transitional path with a stated removal point. A token authenticates whoever presents it and not the party who composed the request, so it cannot satisfy a definition that requires a proof</td>
 </tr>
 <tr>
-<td>VTI-OPS-021, VTI-OPS-024 <em>(observed)</em></td>
-<td>A document for a task that requires a proof is refused without one on every binding, and a document outside the acceptance window is refused</td>
-<td>The same node’s document dispatcher verifies a proof whenever one is present. It does not itself refuse a document without one when the task’s definition declares the proof REQUIRED: attribution is taken from the proof when there is one, and otherwise from the transport’s authentication of the sender. Joining over the messaging transports depends on this, because those documents carry no proof. The tasks affected are <code>vtc/join-requests/{submit, status, withdraw, supplement}</code>, <code>vtc/members/{self-remove, vmc, personhood/assert}</code> and <code>vtc/vetting/{revoke-statement, vetters/grant}</code>. The dispatcher also applies no acceptance window to the time of issue, and does not refuse a document that states none when the task requires one. This is an observed instance of the reported VTI-OPS-021 entry above</td>
-<td>On every binding, refuse a proofless document for a task whose definition requires a proof, and refuse a document without a time of issue, or with one outside the acceptance window, for a task that requires it. This has to be done before the previous entry’s resolution closes anything. Moving a task into a dispatcher that does not enforce its proof requirement moves the divergence instead of closing it</td>
-</tr>
-<tr>
 <td>VTI-OPS-046, VTI-OPS-047 <em>(open)</em></td>
 <td>Discovery responses are authenticated, and each operation has a version floor a peer cannot argue a node below</td>
 <td>Not established</td>
@@ -5137,6 +5131,10 @@ log it vouches for.</p>
 <tr>
 <td>VTI-OPS-110, VTI-OPS-051</td>
 <td>Promotion to the administrative role now runs through <code>acl/change-role</code>, and the step-up is a host invariant the decision pipeline applies around the policy rather than a check in a handler. The elevation is resolved at the decision point from the caller’s live session, so it is a fact about the caller rather than an assertion by the route that happened to ask, and every path onto the same entry is gated by the same one. A second invariant refuses self-promotion: a second factor establishes who is at the keyboard and never that a second party agreed. <code>acl/grant</code> of the administrative role checks the same predicate one layer out — a grant writes an entry rather than moving one, so there is no transition to hang an invariant on — and checks it on the widening rather than on the write, because re-stating an entry at the role and scope it already holds confers nothing, while re-stating it across more contexts, or across all of them, confers authority without the role ever changing. The serialisation and the role-change policy moved with the promotion, and the refusal of an already-administrative subject generalised into a compare-and-swap under the same lock, so a role write that raced another is refused rather than overwriting it. The console was pointed at the role-change operation, and <code>vtc/members/update</code> refuses <code>role: admin</code> with <code>adminRoleForbidden</code>, witnessed by the node’s error-code census. Closing this also closed an escalation the entry did not record: the role-change path never checked the resulting entry against the caller’s own scope, and an entry’s context list means <em>nowhere</em> under a non-administrative role and <em>everywhere</em> under an administrative one, so an administrator of one context could promote a subject scoped nowhere and land a community-wide administrator without ever naming a context they do not hold</td>
+</tr>
+<tr>
+<td>VTI-OPS-021, VTI-OPS-024</td>
+<td>The document dispatcher now holds every document to the policy its own specification declares. The policy is read from the task registry at dispatch and applied unmodified, so a task that declares <code>proof</code> REQUIRED is refused when it carries none, on every binding that reaches the dispatcher, and the transport’s authentication of the sender no longer stands in for the proof. Nothing configures this: the transitional switch that narrowed the requirement where the transport had authenticated the sender is deleted rather than defaulted off, and a configuration that still asks for the old behaviour is refused at load rather than started under the opposite of what it says, because a per-deployment relaxation is the same weakening a binding is forbidden to make, reached by a longer path. The ordering this took is the one the entry implied: enforcing became available only once the producers that relied on the allowance signed the documents they had been sending unsigned, and a node that enforces before its clients sign refuses their joins. The acceptance window is applied in the same place and on the same terms — a time of issue is required, a document older than the window or outside the skew tolerance is refused, and the window and the retention of the record of accepted identifiers are one bound rather than two. One thing is tighter than the entry asked for: a proof is bound to the document’s own issuer, so a proof that verifies under a key that issuer does not control is refused rather than satisfying the requirement. Before, any verifying proof did, which established that somebody signed something and not who composed the request. What this does not close: the tasks served over an HTTP binding that carries no operation document at all are unaffected, because they never reach the dispatcher. That entry stays open, and the enforcement recorded here is the precondition it named rather than its resolution</td>
 </tr>
 </tbody>
 </table>
@@ -5283,8 +5281,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-23T09:30:09.363Z">
-                            Generated: 2026-09-23T09:30:09.363Z
+                        <time class="timestamp" datetime="2026-09-23T09:34:44.262Z">
+                            Generated: 2026-09-23T09:34:44.262Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
