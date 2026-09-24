@@ -33,7 +33,7 @@ There are two kinds of requirement, and they are not interchangeable.
 | | Re-authentication | Consent |
 |---|---|---|
 | Who decides | the caller, re-proving with an additional factor | one or more parties other than the caller |
-| Bound to | the caller's session, for a bounded window | the exact payload, by digest |
+| Bound to | the caller's session, for a bounded window — or exactly one operation, by digest (VTI-APV-015) | the exact payload, by digest |
 | Establishes | that the caller is still present | that a different party agreed to this change |
 | Threshold | not applicable | N-of-M, optionally excluding the requester |
 
@@ -46,9 +46,10 @@ context-scoped rule MUST apply in the contexts it names.
 operation's handler runs, and MUST reach the same decision on every transport.
 
 **VTI-APV-003** — A re-authentication requirement MUST be satisfied only by the
-caller, MUST raise the assurance level of the caller's session for a bounded
-window, and MUST NOT be treated as evidence that any party other than the
-caller agreed to anything.
+caller, and MUST NOT be treated as evidence that any party other than the
+caller agreed to anything. It MUST either raise the assurance level of the
+caller's session for a bounded window, or be bound to exactly one operation
+under VTI-APV-015.
 
 **VTI-APV-004** — A consent requirement MUST be bound to the digest of the
 exact payload approved. An approval MUST NOT be redeemable for a payload other
@@ -93,6 +94,15 @@ rendering produced from a different source than the one it commits to.
 entry to unrestricted act scope, MUST require consent from a party other than
 the requester.
 
+**VTI-APV-015** — A re-authentication bound to one operation MUST be bound to
+the digest of that operation's exact type and payload, computed as VTI-APV-004
+computes a consent digest. It MUST be redeemable only by the caller who
+performed it, only for that digest, and only once; it MUST expire; and it MUST
+NOT raise the assurance level of any session. The gesture MUST be the caller's
+own additional factor, verified against the challenge the node issued for that
+operation — a proof the caller could produce without the factor, such as a
+signature by a key the caller already holds, does not satisfy it.
+
 *Rationale for VTI-APV-013.* An approval is only as good as the correspondence
 between what the human saw and what the system committed to. Where the display
 is rendered from one structure and the digest computed over another, the
@@ -104,6 +114,16 @@ every other grant can be made, including the removal of the controls that
 governed it. Requiring a second party is not a statement about the requester's
 trustworthiness; it is the recognition that a single compromised credential
 should not be able to end the deployment's ability to constrain anything.
+
+*Rationale for VTI-APV-015.* A request that arrives as a signed document, rather
+than over a session, has no session to raise, and binding the gesture to one
+of the caller's sessions after the fact cannot say which one — while a window
+opened on any of them is one a process holding the caller's signing key can
+spend on acts the caller never saw. Binding the gesture to the one operation
+it was made for closes that: one gesture admits one act. It is strictly
+narrower than the session form, not an alternative to it, and it is still the
+caller's own presence that it establishes — never another party's agreement,
+which remains the business of consent.
 
 *Rationale for VTI-APV-005.* A design in which a third party ratifies an action
 and the requester's session is then elevated for a period is consent with the
