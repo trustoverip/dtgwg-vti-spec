@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-23T09:34:44.797Z"
+      "lastUpdated": "2026-09-24T14:51:24.109Z"
     }
   ]
 };</script>
@@ -5014,7 +5014,7 @@ different thing from a requirement that is met.</p>
 <tr>
 <td>VTI-OPS-020, VTI-OPS-021, VTI-OPS-024, VTI-OPS-093 <em>(observed)</em></td>
 <td>Every operation document carries a proof by its issuer and a time of issue, on every binding, and a binding does not relax either on the strength of the transport’s own authentication</td>
-<td>At one community node, 47 tasks whose own definitions declare the proof REQUIRED are served only over an HTTP binding that carries no operation document at all. The body is the bare payload, the task is named in a header and checked against the route, and the caller is authenticated by a bearer session token. No proof is required or verified, no time of issue is checked, although every one of these definitions except six also declares it REQUIRED, and no document identifier enters the replay record. There are 30 community tasks. Administrative: <code>vtc/members/{credentials, update, admin-remove, purge}</code>, <code>vtc/join-requests/decide</code>, <code>vtc/admin/invites/{create, revoke}</code>, <code>vtc/community/profile/update</code>, <code>vtc/config/{export, import}</code>, <code>vtc/backup/{export, import}</code>, <code>vtc/registry/sync-jobs/{retry, discard}</code>, <code>vtc/endorsement-types/{register, delete}</code> and <code>vtc/website/{files/delete, rollback}</code>. Taken under a member’s session: <code>vtc/members/{renew, rotate-challenge, rotate, self-remove, personhood/assert, personhood/revoke}</code>, <code>vtc/relationships/revoke</code>, <code>vtc/endorsements/{issue, revoke}</code>, <code>vtc/invitations/{issue, revoke}</code> and <code>vtc/vetting/vetters/grant</code>. There are 17 canonical tasks shared with other node types: <code>acl/{grant, change-role, revoke}</code>, <code>config/{patch, reload, restart}</code>, <code>policy/{upsert, activate}</code>, <code>audit/list</code>, <code>auth/{whoami, sessions/list, revoke-session}</code> and <code>auth/passkey/{list, enroll/start, enroll/finish, revoke/start, revoke/finish}</code>. The six that do not declare the time of issue REQUIRED are <code>vtc/config/export</code>, <code>auth/whoami</code>, <code>auth/sessions/list</code>, <code>auth/passkey/list</code>, <code>auth/passkey/enroll/start</code> and <code>auth/passkey/revoke/start</code>. One more, <code>vtc/auth/admin-session</code>, is unauthenticated at the transport; it takes an access token in the body and also carries no proof. Three of the community tasks are also served by the node’s document dispatcher (see the next entry)</td>
+<td>At one community node, 45 tasks whose own definitions declare the proof REQUIRED are served over an HTTP binding that carries no operation document at all. The body is the bare payload, the task is named in a header and checked against the route, and the caller is authenticated by a bearer session token. No proof is required or verified, no time of issue is checked, although every one of these definitions except five also declares it REQUIRED, and no document identifier enters the replay record. There are 28 community tasks. Administrative: <code>vtc/members/{credentials, update, admin-remove, purge}</code>, <code>vtc/join-requests/decide</code>, <code>vtc/admin/invites/{create, revoke}</code>, <code>vtc/community/profile/update</code>, <code>vtc/backup/{export, import}</code>, <code>vtc/registry/sync-jobs/{retry, discard}</code>, <code>vtc/endorsement-types/{register, delete}</code> and <code>vtc/website/{files/delete, rollback}</code>. Taken under a member’s session: <code>vtc/members/{renew, rotate-challenge, rotate, self-remove, personhood/assert, personhood/revoke}</code>, <code>vtc/relationships/revoke</code>, <code>vtc/endorsements/{issue, revoke}</code>, <code>vtc/invitations/{issue, revoke}</code> and <code>vtc/vetting/vetters/grant</code>. There are 17 canonical tasks shared with other node types: <code>acl/{grant, change-role, revoke}</code>, <code>config/{patch, reload, restart}</code>, <code>policy/{upsert, activate}</code>, <code>audit/list</code>, <code>auth/{whoami, sessions/list, revoke-session}</code> and <code>auth/passkey/{list, enroll/start, enroll/finish, revoke/start, revoke/finish}</code>. The five that do not declare the time of issue REQUIRED are <code>auth/whoami</code>, <code>auth/sessions/list</code>, <code>auth/passkey/list</code>, <code>auth/passkey/enroll/start</code> and <code>auth/passkey/revoke/start</code>. One more, <code>vtc/auth/admin-session</code>, is unauthenticated at the transport; it takes an access token in the body and also carries no proof. Eleven of the community tasks are also served by the node’s document dispatcher, which holds a document to the policy its definition declares (F.5); for those the bearer route remains beside it as a transitional path, so the divergence stands for them until it is removed</td>
 <td>Bind each of these tasks in the document dispatcher, which accepts a signed operation document, verifies its proof, checks its time of issue and records its identifier. Keep the bearer route only as a documented transitional path with a stated removal point. A token authenticates whoever presents it and not the party who composed the request, so it cannot satisfy a definition that requires a proof</td>
 </tr>
 <tr>
@@ -5274,15 +5274,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 23 September 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 24 September 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-23T09:34:44.262Z">
-                            Generated: 2026-09-23T09:34:44.262Z
+                        <time class="timestamp" datetime="2026-09-24T14:51:23.618Z">
+                            Generated: 2026-09-24T14:51:23.618Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
