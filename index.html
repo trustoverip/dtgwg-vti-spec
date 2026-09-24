@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-24T14:51:24.109Z"
+      "lastUpdated": "2026-09-24T19:38:15.787Z"
     }
   ]
 };</script>
@@ -1423,7 +1423,7 @@ expresses that with <strong>approval rules</strong>, evaluated before the operat
 </tr>
 <tr>
 <td>Bound to</td>
-<td>the caller’s session, for a bounded window</td>
+<td>the caller’s session, for a bounded window — or exactly one operation, by digest (VTI-APV-015)</td>
 <td>the exact payload, by digest</td>
 </tr>
 <tr>
@@ -1445,9 +1445,10 @@ context-scoped rule MUST apply in the contexts it names.</p>
 <p><strong>VTI-APV-002</strong> — A node MUST evaluate applicable approval rules before the
 operation’s handler runs, and MUST reach the same decision on every transport.</p>
 <p><strong>VTI-APV-003</strong> — A re-authentication requirement MUST be satisfied only by the
-caller, MUST raise the assurance level of the caller’s session for a bounded
-window, and MUST NOT be treated as evidence that any party other than the
-caller agreed to anything.</p>
+caller, and MUST NOT be treated as evidence that any party other than the
+caller agreed to anything. It MUST either raise the assurance level of the
+caller’s session for a bounded window, or be bound to exactly one operation
+under VTI-APV-015.</p>
 <p><strong>VTI-APV-004</strong> — A consent requirement MUST be bound to the digest of the
 exact payload approved. An approval MUST NOT be redeemable for a payload other
 than the one approved, and MUST NOT be redeemable more than once.</p>
@@ -1480,6 +1481,14 @@ rendering produced from a different source than the one it commits to.</p>
 <p><strong>VTI-APV-014</strong> — Creating an entry with unrestricted act scope, or widening an
 entry to unrestricted act scope, MUST require consent from a party other than
 the requester.</p>
+<p><strong>VTI-APV-015</strong> — A re-authentication bound to one operation MUST be bound to
+the digest of that operation’s exact type and payload, computed as VTI-APV-004
+computes a consent digest. It MUST be redeemable only by the caller who
+performed it, only for that digest, and only once; it MUST expire; and it MUST
+NOT raise the assurance level of any session. The gesture MUST be the caller’s
+own additional factor, verified against the challenge the node issued for that
+operation — a proof the caller could produce without the factor, such as a
+signature by a key the caller already holds, does not satisfy it.</p>
 <p><em>Rationale for VTI-APV-013.</em> An approval is only as good as the correspondence
 between what the human saw and what the system committed to. Where the display
 is rendered from one structure and the digest computed over another, the
@@ -1490,6 +1499,15 @@ every other grant can be made, including the removal of the controls that
 governed it. Requiring a second party is not a statement about the requester’s
 trustworthiness; it is the recognition that a single compromised credential
 should not be able to end the deployment’s ability to constrain anything.</p>
+<p><em>Rationale for VTI-APV-015.</em> A request that arrives as a signed document, rather
+than over a session, has no session to raise, and binding the gesture to one
+of the caller’s sessions after the fact cannot say which one — while a window
+opened on any of them is one a process holding the caller’s signing key can
+spend on acts the caller never saw. Binding the gesture to the one operation
+it was made for closes that: one gesture admits one act. It is strictly
+narrower than the session form, not an alternative to it, and it is still the
+caller’s own presence that it establishes — never another party’s agreement,
+which remains the business of consent.</p>
 <p><em>Rationale for VTI-APV-005.</em> A design in which a third party ratifies an action
 and the requester’s session is then elevated for a period is consent with the
 binding removed: the approver believes they approved one change, and what they
@@ -5281,8 +5299,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-24T14:51:23.618Z">
-                            Generated: 2026-09-24T14:51:23.618Z
+                        <time class="timestamp" datetime="2026-09-24T19:38:15.320Z">
+                            Generated: 2026-09-24T19:38:15.320Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
