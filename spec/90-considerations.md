@@ -71,7 +71,7 @@ requirements of its own; each item names the requirements that carry it.
 19. **An algorithm is retired at the moment it is broken**, not at the next
     release (VTI-KEY-013).
 20. **The key that answers messages must not be the key that signs decisions.**
-    A node's credentials and status lists are signed by an `approver` key only
+    A node's credentials and status lists are signed by an `attestation` key only
     its VTA holds, and its traffic by an `operational` key its service process
     may hold (VTI-KEY-080, VTI-KEY-081, VTI-KEY-111). Compromise of the exposed
     process then yields a caller of the signing oracle, not the community's
@@ -81,12 +81,19 @@ requirements of its own; each item names the requirements that carry it.
     its role does not permit, or in no role at all, is refused
     (VTI-KEY-092, VTI-KEY-094), and every evaluated proof in a proof set must
     verify, so that a set is as strong as its strongest proof rather than its
-    weakest (VTI-KEY-102).
-22. **A stolen key writes whatever dates it likes.** The time an approval was
+    weakest (VTI-KEY-102). A verifier that requires a particular cryptosuite
+    refuses an artefact stripped of that proof, and a node says which suites it
+    signs with so that the stripping can be seen (VTI-KEY-104, VTI-KEY-105).
+22. **A stolen key writes whatever dates it likes.** The time an attestation was
     issued is established from the identifier's history or a VTA-written
     record, never from the artefact's own dates (VTI-KEY-131), and a key
     revoked for compromise is distinguished from one retired in the ordinary
     course (VTI-KEY-120).
+23. **The seal is not in the backup.** `attestation` and `update` keys are
+    generated rather than derived and are never backed up (VTI-KEY-110,
+    VTI-KEY-112, VTI-KEY-116); a lost VTA is recovered through the committed
+    next update key and re-issuance (VTI-KEY-117), so there is no second copy
+    of the community's seal wherever backups happen to be kept.
 
 ## Privacy Considerations
 

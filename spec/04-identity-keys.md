@@ -91,7 +91,8 @@ applied through them: see [Key roles](#key-roles), VTI-KEY-070 onward.
 ### Derivation
 
 **VTI-KEY-030** — A key belonging to a context MUST be derived from that
-context's derivation base.
+context's derivation base. An `attestation` or `update` key is exempt: it is
+generated, not derived, under VTI-KEY-110 and VTI-KEY-116.
 
 **VTI-KEY-031** — A context's derivation base MUST be immutable, as required by
 VTI-CTX-021, and a child context's base MUST nest under its parent's, as
@@ -183,18 +184,12 @@ its proofs may carry, and who may hold it. A key role is not a [[ref: role]] in
 the sense of the Access Control and Authority chapter, which is a position of a
 subject; the two share a word and nothing else.
 
-The key role named `approver` below is likewise distinct from an
-[[ref: approver]] — a subject that satisfies a consent requirement under the
+The key role named `attestation` below is named so as not to be confused with
+an [[ref: approver]] — a subject that satisfies a consent requirement under the
 Approvals, Consent and Step-Up chapter. The two are related in one direction
-only: an approval rule may govern whether a node decides to issue an approval
-artefact, and the `approver` key is what makes the decision, once taken,
-verifiable by a third party.
-
-*Open issue.* The identifier `approver` collides with the defined term
-[[ref: approver]], and "approval artefact" sits close to the approvals of the
-Approvals, Consent and Step-Up chapter. The working group may prefer a
-different identifier for the role (for example `issuer` or `attestation`) before
-the registry is fixed. The requirements below do not depend on the choice.
+only: an approval rule may govern whether a node decides to issue an
+attestation artefact, and the `attestation` key is what makes the decision,
+once taken, verifiable by a third party.
 
 **VTI-KEY-070** — The durable identity of a VTA, a VTC and a VTN MUST bind every
 key it publishes, and the key or keys holding its identifier-log update
@@ -213,7 +208,7 @@ appear in; the proof purposes its proofs may carry; and its custody class.
 
 | Key role | Signs or is used for | Verification relationship | Proof purpose | Custody |
 |---|---|---|---|---|
-| `approver` | approval artefacts (VTI-KEY-080) | `assertionMethod`, and no other | `assertionMethod` | held only by the VTA; non-exportable (VTI-KEY-110) |
+| `attestation` | attestation artefacts (VTI-KEY-080) | `assertionMethod`, and no other | `assertionMethod` | held only by the VTA; non-exportable (VTI-KEY-110) |
 | `operational` | the node's own operational material (VTI-KEY-081) | `authentication`, and no other | `authentication` | MAY be held by the node's service process (VTI-KEY-114) |
 | `messaging` | key agreement for encrypted transports; signs nothing | `keyAgreement`, and no other | none | MAY be held by the node's service process (VTI-KEY-114) |
 | `update` | entries in the identifier's verifiable history | none: named only as the method's update authority, never as a verification method | as the identifier method defines for log entries | held only by the VTA; non-exportable (VTI-KEY-113) |
@@ -249,10 +244,15 @@ failure this closes is the verifier that, not recognising a role, falls back to
 the relationship the method appears in and so treats it as whatever that
 relationship ordinarily means.
 
-*Open issue.* Whether an operational request that invokes authority at a peer —
-a Trust Task request, as opposed to a response — should use
-`capabilityInvocation` rather than `authentication` is not settled.
-VTI-KEY-075 keeps both capability relationships empty until it is.
+*Rationale for VTI-KEY-075.* An operational request that invokes authority at
+a peer — a Trust Task request, as opposed to a response — is signed with an
+`operational` key in `authentication`, like the rest of the node's operational
+material. The authority it invokes is established by the peer's access control
+entry for the node, not by the relationship the key appears in, so moving
+requests to `capabilityInvocation` would add a second operational key without
+adding a check. The capability relationships are reserved for a role that is
+registered for them, and until one is, a method listed there is one a verifier
+has no rule for.
 
 #### Services operated alongside a node
 
@@ -266,7 +266,7 @@ node, and the node's identifier document MUST NOT list them.
 
 **VTI-KEY-077** — A verifier MUST NOT accept a signature by such a service as a
 signature of the node. Authority the service holds on the node's behalf MUST be
-recorded as an access control entry (VTI-VTA-032) or by an approval artefact
+recorded as an access control entry (VTI-VTA-032) or by an attestation artefact
 the node issues to the service, and never by the service's key appearing in the
 node's document.
 
@@ -278,8 +278,8 @@ VTI-VTA-040 applied to infrastructure rather than to agents.
 
 ### What each role signs
 
-**VTI-KEY-080** — The following are [[ref: approval artefact]]s, and a node MUST sign
-each with an `approver` key and with no key of another role:
+**VTI-KEY-080** — The following are [[ref: attestation artefact]]s, and a node MUST sign
+each with an `attestation` key and with no key of another role:
 
 1. every membership credential, including each credential of a pair that
    commit to one another (VTI-MEM-021);
@@ -288,7 +288,7 @@ each with an `approver` key and with no key of another role:
    endorsement type, and every grant that confers the standing to vet or
    endorse others;
 4. every status list credential, and every other artefact that states the
-   status of an approval artefact; and
+   status of an attestation artefact; and
 5. every other verifiable credential the node issues.
 
 **VTI-KEY-081** — A node MUST sign the following with an `operational` key and
@@ -297,15 +297,15 @@ Task request and response documents (VTI-OPS-020); signatures carried by
 DIDComm or TSP messages; and audit checkpoints.
 
 **VTI-KEY-082** — An artefact not named in VTI-KEY-080 or VTI-KEY-081 MUST be
-treated as an approval artefact if it asserts, to any party other than its
+treated as an attestation artefact if it asserts, to any party other than its
 immediate recipient, a decision of the node about a subject's membership,
 standing, authority or status. Every other artefact the node signs MUST be
 signed with an `operational` key.
 
 **VTI-KEY-083** — A verifier MUST NOT treat material signed with an
 `operational` key as evidence of a decision that VTI-KEY-080 requires an
-approval artefact to evidence. A removal notice informs its recipient; the
-removal takes effect for relying parties through the status an `approver` key
+attestation artefact to evidence. A removal notice informs its recipient; the
+removal takes effect for relying parties through the status an `attestation` key
 signs (VTI-MEM-030).
 
 *Rationale for status lists in VTI-KEY-080.* A status list is the one artefact
@@ -319,7 +319,7 @@ undone by the key that answers messages.
 *Rationale for VTI-KEY-081.* Operational material is either consumed at once by
 the party it is sent to, or is evidence of what the node did rather than of what
 the community decided. An invitation confers nothing until an admission
-decision is made, and the membership credential that follows is an approval
+decision is made, and the membership credential that follows is an attestation
 artefact. Keeping this material on a key the service process holds is what lets
 the service run without asking the VTA to sign every message, and VTI-KEY-083
 is what keeps that convenience from reaching the decisions.
@@ -329,7 +329,7 @@ is what keeps that convenience from reaching the decisions.
 What a Trust Registry answers about a community is only as authentic as the
 channel it arrives by, unless the answer carries a proof. Registries do not yet
 store the proof of the artefact a record was derived from, or sign their
-answers, so an `approver` proof on a registry record is a target rather than a
+answers, so an `attestation` proof on a registry record is a target rather than a
 present fact.
 
 **VTI-KEY-084** — A node writing to a Trust Registry MUST do so by an operation
@@ -338,17 +338,19 @@ write to a node only where the document's proof verifies under that node's
 `operational` key.
 
 **VTI-KEY-085** — A record a registry publishes on a node's behalf SHOULD carry
-the node's `approver` proof over the record's content, and a registry SHOULD
-return that proof with every answer derived from the record.
+the node's `attestation` proof over the record's content, and a registry SHOULD
+return that proof with every answer derived from the record. Where the
+registry's query protocol defines a member for a record's proof, the record
+MUST carry the proof and the registry MUST return it.
 
 **VTI-KEY-086** — Until a registry answer carries a proof under
 VTI-KEY-085, a consumer MUST treat it as an assertion of the registry, bounded
-by VTI-REG-010 and VTI-REG-011, and MUST NOT treat it as an approval artefact
+by VTI-REG-010 and VTI-REG-011, and MUST NOT treat it as an attestation artefact
 of the node.
 
 *Open issue.* The registry query protocol this specification binds carries no
-member for a record's proof. VTI-KEY-085 becomes a MUST when it does; the
-change is to that protocol, not to this requirement.
+member for a record's proof, so the MUST in VTI-KEY-085 binds nothing yet. The
+change needed is to that protocol, not to this requirement.
 
 ### Binding roles in the identifier document
 
@@ -382,7 +384,7 @@ verification method in the document.
 accept a key by its fragment, its position in the document, its type or its
 algorithm.
 
-A non-normative example, for a VTC with an Ed25519 and an ML-DSA-44 `approver`
+A non-normative example, for a VTC with an Ed25519 and an ML-DSA-44 `attestation`
 key:
 
 ```json
@@ -398,7 +400,7 @@ key:
   "authentication": ["#z6Mkv…"],
   "keyAgreement": ["#z6LSb…"],
   "keyRoles": {
-    "approver": ["#z6Mkq…", "#z2Sy…"],
+    "attestation": ["#z6Mkq…", "#z2Sy…"],
     "operational": ["#z6Mkv…"],
     "messaging": ["#z6LSb…"]
   }
@@ -441,8 +443,8 @@ is listed in the verification relationship its `proofPurpose` names, in the
 version of the signer's identifier document that applies under
 VTI-KEY-130, and MUST refuse a proof where it is not.
 
-**VTI-KEY-101** — A verifier MUST accept an approval artefact only where it
-verifies under a method bound to `approver`, and MUST accept material that
+**VTI-KEY-101** — A verifier MUST accept an attestation artefact only where it
+verifies under a method bound to `attestation`, and MUST accept material that
 VTI-KEY-081 assigns to the `operational` role only where it verifies under a
 method bound to `operational`. Material signed under a key of the other role
 MUST be refused, as VTI-KEY-022 requires.
@@ -454,11 +456,21 @@ cryptosuite is outside the verifier's accepted set (VTI-KEY-013) is not
 evaluated. A verifier MUST refuse the artefact where any evaluated proof fails;
 it MUST NOT accept an artefact because some proof in the set verifies.
 
-**VTI-KEY-103** — A node MAY sign an approval artefact with more than one
-`approver` key of different algorithms — an Ed25519 proof and an ML-DSA-44
+**VTI-KEY-103** — A node MAY sign an attestation artefact with more than one
+`attestation` key of different algorithms — an Ed25519 proof and an ML-DSA-44
 proof, for example — as a proof set. Every key in the set MUST be bound to
-`approver`, and every proof MUST be by the same controller. A verifier MAY
-require that a proof under a particular cryptosuite be present.
+`attestation`, and every proof MUST be by the same controller.
+
+**VTI-KEY-104** — A verifier's policy MAY require that a proof set include a
+proof under a named cryptosuite — a verifier that implements ML-DSA MAY require
+the ML-DSA-44 proof, for example. A verifier with such a policy MUST refuse an
+artefact that does not carry a verifying proof under each cryptosuite it
+requires, whatever other proofs verify.
+
+**VTI-KEY-105** — A VTA, a VTC and a VTN SHOULD publish the cryptosuites its
+attestation artefacts carry, in a form a verifier can read before verifying, so
+that a verifier whose policy requires a cryptosuite can tell an artefact from
+which a proof has been stripped from one that never carried it.
 
 *Rationale for VTI-KEY-102.* A proof set that is accepted when any member
 verifies is as strong as its weakest member, and it can be extended by anyone:
@@ -471,33 +483,48 @@ of its algorithms — a verifier that has not implemented ML-DSA checks the
 Ed25519 proof — without letting an algorithm the verifier has retired veto an
 artefact it can otherwise establish.
 
-*Open issue.* A Data Integrity proof with the `authentication` purpose ordinarily
-carries a challenge and a domain, and a signed operational document — a Trust
-Task response, an audit checkpoint — has neither in that sense: it is
-addressed and dated by its own members (VTI-OPS-020). Which proof purpose an
-`operational` key's proofs carry on such documents, and whether the Trust Tasks
-framework's rule accepts it, has to be settled with that framework. The
-examples in the framework today use `assertionMethod` for task documents, which
-VTI-KEY-091 would forbid an `operational` key to appear in.
+*Rationale for VTI-KEY-104 and VTI-KEY-105.* The same exemption means that an
+artefact stripped of the proof a verifier cannot evaluate looks, to that
+verifier, like an artefact that never carried it — harmless to a verifier that
+could not check the proof anyway, but not to one that can. A post-quantum-aware
+verifier that requires the ML-DSA proof closes the gap for itself; publishing
+which cryptosuites a node's artefacts carry is what lets it decide to require
+one, and lets a verifier that has not decided detect the stripping.
+
+**VTI-KEY-106** — A proof made with an `operational` key MUST carry the proof
+purpose `authentication`, including a proof on a Trust Task request or response
+document. Where the document itself carries its recipient, its time of issue
+and its identifier (VTI-OPS-020, VTI-OPS-025), those members stand in for the
+challenge and domain an `authentication` proof ordinarily carries, and a
+verifier MUST NOT refuse the proof for want of them. An attestation artefact
+carried inside such a document keeps its own `assertionMethod` proof.
+
+*Note.* The examples in the Trust Tasks framework show task documents with the
+proof purpose `assertionMethod`, which VTI-KEY-091 forbids an `operational` key
+to appear under. They are to be updated to `authentication` together with the
+proposal, made separately to that framework's Proof section, of the rule that a
+proof's verification method is listed in the relationship its proof purpose
+names ([TRUST-TASKS]).
 
 ### Custody of role keys
 
-**VTI-KEY-110** — An `approver` key MUST be generated within the VTA's
-protection boundary and marked non-exportable at creation. It MUST NOT be
-exportable by any operation, including an export under VTI-VTA-003, and MUST be
+**VTI-KEY-110** — An `attestation` key MUST be generated within the VTA's
+protection boundary, not derived — it is exempt from VTI-KEY-030 — and marked
+non-exportable at creation. It MUST NOT be exportable by any operation, including an export under VTI-VTA-003, and MUST be
 used only by the VTA, as the signing oracle of the Verifiable Trust Agent
 chapter.
 
-**VTI-KEY-111** — For a VTC or a VTN, the `approver` keys MUST be held by the VTA
+**VTI-KEY-111** — For a VTC or a VTN, the `attestation` keys MUST be held by the VTA
 the node is provisioned on, and the node's service process MUST NOT hold them.
-The node obtains every approval artefact by a signing request to that VTA,
+The node obtains every attestation artefact by a signing request to that VTA,
 which applies VTI-VTA-004 through VTI-VTA-007 to it.
 
-**VTI-KEY-112** — An `approver` key or an `update` key MUST NOT be included in
-any backup, export or state transfer of a service, including a backup of a VTC.
+**VTI-KEY-112** — An `attestation` key or an `update` key MUST NOT be included in
+any backup, export or state transfer, including a backup of a VTC and a backup
+of the VTA under VTI-VTA-050.
 
 **VTI-KEY-113** — An `update` key MUST be held by the VTA with the custody
-VTI-KEY-110 requires of an `approver` key, and MUST be distinct from every key
+VTI-KEY-110 requires of an `attestation` key, and MUST be distinct from every key
 of every other role. A process that holds an `operational` or `messaging` key
 MUST NOT be able to produce an entry in the identifier's verifiable history.
 
@@ -509,14 +536,30 @@ MUST be generated or derived independently of every signing key.
 
 **VTI-KEY-115** — A deployment MUST be such that compromise of a node's service
 process, including every key and secret it holds, does not yield the ability to
-produce an approval artefact or an identifier-log entry other than by a request
+produce an attestation artefact or an identifier-log entry other than by a request
 the VTA authorizes and records.
+
+**VTI-KEY-116** — An `update` key, and every committed next update key, MUST be
+generated rather than derived, and is exempt from VTI-KEY-030. A committed next
+update key MUST be held, with the custody VTI-KEY-110 requires, in a protection
+boundary other than the one holding the current update key, so that the loss of
+the VTA does not lose both.
+
+**VTI-KEY-117** — Recovery of a node's identity after the loss of its VTA MUST
+rely on the committed next update key (VTI-KEY-124) and on re-issuance, and on
+nothing restored from a backup. The recovering VTA MUST publish, in one
+history entry made with the committed key, new `attestation` keys, a new
+committed next update key, and the retirement of the lost `attestation` keys.
+It MUST re-sign every status list at once, and MUST re-issue every other
+attestation artefact still in force no later than its renewal. Where the loss
+may have exposed the keys rather than destroyed them, the retirement MUST be a
+revocation for compromise.
 
 *Rationale for VTI-KEY-110 and VTI-KEY-111.* The service process is the part
 of a node that parses untrusted input from the network, and it is therefore the
 part most likely to be compromised. What VTI-KEY-111 buys is that such a
 compromise yields a caller of the signing oracle rather than a holder of the
-key: every approval it can obtain is one the VTA parsed, constrained to its
+key: every attestation it can obtain is one the VTA parsed, constrained to its
 shape and addressee, and recorded (VTI-VTA-006), and the caller's authority can
 be withdrawn at once (VTI-VTA-002). A stolen key signs whatever the thief
 likes, for as long as it stays published, and leaves no record.
@@ -528,18 +571,19 @@ a secret that shares an origin with another is backed up, recovered and
 compromised together with it, whether or not anyone intended the two to be
 linked.
 
-*Open issue.* VTI-KEY-030 requires a context's keys to be derived from the
-context's derivation base, and VTI-VTA-050 permits root derivation material to
-leave the VTA in a backup. A key derived from a base that can be backed up is
-not non-exportable in the sense VTI-KEY-110 means: whoever holds the backup and
-its separately held material can re-derive it. Either `approver` and `update`
-keys are exempted from VTI-KEY-030 and generated, which makes their loss
-unrecoverable except by rotation under a separate authority (VTI-KEY-124), or
-they are derived and VTI-KEY-110 is restated as "never exported except in a
-VTA backup". The first is stronger and is the intent of this section; the
-working group has to choose, and VTI-KEY-030 changes with the choice.
+*Rationale for VTI-KEY-110, VTI-KEY-116 and VTI-KEY-117.* A key derived from a
+base that can be backed up is not non-exportable: whoever holds the backup and
+its separately held material can re-derive it, so the backup becomes a second
+copy of the community's seal and of control of its identifier, kept wherever
+backups are kept. Generating the keys removes that copy. The cost is that a
+lost VTA loses them, and the design pays it with mechanisms that already exist
+for other reasons: the committed next update key recovers control of the
+identifier, and re-issuance replaces the artefacts. A lost `attestation` key is
+destroyed rather than stolen, so what it signed before the loss stays valid
+under VTI-KEY-132 and is replaced at renewal; only the status lists, which must
+go on being updated, need re-signing at once.
 
-*Open issue.* Signing an approval artefact is a constrained signing capability
+*Open issue.* Signing an attestation artefact is a constrained signing capability
 under VTI-VTA-007, distinct from the generic `sign` and from `sign-trust-task`.
 Appendix C does not yet register a capability for it.
 
@@ -561,7 +605,7 @@ the earliest time from which the key is to be treated as compromised. A node
 that cannot establish when a compromise began MUST state the time the key was
 first published.
 
-**VTI-KEY-122** — A planned rotation of an `approver`, `operational` or
+**VTI-KEY-122** — A planned rotation of an `attestation`, `operational` or
 `messaging` key MUST publish the new key, bound to the same role, before the
 node first uses it, and at least the document's stated validity period
 (VTI-KEY-060) earlier. The retiring key MAY remain listed during the overlap.
@@ -580,7 +624,7 @@ identifier MUST be deactivated, and a successor identity established; a node
 MUST NOT continue to operate an identifier whose history it no longer solely
 controls.
 
-**VTI-KEY-125** — A node MUST destroy an `approver` key within its protection
+**VTI-KEY-125** — A node MUST destroy an `attestation` key within its protection
 boundary when that key is retired by planned rotation.
 
 *Rationale for VTI-KEY-122.* A verifier holding a cached document learns of a new
@@ -591,7 +635,7 @@ what makes a planned rotation invisible to the parties relying on the node;
 ceasing to sign with the old key at once is what keeps the overlap from
 becoming a second active key.
 
-*Rationale for VTI-KEY-125.* Destruction is what lets a retired `approver` key's
+*Rationale for VTI-KEY-125.* Destruction is what lets a retired `attestation` key's
 past signatures be judged without evidence of when they were made: a key that
 no longer exists cannot have signed anything after it was destroyed, so the
 retirement time bounds the issuance time from above (VTI-KEY-132). A retired key
@@ -603,26 +647,26 @@ reason for a key's removal. VTI-KEY-120 and VTI-KEY-121 need an encoding — a
 member of the log entry or of `keyRoles` naming each revoked key and its
 compromise time, or a status entry the VTA writes — and the working group has to
 fix one. Until it does, VTI-KEY-120 cannot be met, and the only reading of a
-removed `approver` key that is safe for a verifier is as revoked for compromise
+removed `attestation` key that is safe for a verifier is as revoked for compromise
 from the time it was first published — which turns every planned rotation into
 a re-issuance.
 
 ### Judging material signed before a rotation
 
-A verifier that finds an approval artefact signed by a key no longer in the
+A verifier that finds an attestation artefact signed by a key no longer in the
 current document has to decide whether the artefact was issued while the key was
 the node's, and the artefact's own dates cannot tell it: they are written by the
 signer, and a signer holding a retired key writes whatever dates it likes.
 
-**VTI-KEY-130** — A verifier MUST accept an approval artefact under a key that
-is not in the current document only where: the key was bound to `approver`, in
+**VTI-KEY-130** — A verifier MUST accept an attestation artefact under a key that
+is not in the current document only where: the key was bound to `attestation`, in
 `assertionMethod`, in the version of the document current at the artefact's
 issuance time; and the key has not been revoked for compromise with a compromise
 time at or before the issuance time.
 
 **VTI-KEY-131** — The issuance time used by VTI-KEY-130 MUST be established from
 evidence the signer cannot backdate — the identifier's verifiable history, or a
-status entry written by the VTA at issuance and published under an `approver`
+status entry written by the VTA at issuance and published under an `attestation`
 key that is not itself revoked for compromise. It MUST NOT be established from
 the artefact's own dates alone.
 
@@ -632,14 +676,14 @@ and a verifier MAY accept the artefact under VTI-KEY-130 without further
 evidence of issuance time.
 
 **VTI-KEY-133** — For a key revoked for compromise, a verifier MUST refuse an
-approval artefact unless evidence under VTI-KEY-131 establishes that it was
+attestation artefact unless evidence under VTI-KEY-131 establishes that it was
 issued before the compromise time. On such a revocation the node MUST re-issue,
-under a sound `approver` key, every approval artefact still in force that its
+under a sound `attestation` key, every attestation artefact still in force that its
 VTA's record of what it signed (VTI-VTA-006) shows it issued, and MUST re-sign
 every status list at once.
 
 **VTI-KEY-134** — A verifier MUST re-resolve the signer's identifier before
-relying on an approval artefact where it has not resolved the identifier within
+relying on an attestation artefact where it has not resolved the identifier within
 the document's stated validity period (VTI-KEY-060), and where the artefact
 names a verification method the verifier's copy of the document does not list.
 A verifier MUST NOT use a copy of a document older than 24 hours for a decision
@@ -660,7 +704,7 @@ it is the thief's claim, and a verifier that trusts it accepts every backdated
 forgery as having been issued before the theft.
 
 *Rationale for VTI-KEY-135.* The difference from VTI-KEY-132 is custody. The
-node destroys its retired `approver` key, so the retirement bounds what the key
+node destroys its retired `attestation` key, so the retirement bounds what the key
 can have signed. A member's key is held by the member's own VTA, whose custody
 the community does not govern (VTI-VTC-013), and a commit's date is the
 author's assertion. A retired member key that is still accepted for new
@@ -691,45 +735,49 @@ signed carries the custody of an `operational` key, whatever relationship it
 was listed in.
 
 **VTI-KEY-140** — A node with a legacy identity MUST migrate it by one entry in
-the identifier's verifiable history that: adds one or more `approver` keys
+the identifier's verifiable history that: adds one or more `attestation` keys
 generated under VTI-KEY-110; adds a newly generated `operational` key; adds
 `keyRoles`; removes the legacy key from `assertionMethod`; and transfers the
 update authority to an `update` key held under VTI-KEY-113, by way of the
 committed next key where one exists.
 
-**VTI-KEY-141** — The legacy key MUST NOT be bound to `approver`. It MAY remain
+**VTI-KEY-141** — The legacy key MUST NOT be bound to `attestation`. It MAY remain
 in `authentication`, bound to `operational`, for the overlap of VTI-KEY-122 and
 no longer, and MUST then be removed.
 
-**VTI-KEY-142** — The node MUST re-sign every status list under an `approver`
+**VTI-KEY-142** — The node MUST re-sign every status list under an `attestation`
 key when it publishes the migration entry, and a verifier that has resolved the
 migration entry MUST NOT accept a status list signed by the legacy key.
 
 **VTI-KEY-143** — The node MUST state, in the identifier's verifiable history,
-the end of a grace period, and MUST re-issue under an `approver` key every other
-approval artefact still in force no later than that end, at the artefact's
-renewal where it falls before. The grace period MUST NOT extend beyond the
-latest expiry of any approval artefact the legacy key signed, and MUST NOT
-exceed the maximum membership period the community's policy permits
-(VTI-MEM-040).
+the end of a grace period, and MUST re-issue under an `attestation` key every
+other attestation artefact still in force, delivering each to its holder, no
+later than that end — at the artefact's renewal where that falls earlier, and
+without waiting for a renewal where it does not. The grace period MUST end no
+later than the earliest of: 90 days after the migration entry; the latest
+expiry of any attestation artefact the legacy key signed; and the maximum
+membership period the community's policy permits (VTI-MEM-040).
 
 **VTI-KEY-144** — Until the end of the grace period, a verifier MAY accept an
-approval artefact under the legacy key where the key was in `assertionMethod`
+attestation artefact under the legacy key where the key was in `assertionMethod`
 in a version of the document before the migration entry and has not been
-revoked for compromise. After it, a verifier MUST refuse every approval
+revoked for compromise. After it, a verifier MUST refuse every attestation
 artefact under the legacy key.
 
 **VTI-KEY-145** — A VTA's own legacy identity MUST be migrated under the same
-requirements. A VTA SHOULD migrate its own identity before, or together with,
-the identities of the nodes provisioned on it.
+requirements, and MUST be migrated no later than the first identity of a node
+provisioned on it.
 
 *Rationale for VTI-KEY-141 and VTI-KEY-144.* The legacy key cannot become an
-`approver` key after the fact: it has been in the service process, so its
+`attestation` key after the fact: it has been in the service process, so its
 custody cannot be retrofitted, and it is not destroyed at migration, so
 VTI-KEY-132 cannot bound what it signs. The grace period is therefore a
 stated, bounded acceptance of risk that already existed — the verifier accepts
 what it accepted yesterday, for a period the node has published — and not a
-judgement that the legacy signatures are sound. Status lists get no grace
+judgement that the legacy signatures are sound. It is capped at 90 days, and
+re-issuance is pushed to holders rather than left to renewal, because every day
+of it is a day on which a compromise of the service process can still produce a
+backdated credential that verifiers accept. Status lists get no grace
 period because they are the artefact whose forgery undoes revocation
 (VTI-KEY-080) and the one the node can re-sign in full at once.
 
@@ -743,8 +791,8 @@ verification method identifiers. A node MUST NOT publish in its identifier
 document, in a verification method identifier or elsewhere, the custody,
 location, host, operator, device or personal data behind a key, nor any
 structure of the node's deployment beyond the roles a verifier needs.
-Verification method identifiers SHOULD be derived from the key, or otherwise
-opaque.
+A verification method identifier MUST NOT reveal the key's role or anything
+about the key beyond its own identity, and SHOULD be derived from the key.
 
 **VTI-KEY-151** — A node's durable identifier document MUST NOT list a key that
 exists for a single member, context or relationship. Such a key belongs to an
@@ -755,7 +803,7 @@ on by any other party, a node SHOULD authenticate it by authenticated encryption
 under its `messaging` key rather than by a signature, so that the recipient does
 not hold transferable proof that the node sent it.
 
-**VTI-KEY-153** — A node SHOULD rotate its `approver` keys on a schedule that is
+**VTI-KEY-153** — A node SHOULD rotate its `attestation` keys on a schedule that is
 independent of any member's admission, renewal or departure, and SHOULD NOT
 rotate them more often than its security policy requires.
 
@@ -769,7 +817,7 @@ event identifies the member outright. Long-lived keys trade the other way — a
 larger crowd per key, and a longer exposure if the key is stolen — which is why
 the requirement is a SHOULD and the schedule is the node's policy.
 
-*Note.* A node's `approver` and `operational` keys are long-lived and
+*Note.* A node's `attestation` and `operational` keys are long-lived and
 publicly resolvable, as its identifier is (VTI-KEY-007). Everything they sign is
 linkable to the node by design: an issuer that could not be identified could
 not be trusted. What these requirements prevent is the keys revealing more than

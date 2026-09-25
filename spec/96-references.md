@@ -59,7 +59,7 @@ their current versions before this specification leaves Working Draft.
   VTI-KEY-010. <https://datatracker.ietf.org/doc/html/rfc7748>
 - [FIPS-204] *Module-Lattice-Based Digital Signature Standard* — ML-DSA, an
   OPTIONAL algorithm under VTI-KEY-011, named in VTI-KEY-103 as the second
-  member of a hybrid `approver` proof set.
+  member of a hybrid `attestation` proof set.
   <https://csrc.nist.gov/pubs/fips/204/final>
 
 ### Informative References
