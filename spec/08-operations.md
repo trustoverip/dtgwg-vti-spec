@@ -108,6 +108,9 @@ agree about what a conforming document is.
 the intended recipient, and the time of issue, and MUST carry a proof by the
 issuer.
 
+*Note.* For a VTA, a VTC or a VTN, the proof of VTI-OPS-020 is made with the
+node's `operational` key (VTI-KEY-081).
+
 **VTI-OPS-021** — A node MUST apply the same document requirements on every
 transport. A transport that authenticates its sender MUST NOT be treated as
 relieving a producer of addressing or signing the document it sends.

@@ -70,6 +70,23 @@ requirements of its own; each item names the requirements that carry it.
     made — requires a second party (VTI-APV-014).
 19. **An algorithm is retired at the moment it is broken**, not at the next
     release (VTI-KEY-013).
+20. **The key that answers messages must not be the key that signs decisions.**
+    A node's credentials and status lists are signed by an `approver` key only
+    its VTA holds, and its traffic by an `operational` key its service process
+    may hold (VTI-KEY-080, VTI-KEY-081, VTI-KEY-111). Compromise of the exposed
+    process then yields a caller of the signing oracle, not the community's
+    seal — and a forged status list, which would silently un-revoke every
+    suspended member, stays out of reach (VTI-KEY-080).
+21. **A verifier selects keys by role, never by name.** A key in a relationship
+    its role does not permit, or in no role at all, is refused
+    (VTI-KEY-092, VTI-KEY-094), and every evaluated proof in a proof set must
+    verify, so that a set is as strong as its strongest proof rather than its
+    weakest (VTI-KEY-102).
+22. **A stolen key writes whatever dates it likes.** The time an approval was
+    issued is established from the identifier's history or a VTA-written
+    record, never from the artefact's own dates (VTI-KEY-131), and a key
+    revoked for compromise is distinguished from one retired in the ordinary
+    course (VTI-KEY-120).
 
 ## Privacy Considerations
 
@@ -116,6 +133,15 @@ This section is informative.
     allocated per subject, or in issuance order, has the shape of a herd and
     the behaviour of a unique identifier (VTI-CRD-014).
 13. **A verifier learns things it may not pass on** (VTI-CRD-043).
+14. **An identifier document says who the issuer is, and nothing about how it
+    is built.** Key roles are generic, identifiers of keys are opaque, and no
+    custody, host or personal detail is published (VTI-KEY-150, VTI-KEY-151).
+15. **A signing key is a coarse timestamp.** The key that signed a credential,
+    read against the published history of the issuer's keys, dates its
+    issuance; rotation frequent enough, or timed to a member's own events,
+    partitions or identifies the membership (VTI-KEY-153). A message that need
+    not be relied on by anyone else is better authenticated than signed, so
+    that its recipient does not hold transferable proof of it (VTI-KEY-152).
 
 ## Governance Considerations
 

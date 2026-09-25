@@ -26,6 +26,11 @@ their current versions before this specification leaves Working Draft.
 
 **Credentials**
 
+- [VC-DATA-INTEGRITY] *Verifiable Credential Data Integrity 1.0* — proof sets,
+  and the rule that a proof's verification method is listed in the
+  relationship its proof purpose names (VTI-KEY-100, VTI-KEY-102).
+  <https://www.w3.org/TR/vc-data-integrity/>
+
 - [VC-DATA-MODEL] *Verifiable Credentials Data Model.*
   <https://www.w3.org/TR/vc-data-model/>
 - [DTG-CRED] *Decentralized Trust Graph Credentials — Core Specification* — the
@@ -52,6 +57,10 @@ their current versions before this specification leaves Working Draft.
   required by VTI-KEY-010. <https://datatracker.ietf.org/doc/html/rfc8032>
 - [RFC 7748] *Elliptic Curves for Security* — X25519, as required by
   VTI-KEY-010. <https://datatracker.ietf.org/doc/html/rfc7748>
+- [FIPS-204] *Module-Lattice-Based Digital Signature Standard* — ML-DSA, an
+  OPTIONAL algorithm under VTI-KEY-011, named in VTI-KEY-103 as the second
+  member of a hybrid `approver` proof set.
+  <https://csrc.nist.gov/pubs/fips/204/final>
 
 ### Informative References
 

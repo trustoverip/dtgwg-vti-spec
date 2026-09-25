@@ -62,6 +62,39 @@ re-established. Keeping the two apart means a compromised community can wrongly
 admit, wrongly remove and wrongly recognise — all serious, all recoverable —
 and cannot take a member's keys.
 
+### Keys and what the community signs
+
+A community's seal is kept by the agent underneath it, not by the secretary.
+The VTC answers messages under a key of its own; what the community decides —
+who is a member, in which role, endorsed for what, and whether any of that
+still holds — is signed by its VTA at the VTC's request, under a key the VTC
+never holds.
+
+**VTI-VTC-040** — A VTC's identity MUST bind its keys to key roles as required
+by VTI-KEY-070. Its `operational` and `messaging` keys MUST be derived by its
+VTA and delivered under VTI-VTA-030, consistently with VTI-VTC-010.
+
+**VTI-VTC-041** — A VTC MUST NOT hold its `approver` or `update` keys. It MUST
+obtain every approval artefact — membership, role and endorsement credentials,
+vetter grants and status lists (VTI-KEY-080) — by a signing request to its VTA,
+as required by VTI-KEY-111, and MUST NOT sign an approval artefact itself.
+
+**VTI-VTC-042** — A service operated alongside a VTC, such as a forge bridge,
+MUST have its own identity and keys and MUST sign as itself, as required by
+VTI-KEY-076. It MUST be authorized by an access control entry or an approval
+artefact of the VTC, and never by a key in the VTC's identifier document.
+
+**VTI-VTC-043** — A backup of a VTC MUST NOT contain an `approver` or `update`
+key, as required by VTI-KEY-112.
+
+*Rationale.* The paragraph that opens this chapter says a compromised secretary
+can wrongly admit, remove and recognise. VTI-VTC-041 narrows that further: a
+compromised VTC process can ask its VTA for approvals, one at a time, each
+parsed, constrained and recorded, and each stoppable by withdrawing the
+process's authority — but it cannot mint the community's credentials or
+re-publish its status lists on its own, and it cannot rewrite what the
+community's identifier means.
+
 ### The community authority model
 
 **VTI-VTC-020** — A VTC MUST express its own roles, capabilities, approve scope

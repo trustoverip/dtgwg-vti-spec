@@ -36,6 +36,9 @@ caller rather than exporting the key for the caller to use.
 export MUST be gated by a capability distinct from the capability to use the key,
 and MUST be audited.
 
+*Note.* No capability permits the export of an `approver` or `update` key:
+VTI-KEY-110 and VTI-KEY-113 make them non-exportable at creation.
+
 *Rationale.* The distinction in VTI-VTA-002 is what makes revocation
 meaningful. A caller that holds a key retains it after its authority is
 withdrawn; a caller that can ask for an operation loses the ability at the
@@ -61,6 +64,17 @@ type MUST be distinguishable from a capability to request signing generally,
 and a node MUST NOT satisfy a request of the second kind under a grant of the
 first.
 
+**VTI-VTA-008** — A VTA MUST hold the `approver` and `update` keys of its own
+identity, and of every VTC and VTN provisioned on it, under VTI-KEY-110 and
+VTI-KEY-113, and MUST be the only party that signs with them.
+
+**VTI-VTA-009** — A VTA MUST sign with an `approver` key only material it has
+parsed as an approval artefact (VTI-KEY-080, VTI-KEY-082) of the identity whose
+key it is, requested under a capability that gates approval-artefact signing
+for that identity (VTI-VTA-007). It MUST NOT sign an approval artefact with a
+key of any other role, and MUST NOT sign any other material with an `approver`
+key.
+
 *Rationale.* A signing oracle that will sign anything is a general-purpose
 forgery service for its principal, reachable by whichever delegate holds the
 capability. The constraint is what makes delegation to an agent survivable: a
@@ -69,6 +83,17 @@ produce, addressed to the parties it was authorized to address, and nothing
 else. Blind signing removes every one of those bounds at once, and does so
 invisibly, because the resulting signature is indistinguishable from an
 intended one.
+
+*Rationale for VTI-VTA-008 and VTI-VTA-009.* The keys whose signatures others
+rely on without asking — the `approver` keys that sign a community's
+credentials and status lists, and the `update` keys that control what its
+identifier means — are the keys this chapter's custody requirements exist for.
+Holding them in the VTA, rather than in the process that serves the
+community's traffic, means a compromise of that process yields a caller of this
+oracle, bounded by VTI-VTA-004 through VTI-VTA-007, rather than a holder of the
+key. The VTA's own identity follows the same key roles (VTI-KEY-070): it issues
+credentials under its `approver` key and signs its own messages under its
+`operational` key.
 
 ### Credentials held for the principal
 
@@ -105,6 +130,10 @@ verify it before use.
 
 **VTI-VTA-032** — Provisioning MUST NOT confer authority. Any authority the
 provisioned identity is to hold MUST be recorded as an access control entry.
+
+**VTI-VTA-033** — A provisioning bundle MAY carry the `operational` and
+`messaging` keys of the identity it provisions, and MUST NOT carry an
+`approver` or `update` key.
 
 *Rationale for VTI-VTA-031.* Sealing protects the material from the relayer;
 it does not tell the holder that the bundle they opened is the one that was
