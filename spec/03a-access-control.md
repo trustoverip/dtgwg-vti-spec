@@ -205,7 +205,9 @@ not a control; it is a second way to do the thing the control exists to gate.
 ### Visibility and management of entries
 
 **VTI-ACL-050** — A caller MUST be able to modify an entry only where the
-caller's act scope overlaps the entry's act scope.
+caller's act scope covers every context in the entry's act scope and in its
+approve scope. Overlap is sufficient for reading (VTI-ACL-051) and is not
+sufficient for modification or removal.
 
 **VTI-ACL-051** — A caller MUST be able to read or list an entry where
 VTI-ACL-050 permits modification, and additionally where the entry's approve
@@ -214,6 +216,37 @@ scope reaches the caller.
 **VTI-ACL-052** — A subject MUST NOT modify its own entry, except by the
 self-service rotation defined in the Client Onboarding chapter, which moves an
 entry to a new subject identifier while preserving its authority exactly.
+
+**VTI-ACL-053** — A caller MUST NOT create or modify an entry, for any
+subject, that would hold authority the caller's own entry does not hold. In
+particular, the resulting entry's role MUST NOT exceed the caller's, its
+effective capability set MUST be contained in the caller's (additive
+capabilities are governed by VTI-ACL-033 instead), where the caller's entry
+narrows the keys it may use the resulting entry MUST be narrowed to a subset of
+them, where the caller's entry carries an expiry the resulting entry MUST
+carry one no later, and its approve scope MUST satisfy VTI-ACL-042. A node MUST
+evaluate this against the caller's stored entry, not against a credential that
+summarises it, and MUST refuse the write of a caller that has no live entry.
+
+*Rationale for VTI-ACL-050.* An entry acting in two contexts carries one
+capability set, one key narrowing and one expiry, and they apply in both. An
+administrator of one of the contexts who may edit the entry therefore changes
+what its subject may do in the other, and one who may delete it revokes the
+subject from a context it does not administer. Overlap answers whether the
+caller has a legitimate interest in the entry; it does not make the caller the
+authority for all of it.
+
+*Rationale for VTI-ACL-052 and VTI-ACL-053.* Each closes the other's bypass.
+Forbidding a subject to edit its own entry is empty if it may instead write a
+wider entry for a second identifier it controls, scoped to the same context;
+bounding what a caller may grant is empty if the caller may simply raise its
+own bound first. Every axis on which an entry can be narrowed is an axis on
+which it can be widened again, so the bound is stated for all of them rather
+than for the role and the context list alone — clearing a capability
+narrowing, dropping a key filter or lifting an expiry is a grant, and is
+bounded like one. The rotation carved out of VTI-ACL-052 cannot be used for
+the same purpose, because VTI-CLT-029 requires it to preserve every one of
+those axes exactly.
 
 *Rationale for VTI-ACL-051.* Reading an entry and managing it are different
 powers. An approver needs to see the grants it is being asked to bless
