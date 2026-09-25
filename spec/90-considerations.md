@@ -84,6 +84,9 @@ requirements of its own; each item names the requirements that carry it.
     weakest (VTI-KEY-102). A verifier that requires a particular cryptosuite
     refuses an artefact stripped of that proof, and a node says which suites it
     signs with so that the stripping can be seen (VTI-KEY-104, VTI-KEY-105).
+    Operational proofs carry no challenge or domain, so their replay
+    protection rests entirely on VTI-OPS-023 through VTI-OPS-027
+    (VTI-KEY-107).
 22. **A stolen key writes whatever dates it likes.** The time an attestation was
     issued is established from the identifier's history or a VTA-written
     record, never from the artefact's own dates (VTI-KEY-131), and a key

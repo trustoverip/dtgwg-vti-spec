@@ -493,11 +493,23 @@ one, and lets a verifier that has not decided detect the stripping.
 
 **VTI-KEY-106** — A proof made with an `operational` key MUST carry the proof
 purpose `authentication`, including a proof on a Trust Task request or response
-document. Where the document itself carries its recipient, its time of issue
-and its identifier (VTI-OPS-020, VTI-OPS-025), those members stand in for the
-challenge and domain an `authentication` proof ordinarily carries, and a
-verifier MUST NOT refuse the proof for want of them. An attestation artefact
-carried inside such a document keeps its own `assertionMethod` proof.
+document. An attestation artefact carried inside such a document keeps its own
+`assertionMethod` proof.
+
+**VTI-KEY-107** — A verifier that accepts an `authentication` proof carrying no
+challenge or domain MUST refuse it unless the document it covers carries an
+intended recipient, a time of issue and a document identifier (VTI-OPS-020,
+VTI-OPS-025), and MUST apply to that document VTI-OPS-023 (it is the intended
+recipient), VTI-OPS-024 (the time of issue is within its acceptance window) and
+VTI-OPS-026 and VTI-OPS-027 (the identifier has not already been accepted, on
+any binding). A verifier that does not apply all four MUST refuse such a proof.
+
+*Rationale for VTI-KEY-107.* Challenge and domain are what bind an
+`authentication` proof to one verifier and one exchange. Without them the proof
+is bound by nothing but the document's own members and the verifier's checks on
+them, so those checks are the replay protection, and a verifier that skips any
+one accepts a proof that can be replayed to it, or to another recipient, or
+after its window has closed.
 
 *Note.* The examples in the Trust Tasks framework show task documents with the
 proof purpose `assertionMethod`, which VTI-KEY-091 forbids an `operational` key
