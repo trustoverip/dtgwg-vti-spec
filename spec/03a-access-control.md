@@ -228,6 +228,42 @@ carry one no later, and its approve scope MUST satisfy VTI-ACL-042. A node MUST
 evaluate this against the caller's stored entry, not against a credential that
 summarises it, and MUST refuse the write of a caller that has no live entry.
 
+**VTI-ACL-054** — A caller creating an entry for another subject MAY mark it
+as a **hand-off**: authority for its subject to exercise, exactly once, a
+rollover that writes one successor entry for a different subject and removes
+the marked entry. The node MUST record with the marker the granter's identifier
+and the granter's authority as it stood when the marker was set: role, act
+scope, effective capability set, key narrowing, approve scope and expiry. A
+node MUST accept the marker only on a create, only on an entry that carries an
+expiry, and only from a caller whose own entry carries no marker. A node MUST
+refuse a request to set, extend or re-set the marker by any other operation,
+including an update and a rotation. A rotation (VTI-CLT-025) MUST NOT carry
+the marker to the new subject.
+
+**VTI-ACL-055** — A node MUST refuse a rollover unless the caller is the
+subject of the marked entry, the entry is unexpired, and its marker has not
+been exercised. The successor MUST NOT exceed the marked entry, nor the
+granter's authority recorded with the marker, on role, act scope, effective
+capability set, key narrowing or approve scope. The successor's expiry MUST be
+no later than the granter's recorded expiry, and the successor MUST NOT be
+permanent where the granter's entry was not. The marked entry's own expiry
+does not bound the successor; that is the one exception the marker makes to
+VTI-ACL-053.
+
+**VTI-ACL-056** — A rollover MUST consume the marker, write the successor and
+remove the marked entry as one atomic operation. Of concurrent rollovers of the
+same entry, at most one MUST succeed. A failure before the commit MUST leave
+the marked entry, with its marker, authoritative.
+
+**VTI-ACL-057** — A node MUST durably record a rollover in its audit log before
+committing it, identifying the granter, the marked subject and the successor.
+A node that cannot record it MUST NOT commit it.
+
+**VTI-ACL-058** — A node MUST NOT infer a hand-off from any property of an
+entry other than the marker. In particular, an entry that carries an expiry
+without a marker is bounded by VTI-ACL-053 in full, and a node MUST refuse a
+write by its subject of an entry that would outlive it.
+
 *Rationale for VTI-ACL-050.* An entry acting in two contexts carries one
 capability set, one key narrowing and one expiry, and they apply in both. An
 administrator of one of the contexts who may edit the entry therefore changes
@@ -247,6 +283,22 @@ narrowing, dropping a key filter or lifting an expiry is a grant, and is
 bounded like one. The rotation carved out of VTI-ACL-052 cannot be used for
 the same purpose, because VTI-CLT-029 requires it to preserve every one of
 those axes exactly.
+
+*Rationale for VTI-ACL-054 – VTI-ACL-058.* Onboarding hands a bootstrap
+identifier a short-lived grant, and the identifier then establishes the
+long-term one that replaces it (Client Onboarding, Step 2). Where the long-term
+entry is written by the bootstrap identifier itself, VTI-ACL-053 refuses it,
+because it outlives its writer. Nothing about a time-boxed entry distinguishes
+a bootstrap from any other short-lived administrator, so exempting "the
+bootstrap" by inference would exempt every time-boxed administrator from the
+expiry bound, which is the widening VTI-ACL-053 exists to close. The marker
+makes the exemption the granter's explicit, recorded decision instead. It is
+one-shot, it lapses with the entry, and it is bounded by what the granter held
+when it made the decision, so the successor can be no more than the granter
+could have granted directly. The subject cannot create the marker, so it
+cannot manufacture an exemption for itself. Atomicity and the audit record
+before the commit ensure that the marker cannot be spent twice, and that a
+spent marker is always accounted for.
 
 *Rationale for VTI-ACL-051.* Reading an entry and managing it are different
 powers. An approver needs to see the grants it is being asked to bless
