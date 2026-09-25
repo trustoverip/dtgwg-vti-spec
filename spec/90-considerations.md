@@ -76,7 +76,9 @@ requirements of its own; each item names the requirements that carry it.
     may hold (VTI-KEY-080, VTI-KEY-081, VTI-KEY-111). Compromise of the exposed
     process then yields a caller of the signing oracle, not the community's
     seal — and a forged status list, which would silently un-revoke every
-    suspended member, stays out of reach (VTI-KEY-080).
+    suspended member, stays out of reach (VTI-KEY-080). An identity that does
+    not separate the two is non-conformant and its credentials are refused; it
+    is replaced, not migrated (VTI-KEY-146 through VTI-KEY-148).
 21. **A verifier selects keys by role, never by name.** A key in a relationship
     its role does not permit, or in no role at all, is refused
     (VTI-KEY-092, VTI-KEY-094), and every evaluated proof in a proof set must

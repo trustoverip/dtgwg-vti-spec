@@ -419,8 +419,7 @@ its operator fixes the error, and fails closed on the one key in doubt.
 *Rationale for VTI-KEY-094.* A fragment is a name the node chose, and a
 verifier that selects by it — `#key-0` is the signing key — has made the node's
 naming convention part of its security decision. The convention is not stated
-anywhere a verifier can check, it changes with every template, and it is exactly
-what a migration (VTI-KEY-140) has to change.
+anywhere a verifier can check, and it changes with every template.
 
 *Open issue.* `keyRoles` needs a term definition — a JSON-LD context and a
 stable IRI — before a document carrying it is valid JSON-LD. Whether it belongs
@@ -737,64 +736,45 @@ load of re-resolution against the time a verifier can go on accepting a key the
 node has revoked, and the working group may set it per role or leave the
 tighter bound to the document's own validity period.
 
-### Migration to key roles
+### Identities that do not bind key roles
 
-An identity created before this section — the `vtc-host` form, with one
-Ed25519 key in both `assertionMethod` and `authentication`, signing everything
-the node signs and holding the identifier's update authority — is a **legacy
-identity**. Its key has been held by the service process, so everything it
-signed carries the custody of an `operational` key, whatever relationship it
-was listed in.
+An identity that does not state its key roles gives a verifier nothing to check
+VTI-KEY-101 against: a single key in both `assertionMethod` and
+`authentication`, held by the service process and signing everything, is exactly
+the arrangement this section exists to rule out. This specification defines no
+way to convert such an identity in place, because none can make it sound: its
+key has had operational custody, so it cannot be retrofitted as an
+`attestation` key, and it is not destroyed, so VTI-KEY-132 cannot bound what it
+has signed.
 
-**VTI-KEY-140** — A node with a legacy identity MUST migrate it by one entry in
-the identifier's verifiable history that: adds one or more `attestation` keys
-generated under VTI-KEY-110; adds a newly generated `operational` key; adds
-`keyRoles`; removes the legacy key from `assertionMethod`; and transfers the
-update authority to an `update` key held under VTI-KEY-113, by way of the
-committed next key where one exists.
+**VTI-KEY-140** — *Withdrawn.*
 
-**VTI-KEY-141** — The legacy key MUST NOT be bound to `attestation`. It MAY remain
-in `authentication`, bound to `operational`, for the overlap of VTI-KEY-122 and
-no longer, and MUST then be removed.
+**VTI-KEY-141** — *Withdrawn.*
 
-**VTI-KEY-142** — The node MUST re-sign every status list under an `attestation`
-key when it publishes the migration entry, and a verifier that has resolved the
-migration entry MUST NOT accept a status list signed by the legacy key.
+**VTI-KEY-142** — *Withdrawn.*
 
-**VTI-KEY-143** — The node MUST state, in the identifier's verifiable history,
-the end of a grace period, and MUST re-issue under an `attestation` key every
-other attestation artefact still in force, delivering each to its holder, no
-later than that end — at the artefact's renewal where that falls earlier, and
-without waiting for a renewal where it does not. The grace period MUST end no
-later than the earliest of: 90 days after the migration entry; the latest
-expiry of any attestation artefact the legacy key signed; and the maximum
-membership period the community's policy permits (VTI-MEM-040).
+**VTI-KEY-143** — *Withdrawn.*
 
-**VTI-KEY-144** — Until the end of the grace period, a verifier MAY accept an
-attestation artefact under the legacy key where the key was in `assertionMethod`
-in a version of the document before the migration entry and has not been
-revoked for compromise. After it, a verifier MUST refuse every attestation
-artefact under the legacy key.
+**VTI-KEY-144** — *Withdrawn.*
 
-**VTI-KEY-145** — A VTA's own legacy identity MUST be migrated under the same
-requirements, and MUST be migrated no later than the first identity of a node
-provisioned on it.
+**VTI-KEY-145** — *Withdrawn.*
 
-*Rationale for VTI-KEY-141 and VTI-KEY-144.* The legacy key cannot become an
-`attestation` key after the fact: it has been in the service process, so its
-custody cannot be retrofitted, and it is not destroyed at migration, so
-VTI-KEY-132 cannot bound what it signs. The grace period is therefore a
-stated, bounded acceptance of risk that already existed — the verifier accepts
-what it accepted yesterday, for a period the node has published — and not a
-judgement that the legacy signatures are sound. It is capped at 90 days, and
-re-issuance is pushed to holders rather than left to renewal, because every day
-of it is a day on which a compromise of the service process can still produce a
-backdated credential that verifiers accept. Status lists get no grace
-period because they are the artefact whose forgery undoes revocation
-(VTI-KEY-080) and the one the node can re-sign in full at once.
+*Note.* VTI-KEY-140 through VTI-KEY-145 specified an in-place migration with a
+grace period, and are withdrawn in favour of VTI-KEY-146 through VTI-KEY-148.
 
-*Open issue.* The encoding of the grace period's end in the identifier's
-history is not yet fixed, and shares the encoding question of VTI-KEY-120.
+**VTI-KEY-146** — The durable identity of a VTA, a VTC or a VTN whose identifier
+document does not satisfy VTI-KEY-070 through VTI-KEY-094 — including one that
+carries no `keyRoles`, or binds one key to more than one relationship — is
+non-conformant.
+
+**VTI-KEY-147** — A verifier MUST NOT accept an attestation artefact from a
+non-conformant identity, whatever relationships its document lists and whenever
+the artefact was issued.
+
+**VTI-KEY-148** — The remedy for a non-conformant identity is a new identity
+created conformant, from which the node issues afresh; this specification
+defines no in-place migration. Once the new identity is in use, the
+non-conformant one MUST be deactivated (VTI-KEY-063).
 
 ### Privacy of key roles
 

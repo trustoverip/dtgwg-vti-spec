@@ -72,7 +72,9 @@ never holds.
 
 **VTI-VTC-040** — A VTC's identity MUST bind its keys to key roles as required
 by VTI-KEY-070. Its `operational` and `messaging` keys MUST be derived by its
-VTA and delivered under VTI-VTA-030, consistently with VTI-VTC-010.
+VTA and delivered under VTI-VTA-030, consistently with VTI-VTC-010. A VTC
+identity that does not bind key roles is replaced by a new one, not migrated
+(VTI-KEY-146 through VTI-KEY-148).
 
 **VTI-VTC-041** — A VTC MUST NOT hold its `attestation` or `update` keys. It MUST
 obtain every attestation artefact — membership, role and endorsement credentials,

@@ -93,7 +93,8 @@ community's traffic, means a compromise of that process yields a caller of this
 oracle, bounded by VTI-VTA-004 through VTI-VTA-007, rather than a holder of the
 key. The VTA's own identity follows the same key roles (VTI-KEY-070): it issues
 credentials under its `attestation` key and signs its own messages under its
-`operational` key.
+`operational` key, and a VTA identity that does not is replaced by a new one
+rather than migrated (VTI-KEY-146 through VTI-KEY-148).
 
 ### Credentials held for the principal
 
