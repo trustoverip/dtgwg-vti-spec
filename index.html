@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-24T20:38:05.805Z"
+      "lastUpdated": "2026-09-26T05:59:15.775Z"
     }
   ]
 };</script>
@@ -5152,7 +5152,10 @@ own limits are worth carrying: domain separation makes a signature unusable
 outside the domain it was requested in without making the signing of
 unparseable material safe, and a retention watermark restores verification
 across an honest sweep while resting on a record held in the same store as the
-log it vouches for.</p>
+log it vouches for. One entry, VTI-APV-014, is recorded here although it was
+never listed above: the divergence was known to its implementer and closed
+before anyone added it, and the history is recorded so that the omission is not
+taken for conformance all along.</p>
 <div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
 <thead>
 <tr>
@@ -5184,6 +5187,10 @@ log it vouches for.</p>
 <tr>
 <td>VTI-OPS-021, VTI-OPS-024</td>
 <td>The document dispatcher now holds every document to the policy its own specification declares. The policy is read from the task registry at dispatch and applied unmodified, so a task that declares <code>proof</code> REQUIRED is refused when it carries none, on every binding that reaches the dispatcher, and the transport’s authentication of the sender no longer stands in for the proof. Nothing configures this: the transitional switch that narrowed the requirement where the transport had authenticated the sender is deleted rather than defaulted off, and a configuration that still asks for the old behaviour is refused at load rather than started under the opposite of what it says, because a per-deployment relaxation is the same weakening a binding is forbidden to make, reached by a longer path. The ordering this took is the one the entry implied: enforcing became available only once the producers that relied on the allowance signed the documents they had been sending unsigned, and a node that enforces before its clients sign refuses their joins. The acceptance window is applied in the same place and on the same terms — a time of issue is required, a document older than the window or outside the skew tolerance is refused, and the window and the retention of the record of accepted identifiers are one bound rather than two. One thing is tighter than the entry asked for: a proof is bound to the document’s own issuer, so a proof that verifies under a key that issuer does not control is refused rather than satisfying the requirement. Before, any verifying proof did, which established that somebody signed something and not who composed the request. What this does not close: the tasks served over an HTTP binding that carries no operation document at all are unaffected, because they never reach the dispatcher. That entry stays open, and the enforcement recorded here is the precondition it named rather than its resolution</td>
+</tr>
+<tr>
+<td>VTI-APV-014 <em>(observed, never listed)</em></td>
+<td>At one community node, an entry reached unrestricted act scope on the requester’s own authority. Promotion required the requester’s step-up, which establishes who is at the keyboard and never that a second party agreed. An administrative invitation wrote an unrestricted entry with no check at all. The creation, the widening and the invitation now each raise a consent request to the other unrestricted administrators, bound to the same digest of the operation’s exact type and payload that the operation-bound step-up uses. The operation runs only once the community’s threshold of decisions from parties other than the requester has been met. The threshold is a community setting with a floor of one, and a value the current administrators could not meet is refused when it is written. Its companion, attrition, is closed with it: the guards against removing the last administrator now count unrestricted administrators, not administrators of any scope, and they cover narrowing, revocation, demotion and departure under one lock. Otherwise the requirement could be met at creation and undone by removal. A threshold of one is exempt from the unmeetable-value refusal, so that a community of two can still remove a compromised administrator. Installation can name a co-administrator, so a new community is not born with only one party able to consent. What this does not close: the node’s offline writers, the emergency path for a community that has lost every administrator, still write an unrestricted entry without a second party. They cannot consult one, because the node is stopped. Each such write is queued and recorded in the audit trail when the node next starts, so the path is visible rather than prevented. An approver also needs a device that answers consent requests, or a tool that signs the decision document.</td>
 </tr>
 </tbody>
 </table>
@@ -5323,15 +5330,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 24 September 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 26 September 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-24T20:38:05.271Z">
-                            Generated: 2026-09-24T20:38:05.271Z
+                        <time class="timestamp" datetime="2026-09-26T05:59:15.381Z">
+                            Generated: 2026-09-26T05:59:15.381Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
