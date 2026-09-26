@@ -103,6 +103,12 @@ which party controls it beyond the assertion of the person who relayed it.
 Where the client does not perform the rotation in Step 3, the entry MUST carry
 an expiry.
 
+**VTI-CLT-017** — Where the long-term entry that replaces the bootstrap entry
+is written by the bootstrap identifier itself, rather than moved to it by the
+rotation in Step 3, the enrolling administrator MUST mark the bootstrap entry
+as a hand-off (VTI-ACL-054). Without the marker the node refuses the long-term
+entry (VTI-ACL-058).
+
 **VTI-CLT-015** — The enrolling administrator SHOULD confirm the identifier
 with the client's operator over a channel distinct from the one that delivered
 it.
@@ -303,7 +309,7 @@ order:
 | Use | VTI-CLT-040 – VTI-CLT-045 |
 | Lifecycle | VTI-CLT-050 – VTI-CLT-052 |
 
-A node target additionally implements VTI-CLT-010 – VTI-CLT-012, VTI-CLT-014,
+A node target additionally implements VTI-CLT-010 – VTI-CLT-012, VTI-CLT-014, VTI-CLT-017,
 VTI-CLT-020, VTI-CLT-027 – VTI-CLT-032, VTI-CLT-053 and VTI-CLT-054.
 
 Sequence diagrams, a worked example and test vectors — including the failure
