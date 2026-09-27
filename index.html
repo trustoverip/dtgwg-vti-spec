@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-26T20:43:16.280Z"
+      "lastUpdated": "2026-09-27T18:25:26.409Z"
     }
   ]
 };</script>
@@ -1348,6 +1348,18 @@ could have granted directly. The subject cannot create the marker, so it
 cannot manufacture an exemption for itself. Atomicity and the audit record
 before the commit ensure that the marker cannot be spent twice, and that a
 spent marker is always accounted for.</p>
+<p><em>Offline writers.</em> VTI-ACL-052 and VTI-ACL-053 bound callers: parties whose
+requests a running node authorizes. A node’s operator writing an entry directly
+to the node’s storage while the node is stopped, for example to enrol the
+first administrator or to recover a node that has lost every administrator, is
+not a caller. The node makes no authorization decision about the write, and no
+entry could bound it: whoever can open the node’s storage and its seed already
+holds every key the node holds. The requirement that a caller with no live
+entry is refused therefore does not apply to such a writer. It applies in full
+to every request the node receives, whatever the requester’s configuration,
+deployment state or network position (VTI-ACL-001). An offline write is made
+visible rather than prevented: it is an entry’s creation or modification, and
+VTI-AUD-001 requires it to be recorded like any other.</p>
 <p><em>Rationale for VTI-ACL-051.</em> Reading an entry and managing it are different
 powers. An approver needs to see the grants it is being asked to bless
 decisions about; it does not thereby need to be able to change them.</p>
@@ -6203,15 +6215,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 26 September 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 27 September 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-26T20:43:15.790Z">
-                            Generated: 2026-09-26T20:43:15.790Z
+                        <time class="timestamp" datetime="2026-09-27T18:25:26.093Z">
+                            Generated: 2026-09-27T18:25:26.093Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
