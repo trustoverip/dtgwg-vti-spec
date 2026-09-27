@@ -300,6 +300,19 @@ cannot manufacture an exemption for itself. Atomicity and the audit record
 before the commit ensure that the marker cannot be spent twice, and that a
 spent marker is always accounted for.
 
+*Offline writers.* VTI-ACL-052 and VTI-ACL-053 bound callers: parties whose
+requests a running node authorizes. A node's operator writing an entry directly
+to the node's storage while the node is stopped, for example to enrol the
+first administrator or to recover a node that has lost every administrator, is
+not a caller. The node makes no authorization decision about the write, and no
+entry could bound it: whoever can open the node's storage and its seed already
+holds every key the node holds. The requirement that a caller with no live
+entry is refused therefore does not apply to such a writer. It applies in full
+to every request the node receives, whatever the requester's configuration,
+deployment state or network position (VTI-ACL-001). An offline write is made
+visible rather than prevented: it is an entry's creation or modification, and
+VTI-AUD-001 requires it to be recorded like any other.
+
 *Rationale for VTI-ACL-051.* Reading an entry and managing it are different
 powers. An approver needs to see the grants it is being asked to bless
 decisions about; it does not thereby need to be able to change them.
