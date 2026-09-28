@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-28T08:51:25.554Z"
+      "lastUpdated": "2026-09-28T14:20:50.721Z"
     }
   ]
 };</script>
@@ -5966,10 +5966,10 @@ different thing from a requirement that is met.</p>
 <td>Bound the lifetime; never cache a transport failure</td>
 </tr>
 <tr>
-<td>VTI-TRN-045, VTI-TRN-047 <em>(observed)</em></td>
-<td>A sender takes a recipient’s acceptance window from what the recipient advertises, and a node advertises its own</td>
-<td>The push engine of both node types applies one constant to every recipient: a maximum age of ten minutes and a skew tolerance of sixty seconds, which is the window its own consumers apply and is held in one place so that the two cannot drift. It reads no advertised window, and neither node type advertises one, because the discovery definition the nodes serve has no member to carry it. The constant is documented and applied uniformly, so the fallback of VTI-TRN-045 is met for a recipient that advertises nothing, which today is every recipient. What is not met is the case the requirement exists for: a recipient configured with a different window is delivered to as if it applied this one</td>
-<td>Publish an acceptance-window member in the discovery definition (proposed to [TRUST-TASKS]); advertise each node’s window in its discovery response; read the recipient’s advertised window, authenticated, before deciding whether a held document is still deliverable</td>
+<td>VTI-TRN-045 <em>(observed)</em></td>
+<td>A sender takes a recipient’s acceptance window from what the recipient advertises</td>
+<td>Both node types now advertise, in <code>trust-task-discovery/0.3</code>, the window they apply: a maximum age of ten minutes and a skew tolerance of sixty seconds, drawn from the same value their consumers enforce, so VTI-TRN-047 is met and the advertisement cannot be wider than what is applied. The push engine of both node types still reads no advertised window: it applies that same value, documented, to every recipient, which is VTI-TRN-045’s final tier. Between the two node types this is correct, because it is the window each advertises. It is not correct for a recipient that applies a narrower window. Reading one needs what the engine lacks: pushes are one-way with no correlated reply path for a discovery exchange; the recipients pushed to today (approvers’ devices, members’ wallets, requesters) serve no discovery; the window matters only while a document is held, which is when the recipient cannot answer; and the engine does not observe an <code>expired</code> refusal, so the discovery definition’s re-ask rule has nothing to trigger it</td>
+<td>When a class of push recipient advertises a window: a per-recipient cache keyed by DID, with a lifetime, filled only from authenticated discovery responses, a per-type entry preferred to the response-level one and absence meaning nothing was learnt, read by the engine’s staleness decisions. That first needs a correlated reply path, or a refusal routed back to the engine</td>
 </tr>
 </tbody>
 </table>
@@ -6176,6 +6176,10 @@ were written; they were drafted from the change that closed it.</p>
 <td>VTI-TRN-044, VTI-TRN-046 <em>(observed, never listed)</em></td>
 <td>The push engine shared by both node types signed a document once and sent those bytes on every attempt for the whole of a push’s deadline — up to a day for a credential-exchange step, thirty days for a removal notice — while both node types refuse a document more than about eleven minutes past its time of issue. Every escalation, every re-queue after a restart, every hop refused for longer than the window, and every copy collected by a recipient that had been offline therefore delivered a document the recipient refused as expired, and nothing told the sender. The last case was also recorded as delivered, on collection evidence. The engine now issues a new document instead — a new identifier, a new time of issue, the node’s proof again, the original’s thread and idempotency key — when it queues an attempt whose document is past the window, when an attempt never handed to a hop crosses it, and when a copy is collected after the latest acceptable instant; collection of such a copy is recorded as not counting. The push sites whose repeat leaves a second artefact now carry an idempotency key, and the agent’s consumer now keys every task it serves that carries one, classified or not (VTI-OPS-062), so the new documents are one operation. The remaining push sites send notices and consent requests, whose repeat converges, so item 2 of VTI-TRN-046 holds by what each site sends rather than by a check in the engine. New documents per push are bounded, and none is issued for a document with no time of issue or past its own expiry. What this does not close: a copy a mediator already holds is sealed and cannot be recalled, so a recipient that reconnects after the window refuses that copy and then receives a new one. The window the engine applies is a constant rather than the recipient’s own, which F.3 records against VTI-TRN-045</td>
 </tr>
+<tr>
+<td>VTI-TRN-047</td>
+<td>Neither node type advertised the acceptance window it applies, because the discovery definition it served had no member to carry one. Both now answer <code>trust-task-discovery/0.3</code> and advertise, at response level, a maximum age of ten minutes and a skew tolerance of sixty seconds. The advertised value and the one their consumers enforce are one value, rounded down to whole seconds when advertised, so the advertisement cannot be wider than what is applied, and each node holds that with a test that reads the window back out of its own discovery answer and checks a document at the advertised edge is accepted and one past it refused. The agent also still answers the earlier discovery version. What this does not close: a sender reading the window a recipient advertises, which F.3 records against VTI-TRN-045</td>
+</tr>
 </tbody>
 </table>
 </div><h4 id="f.8-how-to-add-an-entry" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.8-how-to-add-an-entry">§</a> F.8 How to add an entry</h4>
@@ -6321,8 +6325,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-28T08:51:25.045Z">
-                            Generated: 2026-09-28T08:51:25.045Z
+                        <time class="timestamp" datetime="2026-09-28T14:20:50.188Z">
+                            Generated: 2026-09-28T14:20:50.188Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
