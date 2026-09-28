@@ -112,8 +112,11 @@ of the following classes of evidence, listed in descending strength:
 3. **Transport evidence that the recipient collected the message**, where the
    transport provides it.
 
+Evidence of the first or third class is further qualified by VTI-TRN-044.
+
 **VTI-TRN-041** — A sender MUST record which class of evidence a delivery was
-confirmed by.
+confirmed by. Where it declines to count evidence as delivery under
+VTI-TRN-044, it MUST record the evidence and that it was not counted.
 
 **VTI-TRN-042** — Where a stated delivery window passes without evidence, a
 sender MUST NOT assume delivery. It MUST escalate: re-resolve the recipient and
@@ -123,6 +126,100 @@ operator.
 
 **VTI-TRN-043** — A receiver MUST deduplicate redelivered messages by their
 idempotency key, as required by VTI-OPS-061.
+
+### Delivery and the acceptance window
+
+A store-and-forward delivery can outlive the document it carries. A recipient
+refuses a document whose time of issue lies outside its acceptance window
+(VTI-OPS-024), and a message held by a mediator, refused by a hop, or escalated
+under VTI-TRN-042 can reach its recipient after that window has closed. The
+requirements below keep such a message from being counted as delivered, and say
+how a sender delivers the operation instead.
+
+In this section, the **latest acceptable instant** of a document at a recipient
+is the earlier of: the document's time of issue plus the recipient's maximum
+age and its clock-skew tolerance; and the document's expiry, where it carries
+one. After that instant no recipient applying that window accepts the document,
+whatever its clock reads within its tolerance.
+
+**VTI-TRN-044** — A sender MUST NOT treat evidence of the first or third class
+of VTI-TRN-040 as delivery where the message arrived after the latest
+acceptable instant of the document it carries. The sender MUST place the
+arrival at the time the evidence states, or, where the evidence states none, at
+the time the sender received the evidence. A message so arrived MUST be treated
+as undelivered, and VTI-TRN-042 continues to apply to the operation it carries.
+
+**VTI-TRN-045** — A sender MUST determine a recipient's acceptance window from
+the window the recipient advertises in an authenticated discovery response
+(VTI-OPS-046), where it advertises one. Otherwise it MUST use the acceptance
+window the operation's definition states, where it states one, and otherwise a
+window the sender documents and applies to every recipient for which it has no
+other.
+
+**VTI-TRN-046** — A sender MUST NOT send a document after its latest
+acceptable instant at the recipient, and SHOULD NOT send one after its time of
+issue plus the recipient's maximum age. Where it would otherwise do so, where
+VTI-TRN-044 leaves an operation undelivered, and where the recipient has refused
+a document as outside its acceptance window, a sender that continues the
+delivery MUST deliver the operation as a new document: a new identifier
+(VTI-OPS-025), a new time of issue, a new proof by the same issuer, the
+original's thread, and every other member unchanged, including the idempotency
+key (VTI-OPS-064). The sender:
+
+1. MUST NOT re-send the original under a new time of issue, or send any altered
+   copy of it under the original's identifier;
+2. MUST NOT issue a new document for an operation of the third class of
+   VTI-OPS-060 unless the original carries an idempotency key;
+3. MUST NOT issue a new document once the original's own expiry has passed, or
+   once the delivery window of VTI-TRN-042 has closed; and
+4. MUST bound the number of new documents one delivery can issue, and MUST mark
+   the delivery failed and surface it to the operator when the bound is reached.
+
+**VTI-TRN-047** — A node SHOULD advertise its acceptance window in its
+discovery response, where the discovery definition provides for it, and MUST
+NOT advertise a window longer than the one it applies.
+
+*Rationale for VTI-TRN-044.* Collection is evidence that the recipient was
+reachable, not that it accepted anything. A copy collected after its window has
+closed is refused as expired, and a sender that records it as delivered has
+closed the one obligation — VTI-TRN-042's — that would have delivered the
+operation. Nothing downstream disagrees, because the refusal is sent to a
+sender that has stopped listening. A receipt from the recipient's delivery
+layer has the same defect where it acknowledges arrival below the point where
+the window is applied. A protocol reply does not: it carries the recipient's
+disposition, and an `expired` refusal is a refusal the sender acts on under
+VTI-TRN-046, not a delivery. The bound is the latest acceptable instant rather
+than the maximum age alone, so that a copy the recipient might still accept is
+not recorded as lost; a copy that arrives inside the skew tolerance and is
+refused comes back as a refusal and is handled by VTI-TRN-046.
+
+*Rationale for VTI-TRN-045 and VTI-TRN-047.* A recipient's acceptance window is
+its own policy, and a sender holding a document for delivery cannot apply
+VTI-TRN-044 or VTI-TRN-046 without knowing it. Where the two ends happen to
+share a constant, the sender is right by coincidence, and the first recipient
+configured differently is one whose deliveries are either recorded as lost
+while they are accepted, or recorded as delivered while they are refused. An
+advertised window longer than the one applied produces the second, which is
+why VTI-TRN-047 forbids it; one shorter than the one applied costs only the
+signatures spent on new documents the recipient did not need.
+
+*Rationale for VTI-TRN-046.* The obvious repair — re-stamping the time of issue
+and re-signing — produces a different document under an identifier the
+recipient may already have accepted, which it refuses under VTI-OPS-026 as a
+conflicting document rather than absorbing as a repeat. A new identifier is what makes the
+document acceptable, and the idempotency key is what keeps the new document one
+operation with the old: a recipient performs a keyed operation at most once per
+key (VTI-OPS-061), so however many of the documents reach it, the operation is
+performed once. That is also why item 2 refuses a new document for an unkeyed
+operation of the third class: for such an operation, delivering it again is
+performing it again. The replay exposure is unchanged. The recipient's window
+and its record of accepted identifiers stay as they were, and the new document
+is one only the issuer could have signed. A copy already held by an
+intermediary cannot be recalled; its recipient refuses one stale copy, and a
+new document follows under VTI-TRN-044. The bound of item 4 matters where
+signing is expensive or is itself an audited act, and it is what stops a
+recipient that refuses every document from costing the sender a signature per
+window for as long as the delivery window lasts.
 
 *Rationale for VTI-TRN-040.* Store-and-forward transports are at-least-once
 buses. Acceptance by a mediator means durably queued, which is a genuine
