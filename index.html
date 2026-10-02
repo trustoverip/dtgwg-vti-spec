@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-09-28T14:28:14.543Z"
+      "lastUpdated": "2026-10-02T19:12:57.842Z"
     }
   ]
 };</script>
@@ -318,7 +318,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
                     </div>
                     <nav id="toc" class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto"
                         aria-labelledby="sidebarMenuLabel">
-                        <ul class="toc"><li><a href="#introduction">Introduction</a><ul><li><a href="#the-idea-in-plain-terms">The idea in plain terms</a><ul><li><a href="#the-three-things-that-go-wrong">The three things that go wrong</a></li><li><a href="#why-the-writing-is-careful">Why the writing is careful</a></li></ul></li><li><a href="#what-this-specification-covers">What this specification covers</a></li><li><a href="#what-this-specification-does-not-cover">What this specification does not cover</a></li><li><a href="#the-vocabulary-in-one-paragraph">The vocabulary in one paragraph</a></li><li><a href="#this-specification-is-written-first">This specification is written first</a></li><li><a href="#structure-of-this-document">Structure of this document</a></li><li><a href="#how-requirements-are-stated">How requirements are stated</a></li><li><a href="#reading-this-document-for-a-purpose">Reading this document for a purpose</a></li><li><a href="#specification-versioning">Specification Versioning</a><ul><li><a href="#ratification-and-the-stable-release-line">Ratification and the Stable Release Line</a></li></ul></li></ul></li><li><a href="#requirements-language">Requirements Language</a></li><li><a href="#terminology">Terminology</a></li><li><a href="#architecture-and-conformance-targets">Architecture and Conformance Targets</a><ul><li><a href="#the-problem-this-specification-addresses">The problem this specification addresses</a></li><li><a href="#conformance-targets">Conformance targets</a><ul><li><a href="#verifiable-trust-agent">Verifiable Trust Agent</a></li><li><a href="#verifiable-trust-community">Verifiable Trust Community</a></li><li><a href="#verifiable-trust-network">Verifiable Trust Network</a></li><li><a href="#client">Client</a></li><li><a href="#mediator%2C-host%2C-registry">Mediator, host, registry</a></li></ul></li><li><a href="#the-trust-boundary">The trust boundary</a></li><li><a href="#layering">Layering</a></li><li><a href="#the-common-model">The common model</a></li><li><a href="#a-request%2C-end-to-end">A request, end to end</a></li><li><a href="#how-requirements-are-stated-1">How requirements are stated</a></li></ul></li><li><a href="#trust-contexts">Trust Contexts</a><ul><li><a href="#in-plain-terms">In plain terms</a></li><li><a href="#what-this-chapter-defines">What this chapter defines</a></li><li><a href="#trust-contexts-1">Trust contexts</a></li><li><a href="#context-identifiers">Context identifiers</a><ul><li><a href="#ancestry">Ancestry</a></li><li><a href="#purity-of-the-authorization-gate">Purity of the authorization gate</a></li></ul></li><li><a href="#context-lifecycle">Context lifecycle</a></li></ul></li><li><a href="#access-control-and-authority">Access Control and Authority</a><ul><li><a href="#in-plain-terms-1">In plain terms</a></li><li><a href="#what-this-chapter-defines-1">What this chapter defines</a></li><li><a href="#the-access-control-entry">The access control entry</a><ul><li><a href="#every-grant-is-stated%2C-never-inferred-from-a-shape">Every grant is stated, never inferred from a shape</a></li><li><a href="#storage-of-subject-identifiers">Storage of subject identifiers</a></li></ul></li><li><a href="#roles">Roles</a></li><li><a href="#act-scope%3A-super-administrators-and-context-administrators">Act scope: super-administrators and context administrators</a></li><li><a href="#capabilities">Capabilities</a></li><li><a href="#approve-scope">Approve scope</a></li><li><a href="#visibility-and-management-of-entries">Visibility and management of entries</a></li><li><a href="#listing-entries-by-context">Listing entries by context</a></li><li><a href="#delegation">Delegation</a></li><li><a href="#revocation">Revocation</a></li><li><a href="#where-authority-decisions-live">Where authority decisions live</a></li></ul></li><li><a href="#approvals%2C-consent-and-step-up">Approvals, Consent and Step-Up</a><ul><li><a href="#in-plain-terms-2">In plain terms</a></li><li><a href="#what-this-chapter-defines-2">What this chapter defines</a></li><li><a href="#approval-rules">Approval rules</a></li></ul></li><li><a href="#audit">Audit</a><ul><li><a href="#in-plain-terms-3">In plain terms</a></li><li><a href="#what-this-chapter-defines-3">What this chapter defines</a></li></ul></li><li><a href="#identity%2C-dids-and-key-management">Identity, DIDs and Key Management</a><ul><li><a href="#identifier-methods">Identifier methods</a></li><li><a href="#correlation-and-identifier-reuse">Correlation and identifier reuse</a></li><li><a href="#cryptography">Cryptography</a></li><li><a href="#key-purposes">Key purposes</a></li><li><a href="#derivation">Derivation</a></li><li><a href="#rotation">Rotation</a></li><li><a href="#service-endpoints">Service endpoints</a></li><li><a href="#resolution%2C-caching-and-deactivation">Resolution, caching and deactivation</a></li><li><a href="#key-roles">Key roles</a><ul><li><a href="#services-operated-alongside-a-node">Services operated alongside a node</a></li></ul></li><li><a href="#what-each-role-signs">What each role signs</a><ul><li><a href="#registry-records">Registry records</a></li></ul></li><li><a href="#binding-roles-in-the-identifier-document">Binding roles in the identifier document</a></li><li><a href="#selecting-and-verifying-by-role">Selecting and verifying by role</a></li><li><a href="#custody-of-role-keys">Custody of role keys</a></li><li><a href="#rotation-and-revocation-by-role">Rotation and revocation by role</a></li><li><a href="#judging-material-signed-before-a-rotation">Judging material signed before a rotation</a></li><li><a href="#identities-that-do-not-bind-key-roles">Identities that do not bind key roles</a></li><li><a href="#privacy-of-key-roles">Privacy of key roles</a></li></ul></li><li><a href="#transports%2C-messaging-and-delivery">Transports, Messaging and Delivery</a><ul><li><a href="#in-plain-terms-4">In plain terms</a></li><li><a href="#what-this-chapter-defines-4">What this chapter defines</a></li><li><a href="#transport-independence">Transport independence</a></li><li><a href="#liveness">Liveness</a></li><li><a href="#mediators">Mediators</a></li><li><a href="#metadata-and-correlation">Metadata and correlation</a></li><li><a href="#resource-bounds">Resource bounds</a></li><li><a href="#truthful-send">Truthful send</a></li><li><a href="#delivery-confirmation">Delivery confirmation</a></li><li><a href="#delivery-and-the-acceptance-window">Delivery and the acceptance window</a></li><li><a href="#bounded-waits-and-honest-health">Bounded waits and honest health</a></li></ul></li><li><a href="#sessions-and-authentication">Sessions and Authentication</a><ul><li><a href="#in-plain-terms-5">In plain terms</a></li><li><a href="#what-this-chapter-defines-5">What this chapter defines</a></li><li><a href="#the-challenge">The challenge</a></li><li><a href="#authentication">Authentication</a></li><li><a href="#resolving-authority">Resolving authority</a></li><li><a href="#refresh">Refresh</a></li><li><a href="#session-lifecycle">Session lifecycle</a></li></ul></li><li><a href="#client-onboarding-and-lifecycle">Client Onboarding and Lifecycle</a><ul><li><a href="#in-plain-terms-6">In plain terms</a></li><li><a href="#what-this-chapter-defines-6">What this chapter defines</a></li><li><a href="#client-classes">Client classes</a></li><li><a href="#step-1-%E2%80%94-mint-an-ephemeral-identifier-client-side">Step 1 — mint an ephemeral identifier client-side</a></li><li><a href="#step-2-%E2%80%94-enrol-the-identifier">Step 2 — enrol the identifier</a></li><li><a href="#step-3-%E2%80%94-connect%2C-then-roll-the-key">Step 3 — connect, then roll the key</a><ul><li><a href="#mint-the-replacement">Mint the replacement</a></li><li><a href="#prove-reachability-before-committing">Prove reachability before committing</a></li><li><a href="#swap-atomically">Swap atomically</a></li><li><a href="#commit%2C-then-persist%2C-before-anything-else">Commit, then persist, before anything else</a></li></ul></li><li><a href="#step-4-%E2%80%94-steady-state-use">Step 4 — steady-state use</a></li><li><a href="#lifecycle">Lifecycle</a></li><li><a href="#client-conformance-checklist">Client conformance checklist</a></li></ul></li><li><a href="#operation-surface">Operation Surface</a><ul><li><a href="#in-plain-terms-7">In plain terms</a></li><li><a href="#what-this-chapter-defines-7">What this chapter defines</a></li><li><a href="#the-catalogue-is-the-api">The catalogue is the API</a></li><li><a href="#requirements-on-a-private-task">Requirements on a private task</a></li><li><a href="#extension-rather-than-divergence">Extension rather than divergence</a></li><li><a href="#the-operation-document">The operation document</a></li><li><a href="#replay">Replay</a></li><li><a href="#responses-and-refusals">Responses and refusals</a></li><li><a href="#shared-components">Shared components</a></li><li><a href="#the-required-catalogue">The required catalogue</a></li><li><a href="#transport-bindings">Transport bindings</a></li><li><a href="#the-catalogue-and-its-registries">The catalogue and its registries</a></li><li><a href="#versioning-and-negotiation">Versioning and negotiation</a></li><li><a href="#the-policy-gate">The policy gate</a></li><li><a href="#retry%2C-idempotency-and-the-cost-of-a-lost-reply">Retry, idempotency and the cost of a lost reply</a></li><li><a href="#composing-an-operation">Composing an operation</a></li></ul></li><li><a href="#credentials-and-presentations">Credentials and Presentations</a><ul><li><a href="#in-plain-terms-8">In plain terms</a></li><li><a href="#what-this-chapter-defines-8">What this chapter defines</a></li><li><a href="#issuance">Issuance</a></li><li><a href="#status-and-revocation">Status and revocation</a></li><li><a href="#presentation">Presentation</a></li><li><a href="#what-verification-establishes">What verification establishes</a></li><li><a href="#minimisation">Minimisation</a></li></ul></li><li><a href="#the-verifiable-trust-agent">The Verifiable Trust Agent</a><ul><li><a href="#in-plain-terms-9">In plain terms</a></li><li><a href="#what-this-chapter-defines-9">What this chapter defines</a></li><li><a href="#custody">Custody</a></li><li><a href="#the-signing-oracle">The signing oracle</a></li><li><a href="#credentials-held-for-the-principal">Credentials held for the principal</a></li><li><a href="#context-and-key-authority">Context and key authority</a></li><li><a href="#provisioning-integrations">Provisioning integrations</a></li><li><a href="#delegation-to-software-agents">Delegation to software agents</a></li><li><a href="#backup%2C-restore-and-succession">Backup, restore and succession</a></li><li><a href="#the-operator-surface">The operator surface</a></li></ul></li><li><a href="#the-verifiable-trust-community">The Verifiable Trust Community</a><ul><li><a href="#in-plain-terms-10">In plain terms</a></li><li><a href="#what-this-chapter-defines-10">What this chapter defines</a></li><li><a href="#provisioning-and-dependency">Provisioning and dependency</a></li><li><a href="#which-authority-lives-where">Which authority lives where</a></li><li><a href="#keys-and-what-the-community-signs">Keys and what the community signs</a></li><li><a href="#the-community-authority-model">The community authority model</a></li><li><a href="#governance-binding">Governance binding</a></li></ul></li><li><a href="#the-verifiable-trust-network">The Verifiable Trust Network</a><ul><li><a href="#in-plain-terms-11">In plain terms</a></li><li><a href="#what-this-chapter-defines-11">What this chapter defines</a></li><li><a href="#position-in-the-architecture">Position in the architecture</a></li><li><a href="#ownership-and-governance">Ownership and governance</a></li><li><a href="#curation-is-one-sided">Curation is one-sided</a></li><li><a href="#what-a-listing-establishes">What a listing establishes</a></li><li><a href="#networks-of-networks">Networks of networks</a></li><li><a href="#overlapping-networks">Overlapping networks</a></li><li><a href="#credentials-a-network-issues-and-receives">Credentials a network issues and receives</a></li><li><a href="#what-a-network-is-not">What a network is not</a></li><li><a href="#the-open-question%3A-one-node-type-or-two">The open question: one node type or two</a></li><li><a href="#illustrations">Illustrations</a></li></ul></li><li><a href="#membership-lifecycle-and-community-credentials">Membership Lifecycle and Community Credentials</a><ul><li><a href="#lifecycle-states">Lifecycle states</a></li><li><a href="#admission">Admission</a></li><li><a href="#membership-credentials">Membership credentials</a></li><li><a href="#suspension-and-removal">Suspension and removal</a></li><li><a href="#renewal-and-rotation">Renewal and rotation</a></li></ul></li><li><a href="#trust-registries-and-cross-community-recognition">Trust Registries and Cross-Community Recognition</a><ul><li><a href="#publication">Publication</a></li><li><a href="#what-a-registry-answer-establishes">What a registry answer establishes</a></li><li><a href="#cross-community-recognition">Cross-community recognition</a></li></ul></li><li><a href="#composition-requirements">Composition Requirements</a><ul><li><a href="#in-plain-terms-12">In plain terms</a></li><li><a href="#what-this-chapter-defines-12">What this chapter defines</a></li><li><a href="#how-a-composition-requirement-binds">How a composition requirement binds</a></li><li><a href="#composition-integrity">Composition integrity</a></li><li><a href="#semantic-completion">Semantic completion</a></li><li><a href="#authority-is-not-verification">Authority is not verification</a></li><li><a href="#currency-of-state">Currency of state</a></li><li><a href="#delegation-lineage">Delegation lineage</a></li><li><a href="#privacy-across-composition">Privacy across composition</a></li><li><a href="#false-independence">False independence</a></li><li><a href="#indeterminacy">Indeterminacy</a></li><li><a href="#configuration-materiality">Configuration materiality</a></li><li><a href="#component-substitution">Component substitution</a></li><li><a href="#human-control">Human control</a></li><li><a href="#open-propositions">Open propositions</a></li></ul></li><li><a href="#operational-and-assurance-requirements">Operational and Assurance Requirements</a><ul><li><a href="#in-plain-terms-13">In plain terms</a></li><li><a href="#what-this-chapter-defines-13">What this chapter defines</a></li><li><a href="#bootstrap">Bootstrap</a></li><li><a href="#protection-at-rest">Protection at rest</a></li><li><a href="#containment">Containment</a></li><li><a href="#audit-1">Audit</a></li><li><a href="#time">Time</a></li><li><a href="#what-an-operator-must-be-able-to-answer">What an operator must be able to answer</a></li></ul></li><li><a href="#security-considerations">Security Considerations</a></li><li><a href="#privacy-considerations">Privacy Considerations</a></li><li><a href="#governance-considerations">Governance Considerations</a></li><li><a href="#internationalization-considerations">Internationalization Considerations</a></li><li><a href="#accessibility-considerations">Accessibility Considerations</a></li><li><a href="#conformance">Conformance</a><ul><li><a href="#profiles">Profiles</a></li><li><a href="#targets">Targets</a></li><li><a href="#requirement-identifier-areas">Requirement identifier areas</a></li><li><a href="#coverage">Coverage</a></li><li><a href="#the-test-suite">The test suite</a></li><li><a href="#the-assessment-interface">The assessment interface</a></li><li><a href="#divergence-from-implementations">Divergence from implementations</a></li><li><a href="#what-an-assessment-does-not-do">What an assessment does not do</a></li></ul></li><li><a href="#references">References</a><ul><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li><li><a href="#appendices">Appendices</a><ul><li><a href="#appendix-a%3A-client-onboarding">Appendix A: Client onboarding</a><ul><li><a href="#a.1-enrolment">A.1 Enrolment</a></li><li><a href="#a.2-first-connection-and-the-key-roll">A.2 First connection and the key roll</a></li><li><a href="#a.3-worked-example">A.3 Worked example</a></li><li><a href="#a.4-failure-cases-around-the-commit-point">A.4 Failure cases around the commit point</a></li><li><a href="#a.5-test-vectors-%E2%80%94-context-paths">A.5 Test vectors — context paths</a></li><li><a href="#a.6-test-vectors-%E2%80%94-ancestry">A.6 Test vectors — ancestry</a></li><li><a href="#a.7-test-vectors-%E2%80%94-act-scope">A.7 Test vectors — act scope</a></li></ul></li><li><a href="#appendix-b%3A-access-control-entry">Appendix B: Access control entry</a></li><li><a href="#appendix-c%3A-role-and-capability-annex">Appendix C: Role and capability annex</a><ul><li><a href="#c.1-roles">C.1 Roles</a></li><li><a href="#c.2-capability-registry">C.2 Capability registry</a></li></ul></li><li><a href="#appendix-d%3A-context-path-grammar">Appendix D: Context path grammar</a></li><li><a href="#appendix-e%3A-composition-proposition-catalogue">Appendix E: Composition proposition catalogue</a><ul><li><a href="#e.1-record-form">E.1 Record form</a></li><li><a href="#e.2-evidence-families">E.2 Evidence families</a></li><li><a href="#e.3-assessment-submissions">E.3 Assessment submissions</a></li></ul></li><li><a href="#appendix-f%3A-divergence-register">Appendix F: Divergence register</a><ul><li><a href="#f.1-authority-encoding">F.1 Authority encoding</a></li><li><a href="#f.2-operations-and-versioning">F.2 Operations and versioning</a></li><li><a href="#f.3-transports%2C-sessions-and-resolution">F.3 Transports, sessions and resolution</a></li><li><a href="#f.4-signing%2C-audit-and-identifiers">F.4 Signing, audit and identifiers</a></li><li><a href="#f.5-community-defined-authority-and-publication">F.5 Community-defined authority and publication</a></li><li><a href="#f.6-key-roles-and-custody">F.6 Key roles and custody</a></li><li><a href="#f.7-closed">F.7 Closed</a></li><li><a href="#f.8-how-to-add-an-entry">F.8 How to add an entry</a></li></ul></li><li><a href="#appendix-g%3A-acknowledgements">Appendix G: Acknowledgements</a></li></ul></li></ul>
+                        <ul class="toc"><li><a href="#introduction">Introduction</a><ul><li><a href="#the-idea-in-plain-terms">The idea in plain terms</a><ul><li><a href="#the-three-things-that-go-wrong">The three things that go wrong</a></li><li><a href="#why-the-writing-is-careful">Why the writing is careful</a></li></ul></li><li><a href="#what-this-specification-covers">What this specification covers</a></li><li><a href="#what-this-specification-does-not-cover">What this specification does not cover</a></li><li><a href="#the-vocabulary-in-one-paragraph">The vocabulary in one paragraph</a></li><li><a href="#this-specification-is-written-first">This specification is written first</a></li><li><a href="#structure-of-this-document">Structure of this document</a></li><li><a href="#how-requirements-are-stated">How requirements are stated</a></li><li><a href="#reading-this-document-for-a-purpose">Reading this document for a purpose</a></li><li><a href="#specification-versioning">Specification Versioning</a><ul><li><a href="#ratification-and-the-stable-release-line">Ratification and the Stable Release Line</a></li></ul></li></ul></li><li><a href="#requirements-language">Requirements Language</a></li><li><a href="#terminology">Terminology</a></li><li><a href="#architecture-and-conformance-targets">Architecture and Conformance Targets</a><ul><li><a href="#the-problem-this-specification-addresses">The problem this specification addresses</a></li><li><a href="#conformance-targets">Conformance targets</a><ul><li><a href="#verifiable-trust-agent">Verifiable Trust Agent</a></li><li><a href="#verifiable-trust-community">Verifiable Trust Community</a></li><li><a href="#verifiable-trust-network">Verifiable Trust Network</a></li><li><a href="#client">Client</a></li><li><a href="#mediator%2C-host%2C-registry">Mediator, host, registry</a></li></ul></li><li><a href="#the-trust-boundary">The trust boundary</a></li><li><a href="#layering">Layering</a></li><li><a href="#the-common-model">The common model</a></li><li><a href="#a-request%2C-end-to-end">A request, end to end</a></li><li><a href="#how-requirements-are-stated-1">How requirements are stated</a></li></ul></li><li><a href="#trust-contexts">Trust Contexts</a><ul><li><a href="#in-plain-terms">In plain terms</a></li><li><a href="#what-this-chapter-defines">What this chapter defines</a></li><li><a href="#trust-contexts-1">Trust contexts</a></li><li><a href="#context-identifiers">Context identifiers</a><ul><li><a href="#ancestry">Ancestry</a></li><li><a href="#purity-of-the-authorization-gate">Purity of the authorization gate</a></li></ul></li><li><a href="#context-lifecycle">Context lifecycle</a></li></ul></li><li><a href="#access-control-and-authority">Access Control and Authority</a><ul><li><a href="#in-plain-terms-1">In plain terms</a></li><li><a href="#what-this-chapter-defines-1">What this chapter defines</a></li><li><a href="#the-access-control-entry">The access control entry</a><ul><li><a href="#every-grant-is-stated%2C-never-inferred-from-a-shape">Every grant is stated, never inferred from a shape</a></li><li><a href="#storage-of-subject-identifiers">Storage of subject identifiers</a></li></ul></li><li><a href="#roles">Roles</a></li><li><a href="#act-scope%3A-super-administrators-and-context-administrators">Act scope: super-administrators and context administrators</a></li><li><a href="#capabilities">Capabilities</a></li><li><a href="#approve-scope">Approve scope</a></li><li><a href="#visibility-and-management-of-entries">Visibility and management of entries</a></li><li><a href="#listing-entries-by-context">Listing entries by context</a></li><li><a href="#delegation">Delegation</a></li><li><a href="#revocation">Revocation</a></li><li><a href="#where-authority-decisions-live">Where authority decisions live</a></li></ul></li><li><a href="#approvals%2C-consent-and-step-up">Approvals, Consent and Step-Up</a><ul><li><a href="#in-plain-terms-2">In plain terms</a></li><li><a href="#what-this-chapter-defines-2">What this chapter defines</a></li><li><a href="#approval-rules">Approval rules</a></li></ul></li><li><a href="#audit">Audit</a><ul><li><a href="#in-plain-terms-3">In plain terms</a></li><li><a href="#what-this-chapter-defines-3">What this chapter defines</a></li></ul></li><li><a href="#identity%2C-dids-and-key-management">Identity, DIDs and Key Management</a><ul><li><a href="#identifier-methods">Identifier methods</a></li><li><a href="#correlation-and-identifier-reuse">Correlation and identifier reuse</a></li><li><a href="#cryptography">Cryptography</a></li><li><a href="#key-purposes">Key purposes</a></li><li><a href="#derivation">Derivation</a></li><li><a href="#rotation">Rotation</a></li><li><a href="#service-endpoints">Service endpoints</a></li><li><a href="#resolution%2C-caching-and-deactivation">Resolution, caching and deactivation</a></li><li><a href="#key-roles">Key roles</a><ul><li><a href="#services-operated-alongside-a-node">Services operated alongside a node</a></li></ul></li><li><a href="#what-each-role-signs">What each role signs</a><ul><li><a href="#registry-records">Registry records</a></li></ul></li><li><a href="#binding-roles-in-the-identifier-document">Binding roles in the identifier document</a></li><li><a href="#selecting-and-verifying-by-role">Selecting and verifying by role</a></li><li><a href="#custody-of-role-keys">Custody of role keys</a></li><li><a href="#rotation-and-revocation-by-role">Rotation and revocation by role</a></li><li><a href="#judging-material-signed-before-a-rotation">Judging material signed before a rotation</a></li><li><a href="#identities-that-do-not-bind-key-roles">Identities that do not bind key roles</a></li><li><a href="#privacy-of-key-roles">Privacy of key roles</a></li></ul></li><li><a href="#transports%2C-messaging-and-delivery">Transports, Messaging and Delivery</a><ul><li><a href="#in-plain-terms-4">In plain terms</a></li><li><a href="#what-this-chapter-defines-4">What this chapter defines</a></li><li><a href="#transport-independence">Transport independence</a></li><li><a href="#liveness">Liveness</a></li><li><a href="#mediators">Mediators</a></li><li><a href="#metadata-and-correlation">Metadata and correlation</a></li><li><a href="#resource-bounds">Resource bounds</a></li><li><a href="#truthful-send">Truthful send</a></li><li><a href="#delivery-confirmation">Delivery confirmation</a></li><li><a href="#delivery-and-the-acceptance-window">Delivery and the acceptance window</a></li><li><a href="#bounded-waits-and-honest-health">Bounded waits and honest health</a></li></ul></li><li><a href="#sessions-and-authentication">Sessions and Authentication</a><ul><li><a href="#in-plain-terms-5">In plain terms</a></li><li><a href="#what-this-chapter-defines-5">What this chapter defines</a></li><li><a href="#the-challenge">The challenge</a></li><li><a href="#authentication">Authentication</a></li><li><a href="#resolving-authority">Resolving authority</a></li><li><a href="#refresh">Refresh</a></li><li><a href="#session-lifecycle">Session lifecycle</a></li></ul></li><li><a href="#client-onboarding-and-lifecycle">Client Onboarding and Lifecycle</a><ul><li><a href="#in-plain-terms-6">In plain terms</a></li><li><a href="#what-this-chapter-defines-6">What this chapter defines</a></li><li><a href="#client-classes">Client classes</a></li><li><a href="#step-1-%E2%80%94-mint-an-ephemeral-identifier-client-side">Step 1 — mint an ephemeral identifier client-side</a></li><li><a href="#step-2-%E2%80%94-enrol-the-identifier">Step 2 — enrol the identifier</a></li><li><a href="#step-3-%E2%80%94-connect%2C-then-roll-the-key">Step 3 — connect, then roll the key</a><ul><li><a href="#mint-the-replacement">Mint the replacement</a></li><li><a href="#prove-reachability-before-committing">Prove reachability before committing</a></li><li><a href="#swap-atomically">Swap atomically</a></li><li><a href="#commit%2C-then-persist%2C-before-anything-else">Commit, then persist, before anything else</a></li></ul></li><li><a href="#step-4-%E2%80%94-steady-state-use">Step 4 — steady-state use</a></li><li><a href="#lifecycle">Lifecycle</a></li><li><a href="#client-conformance-checklist">Client conformance checklist</a></li></ul></li><li><a href="#operation-surface">Operation Surface</a><ul><li><a href="#in-plain-terms-7">In plain terms</a></li><li><a href="#what-this-chapter-defines-7">What this chapter defines</a></li><li><a href="#the-catalogue-is-the-api">The catalogue is the API</a></li><li><a href="#requirements-on-a-private-task">Requirements on a private task</a></li><li><a href="#extension-rather-than-divergence">Extension rather than divergence</a></li><li><a href="#the-operation-document">The operation document</a></li><li><a href="#replay">Replay</a></li><li><a href="#responses-and-refusals">Responses and refusals</a></li><li><a href="#shared-components">Shared components</a></li><li><a href="#the-required-catalogue">The required catalogue</a></li><li><a href="#transport-bindings">Transport bindings</a></li><li><a href="#the-catalogue-and-its-registries">The catalogue and its registries</a></li><li><a href="#versioning-and-negotiation">Versioning and negotiation</a></li><li><a href="#the-policy-gate">The policy gate</a></li><li><a href="#retry%2C-idempotency-and-the-cost-of-a-lost-reply">Retry, idempotency and the cost of a lost reply</a></li><li><a href="#composing-an-operation">Composing an operation</a></li></ul></li><li><a href="#credentials-and-presentations">Credentials and Presentations</a><ul><li><a href="#in-plain-terms-8">In plain terms</a></li><li><a href="#what-this-chapter-defines-8">What this chapter defines</a></li><li><a href="#issuance">Issuance</a></li><li><a href="#status-and-revocation">Status and revocation</a></li><li><a href="#presentation">Presentation</a></li><li><a href="#what-verification-establishes">What verification establishes</a></li><li><a href="#minimisation">Minimisation</a></li></ul></li><li><a href="#the-verifiable-trust-agent">The Verifiable Trust Agent</a><ul><li><a href="#in-plain-terms-9">In plain terms</a></li><li><a href="#what-this-chapter-defines-9">What this chapter defines</a></li><li><a href="#custody">Custody</a></li><li><a href="#the-signing-oracle">The signing oracle</a></li><li><a href="#credentials-held-for-the-principal">Credentials held for the principal</a></li><li><a href="#context-and-key-authority">Context and key authority</a></li><li><a href="#provisioning-integrations">Provisioning integrations</a></li><li><a href="#delegation-to-software-agents">Delegation to software agents</a></li><li><a href="#backup%2C-restore-and-succession">Backup, restore and succession</a></li><li><a href="#the-operator-surface">The operator surface</a></li></ul></li><li><a href="#the-verifiable-trust-community">The Verifiable Trust Community</a><ul><li><a href="#in-plain-terms-10">In plain terms</a></li><li><a href="#what-this-chapter-defines-10">What this chapter defines</a></li><li><a href="#provisioning-and-dependency">Provisioning and dependency</a></li><li><a href="#which-authority-lives-where">Which authority lives where</a></li><li><a href="#keys-and-what-the-community-signs">Keys and what the community signs</a></li><li><a href="#the-community-authority-model">The community authority model</a></li><li><a href="#governance-binding">Governance binding</a></li></ul></li><li><a href="#the-verifiable-trust-network">The Verifiable Trust Network</a><ul><li><a href="#in-plain-terms-11">In plain terms</a></li><li><a href="#what-this-chapter-defines-11">What this chapter defines</a></li><li><a href="#position-in-the-architecture">Position in the architecture</a></li><li><a href="#ownership-and-governance">Ownership and governance</a></li><li><a href="#curation-is-one-sided">Curation is one-sided</a></li><li><a href="#what-a-listing-establishes">What a listing establishes</a></li><li><a href="#networks-of-networks">Networks of networks</a></li><li><a href="#overlapping-networks">Overlapping networks</a></li><li><a href="#credentials-a-network-issues-and-receives">Credentials a network issues and receives</a></li><li><a href="#what-a-network-is-not">What a network is not</a></li><li><a href="#the-open-question%3A-one-node-type-or-two">The open question: one node type or two</a></li><li><a href="#illustrations">Illustrations</a></li></ul></li><li><a href="#membership-lifecycle-and-community-credentials">Membership Lifecycle and Community Credentials</a><ul><li><a href="#lifecycle-states">Lifecycle states</a></li><li><a href="#admission">Admission</a></li><li><a href="#membership-credentials">Membership credentials</a></li><li><a href="#suspension-and-removal">Suspension and removal</a></li><li><a href="#renewal-and-rotation">Renewal and rotation</a></li></ul></li><li><a href="#trust-registries-and-cross-community-recognition">Trust Registries and Cross-Community Recognition</a><ul><li><a href="#publication">Publication</a></li><li><a href="#what-a-registry-answer-establishes">What a registry answer establishes</a></li><li><a href="#cross-community-recognition">Cross-community recognition</a></li></ul></li><li><a href="#composition-requirements">Composition Requirements</a><ul><li><a href="#in-plain-terms-12">In plain terms</a></li><li><a href="#what-this-chapter-defines-12">What this chapter defines</a></li><li><a href="#how-a-composition-requirement-binds">How a composition requirement binds</a></li><li><a href="#composition-integrity">Composition integrity</a></li><li><a href="#semantic-completion">Semantic completion</a></li><li><a href="#authority-is-not-verification">Authority is not verification</a></li><li><a href="#currency-of-state">Currency of state</a></li><li><a href="#delegation-lineage">Delegation lineage</a></li><li><a href="#privacy-across-composition">Privacy across composition</a></li><li><a href="#false-independence">False independence</a></li><li><a href="#indeterminacy">Indeterminacy</a></li><li><a href="#configuration-materiality">Configuration materiality</a></li><li><a href="#component-substitution">Component substitution</a></li><li><a href="#human-control">Human control</a></li><li><a href="#open-propositions">Open propositions</a></li></ul></li><li><a href="#operational-and-assurance-requirements">Operational and Assurance Requirements</a><ul><li><a href="#in-plain-terms-13">In plain terms</a></li><li><a href="#what-this-chapter-defines-13">What this chapter defines</a></li><li><a href="#bootstrap">Bootstrap</a></li><li><a href="#protection-at-rest">Protection at rest</a></li><li><a href="#containment">Containment</a></li><li><a href="#audit-1">Audit</a></li><li><a href="#time">Time</a></li><li><a href="#what-an-operator-must-be-able-to-answer">What an operator must be able to answer</a></li></ul></li><li><a href="#security-considerations">Security Considerations</a></li><li><a href="#privacy-considerations">Privacy Considerations</a></li><li><a href="#governance-considerations">Governance Considerations</a></li><li><a href="#internationalization-considerations">Internationalization Considerations</a></li><li><a href="#accessibility-considerations">Accessibility Considerations</a></li><li><a href="#conformance">Conformance</a><ul><li><a href="#profiles">Profiles</a></li><li><a href="#targets">Targets</a></li><li><a href="#requirement-identifier-areas">Requirement identifier areas</a></li><li><a href="#coverage">Coverage</a></li><li><a href="#the-test-suite">The test suite</a></li><li><a href="#the-assessment-interface">The assessment interface</a></li><li><a href="#divergence-from-implementations">Divergence from implementations</a></li><li><a href="#what-an-assessment-does-not-do">What an assessment does not do</a></li></ul></li><li><a href="#references">References</a><ul><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li><li><a href="#appendices">Appendices</a><ul><li><a href="#appendix-a%3A-client-onboarding">Appendix A: Client onboarding</a><ul><li><a href="#a.1-enrolment">A.1 Enrolment</a></li><li><a href="#a.2-first-connection-and-the-key-roll">A.2 First connection and the key roll</a></li><li><a href="#a.3-worked-example">A.3 Worked example</a></li><li><a href="#a.4-failure-cases-around-the-commit-point">A.4 Failure cases around the commit point</a></li><li><a href="#a.5-test-vectors-%E2%80%94-context-paths">A.5 Test vectors — context paths</a></li><li><a href="#a.6-test-vectors-%E2%80%94-ancestry">A.6 Test vectors — ancestry</a></li><li><a href="#a.7-test-vectors-%E2%80%94-act-scope">A.7 Test vectors — act scope</a></li></ul></li><li><a href="#appendix-b%3A-access-control-entry">Appendix B: Access control entry</a></li><li><a href="#appendix-c%3A-role-and-capability-annex">Appendix C: Role and capability annex</a><ul><li><a href="#c.1-roles">C.1 Roles</a></li><li><a href="#c.2-capability-registry">C.2 Capability registry</a></li><li><a href="#c.3-community-capabilities-and-roles">C.3 Community capabilities and roles</a></li></ul></li><li><a href="#appendix-d%3A-context-path-grammar">Appendix D: Context path grammar</a></li><li><a href="#appendix-e%3A-composition-proposition-catalogue">Appendix E: Composition proposition catalogue</a><ul><li><a href="#e.1-record-form">E.1 Record form</a></li><li><a href="#e.2-evidence-families">E.2 Evidence families</a></li><li><a href="#e.3-assessment-submissions">E.3 Assessment submissions</a></li></ul></li><li><a href="#appendix-f%3A-divergence-register">Appendix F: Divergence register</a><ul><li><a href="#f.1-authority-encoding">F.1 Authority encoding</a></li><li><a href="#f.2-operations-and-versioning">F.2 Operations and versioning</a></li><li><a href="#f.3-transports%2C-sessions-and-resolution">F.3 Transports, sessions and resolution</a></li><li><a href="#f.4-signing%2C-audit-and-identifiers">F.4 Signing, audit and identifiers</a></li><li><a href="#f.5-community-defined-authority-and-publication">F.5 Community-defined authority and publication</a></li><li><a href="#f.6-key-roles-and-custody">F.6 Key roles and custody</a></li><li><a href="#f.7-closed">F.7 Closed</a></li><li><a href="#f.5a-administrative-authority-at-a-community">F.5a Administrative authority at a community</a></li><li><a href="#f.8-how-to-add-an-entry">F.8 How to add an entry</a></li></ul></li><li><a href="#appendix-g%3A-acknowledgements">Appendix G: Acknowledgements</a></li></ul></li></ul>
                         <div class="spec-footer mt-3">
                             <a class="mx-auto p-2" href="https://github.com/trustoverip/spec-up-t"
                                 target="_blank" rel="noopener noreferrer">Powered By Spec-Up-T
@@ -1333,6 +1333,21 @@ The capability a node has never heard of is precisely the one it has no basis
 for granting, and requiring the refusal to be explicit means the decision is
 written down rather than arrived at by whichever way the parser happens to
 fail.</p>
+<p><strong>VTI-ACL-035</strong> — A capability MAY be qualified by a resource the node owns.
+A qualified capability MUST confer authority only over that resource and the
+resources it contains; an unqualified one confers it over every resource of
+its kind.</p>
+<p><strong>VTI-ACL-036</strong> — A resource qualifier MUST NOT name a trust context. Authority
+within the context tree is expressed by act scope alone.</p>
+<p><strong>VTI-ACL-037</strong> — A capability grant MUST confer nothing without a live entry
+for the same subject, and a subject MUST NOT grant a capability, at any
+qualifier, wider than one it holds itself (see VTI-ACL-071).</p>
+<p><em>Rationale for VTI-ACL-035 – 037.</em> Some authority belongs to a part of a node
+that is not a context — one repository namespace at a community, one policy
+purpose — and expressing it as a context label either invents contexts a node
+may not create (VTI-ACL-090) or gives the label a meaning nothing enforces.
+Qualifying the capability keeps that authority in the one model, bounded the
+way every other delegation is.</p>
 <h3 id="approve-scope" tabindex="-1"><a class="toc-anchor d-print-none" href="#approve-scope">§</a> Approve scope</h3>
 <p>The <strong>approve scope</strong> of an entry answers a question independent of the act
 scope: in which contexts may this subject bless a change made by someone else?</p>
@@ -1672,7 +1687,40 @@ performed it, only for that digest, and only once; it MUST expire; and it MUST
 NOT raise the assurance level of any session. The gesture MUST be the caller’s
 own additional factor, verified against the challenge the node issued for that
 operation — a proof the caller could produce without the factor, such as a
-signature by a key the caller already holds, does not satisfy it.</p>
+signature by a key the caller already holds, does not satisfy it.
+A signature satisfies it only where the key is bound to the caller as a
+re-authentication factor under VTI-APV-016, is distinct from every key that can
+sign the caller’s operations, and is held where its use requires user
+verification.</p>
+<p><strong>VTI-APV-016</strong> — A node MUST bind a re-authentication factor to a subject only
+on evidence independent of the subject’s signing keys: a single-use token
+delivered out of band, a factor the subject already holds, the authority of
+another administrator exercised under that administrator’s own
+re-authentication, or administrative access to the host. The binding MUST
+prove possession of the factor, and MUST be audited, naming the evidence it
+rested on.</p>
+<p><strong>VTI-APV-017</strong> — Where a node holds an operation pending a consent requirement
+and executes it when the consent completes, it MUST re-evaluate, at execution
+and against the state at execution, every authorization check that applies to
+the operation; MUST execute it at most once; and MUST NOT execute it after the
+pending request has expired. A re-authentication the caller performed when
+submitting the operation MAY stand for that execution only under these
+conditions.</p>
+<p><strong>VTI-APV-018</strong> — Granting a capability that permits its holder to create or
+widen authority — an <strong>authority-conferring capability</strong> — or widening an
+entry to hold one, MUST require consent from a party other than the requester.
+VTI-APV-014 is the instance of this requirement for unrestricted act scope.</p>
+<p><strong>VTI-APV-019</strong> — Removing or narrowing another subject’s unrestricted act
+scope or authority-conferring capability MUST require consent from a party
+other than both the requester and the subject, wherever such a party exists.
+Where none exists, the node MUST require the requester’s re-authentication,
+MUST notify the subject, and MUST audit the removal at its highest severity.</p>
+<p><strong>VTI-APV-020</strong> — A change that lowers the number of approvals a consent
+requirement needs, or removes the requirement, MUST itself require consent
+meeting the requirement as it stood before the change.</p>
+<p><strong>VTI-APV-021</strong> — A node SHOULD bound the number of pending consent requests a
+single requester may hold, and SHOULD alert the other eligible approvers to a
+burst of requests from one requester.</p>
 <p><em>Rationale for VTI-APV-013.</em> An approval is only as good as the correspondence
 between what the human saw and what the system committed to. Where the display
 is rendered from one structure and the digest computed over another, the
@@ -1706,6 +1754,25 @@ on a human understanding what they are approving. An approval a person cannot
 comprehend is not consent, and a control built on it provides assurance to
 everyone except the person exercising it. See also the Accessibility
 Considerations.</p>
+<p><em>Rationale for VTI-APV-016.</em> A second factor bound on the strength of the
+first is the first factor twice. The binding is where a re-authentication
+factor gets its independence, so it is the binding that has to rest on
+something the signing key cannot produce; every later use of the factor
+inherits exactly the assurance its binding had.</p>
+<p><em>Rationale for VTI-APV-017.</em> Holding an operation until its approvers are
+available is what lets a team that is not online together use consent at all.
+The cost is that the community may move between the request and its execution
+— an approver removed, the subject’s entry changed — and an operation executed
+on the state its approvers saw, rather than the state it acts on, is an
+operation nobody approved. Re-evaluating at execution makes a long wait fail
+closed instead.</p>
+<p><em>Rationale for VTI-APV-019 and VTI-APV-020.</em> Second-party consent for granting
+authority can be defeated without granting anything: remove the other
+administrators one at a time, or lower the threshold to one, and every later
+grant needs nobody. Both are the same attack on the same control, and both are
+closed the same way. Where no third party exists — two administrators, one
+removing the other — refusing would make a compromised administrator
+irremovable, so the requirement settles for making the removal loud.</p>
 <!-- file: 03c-audit.md -->
 <h2 id="audit" tabindex="-1"><a class="toc-anchor d-print-none" href="#audit">§</a> Audit</h2>
 <p>This section is normative.</p>
@@ -3806,6 +3873,18 @@ and the Approvals, Consent and Step-Up chapters, and MUST NOT define a parallel
 model.</p>
 <p><strong>VTI-VTC-021</strong> — An administrative action on the community MUST be subject to
 the approval requirements of the Approvals, Consent and Step-Up chapter.</p>
+<p><strong>VTI-VTC-022</strong> — A VTC’s policy MUST NOT confer authority. Role ceilings and
+capability grants are part of its access control model, and its policy MAY
+only refuse what that model permits.</p>
+<p><strong>VTI-VTC-023</strong> — A VTC MUST make each change to its access control written
+outside its operation surface — by a party with administrative access to the
+host — visible to every remaining administrator, and MUST record each
+administrator’s acknowledgement of it.</p>
+<p><em>Rationale for VTI-VTC-023.</em> The party that operates the host can always change
+what is stored, and no control inside the node can prevent it; that is the
+recovery path when every administrator is lost. What the node can do is make
+the change impossible to miss, so that the administrators’ trust in the
+community is placed knowing what was done to it.</p>
 <h3 id="governance-binding" tabindex="-1"><a class="toc-anchor d-print-none" href="#governance-binding">§</a> Governance binding</h3>
 <p><strong>VTI-VTC-030</strong> — A governance framework MAY impose requirements stricter than
 this specification, and MUST NOT reduce any requirement of it.</p>
@@ -5726,6 +5805,177 @@ holding the generic oracle; <code>credential-write</code> exists so that a consu
 receive credentials without being able to destroy them; <code>memory-read</code> and
 <code>memory-write</code> are split so that a read-only consumer of a context cannot
 rewrite what it reads.</p>
+<h4 id="c.3-community-capabilities-and-roles" tabindex="-1"><a class="toc-anchor d-print-none" href="#c.3-community-capabilities-and-roles">§</a> C.3 Community capabilities and roles</h4>
+<p>A community expresses its administration in the same model (VTI-VTC-020). The
+registry below is proposed for the community node; a capability marked
+<em>conferring</em> is authority-conferring in the sense of VTI-APV-018. Capabilities
+marked <em>qualified</em> take a resource qualifier (VTI-ACL-035).</p>
+<div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th>Capability</th>
+<th>Gates</th>
+<th>Conferring</th>
+<th>Qualified</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vtc.roles.assign</code></td>
+<td>granting, changing and removing roles and capabilities on other entries</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>vtc.approvals.admin</code></td>
+<td>the community’s approval rules</td>
+<td>yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.policy.admin</code></td>
+<td>uploading and activating community policy</td>
+<td>yes, for policy purposes that decide authority</td>
+<td>by purpose</td>
+</tr>
+<tr>
+<td><code>vtc.config.admin</code></td>
+<td>community configuration, including consent thresholds</td>
+<td>yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.backup.export</code></td>
+<td>exporting the community’s state</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.backup.restore</code></td>
+<td>restoring the community’s state</td>
+<td>yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.audit.read</code></td>
+<td>reading and verifying the audit trail</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.did.admin</code></td>
+<td>the community’s own identifier</td>
+<td>yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.members.manage</code></td>
+<td>suspending, removing and erasing members</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.join.decide</code></td>
+<td>admission decisions held for review</td>
+<td>—</td>
+<td>by criterion</td>
+</tr>
+<tr>
+<td><code>vtc.invitations.manage</code></td>
+<td>issuing and revoking invitations</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.credentials.issue</code>, <code>vtc.credentials.revoke</code></td>
+<td>issuing and revoking community credentials</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.vetting.manage</code></td>
+<td>granting and revoking vetters</td>
+<td>—</td>
+<td>by criterion</td>
+</tr>
+<tr>
+<td><code>vtc.surface.admin</code></td>
+<td>the community’s public profile, website, schemas and admission criteria</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.registry.admin</code></td>
+<td>trust registry publication and recognition</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.sessions.revoke</code></td>
+<td>ending other subjects’ sessions and console keys</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>git.ns.admin</code></td>
+<td>a repository namespace</td>
+<td>yes, within the namespace</td>
+<td>by namespace</td>
+</tr>
+<tr>
+<td><code>git.repo.manage</code></td>
+<td>creating, adopting, archiving and transferring repositories</td>
+<td>—</td>
+<td>by namespace or repository</td>
+</tr>
+<tr>
+<td><code>git.commit.sign</code></td>
+<td>the commit right a namespace’s checks accept</td>
+<td>—</td>
+<td>by namespace or repository</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>Role</td>
+<td>Ceiling</td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>community-admin</code></td>
+<td>every <code>vtc.*</code> capability and <code>git.ns.admin</code></td>
+</tr>
+<tr>
+<td><code>moderator</code></td>
+<td><code>vtc.members.manage</code>, <code>vtc.join.decide</code>, <code>vtc.invitations.manage</code></td>
+</tr>
+<tr>
+<td><code>vetting-lead</code></td>
+<td><code>vtc.vetting.manage</code>; approves the same</td>
+</tr>
+<tr>
+<td><code>repo-manager</code></td>
+<td><code>git.repo.manage</code> and <code>git.ns.admin</code>, qualified; approves the same</td>
+</tr>
+<tr>
+<td><code>credential-officer</code></td>
+<td><code>vtc.credentials.issue</code>, <code>vtc.credentials.revoke</code></td>
+</tr>
+<tr>
+<td><code>auditor</code></td>
+<td><code>vtc.audit.read</code></td>
+</tr>
+<tr>
+<td><code>approver</code></td>
+<td>no act authority; approve authority as granted (VTI-ACL-041)</td>
+</tr>
+</tbody>
+</table>
+</div><p>A community MAY define further roles, each a ceiling drawn from this registry;
+defining one is itself subject to VTI-APV-018.</p>
 <h3 id="appendix-d%3A-context-path-grammar" tabindex="-1"><a class="toc-anchor d-print-none" href="#appendix-d%3A-context-path-grammar">§</a> Appendix D: Context path grammar</h3>
 <p>This appendix is normative. It states the grammar referenced by VTI-CTX-010
 through VTI-CTX-013.</p>
@@ -6266,6 +6516,37 @@ were written; they were drafted from the change that closed it.</p>
 </tr>
 </tbody>
 </table>
+</div><h4 id="f.5a-administrative-authority-at-a-community" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.5a-administrative-authority-at-a-community">§</a> F.5a Administrative authority at a community</h4>
+<div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
+<thead>
+<tr>
+<th>Requirement</th>
+<th>This specification requires</th>
+<th>Reported behaviour</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VTI-APV-019 <em>(observed)</em></td>
+<td>Removing another subject’s unrestricted authority takes consent from a third party where one exists</td>
+<td>At one community node an administrator removes, demotes or narrows another unrestricted administrator alone; only the last unrestricted administrator is protected</td>
+<td>Implement: the removal is held for the other unrestricted administrators’ consent, excluding the subject; with no third party it takes the requester’s re-authentication, a notice to the subject and a highest-severity audit row</td>
+</tr>
+<tr>
+<td>VTI-APV-020 <em>(observed)</em></td>
+<td>Lowering a consent threshold takes consent at the threshold as it stood</td>
+<td>At one community node the consent threshold for unrestricted grants can be lowered by one administrator; only a threshold that cannot be met is refused</td>
+<td>Implement: lowering is consent-gated at the current threshold; raising stays immediate</td>
+</tr>
+<tr>
+<td>VTI-VTC-022, VTI-APV-018 <em>(observed)</em></td>
+<td>Community policy cannot confer authority, and authority-conferring changes take another party’s consent</td>
+<td>At one community node any administrator, including one scoped to contexts, may replace the policy for role changes and removals — including the default rule that refuses removing an administrator</td>
+<td>Implement: policy changes are gated by the <code>vtc.policy.admin</code> capability per purpose, and those deciding authority are consent-gated</td>
+</tr>
+</tbody>
+</table>
 </div><h4 id="f.8-how-to-add-an-entry" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.8-how-to-add-an-entry">§</a> F.8 How to add an entry</h4>
 <p>An entry needs the requirement identifier, how the behaviour was established,
 the behaviour itself, and the intended resolution. It does not need the implementation to be named — the
@@ -6402,15 +6683,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 28 September 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 02 October 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-09-28T14:28:14.046Z">
-                            Generated: 2026-09-28T14:28:14.046Z
+                        <time class="timestamp" datetime="2026-10-02T19:12:57.512Z">
+                            Generated: 2026-10-02T19:12:57.512Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
