@@ -107,6 +107,21 @@ model.
 **VTI-VTC-021** — An administrative action on the community MUST be subject to
 the approval requirements of the Approvals, Consent and Step-Up chapter.
 
+**VTI-VTC-022** — A VTC's policy MUST NOT confer authority. Role ceilings and
+capability grants are part of its access control model, and its policy MAY
+only refuse what that model permits.
+
+**VTI-VTC-023** — A VTC MUST make each change to its access control written
+outside its operation surface — by a party with administrative access to the
+host — visible to every remaining administrator, and MUST record each
+administrator's acknowledgement of it.
+
+*Rationale for VTI-VTC-023.* The party that operates the host can always change
+what is stored, and no control inside the node can prevent it; that is the
+recovery path when every administrator is lost. What the node can do is make
+the change impossible to miss, so that the administrators' trust in the
+community is placed knowing what was done to it.
+
 ### Governance binding
 
 **VTI-VTC-030** — A governance framework MAY impose requirements stricter than

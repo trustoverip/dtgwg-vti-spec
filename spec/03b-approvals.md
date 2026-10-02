@@ -102,6 +102,45 @@ NOT raise the assurance level of any session. The gesture MUST be the caller's
 own additional factor, verified against the challenge the node issued for that
 operation — a proof the caller could produce without the factor, such as a
 signature by a key the caller already holds, does not satisfy it.
+A signature satisfies it only where the key is bound to the caller as a
+re-authentication factor under VTI-APV-016, is distinct from every key that can
+sign the caller's operations, and is held where its use requires user
+verification.
+
+**VTI-APV-016** — A node MUST bind a re-authentication factor to a subject only
+on evidence independent of the subject's signing keys: a single-use token
+delivered out of band, a factor the subject already holds, the authority of
+another administrator exercised under that administrator's own
+re-authentication, or administrative access to the host. The binding MUST
+prove possession of the factor, and MUST be audited, naming the evidence it
+rested on.
+
+**VTI-APV-017** — Where a node holds an operation pending a consent requirement
+and executes it when the consent completes, it MUST re-evaluate, at execution
+and against the state at execution, every authorization check that applies to
+the operation; MUST execute it at most once; and MUST NOT execute it after the
+pending request has expired. A re-authentication the caller performed when
+submitting the operation MAY stand for that execution only under these
+conditions.
+
+**VTI-APV-018** — Granting a capability that permits its holder to create or
+widen authority — an **authority-conferring capability** — or widening an
+entry to hold one, MUST require consent from a party other than the requester.
+VTI-APV-014 is the instance of this requirement for unrestricted act scope.
+
+**VTI-APV-019** — Removing or narrowing another subject's unrestricted act
+scope or authority-conferring capability MUST require consent from a party
+other than both the requester and the subject, wherever such a party exists.
+Where none exists, the node MUST require the requester's re-authentication,
+MUST notify the subject, and MUST audit the removal at its highest severity.
+
+**VTI-APV-020** — A change that lowers the number of approvals a consent
+requirement needs, or removes the requirement, MUST itself require consent
+meeting the requirement as it stood before the change.
+
+**VTI-APV-021** — A node SHOULD bound the number of pending consent requests a
+single requester may hold, and SHOULD alert the other eligible approvers to a
+burst of requests from one requester.
 
 *Rationale for VTI-APV-013.* An approval is only as good as the correspondence
 between what the human saw and what the system committed to. Where the display
@@ -141,3 +180,25 @@ on a human understanding what they are approving. An approval a person cannot
 comprehend is not consent, and a control built on it provides assurance to
 everyone except the person exercising it. See also the Accessibility
 Considerations.
+
+*Rationale for VTI-APV-016.* A second factor bound on the strength of the
+first is the first factor twice. The binding is where a re-authentication
+factor gets its independence, so it is the binding that has to rest on
+something the signing key cannot produce; every later use of the factor
+inherits exactly the assurance its binding had.
+
+*Rationale for VTI-APV-017.* Holding an operation until its approvers are
+available is what lets a team that is not online together use consent at all.
+The cost is that the community may move between the request and its execution
+— an approver removed, the subject's entry changed — and an operation executed
+on the state its approvers saw, rather than the state it acts on, is an
+operation nobody approved. Re-evaluating at execution makes a long wait fail
+closed instead.
+
+*Rationale for VTI-APV-019 and VTI-APV-020.* Second-party consent for granting
+authority can be defeated without granting anything: remove the other
+administrators one at a time, or lower the threshold to one, and every later
+grant needs nobody. Both are the same attack on the same control, and both are
+closed the same way. Where no third party exists — two administrators, one
+removing the other — refusing would make a compromised administrator
+irremovable, so the requirement settles for making the removal loud.

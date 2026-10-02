@@ -182,6 +182,25 @@ for granting, and requiring the refusal to be explicit means the decision is
 written down rather than arrived at by whichever way the parser happens to
 fail.
 
+**VTI-ACL-035** — A capability MAY be qualified by a resource the node owns.
+A qualified capability MUST confer authority only over that resource and the
+resources it contains; an unqualified one confers it over every resource of
+its kind.
+
+**VTI-ACL-036** — A resource qualifier MUST NOT name a trust context. Authority
+within the context tree is expressed by act scope alone.
+
+**VTI-ACL-037** — A capability grant MUST confer nothing without a live entry
+for the same subject, and a subject MUST NOT grant a capability, at any
+qualifier, wider than one it holds itself (see VTI-ACL-071).
+
+*Rationale for VTI-ACL-035 – 037.* Some authority belongs to a part of a node
+that is not a context — one repository namespace at a community, one policy
+purpose — and expressing it as a context label either invents contexts a node
+may not create (VTI-ACL-090) or gives the label a meaning nothing enforces.
+Qualifying the capability keeps that authority in the one model, bounded the
+way every other delegation is.
+
 ### Approve scope
 
 The **approve scope** of an entry answers a question independent of the act
