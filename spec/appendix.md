@@ -241,6 +241,48 @@ receive credentials without being able to destroy them; `memory-read` and
 `memory-write` are split so that a read-only consumer of a context cannot
 rewrite what it reads.
 
+#### C.3 Community capabilities and roles
+
+A community expresses its administration in the same model (VTI-VTC-020). The
+registry below is proposed for the community node; a capability marked
+*conferring* is authority-conferring in the sense of VTI-APV-018. Capabilities
+marked *qualified* take a resource qualifier (VTI-ACL-035).
+
+| Capability | Gates | Conferring | Qualified |
+|---|---|---|---|
+| `vtc.roles.assign` | granting, changing and removing roles and capabilities on other entries | yes | yes |
+| `vtc.approvals.admin` | the community's approval rules | yes | — |
+| `vtc.policy.admin` | uploading and activating community policy | yes, for policy purposes that decide authority | by purpose |
+| `vtc.config.admin` | community configuration, including consent thresholds | yes | — |
+| `vtc.backup.export` | exporting the community's state | — | — |
+| `vtc.backup.restore` | restoring the community's state | yes | — |
+| `vtc.audit.read` | reading and verifying the audit trail | — | — |
+| `vtc.did.admin` | the community's own identifier | yes | — |
+| `vtc.members.manage` | suspending, removing and erasing members | — | — |
+| `vtc.join.decide` | admission decisions held for review | — | by criterion |
+| `vtc.invitations.manage` | issuing and revoking invitations | — | — |
+| `vtc.credentials.issue`, `vtc.credentials.revoke` | issuing and revoking community credentials | — | — |
+| `vtc.vetting.manage` | granting and revoking vetters | — | by criterion |
+| `vtc.surface.admin` | the community's public profile, website, schemas and admission criteria | — | — |
+| `vtc.registry.admin` | trust registry publication and recognition | — | — |
+| `vtc.sessions.revoke` | ending other subjects' sessions and console keys | — | — |
+| `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
+| `git.repo.manage` | creating, adopting, archiving and transferring repositories | — | by namespace or repository |
+| `git.commit.sign` | the commit right a namespace's checks accept | — | by namespace or repository |
+
+| Role | Ceiling |
+|---|---|
+| `community-admin` | every `vtc.*` capability and `git.ns.admin` |
+| `moderator` | `vtc.members.manage`, `vtc.join.decide`, `vtc.invitations.manage` |
+| `vetting-lead` | `vtc.vetting.manage`; approves the same |
+| `repo-manager` | `git.repo.manage` and `git.ns.admin`, qualified; approves the same |
+| `credential-officer` | `vtc.credentials.issue`, `vtc.credentials.revoke` |
+| `auditor` | `vtc.audit.read` |
+| `approver` | no act authority; approve authority as granted (VTI-ACL-041) |
+
+A community MAY define further roles, each a ceiling drawn from this registry;
+defining one is itself subject to VTI-APV-018.
+
 ### Appendix D: Context path grammar
 
 This appendix is normative. It states the grammar referenced by VTI-CTX-010
@@ -492,6 +534,14 @@ were written; they were drafted from the change that closed it.
 | VTI-APV-014 *(observed, never listed)* | At one community node, an entry reached unrestricted act scope on the requester's own authority. Promotion required the requester's step-up, which establishes who is at the keyboard and never that a second party agreed. An administrative invitation wrote an unrestricted entry with no check at all. The creation, the widening and the invitation now each raise a consent request to the other unrestricted administrators, bound to the same digest of the operation's exact type and payload that the operation-bound step-up uses. The operation runs only once the community's threshold of decisions from parties other than the requester has been met. The threshold is a community setting with a floor of one, and a value the current administrators could not meet is refused when it is written. Its companion, attrition, is closed with it: the guards against removing the last administrator now count unrestricted administrators, not administrators of any scope, and they cover narrowing, revocation, demotion and departure under one lock. Otherwise the requirement could be met at creation and undone by removal. A threshold of one is exempt from the unmeetable-value refusal, so that a community of two can still remove a compromised administrator. Installation can name a co-administrator, so a new community is not born with only one party able to consent. What this does not close: the node's offline writers, the emergency path for a community that has lost every administrator, still write an unrestricted entry without a second party. They cannot consult one, because the node is stopped. Each such write is queued and recorded in the audit trail when the node next starts, so the path is visible rather than prevented. An approver also needs a device that answers consent requests, or a tool that signs the decision document. |
 | VTI-TRN-044, VTI-TRN-046 *(observed, never listed)* | The push engine shared by both node types signed a document once and sent those bytes on every attempt for the whole of a push's deadline — up to a day for a credential-exchange step, thirty days for a removal notice — while both node types refuse a document more than about eleven minutes past its time of issue. Every escalation, every re-queue after a restart, every hop refused for longer than the window, and every copy collected by a recipient that had been offline therefore delivered a document the recipient refused as expired, and nothing told the sender. The last case was also recorded as delivered, on collection evidence. The engine now issues a new document instead — a new identifier, a new time of issue, the node's proof again, the original's thread and idempotency key — when it queues an attempt whose document is past the window, when an attempt never handed to a hop crosses it, and when a copy is collected after the latest acceptable instant; collection of such a copy is recorded as not counting. The push sites whose repeat leaves a second artefact now carry an idempotency key, and the agent's consumer now keys every task it serves that carries one, classified or not (VTI-OPS-062), so the new documents are one operation. The remaining push sites send notices and consent requests, whose repeat converges, so item 2 of VTI-TRN-046 holds by what each site sends rather than by a check in the engine. New documents per push are bounded, and none is issued for a document with no time of issue or past its own expiry. What this does not close: a copy a mediator already holds is sealed and cannot be recalled, so a recipient that reconnects after the window refuses that copy and then receives a new one. The window the engine applies is a constant rather than the recipient's own, which F.3 records against VTI-TRN-045 |
 | VTI-TRN-047 | Neither node type advertised the acceptance window it applies, because the discovery definition it served had no member to carry one. Both now answer `trust-task-discovery/0.3` and advertise, at response level, a maximum age of ten minutes and a skew tolerance of sixty seconds. The advertised value and the one their consumers enforce are one value, rounded down to whole seconds when advertised, so the advertisement cannot be wider than what is applied, and each node holds that with a test that reads the window back out of its own discovery answer and checks a document at the advertised edge is accepted and one past it refused. The agent also still answers the earlier discovery version. What this does not close: a sender reading the window a recipient advertises, which F.3 records against VTI-TRN-045 |
+
+#### F.5a Administrative authority at a community
+
+| Requirement | This specification requires | Reported behaviour | Resolution |
+|---|---|---|---|
+| VTI-APV-019 *(observed)* | Removing another subject's unrestricted authority takes consent from a third party where one exists | At one community node an administrator removes, demotes or narrows another unrestricted administrator alone; only the last unrestricted administrator is protected | Implement: the removal is held for the other unrestricted administrators' consent, excluding the subject; with no third party it takes the requester's re-authentication, a notice to the subject and a highest-severity audit row |
+| VTI-APV-020 *(observed)* | Lowering a consent threshold takes consent at the threshold as it stood | At one community node the consent threshold for unrestricted grants can be lowered by one administrator; only a threshold that cannot be met is refused | Implement: lowering is consent-gated at the current threshold; raising stays immediate |
+| VTI-VTC-022, VTI-APV-018 *(observed)* | Community policy cannot confer authority, and authority-conferring changes take another party's consent | At one community node any administrator, including one scoped to contexts, may replace the policy for role changes and removals — including the default rule that refuses removing an administrator | Implement: policy changes are gated by the `vtc.policy.admin` capability per purpose, and those deciding authority are consent-gated |
 
 #### F.8 How to add an entry
 
