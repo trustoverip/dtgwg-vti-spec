@@ -91,8 +91,9 @@ same octets that are digested under VTI-APV-004. A node MUST NOT present a
 rendering produced from a different source than the one it commits to.
 
 **VTI-APV-014** — Creating an entry with unrestricted act scope, or widening an
-entry to unrestricted act scope, MUST require consent from a party other than
-the requester.
+entry to unrestricted act scope, SHOULD require consent from a party other than
+the requester. A node that does not require it MUST do so only as VTI-APV-022
+describes.
 
 **VTI-APV-015** — A re-authentication bound to one operation MUST be bound to
 the digest of that operation's exact type and payload, computed as VTI-APV-004
@@ -125,28 +126,34 @@ conditions.
 
 **VTI-APV-018** — Granting a capability that permits its holder to create or
 widen authority — an **authority-conferring capability** — or widening an
-entry to hold one, MUST require consent from a party other than the requester.
-VTI-APV-014 is the instance of this requirement for unrestricted act scope.
+entry to hold one, SHOULD require consent from a party other than the
+requester. VTI-APV-014 is the instance of this recommendation for unrestricted
+act scope, and VTI-APV-022 governs a node that does not apply it.
 
 **VTI-APV-019** — Removing or narrowing another subject's unrestricted act
-scope or authority-conferring capability MUST require consent from a party
+scope or authority-conferring capability SHOULD require consent from a party
 other than both the requester and the subject, wherever such a party exists.
-Where none exists, the node MUST require the requester's re-authentication,
-MUST notify the subject, and MUST audit the removal at its highest severity.
+Wherever no such consent is obtained — none exists, or the node does not
+require it under VTI-APV-022 — the node MUST require the requester's
+re-authentication, MUST notify the subject, and MUST audit the removal at its
+highest severity.
 
 **VTI-APV-020** — A change that lowers the number of approvals a consent
-requirement needs, or removes the requirement, MUST itself require consent
+requirement needs, or removes the requirement, SHOULD itself require consent
 meeting the requirement as it stood before the change.
 
 **VTI-APV-021** — A node SHOULD bound the number of pending consent requests a
 single requester may hold, and SHOULD alert the other eligible approvers to a
 burst of requests from one requester.
 
-**VTI-APV-022** — A node MAY operate in **single-administrator mode**. Where it
-does, the consent requirements of VTI-APV-014, VTI-APV-018, VTI-APV-019 and
-VTI-APV-020 are satisfied, for one operation, by the requester's
-re-authentication bound to that operation under VTI-APV-015, but only where no
-eligible party other than the requester exists. The mode:
+**VTI-APV-022** — Second-party consent (VTI-APV-014, VTI-APV-018 – 020) is
+recommended practice, not every deployment's requirement: a community run by one
+person has no second party to ask. A node MAY operate in **single-administrator
+mode**, in which an operation those recommendations cover is authorized by the
+requester's re-authentication bound to that operation under VTI-APV-015 in
+place of another party's consent, wherever no eligible party other than the
+requester exists. A node that does not apply those recommendations MUST do so
+only through this mode, and the mode:
 
 1. MUST be enabled only by a party with administrative access to the host, and
    MUST NOT be settable, or clearable, through the node's operation surface;
