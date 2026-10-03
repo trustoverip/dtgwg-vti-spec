@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-10-02T19:12:57.842Z"
+      "lastUpdated": "2026-10-03T13:06:23.955Z"
     }
   ]
 };</script>
@@ -1678,8 +1678,9 @@ has rendered itself unsatisfiable, and the use of that means MUST be audited.</p
 same octets that are digested under VTI-APV-004. A node MUST NOT present a
 rendering produced from a different source than the one it commits to.</p>
 <p><strong>VTI-APV-014</strong> — Creating an entry with unrestricted act scope, or widening an
-entry to unrestricted act scope, MUST require consent from a party other than
-the requester.</p>
+entry to unrestricted act scope, SHOULD require consent from a party other than
+the requester. A node that does not require it MUST do so only as VTI-APV-022
+describes.</p>
 <p><strong>VTI-APV-015</strong> — A re-authentication bound to one operation MUST be bound to
 the digest of that operation’s exact type and payload, computed as VTI-APV-004
 computes a consent digest. It MUST be redeemable only by the caller who
@@ -1708,19 +1709,41 @@ submitting the operation MAY stand for that execution only under these
 conditions.</p>
 <p><strong>VTI-APV-018</strong> — Granting a capability that permits its holder to create or
 widen authority — an <strong>authority-conferring capability</strong> — or widening an
-entry to hold one, MUST require consent from a party other than the requester.
-VTI-APV-014 is the instance of this requirement for unrestricted act scope.</p>
+entry to hold one, SHOULD require consent from a party other than the
+requester. VTI-APV-014 is the instance of this recommendation for unrestricted
+act scope, and VTI-APV-022 governs a node that does not apply it.</p>
 <p><strong>VTI-APV-019</strong> — Removing or narrowing another subject’s unrestricted act
-scope or authority-conferring capability MUST require consent from a party
+scope or authority-conferring capability SHOULD require consent from a party
 other than both the requester and the subject, wherever such a party exists.
-Where none exists, the node MUST require the requester’s re-authentication,
-MUST notify the subject, and MUST audit the removal at its highest severity.</p>
+Wherever no such consent is obtained — none exists, or the node does not
+require it under VTI-APV-022 — the node MUST require the requester’s
+re-authentication, MUST notify the subject, and MUST audit the removal at its
+highest severity.</p>
 <p><strong>VTI-APV-020</strong> — A change that lowers the number of approvals a consent
-requirement needs, or removes the requirement, MUST itself require consent
+requirement needs, or removes the requirement, SHOULD itself require consent
 meeting the requirement as it stood before the change.</p>
 <p><strong>VTI-APV-021</strong> — A node SHOULD bound the number of pending consent requests a
 single requester may hold, and SHOULD alert the other eligible approvers to a
 burst of requests from one requester.</p>
+<p><strong>VTI-APV-022</strong> — Second-party consent (VTI-APV-014, VTI-APV-018 – 020) is
+recommended practice, not every deployment’s requirement: a community run by one
+person has no second party to ask. A node MAY operate in <strong>single-administrator
+mode</strong>, in which an operation those recommendations cover is authorized by the
+requester’s re-authentication bound to that operation under VTI-APV-015 in
+place of another party’s consent, wherever no eligible party other than the
+requester exists. A node that does not apply those recommendations MUST do so
+only through this mode, and the mode:</p>
+<ol>
+<li>MUST be enabled only by a party with administrative access to the host, and
+MUST NOT be settable, or clearable, through the node’s operation surface;</li>
+<li>MUST NOT waive any consent requirement for which an eligible party other
+than the requester exists;</li>
+<li>MUST be reported to every administrator, in every session, for as long as
+it is in effect; and</li>
+<li>MUST be audited at the node’s highest severity when it takes effect, each
+time the node starts with it in effect, and for every operation whose
+consent it waived.</li>
+</ol>
 <p><em>Rationale for VTI-APV-013.</em> An approval is only as good as the correspondence
 between what the human saw and what the system committed to. Where the display
 is rendered from one structure and the digest computed over another, the
@@ -1773,6 +1796,16 @@ grant needs nobody. Both are the same attack on the same control, and both are
 closed the same way. Where no third party exists — two administrators, one
 removing the other — refusing would make a compromised administrator
 irremovable, so the requirement settles for making the removal loud.</p>
+<p><em>Rationale for VTI-APV-022.</em> Second-party consent presupposes a second party.
+A community run by one person — a household, a test deployment — has none, and
+without this mode its administrator can neither add a colleague nor change a
+rule except through the offline break-glass, which is less visible, not more.
+The mode keeps what consent was for wherever it still can: it waives consent
+only where there is nobody else to ask, it still requires the requester’s own
+second factor bound to the one operation, it cannot be switched on by anyone
+the consent rules are meant to restrain, and it is never quiet. The moment a
+second eligible administrator exists, ordinary consent applies again without
+any change to the mode.</p>
 <!-- file: 03c-audit.md -->
 <h2 id="audit" tabindex="-1"><a class="toc-anchor d-print-none" href="#audit">§</a> Audit</h2>
 <p>This section is normative.</p>
@@ -4742,7 +4775,9 @@ version is advisory.</li>
 known subject is an enumeration oracle (VTI-SES-007).</li>
 <li><strong>What the approver saw must be what was committed to</strong> (VTI-APV-013), and
 unrestricted authority — the grant from which every other grant can be
-made — requires a second party (VTI-APV-014).</li>
+made — should require a second party (VTI-APV-014); a deployment with
+nobody else to ask says so openly, in single-administrator mode
+(VTI-APV-022).</li>
 <li><strong>An algorithm is retired at the moment it is broken</strong>, not at the next
 release (VTI-KEY-013).</li>
 <li><strong>The key that answers messages must not be the key that signs decisions.</strong>
@@ -6683,15 +6718,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 02 October 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 03 October 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-10-02T19:12:57.512Z">
-                            Generated: 2026-10-02T19:12:57.512Z
+                        <time class="timestamp" datetime="2026-10-03T13:06:23.348Z">
+                            Generated: 2026-10-03T13:06:23.348Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
