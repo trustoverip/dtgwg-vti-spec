@@ -67,7 +67,9 @@ requirements of its own; each item names the requirements that carry it.
     known subject is an enumeration oracle (VTI-SES-007).
 18. **What the approver saw must be what was committed to** (VTI-APV-013), and
     unrestricted authority — the grant from which every other grant can be
-    made — requires a second party (VTI-APV-014).
+    made — should require a second party (VTI-APV-014); a deployment with
+    nobody else to ask says so openly, in single-administrator mode
+    (VTI-APV-022).
 19. **An algorithm is retired at the moment it is broken**, not at the next
     release (VTI-KEY-013).
 20. **The key that answers messages must not be the key that signs decisions.**
