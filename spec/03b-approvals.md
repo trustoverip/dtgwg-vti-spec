@@ -142,6 +142,22 @@ meeting the requirement as it stood before the change.
 single requester may hold, and SHOULD alert the other eligible approvers to a
 burst of requests from one requester.
 
+**VTI-APV-022** — A node MAY operate in **single-administrator mode**. Where it
+does, the consent requirements of VTI-APV-014, VTI-APV-018, VTI-APV-019 and
+VTI-APV-020 are satisfied, for one operation, by the requester's
+re-authentication bound to that operation under VTI-APV-015, but only where no
+eligible party other than the requester exists. The mode:
+
+1. MUST be enabled only by a party with administrative access to the host, and
+   MUST NOT be settable, or clearable, through the node's operation surface;
+2. MUST NOT waive any consent requirement for which an eligible party other
+   than the requester exists;
+3. MUST be reported to every administrator, in every session, for as long as
+   it is in effect; and
+4. MUST be audited at the node's highest severity when it takes effect, each
+   time the node starts with it in effect, and for every operation whose
+   consent it waived.
+
 *Rationale for VTI-APV-013.* An approval is only as good as the correspondence
 between what the human saw and what the system committed to. Where the display
 is rendered from one structure and the digest computed over another, the
@@ -202,3 +218,14 @@ grant needs nobody. Both are the same attack on the same control, and both are
 closed the same way. Where no third party exists — two administrators, one
 removing the other — refusing would make a compromised administrator
 irremovable, so the requirement settles for making the removal loud.
+
+*Rationale for VTI-APV-022.* Second-party consent presupposes a second party.
+A community run by one person — a household, a test deployment — has none, and
+without this mode its administrator can neither add a colleague nor change a
+rule except through the offline break-glass, which is less visible, not more.
+The mode keeps what consent was for wherever it still can: it waives consent
+only where there is nobody else to ask, it still requires the requester's own
+second factor bound to the one operation, it cannot be switched on by anyone
+the consent rules are meant to restrain, and it is never quiet. The moment a
+second eligible administrator exists, ordinary consent applies again without
+any change to the mode.
