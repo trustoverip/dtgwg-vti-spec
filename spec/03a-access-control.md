@@ -232,9 +232,20 @@ sufficient for modification or removal.
 VTI-ACL-050 permits modification, and additionally where the entry's approve
 scope reaches the caller.
 
-**VTI-ACL-052** — A subject MUST NOT modify its own entry, except by the
-self-service rotation defined in the Client Onboarding chapter, which moves an
-entry to a new subject identifier while preserving its authority exactly.
+**VTI-ACL-052** — A subject MUST NOT modify its own entry, except:
+
+1. by the self-service rotation defined in the Client Onboarding chapter, which
+   moves an entry to a new subject identifier while preserving its authority
+   exactly;
+2. to change the entry's human-readable label and nothing else. The label
+   confers no authority (VTI-ACL-001). A node MUST record such a change in its
+   audit trail, and SHOULD show a label its subject set as self-set wherever it
+   shows the label to another party; or
+3. in single-administrator mode (VTI-APV-022), where the subject is the only
+   party whose entry has unrestricted act scope. The modification MUST be
+   authorized by the subject's re-authentication bound to that operation under
+   VTI-APV-015, MUST be audited at the node's highest severity, and MUST NOT
+   leave the node without an entry with unrestricted act scope.
 
 **VTI-ACL-053** — A caller MUST NOT create or modify an entry, for any
 subject, that would hold authority the caller's own entry does not hold. In
@@ -301,7 +312,17 @@ than for the role and the context list alone — clearing a capability
 narrowing, dropping a key filter or lifting an expiry is a grant, and is
 bounded like one. The rotation carved out of VTI-ACL-052 cannot be used for
 the same purpose, because VTI-CLT-029 requires it to preserve every one of
-those axes exactly.
+those axes exactly. Nor can the label: it is on no axis of authority, so a
+subject relabelling itself gains nothing a bound could have withheld. What it
+can do is mislead, by naming itself as something it is not, which is why the
+change is audited and shown as self-set. The single-administrator exception is
+the case where the rule has no one to protect: a sole holder of unrestricted
+act scope already holds every axis, so the edit cannot widen anything, and no
+other party exists to make the edit for it. Without the exception that subject
+could not correct its own entry at all. The exception carries the mode's own
+conditions — a gesture bound to the operation, the highest audit severity —
+and keeps the one consequence that cannot be undone from inside the node: an
+edit that would leave no unrestricted entry is refused.
 
 *Rationale for VTI-ACL-054 – VTI-ACL-058.* Onboarding hands a bootstrap
 identifier a short-lived grant, and the identifier then establishes the
