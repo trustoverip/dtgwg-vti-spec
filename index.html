@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-10-04T06:05:29.527Z"
+      "lastUpdated": "2026-10-04T06:12:21.617Z"
     }
   ]
 };</script>
@@ -1379,11 +1379,11 @@ exactly;</li>
 confers no authority (VTI-ACL-001). A node MUST record such a change in its
 audit trail, and SHOULD show a label its subject set as self-set wherever it
 shows the label to another party; or</li>
-<li>in single-administrator mode (VTI-APV-022), where the subject is the only
-party whose entry has unrestricted act scope. The modification MUST be
-authorized by the subject’s re-authentication bound to that operation under
-VTI-APV-015, MUST be audited at the node’s highest severity, and MUST NOT
-leave the node without an entry with unrestricted act scope.</li>
+<li>in single-administrator mode (VTI-APV-022), where the subject’s entry has
+unrestricted act scope. The modification MUST be authorized by the
+subject’s re-authentication bound to that operation under VTI-APV-015, MUST
+be audited at the node’s highest severity, and MUST NOT leave the node
+without an entry with unrestricted act scope.</li>
 </ol>
 <p><strong>VTI-ACL-053</strong> — A caller MUST NOT create or modify an entry, for any
 subject, that would hold authority the caller’s own entry does not hold. In
@@ -1447,13 +1447,14 @@ those axes exactly. Nor can the label: it is on no axis of authority, so a
 subject relabelling itself gains nothing a bound could have withheld. What it
 can do is mislead, by naming itself as something it is not, which is why the
 change is audited and shown as self-set. The single-administrator exception is
-the case where the rule has no one to protect: a sole holder of unrestricted
-act scope already holds every axis, so the edit cannot widen anything, and no
-other party exists to make the edit for it. Without the exception that subject
-could not correct its own entry at all. The exception carries the mode’s own
-conditions — a gesture bound to the operation, the highest audit severity —
-and keeps the one consequence that cannot be undone from inside the node: an
-edit that would leave no unrestricted entry is refused.</p>
+the case where the rule has no one to protect: in that mode the
+administrators are one person (VTI-APV-022), and a holder of unrestricted act
+scope already holds every axis, so the edit cannot widen anything; the person
+who would otherwise make the edit for it is the same person. The exception
+carries the mode’s own conditions — a gesture bound to the operation, the
+highest audit severity — and keeps the one consequence that cannot be undone
+from inside the node: an edit that would leave no unrestricted entry is
+refused.</p>
 <p><em>Rationale for VTI-ACL-054 – VTI-ACL-058.</em> Onboarding hands a bootstrap
 identifier a short-lived grant, and the identifier then establishes the
 long-term one that replaces it (Client Onboarding, Step 2). Where the long-term
@@ -1749,17 +1750,17 @@ single requester may hold, and SHOULD alert the other eligible approvers to a
 burst of requests from one requester.</p>
 <p><strong>VTI-APV-022</strong> — Second-party consent (VTI-APV-014, VTI-APV-018 – 020) is
 recommended practice, not every deployment’s requirement: a community run by one
-person has no second party to ask. A node MAY operate in <strong>single-administrator
-mode</strong>, in which an operation those recommendations cover is authorized by the
-requester’s re-authentication bound to that operation under VTI-APV-015 in
-place of another party’s consent, wherever no eligible party other than the
-requester exists. A node that does not apply those recommendations MUST do so
-only through this mode, and the mode:</p>
+person has no second party to ask, even where that person administers it under
+several identifiers, such as one per device. A node MAY operate in
+<strong>single-administrator mode</strong>, in which an operation those recommendations
+cover is authorized by the requester’s re-authentication bound to that
+operation under VTI-APV-015 in place of another party’s consent, whether or
+not other administrators’ entries exist. A node that does not apply those
+recommendations MUST do so only through this mode, and the mode:</p>
 <ol>
 <li>MUST be enabled only by a party with administrative access to the host, and
 MUST NOT be settable, or clearable, through the node’s operation surface;</li>
-<li>MUST NOT waive any consent requirement for which an eligible party other
-than the requester exists;</li>
+<li>SHOULD be enabled only where every administrator is the same person;</li>
 <li>MUST be reported to every administrator, in every session, for as long as
 it is in effect; and</li>
 <li>MUST be audited at the node’s highest severity when it takes effect, each
@@ -1822,12 +1823,17 @@ irremovable, so the requirement settles for making the removal loud.</p>
 A community run by one person — a household, a test deployment — has none, and
 without this mode its administrator can neither add a colleague nor change a
 rule except through the offline break-glass, which is less visible, not more.
-The mode keeps what consent was for wherever it still can: it waives consent
-only where there is nobody else to ask, it still requires the requester’s own
-second factor bound to the one operation, it cannot be switched on by anyone
-the consent rules are meant to restrain, and it is never quiet. The moment a
-second eligible administrator exists, ordinary consent applies again without
-any change to the mode.</p>
+Counting entries does not find the second party either: one person holding an
+administrator entry per device would otherwise be asked to approve their own
+requests from another of their own devices, which is ceremony without a second
+mind. The node cannot tell one person’s identifiers from two people’s, so the
+mode does not try; it is a statement by whoever controls the host that the
+administrators are one person (item 2), and it keeps what consent was for
+wherever it still can: every operation still takes the requester’s own second
+factor bound to that operation, the mode cannot be switched on by anyone the
+consent rules are meant to restrain, and it is never quiet. An administrator
+who is in fact a different person sees it in every session (item 3) and can
+have it turned off on the host, at which point ordinary consent applies again.</p>
 <!-- file: 03c-audit.md -->
 <h2 id="audit" tabindex="-1"><a class="toc-anchor d-print-none" href="#audit">§</a> Audit</h2>
 <p>This section is normative.</p>
@@ -6745,8 +6751,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-10-04T06:05:28.911Z">
-                            Generated: 2026-10-04T06:05:28.911Z
+                        <time class="timestamp" datetime="2026-10-04T06:12:21.134Z">
+                            Generated: 2026-10-04T06:12:21.134Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
