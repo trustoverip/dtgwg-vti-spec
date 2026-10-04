@@ -148,17 +148,17 @@ burst of requests from one requester.
 
 **VTI-APV-022** — Second-party consent (VTI-APV-014, VTI-APV-018 – 020) is
 recommended practice, not every deployment's requirement: a community run by one
-person has no second party to ask. A node MAY operate in **single-administrator
-mode**, in which an operation those recommendations cover is authorized by the
-requester's re-authentication bound to that operation under VTI-APV-015 in
-place of another party's consent, wherever no eligible party other than the
-requester exists. A node that does not apply those recommendations MUST do so
-only through this mode, and the mode:
+person has no second party to ask, even where that person administers it under
+several identifiers, such as one per device. A node MAY operate in
+**single-administrator mode**, in which an operation those recommendations
+cover is authorized by the requester's re-authentication bound to that
+operation under VTI-APV-015 in place of another party's consent, whether or
+not other administrators' entries exist. A node that does not apply those
+recommendations MUST do so only through this mode, and the mode:
 
 1. MUST be enabled only by a party with administrative access to the host, and
    MUST NOT be settable, or clearable, through the node's operation surface;
-2. MUST NOT waive any consent requirement for which an eligible party other
-   than the requester exists;
+2. SHOULD be enabled only where every administrator is the same person;
 3. MUST be reported to every administrator, in every session, for as long as
    it is in effect; and
 4. MUST be audited at the node's highest severity when it takes effect, each
@@ -230,9 +230,14 @@ irremovable, so the requirement settles for making the removal loud.
 A community run by one person — a household, a test deployment — has none, and
 without this mode its administrator can neither add a colleague nor change a
 rule except through the offline break-glass, which is less visible, not more.
-The mode keeps what consent was for wherever it still can: it waives consent
-only where there is nobody else to ask, it still requires the requester's own
-second factor bound to the one operation, it cannot be switched on by anyone
-the consent rules are meant to restrain, and it is never quiet. The moment a
-second eligible administrator exists, ordinary consent applies again without
-any change to the mode.
+Counting entries does not find the second party either: one person holding an
+administrator entry per device would otherwise be asked to approve their own
+requests from another of their own devices, which is ceremony without a second
+mind. The node cannot tell one person's identifiers from two people's, so the
+mode does not try; it is a statement by whoever controls the host that the
+administrators are one person (item 2), and it keeps what consent was for
+wherever it still can: every operation still takes the requester's own second
+factor bound to that operation, the mode cannot be switched on by anyone the
+consent rules are meant to restrain, and it is never quiet. An administrator
+who is in fact a different person sees it in every session (item 3) and can
+have it turned off on the host, at which point ordinary consent applies again.
