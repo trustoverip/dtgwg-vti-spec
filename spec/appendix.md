@@ -224,10 +224,13 @@ be settled without changing them.
 | `proxy-login` | minting a session credential on the principal's behalf |
 | `fill-release` | releasing a stored value into an authorized flow |
 | `key-mint` | creating new keys within scope |
+| `key-export` | taking a key's private material out of the agent (VTI-VTA-003) |
 | `policy-admin` | changing policy, including approval rules |
 | `device-admin` | enrolling and managing devices |
 | `memory-read` | reading agent memory |
 | `memory-write` | writing or deleting agent memory |
+| `room-present` | minting a scoped presentation for a data room (`rooms/keys/present`) |
+| `room-open` | opening a sealed data-room record (`rooms/keys/open`) |
 | `holder` *(additive)* | acting for the holder over their own identity across every context |
 
 `holder` is marked additive because no role implies it: it reaches above the
@@ -242,7 +245,13 @@ without either holding the generic oracle or exporting the key, the agent buildi
 the SSHSIG signed data itself so the signature verifies as nothing else; `credential-write` exists so that a consumer can
 receive credentials without being able to destroy them; `memory-read` and
 `memory-write` are split so that a read-only consumer of a context cannot
-rewrite what it reads.
+rewrite what it reads; `key-export` is distinct from `sign` because VTI-VTA-003
+requires it — a caller that may ask for an operation loses that ability when its
+entry changes, while one that has taken the key keeps it — and so no role but
+`administrator` implies it; `room-present` and `room-open` are distinct from
+`sign`, and from each other, so that an agent can obtain a scoped,
+audience-bound room presentation without holding the generic oracle, and can
+index a room without being able to read it.
 
 #### C.3 Community capabilities and roles
 
