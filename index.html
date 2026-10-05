@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-10-05T10:05:49.916Z"
+      "lastUpdated": "2026-10-05T10:08:28.867Z"
     }
   ]
 };</script>
@@ -5841,6 +5841,10 @@ be settled without changing them.</p>
 <td>creating new keys within scope</td>
 </tr>
 <tr>
+<td><code>key-export</code></td>
+<td>taking a key’s private material out of the agent (VTI-VTA-003)</td>
+</tr>
+<tr>
 <td><code>policy-admin</code></td>
 <td>changing policy, including approval rules</td>
 </tr>
@@ -5855,6 +5859,14 @@ be settled without changing them.</p>
 <tr>
 <td><code>memory-write</code></td>
 <td>writing or deleting agent memory</td>
+</tr>
+<tr>
+<td><code>room-present</code></td>
+<td>minting a scoped presentation for a data room (<code>rooms/keys/present</code>)</td>
+</tr>
+<tr>
+<td><code>room-open</code></td>
+<td>opening a sealed data-room record (<code>rooms/keys/open</code>)</td>
 </tr>
 <tr>
 <td><code>holder</code> <em>(additive)</em></td>
@@ -5873,7 +5885,13 @@ without either holding the generic oracle or exporting the key, the agent buildi
 the SSHSIG signed data itself so the signature verifies as nothing else; <code>credential-write</code> exists so that a consumer can
 receive credentials without being able to destroy them; <code>memory-read</code> and
 <code>memory-write</code> are split so that a read-only consumer of a context cannot
-rewrite what it reads.</p>
+rewrite what it reads; <code>key-export</code> is distinct from <code>sign</code> because VTI-VTA-003
+requires it — a caller that may ask for an operation loses that ability when its
+entry changes, while one that has taken the key keeps it — and so no role but
+<code>administrator</code> implies it; <code>room-present</code> and <code>room-open</code> are distinct from
+<code>sign</code>, and from each other, so that an agent can obtain a scoped,
+audience-bound room presentation without holding the generic oracle, and can
+index a room without being able to read it.</p>
 <h4 id="c.3-community-capabilities-and-roles" tabindex="-1"><a class="toc-anchor d-print-none" href="#c.3-community-capabilities-and-roles">§</a> C.3 Community capabilities and roles</h4>
 <p>A community expresses its administration in the same model (VTI-VTC-020). The
 registry below is proposed for the community node; a capability marked
@@ -6757,8 +6775,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-10-05T10:05:49.412Z">
-                            Generated: 2026-10-05T10:05:49.412Z
+                        <time class="timestamp" datetime="2026-10-05T10:08:28.482Z">
+                            Generated: 2026-10-05T10:08:28.482Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
