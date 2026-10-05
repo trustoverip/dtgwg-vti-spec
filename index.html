@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-10-04T06:12:21.617Z"
+      "lastUpdated": "2026-10-05T10:05:49.916Z"
     }
   ]
 };</script>
@@ -5825,6 +5825,10 @@ be settled without changing them.</p>
 <td>per-envelope task signing only</td>
 </tr>
 <tr>
+<td><code>sign-sshsig</code></td>
+<td>SSHSIG signatures (git commit and tag signing) only</td>
+</tr>
+<tr>
 <td><code>proxy-login</code></td>
 <td>minting a session credential on the principal’s behalf</td>
 </tr>
@@ -5864,7 +5868,9 @@ would hand it to every context administrator on upgrade. Granting it requires
 unrestricted act authority (VTI-ACL-033).</p>
 <p>The separations in this table are deliberate and each has a reason worth
 keeping: <code>sign-trust-task</code> exists so that an agent can sign an envelope without
-holding the generic oracle; <code>credential-write</code> exists so that a consumer can
+holding the generic oracle; <code>sign-sshsig</code> exists so that a commit signer can sign
+without either holding the generic oracle or exporting the key, the agent building
+the SSHSIG signed data itself so the signature verifies as nothing else; <code>credential-write</code> exists so that a consumer can
 receive credentials without being able to destroy them; <code>memory-read</code> and
 <code>memory-write</code> are split so that a read-only consumer of a context cannot
 rewrite what it reads.</p>
@@ -6744,15 +6750,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 04 October 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 05 October 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-10-04T06:12:21.134Z">
-                            Generated: 2026-10-04T06:12:21.134Z
+                        <time class="timestamp" datetime="2026-10-05T10:05:49.412Z">
+                            Generated: 2026-10-05T10:05:49.412Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
