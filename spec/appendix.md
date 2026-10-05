@@ -220,6 +220,7 @@ be settled without changing them.
 | `credential-write` | changing the archival lifecycle of a stored credential |
 | `sign` | the generic signing oracle |
 | `sign-trust-task` | per-envelope task signing only |
+| `sign-sshsig` | SSHSIG signatures (git commit and tag signing) only |
 | `proxy-login` | minting a session credential on the principal's behalf |
 | `fill-release` | releasing a stored value into an authorized flow |
 | `key-mint` | creating new keys within scope |
@@ -236,7 +237,9 @@ unrestricted act authority (VTI-ACL-033).
 
 The separations in this table are deliberate and each has a reason worth
 keeping: `sign-trust-task` exists so that an agent can sign an envelope without
-holding the generic oracle; `credential-write` exists so that a consumer can
+holding the generic oracle; `sign-sshsig` exists so that a commit signer can sign
+without either holding the generic oracle or exporting the key, the agent building
+the SSHSIG signed data itself so the signature verifies as nothing else; `credential-write` exists so that a consumer can
 receive credentials without being able to destroy them; `memory-read` and
 `memory-write` are split so that a read-only consumer of a context cannot
 rewrite what it reads.
