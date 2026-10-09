@@ -145,7 +145,7 @@ where unresolved propositions are published with their status visible.
 | Transports, messaging and delivery | **drafted** (`TRN`) |
 | Sessions and authentication | **drafted** (`SES`) |
 | Client onboarding and lifecycle | **drafted** (`CLT`) |
-| Trigger links | **drafted** (`LNK`) — agent names reserved; the `sign-in` exchange after the first request specified separately |
+| Trigger links | **drafted** (`LNK`) — flows `sign-in` and `vta-claim`; agent names reserved; the `sign-in` exchange after the first request specified separately |
 | Operation surface | **drafted** (`OPS`) |
 | Credentials and presentations | **drafted** (`CRD`) |
 | The Verifiable Trust Agent | **drafted** (`VTA`) |

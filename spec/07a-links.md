@@ -30,7 +30,8 @@ This chapter specifies the [[ref: trigger link]]: the text an inviter shows as a
 code or a link to start an exchange with a wallet it cannot otherwise reach. It
 defines the link's form and how a reader parses it, the fields it carries, the
 flows it can name, what a reader does after reading it, what a producer must
-and must not emit, and the first registered flow, `sign-in`.
+and must not emit, and the first two registered flows, `sign-in` and
+`vta-claim`.
 
 It does not define the exchange that follows the first request. That is the
 business of the Trust Tasks the flow uses (Operation surface), carried over a
@@ -42,7 +43,7 @@ Terms used in this chapter:
 | Term | Meaning |
 |---|---|
 | **Trigger link** | The text defined by this chapter. |
-| **Inviter** | The party that produces a trigger link and receives the first request. For `sign-in`, the VTC. |
+| **Inviter** | The party that produces a trigger link and receives the first request. For `sign-in`, the VTC; for `vta-claim`, the VTA Farm. |
 | **Reader** | A client that reads a trigger link and acts on it: a wallet. |
 | **Producer** | Anything that emits a trigger link on the inviter's behalf: the inviter, or a page or service it operates. |
 | **Link host** | The host named in the link's authority, which serves the platform association files and a page for people with no wallet. |
@@ -272,9 +273,9 @@ side and on each reader that implements it.
 | Flow | Identifier (version 0.1, draft) | Contact | Expiry |
 |---|---|---|---|
 | Sign in to a community portal | `https://link.trustoverip.org/vti/flow/sign-in/0.1` | the VTC's VID | required |
+| Claim a VTA from a VTA Farm | `https://link.trustoverip.org/vti/flow/vta-claim/0.1` | the Farm's VID | required |
 
-*Note.* A flow for claiming a parked VTA (`vta-claim`) is proposed and not yet
-registered. Step-up and device enrolment, if started by a trigger link, are
+*Note.* Step-up and device enrolment, if started by a trigger link, are
 separate flows, each named when it is designed.
 
 ### After the link
@@ -282,7 +283,9 @@ separate flows, each named when it is designed.
 **VTI-LNK-050** — Before any network activity, DID resolution included, a
 reader MUST show the person who the contact claims to be, marked unverified,
 and MUST wait for the person to continue. For a contact with a domain, the
-reader shows the domain. For one without, it shows its own label for that
+reader shows the domain, followed by the path where the identifier has one (for
+example `dids.example.org/farm-auth` for
+`did:webvh:<SCID>:dids.example.org:farm-auth`). For one without, it shows its own label for that
 contact if it has one, and otherwise says the contact has no domain to show.
 
 **VTI-LNK-051** — For a flow that acts only for contacts already in the reader's
@@ -466,6 +469,66 @@ they are, VTI-LNK-050 to VTI-LNK-054 order them: the reader shows the community
 from its own records, the member continues, and only then is anything signed
 sent.
 
+### The `vta-claim` flow
+
+The `vta-claim` flow connects a wallet to a VTA that a VTA Farm provisions. A
+visitor opens a claim page, which reserves a VTA and shows a code. The wallet
+scans it and sends a fresh identifier, which becomes the VTA's first
+administrator. The contact is the Farm, not the VTA: the VTA is what the
+exchange produces, and the Farm returns its DID in the first response. The same
+code serves a first administrator for a new VTA, an added device for a running
+VTA and a claim of a pooled VTA; the Farm tells them apart from its own state,
+and the reader cannot choose.
+
+**VTI-LNK-110** — For `vta-claim`, `_exp` is required, and MUST be no later than
+300 seconds after the code is made.
+
+**VTI-LNK-111** — For `vta-claim`, a reader MUST NOT apply VTI-LNK-051: the Farm
+is a first contact, and nothing is resolved before the person continues.
+
+**VTI-LNK-112** — For `vta-claim`, the contact's resolved DID document MUST list
+the Farm's claim service. A reader MUST refuse with `from-not-allowed` a contact
+whose identifier type cannot carry one, such as `did:key`.
+
+**VTI-LNK-113** — For `vta-claim`, the issuer of the first request (VTI-LNK-054)
+is the identifier the claim makes an administrator of the VTA. A reader MUST NOT
+use an identifier it already uses for another VTA or another exchange.
+
+**VTI-LNK-114** — A Farm MUST accept at most one claim per handle, atomically,
+and MUST refuse every later claim for it. A Farm MUST NOT treat a request that
+does not carry a valid signed first request as a claim.
+
+**VTI-LNK-115** — After a successful claim, a Farm SHOULD show on the claim page
+a **claim check**, and a reader SHOULD show the same claim check computed from
+its own identifier. The claim check is the first six characters of the base32
+encoding [RFC 4648] (section 6, upper case) of the SHA-256 hash [FIPS-180-4] of
+the identifier's UTF-8 string. A Farm SHOULD NOT release the VTA from the reservation until the person
+confirms on the page that the two match, and SHOULD revoke the identifier and
+return the VTA to the pool when the person says they do not.
+
+**VTI-LNK-116** — A Farm SHOULD use a 16-byte handle (22 characters) for
+`vta-claim`.
+
+*Rationale for VTI-LNK-114 and VTI-LNK-115.* A forged code is harmless: the
+reader talks only to the endpoint in the Farm's verified document, so a made-up
+handle earns a refusal. A real code is not: whoever scans it first becomes an
+administrator, and a person behind the visitor can photograph the screen and
+scan before the visitor does. `sign-in` meets that threat with a check before
+the claim. A first contact has nothing to check against beforehand, so the claim
+check catches it afterwards, before the VTA is handed over.
+
+*Note on adding a device.* A code that adds an administrator to a running VTA
+is worth more to an attacker than one for an empty VTA. Whether such a code is
+shown only to a signed-in administrator, which role the added identifier gets,
+and whether the claim check is then required are open with the Farm's authors.
+
+*Note on the size budget.* With the path form on `link.trustoverip.org/t`, the
+parts of a `vta-claim` link other than `_from` and `_id` take 88 bytes. At
+level M, `_from` and `_id` share 163 bytes: `_from` is at most 141 with a
+22-character handle. At level Q they share 89, so `_from` is at most 67 with a
+22-character handle, and a Farm with a longer identifier renders its codes
+without a logo.
+
 ### Examples
 
 These examples are informative. The DIDs are made up.
@@ -497,3 +560,10 @@ https://link.trustoverip.org/t#_from=did:webvh:QmPEQVM1JPTyrvEgBcDXwjK4TeyLGSX1P
 | `_from=did:web:example.com%253A8443` | parses as `did:web:example.com%3A8443`, then refused at resolution: the host rules forbid a port |
 | The reader's clock 59 seconds past `_exp` | accepted |
 | The reader's clock 60 seconds past `_exp` | `expired` |
+
+A `vta-claim` link with a path `did:webvh` contact, 193 bytes. Before the
+person continues, the reader shows `dids.example.org/farm-auth`, unverified:
+
+```
+https://link.trustoverip.org/t#_from=did:webvh:QmXa7Rk2ZpLwT9vNc4HbYe1Jd8sMfU3qGo6PtVnEyKiBhW:dids.example.org:farm-auth&_id=Rv8LmQ2nX5tW9kPz3cJhYg&_exp=1791460920&_type=/vti/flow/vta-claim/0.1
+```

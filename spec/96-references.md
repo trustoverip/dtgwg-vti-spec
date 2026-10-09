@@ -30,8 +30,11 @@ their current versions before this specification leaves Working Draft.
   reference resolution for the path form of `_type` (VTI-LNK-041).
   <https://datatracker.ietf.org/doc/html/rfc3986>
 - [RFC 4648] *The Base16, Base32, and Base64 Data Encodings* — base64url,
-  section 5, for the trigger link handle (VTI-LNK-033).
+  section 5, for the trigger link handle (VTI-LNK-033); base32, section 6, for
+  the claim check (VTI-LNK-115).
   <https://datatracker.ietf.org/doc/html/rfc4648>
+- [FIPS-180-4] *Secure Hash Standard (SHS)* — SHA-256, for the claim check
+  (VTI-LNK-115). <https://csrc.nist.gov/pubs/fips/180-4/upd1/final>
 - [RFC 9110] *HTTP Semantics* — that a client sends no fragment in a request or
   in `Referer`, and that a redirect without a fragment carries the original one
   (VTI-LNK-010, VTI-LNK-083). <https://datatracker.ietf.org/doc/html/rfc9110>
