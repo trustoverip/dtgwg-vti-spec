@@ -39,6 +39,7 @@ Three bodies of normative material:
 | | Transports, messaging and delivery | `spec/05-transports.md` |
 | | Sessions and authentication | `spec/06-sessions-auth.md` |
 | | Client onboarding and lifecycle | `spec/07-clients.md` |
+| | Trigger links | `spec/07a-links.md` |
 | | Operation surface | `spec/08-operations.md` |
 | | Credentials and presentations | `spec/09-credentials.md` |
 | C — Nodes | The Verifiable Trust Agent | `spec/10-vta.md` |
@@ -144,6 +145,7 @@ where unresolved propositions are published with their status visible.
 | Transports, messaging and delivery | **drafted** (`TRN`) |
 | Sessions and authentication | **drafted** (`SES`) |
 | Client onboarding and lifecycle | **drafted** (`CLT`) |
+| Trigger links | **drafted** (`LNK`) — agent names reserved; the `sign-in` exchange after the first request specified separately |
 | Operation surface | **drafted** (`OPS`) |
 | Credentials and presentations | **drafted** (`CRD`) |
 | The Verifiable Trust Agent | **drafted** (`VTA`) |
