@@ -25,6 +25,34 @@ wallet ignores any parameter it does not recognise, because mail systems and
 link shorteners append their own; a link that breaks when a newsletter adds a
 tracking parameter is a link people stop trusting.
 
+### Design principles
+
+These apply to this chapter the principles the specification already states:
+DTG specifications are "deliberately modular", each defining one component
+that "can be conformed to on its own" (Abstract), and a requirement about what
+an artefact is belongs to the component, while this specification owns how
+components are composed (Architecture and Conformance Targets, Layering).
+
+1. **Modular.** The trigger-link format names whom to contact and which flow
+   to start; it does not choose the protocol of the exchange. Each flow states
+   its first request, so the format can carry flows built on Trust Tasks,
+   DIDComm, OpenID or anything else, and can be used beyond VTI.
+2. **No central party.** Anyone may host trigger links on a domain they
+   control and define flows under URIs they control. Taking part needs no
+   registry, no shared link host and no namespace owner. Flow identifiers are
+   whole URIs, so two owners' flows never collide, and the path form gives
+   every host's own flows the same shorthand. A shared link host is a
+   convenience for camera scans, not a requirement.
+3. **Simple inside VTI.** VTI's own use is deliberately narrow: one kind of
+   first request (the Trust Task first request) and a small registry of
+   flows. Breadth belongs in the format; VTI's flows stay simple.
+
+*Note.* Under Layering, the trigger-link format is a component: it defines
+what a link is and what it means. It is drafted here, in its own part, so that
+it can later move to a component specification of its own without changing
+any requirement identifier, leaving this chapter with VTI's use of trigger
+links. That move is deferred until the format has settled.
+
 ### What this chapter defines
 
 This chapter specifies the [[ref: trigger link]]: the text an inviter shows as a QR
@@ -35,9 +63,16 @@ and must not emit, and the first two registered flows, `sign-in` and
 `vta-claim`.
 
 It does not define the exchange that follows the first request. That is the
-business of the Trust Tasks the flow uses (Operation surface), carried over a
-transport the inviter's DID document advertises (Transports, messaging and
-delivery).
+business of the flow. For the flows this specification registers, it is the
+Trust Tasks the flow uses (Operation surface), carried over a transport the
+inviter's DID document advertises (Transports, messaging and delivery).
+
+The chapter has two parts. **The trigger-link format** is protocol-neutral:
+any party can use it, with any kind of first request. **VTI's use of trigger
+links** is what VTI adopts on top of it: the Trust Task first request
+(VTI-LNK-057), the flow registry (VTI-LNK-046), and the `sign-in` and
+`vta-claim` flows. Every VTI flow uses both parts; a party outside VTI can use
+the format alone.
 
 Terms used in this chapter:
 
@@ -54,7 +89,12 @@ Terms used in this chapter:
 implement the `Links` profile, and MUST satisfy the requirements of this
 chapter that bind the role it plays.
 
-### The link
+### The trigger-link format
+
+This part is protocol-neutral. Everything in it applies to any party that
+reads, produces or hosts trigger links, inside or outside VTI.
+
+#### The link
 
 A trigger link has the form:
 
@@ -92,7 +132,7 @@ is not the one the person chose. Which app opens an `https` link is decided by
 the operating system, from association files the link host publishes and from
 what each installed app declares.
 
-### Reading a link
+#### Reading a link
 
 Parsing follows the WHATWG `application/x-www-form-urlencoded` parser [URL]
 applied to the fragment: split on `&`, skip empty sequences, split each at its
@@ -157,9 +197,9 @@ flow's rule. The 60-second allowance in step 10 absorbs phone clock error
 without outlasting a short-lived code; the inviter still decides expiry by its
 own clock.
 
-### The fields
+#### The fields
 
-#### `_from`: the contact
+##### `_from`: the contact
 
 **VTI-LNK-030** — `_from` MUST be a VID [TSP]: a DID of any method, or another
 verifiable identifier. A reader MUST percent-decode it once and MUST check it
@@ -184,7 +224,7 @@ redirect contract are not yet settled; the reservation lets a later revision
 admit it without changing how existing links are read. A DID cannot contain `/`
 outside a DID URL, so no valid DID is mistaken for an agent name.
 
-#### `_id`: the handle
+##### `_id`: the handle
 
 **VTI-LNK-033** — `_id` MUST be 16 to 32 bytes written as unpadded base64url
 [RFC 4648], using only `A-Za-z0-9-_`: 22 to 43 characters. A value of length 25,
@@ -201,7 +241,7 @@ spelling, so a handle compared as a string cannot be presented twice under two
 spellings. 128 bits is the floor for a value nobody can guess; 256 bits leaves
 room for an inviter that encodes state in the handle.
 
-#### `_exp`: the expiry
+##### `_exp`: the expiry
 
 **VTI-LNK-036** — `_exp` MUST be UTC epoch seconds written as a decimal
 integer: `0`, or with no leading zero, and at most 2^53−1.
@@ -209,13 +249,16 @@ integer: `0`, or with no leading zero, and at most 2^53−1.
 **VTI-LNK-037** — A producer MUST set `_exp` no later than the end of the
 inviter's own lifetime for the handle.
 
-### Flows
+#### Flows
 
-#### `_type`: the flow
+##### `_type`: the flow
 
 A flow is named by an absolute `https` URI whose last segment is the version,
 `<MAJOR>.<MINOR>`. In a link, a flow on the link's own host is written as a
-path, and resolved against that host.
+path, and resolved against that host. Any party may define a flow under an
+`https` URI it controls, without registering it here; a reader implements
+whichever flows it chooses, and the path form gives every host's own flows
+the same shorthand.
 
 **VTI-LNK-040** — `_type`, where present, MUST be either an absolute `https` URI
 with no query or fragment whose last segment is `<MAJOR>.<MINOR>` in decimal
@@ -244,7 +287,7 @@ upper-cased host from producing a URI that matches no flow. A path that names a
 known flow on another host is refused as `wrong-host` rather than
 `unknown-flow`, because telling the person to update the app would be wrong.
 
-#### Versions
+##### Versions
 
 **VTI-LNK-044** — A reader MUST refuse a MAJOR version it does not implement,
 and SHOULD accept a higher MINOR of a MAJOR it implements. For a flow whose
@@ -259,27 +302,7 @@ unsigned link can lose any optional field in transit. A field that matters to
 security is only enforced if a reader that does not know it refuses the link,
 and only a new version achieves that.
 
-#### The flow registry
-
-Flows are named under `https://link.trustoverip.org/vti/flow/` and governed by
-this specification. A flow names the purpose of an exchange, not the Trust Task
-a reader sends first; the tasks a flow uses may change without changing its
-identifier.
-
-**VTI-LNK-046** — A new flow MUST be added to this registry by a change to this
-specification that states its identifier, the contact it expects, its expiry
-rule, which contacts it accepts, and test vectors, with an owner on the inviter
-side and on each reader that implements it.
-
-| Flow | Identifier (version 0.1, draft) | Contact | Expiry |
-|---|---|---|---|
-| Sign in to a community portal | `https://link.trustoverip.org/vti/flow/sign-in/0.1` | the VTC's VID | required |
-| Claim a VTA from a VTA Farm | `https://link.trustoverip.org/vti/flow/vta-claim/0.1` | the Farm's VID | required |
-
-*Note.* Step-up and device enrolment, if started by a trigger link, are
-separate flows, each named when it is designed.
-
-### After the link
+#### After the link
 
 **VTI-LNK-050** — Before any network activity, DID resolution included, a
 reader MUST show the person who the contact claims to be, marked unverified,
@@ -309,14 +332,18 @@ in document order wins. With no candidate the reader MUST stop with
 `no-common-transport`, MUST send nothing, and MUST NOT fall back to anything in
 the link. A reader MUST resolve the document afresh for each exchange.
 
-**VTI-LNK-054** — The first request MUST be a Trust Task document whose issuer is
-an identifier generated by the reader for this exchange and used nowhere else,
-whose recipient is the contact, with a unique `id`, carrying the handle as
-`parentThreadId`, and signed by the key of that identifier.
+**VTI-LNK-054** — A flow MUST state the request a reader sends first. A reader
+MUST send the first request only after the person approves (VTI-LNK-052),
+only over the transport chosen under VTI-LNK-053, and with the handle, so
+that the inviter can find the pending exchange. A first request the reader
+signs MUST be signed by a key made for this exchange and used nowhere else,
+unless the flow defines a signature by an identifier the person chose when
+approving.
 
-**VTI-LNK-055** — Where `_type` is absent, a reader MAY ask the inviter which
-tasks it supports, and MAY refuse a link it cannot place, with outcome
-`invalid`.
+**VTI-LNK-055** — Where `_type` is absent, a reader MAY ask the inviter what it
+supports, through a discovery mechanism of a protocol both implement (for
+Trust Tasks, `trust-task-discovery`), and MAY refuse a link it cannot place,
+with outcome `invalid`.
 
 **VTI-LNK-056** — A reader that receives a trigger link from the activation of
 a link on a page, such as a browser extension, MUST record the origin of that
@@ -330,9 +357,11 @@ contact, so the host contacted is one the person chose when they joined. The
 transport comes only from the verified document, so a link cannot point a
 wallet at an endpoint of the link-maker's choosing. A fresh identifier for the
 first request means a code seen by a stranger cannot be used to correlate the
-person's other exchanges.
+person's other exchanges. VTI-LNK-054 leaves the kind of first request to the
+flow so that the format can carry flows that are not Trust Tasks, such as a
+DIDComm or OpenID exchange.
 
-### The host rules
+#### The host rules
 
 **VTI-LNK-060** — The host rules apply to the link host, to the host of a
 contact that has one, and to every endpoint host a reader contacts. A host MUST
@@ -347,7 +376,7 @@ name under `localhost` or `local` [RFC 6761] [RFC 6762], or a name under
 **VTI-LNK-061** — A reader SHOULD refuse an endpoint whose resolved address is
 loopback, link-local or private.
 
-### Security of the handle
+#### Security of the handle
 
 **VTI-LNK-070** — A trigger link MUST NOT confer authority. Acting on it is the
 reader's decision; granting anything is the inviter's, on the signed first
@@ -369,7 +398,7 @@ of a link.
 links nobody tapped. A handle spent by a GET is spent by whichever of them gets
 there first.
 
-### Producers
+#### Producers
 
 **VTI-LNK-080** — A producer MUST emit only ASCII.
 
@@ -406,7 +435,7 @@ fragment to its target [RFC 9110]. A universal link tapped on a page of the same
 domain opens in the browser on iOS, not in the app, which is why the link host
 is kept off the page's domain.
 
-#### Rendering guidance
+##### Rendering guidance
 
 The following is guidance for producers and carries no normative force:
 
@@ -418,7 +447,7 @@ The following is guidance for producers and carries no normative force:
   in every colour theme, never inverted.
 - Draw as SVG or a crisp canvas, never scaled with smoothing.
 
-### The link host
+#### The link host
 
 **VTI-LNK-090** — A link host MUST publish platform association files that claim
 only its trigger path, so that a flow identifier on the same host opens its page
@@ -436,12 +465,55 @@ describes the flow.
 *Note.* One shared link host listed in every participating wallet's build is the
 only way one link can open whichever wallet a person has, because each
 platform opens an `https` link only in an app whose build declares that host.
-Until a shared host exists, a link opens only the wallets that declare its
-host. Whether a platform keeps the fragment through every camera, browser and
+Until a shared host exists, a link opens from a camera only in the wallets
+that declare its host. A shared host is a convenience, not a requirement: a
+link on any host that meets the host rules is equally valid, and works
+through any reader's own scanner, by pasting, and by camera in every reader
+that declares that host. Whether a platform keeps the fragment through every camera, browser and
 app hand-off is not yet verified on real devices; if a platform drops it, the
 handle cannot travel in the fragment there.
 
-### The `sign-in` flow
+### VTI's use of trigger links
+
+This part is VTI's adoption of the format. Every VTI flow uses it; a party
+outside VTI need not. It keeps VTI's own stack simple: one kind of first
+request, and a registry of the flows this specification defines.
+
+#### The first request for VTI flows
+
+**VTI-LNK-057** — For every flow in this specification's registry
+(VTI-LNK-046), the first request MUST be a Trust Task document whose issuer
+is an identifier generated by the reader for this exchange and used nowhere
+else, whose recipient is the contact, with a unique `id`, carrying the handle
+as `parentThreadId`, and signed by the key of that identifier.
+
+*Rationale for VTI-LNK-057.* VTI-LNK-054 leaves the kind of first request to
+each flow. VTI makes one choice for all of its flows, so that every VTI
+exchange starts on the Trust Task operation surface, with one way to sign the
+first request and one way to verify it.
+
+#### The flow registry
+
+This registry holds the flows this specification defines. They are named
+under `https://link.trustoverip.org/vti/flow/` and governed by this
+specification. A flow names the purpose of an exchange, not the Trust Task
+a reader sends first; the tasks a flow uses may change without changing its
+identifier.
+
+**VTI-LNK-046** — A new flow MUST be added to this registry by a change to this
+specification that states its identifier, the contact it expects, its expiry
+rule, which contacts it accepts, and test vectors, with an owner on the inviter
+side and on each reader that implements it.
+
+| Flow | Identifier (version 0.1, draft) | Contact | Expiry |
+|---|---|---|---|
+| Sign in to a community portal | `https://link.trustoverip.org/vti/flow/sign-in/0.1` | the VTC's VID | required |
+| Claim a VTA from a VTA Farm | `https://link.trustoverip.org/vti/flow/vta-claim/0.1` | the Farm's VID | required |
+
+*Note.* Step-up and device enrolment, if started by a trigger link, are
+separate flows, each named when it is designed.
+
+#### The `sign-in` flow
 
 The `sign-in` flow starts a member's sign-in to a community portal from a code
 the portal shows. The contact is the community's VTC.
@@ -487,11 +559,11 @@ then fits only with a host of 12 characters or fewer.
 *Note on the exchange that follows.* The Trust Tasks of the sign-in exchange,
 and whether the first request locks the request to the first reader that claims
 it, are being specified separately and are not part of this revision. Whatever
-they are, VTI-LNK-050 to VTI-LNK-054 order them: the reader shows the community
+they are, VTI-LNK-050 to VTI-LNK-057 order them: the reader shows the community
 from its own records, the member continues, and only then is anything signed
 sent.
 
-### The `vta-claim` flow
+#### The `vta-claim` flow
 
 The `vta-claim` flow connects a wallet to a VTA that a VTA Farm provisions. A
 visitor opens a claim page, which reserves a VTA and shows a code. The wallet
@@ -512,7 +584,7 @@ is a first contact, and nothing is resolved before the person continues.
 the Farm's claim service. A reader MUST refuse with `from-not-allowed` a contact
 whose identifier type cannot carry one, such as `did:key`.
 
-**VTI-LNK-113** — For `vta-claim`, the issuer of the first request (VTI-LNK-054)
+**VTI-LNK-113** — For `vta-claim`, the issuer of the first request (VTI-LNK-057)
 is the identifier the claim makes an administrator of the VTA. A reader MUST NOT
 use an identifier it already uses for another VTA or another exchange.
 
