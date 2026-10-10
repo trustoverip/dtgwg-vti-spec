@@ -6,8 +6,9 @@ This section is normative.
 
 A community wants a member to sign in on a laptop, or an operator wants a
 phone to claim an agent. The easiest thing to hand a person is a QR code on a
-screen or a link in a message. The person points a camera at it, or taps it,
-and the wallet they already use should open.
+screen or a link in a message. The person points a camera at it, or, when the
+wallet is on the same device, clicks it, and the wallet they already use should
+open.
 
 The code is not a key and not an instruction. It is a note that says *this is
 who wants to talk to you, and this is the reference number of the
@@ -317,6 +318,10 @@ whose recipient is the contact, with a unique `id`, carrying the handle as
 tasks it supports, and MAY refuse a link it cannot place, with outcome
 `invalid`.
 
+**VTI-LNK-056** — A reader that receives a trigger link from the activation of
+a link on a page, such as a browser extension, MUST record the origin of that
+page at activation, and MUST NOT act on an activation the person did not make.
+
 *Rationale.* The link is unauthenticated text that has been on screens,
 photographed, previewed and logged. Showing the contact as unverified before
 any network activity stops a code from making a phone contact a host the person
@@ -387,6 +392,10 @@ domain of the page showing it.
 **VTI-LNK-085** — An inviter MUST publish in the contact's DID document a
 service a reader can select under VTI-LNK-053.
 
+**VTI-LNK-086** — A page that shows a trigger link as a QR code SHOULD also make
+the code a link to the same `https` text, so that a person whose wallet is on
+the same device can click or tap the code instead of scanning it.
+
 *Rationale.* The two byte limits are the capacity of a version 11 QR code at
 levels M and Q, which scan comfortably from a laptop or monitor. Limiting the
 producer, not the reader, keeps a valid link valid after something appends to
@@ -454,6 +463,19 @@ whose identifier type cannot carry one, such as `did:key`.
 **VTI-LNK-104** — Before the first request, a reader MUST show the community's
 name from its own records, and MUST flag any difference from the name the VTC
 supplies.
+
+**VTI-LNK-105** — For `sign-in`, a reader that recorded the origin of the page
+the link was activated from (VTI-LNK-056) MUST compare it with the portal's
+origin in the verified DID document. If they differ, it MUST stop with
+`wrong-origin` (outcome `invalid`) and send nothing.
+
+*Rationale for VTI-LNK-105.* A page can show a genuine sign-in code it obtained
+from a portal, so that the person signs in a session the page's owner holds. A
+camera scan cannot tell which page showed the code. A reader on the same device
+as the page can, and a sign-in started from a page that is not the portal is
+refused before anything is signed. On a phone the operating system opens the
+wallet without telling it the page, so this check is available only to a reader
+that sees the activation itself.
 
 *Note on the size budget.* With the path form on `link.trustoverip.org/t`, the
 parts of a `sign-in` link other than `_from` and `_id` take 86 bytes. At level
