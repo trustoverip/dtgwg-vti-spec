@@ -24,6 +24,28 @@ their current versions before this specification leaves Working Draft.
 - [DID-WEBVH] *The did:webvh Method* — the method required for durable node
   identities by VTI-KEY-001.
 
+**Links and encodings**
+
+- [RFC 3986] *Uniform Resource Identifier (URI): Generic Syntax* — relative
+  reference resolution for the path form of `_type` (VTI-LNK-041).
+  <https://datatracker.ietf.org/doc/html/rfc3986>
+- [RFC 4648] *The Base16, Base32, and Base64 Data Encodings* — base64url,
+  section 5, for the trigger link handle (VTI-LNK-033); base32, section 6, for
+  the claim check (VTI-LNK-115).
+  <https://datatracker.ietf.org/doc/html/rfc4648>
+- [FIPS-180-4] *Secure Hash Standard (SHS)* — SHA-256, for the claim check
+  (VTI-LNK-115). <https://csrc.nist.gov/pubs/fips/180-4/upd1/final>
+- [RFC 9110] *HTTP Semantics* — that a client sends no fragment in a request or
+  in `Referer`, and that a redirect without a fragment carries the original one
+  (VTI-LNK-010, VTI-LNK-083). <https://datatracker.ietf.org/doc/html/rfc9110>
+- [URL] *WHATWG URL Standard* — `application/x-www-form-urlencoded` parsing and
+  host parsing for trigger links (VTI-LNK-020). <https://url.spec.whatwg.org/>
+- [RFC 6761] *Special-Use Domain Names*; [RFC 6762] *Multicast DNS*;
+  [RFC 8375] *Special-Use Domain 'home.arpa.'* — names refused by the host
+  rules (VTI-LNK-060).
+- [ISO 18004] *ISO/IEC 18004:2024, QR Code bar code symbology specification* —
+  the capacities behind the producer limits of VTI-LNK-081.
+
 **Credentials**
 
 - [VC-DATA-INTEGRITY] *Verifiable Credential Data Integrity 1.0* — proof sets,
@@ -64,6 +86,12 @@ their current versions before this specification leaves Working Draft.
 
 ### Informative References
 
+- [RFC 8252] *OAuth 2.0 for Native Apps*, section 8.1 — why any app can claim a
+  custom scheme (VTI-LNK-013). <https://datatracker.ietf.org/doc/html/rfc8252>
+- [KEYRING-LINKS] *One-scan trigger links*, keyring-wallet pull request #354 —
+  the proposal the Trigger Links chapter was agreed from, with its annex on
+  platform link handling, device tests and conformance vectors.
+  <https://github.com/berkmancenter/keyring-wallet/pull/354>
 - [RFC 6973] *Privacy Considerations for Internet Protocols.*
   <https://datatracker.ietf.org/doc/html/rfc6973>
 - [TOIP-GOV] *ToIP Governance Metamodel Specification.*
