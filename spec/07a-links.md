@@ -724,7 +724,10 @@ route B (VTI-LNK-120):
 A reader that has no resolver for the contact's method MUST stop with
 `unsupported-vid` (outcome `update`), not `from-not-allowed`. A reader MUST
 refuse with `from-not-allowed` only a contact that no route can qualify, such
-as a DID of a method whose documents cannot list services (`did:key`).
+as a DID of a method whose documents cannot list services (`did:key`). A
+reader MUST refuse a `did:peer` contact with `from-not-allowed` by either
+route: a peer DID is made for one pairwise relationship, not as a service's
+public identity, and it cannot be updated where others can see the change.
 
 **VTI-LNK-119** — Route A, **host-named**: the contact's method names, in the
 identifier, the host that serves its document, and resolution confirms that
@@ -775,7 +778,10 @@ reason, a failed fetch included, a reader MUST stop with `domain-not-linked`
 **VTI-LNK-124** — An inviter whose DID qualifies only through route B MUST
 publish at the contact's origin a DID configuration that VTI-LNK-121 accepts
 before it emits a `sign-in` or `vta-claim` link, and SHOULD include a credential
-in each of the two formats.
+in each of the two formats. It MUST serve that resource with
+`Access-Control-Allow-Origin: *` and without requiring credentials, so that a
+reader running in a browser or a browser extension can read it; the resource is
+public, so allowing every origin discloses nothing.
 
 *Rationale for VTI-LNK-118 to VTI-LNK-124.* Qualifying a contact by what the
 reader can prove, rather than by naming methods, lets a future method such as
@@ -832,7 +838,7 @@ https://link.trustoverip.org/t#_from=did:webvh:QmPEQVM1JPTyrvEgBcDXwjK4TeyLGSX1P
 | `_from=EKYLUMmNPZeEs77Zvclf0bSN5IN-mLfLpx2ySb-HDlk4` (not a DID) | `unsupported-vid` (`update`) |
 | `_from=` (empty) | `bad-from` (`invalid`) |
 | `_from=did:key:z6Mk…` | `from-not-allowed` (`invalid`) for `sign-in` |
-| `_from=did:peer:2…`, for a reader that supports `did:peer` | accepted at parsing; for `sign-in`, the contact qualifies only through route B (VTI-LNK-120), checked after the person continues |
+| `_from=did:peer:2…` | `from-not-allowed` (VTI-LNK-118): a peer DID is never a contact, by either route |
 | `_from=did:scid:vh:1:Qm…`, for a reader that supports `did:scid`, whose portal's origin publishes a DID configuration linking that DID | accepted; the contact qualifies through route B after the person continues |
 | `_from=did:scid:vh:1:Qm…`, for a reader that supports `did:scid`, whose portal's origin publishes no DID configuration, or one that does not link that DID | `domain-not-linked` (`invalid`) after the person continues; nothing is sent to the contact's services |
 | `_from=did:scid:vh:1:Qm…`, for a reader with no `did:scid` resolver | `unsupported-vid` (`update`) |
