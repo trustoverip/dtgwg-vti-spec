@@ -23,6 +23,10 @@ their current versions before this specification leaves Working Draft.
   identities by VTI-KEY-002.
 - [DID-WEBVH] *The did:webvh Method* — the method required for durable node
   identities by VTI-KEY-001.
+- [DID-CONFIG] *Well-Known DID Configuration*, v1.0, Decentralized Identity
+  Foundation — the DID configuration resource and Domain Linkage Credentials
+  for route B of the contact rule (VTI-LNK-120, VTI-LNK-121).
+  <https://identity.foundation/.well-known/resources/did-configuration/>
 
 **Links and encodings**
 
@@ -55,6 +59,14 @@ their current versions before this specification leaves Working Draft.
 
 - [VC-DATA-MODEL] *Verifiable Credentials Data Model.*
   <https://www.w3.org/TR/vc-data-model/>
+- [VC-DI-EDDSA] *Data Integrity EdDSA Cryptosuites v1.0* — the
+  `eddsa-jcs-2022` cryptosuite for Domain Linkage Credentials (VTI-LNK-121).
+  <https://www.w3.org/TR/vc-di-eddsa/>
+- [RFC 7519] *JSON Web Token (JWT)*; [RFC 7518] *JSON Web Algorithms (JWA)*
+  — `ES256`; [RFC 8037] *CFRG Elliptic Curve Diffie-Hellman (ECDH) and
+  Signatures in JSON Object Signing and Encryption (JOSE)* — `EdDSA`; the JWT
+  form of a Domain Linkage Credential (VTI-LNK-121).
+  <https://datatracker.ietf.org/doc/html/rfc7519>
 - [DTG-CRED] *Decentralized Trust Graph Credentials — Core Specification* — the
   credential families a VTI node issues, holds and presents, and the
   `taskContext` and `taskDigestMultibase` properties by which a credential

@@ -172,7 +172,8 @@ in another order if it always reports the same reason for the same text.
    The resolved flow, without its version segment, is not a flow the reader
    implements: `unknown-flow`. Its version is one the reader does not accept
    (VTI-LNK-044): `unsupported-version`.
-9. The flow does not allow the contact (VTI-LNK-031): `from-not-allowed`. The
+9. The flow does not allow the contact (VTI-LNK-031), such as a contact no
+   route of the contact rule (VTI-LNK-118) can qualify: `from-not-allowed`. The
    flow requires an expiry and `_exp` is absent: `missing-exp`.
 10. `_exp + 60 <= now`, by the reader's clock: `expired`.
 11. Accept.
@@ -197,8 +198,10 @@ the same text.
 update the app, get a new code, or give up. A message that names the failing
 field teaches an attacker which field to adjust and teaches the person nothing.
 `unsupported-vid` maps to `update` because a newer wallet may support that kind
-of identifier; `from-not-allowed` maps to `invalid` because no update changes a
-flow's rule. The 60-second allowance in step 10 absorbs phone clock error
+of identifier, and a reader without a resolver for a method says so with it;
+`from-not-allowed` maps to `invalid` because no update changes a flow's rule.
+`domain-not-linked` (VTI-LNK-123) maps to `invalid` because the fault is the
+service's, and no update to the reader repairs it. The 60-second allowance in step 10 absorbs phone clock error
 without outlasting a short-lived code; the inviter still decides expiry by its
 own clock.
 
@@ -337,15 +340,22 @@ A reader that received the link from a person's activation on a page
 (VTI-LNK-056) MAY also resolve and verify the contact before the person
 continues, for any flow except `vta-claim` (VTI-LNK-111). A link read by a
 camera or pasted MUST NOT be resolved early on that ground. Early resolution
-fetches only what resolving and verifying the DID document needs; a reader MUST
-NOT send anything to the contact's services, or fetch any endpoint the
-document lists, before the person approves (VTI-LNK-052).
+fetches only what resolving and verifying the DID document needs. The
+domain-linkage fetch of route B (VTI-LNK-120) is not part of resolution, and a
+reader MUST NOT make it early on any ground (VTI-LNK-122). A reader MUST NOT
+send anything to the contact's services, or fetch any endpoint the document
+lists, before the person approves (VTI-LNK-052), except that fetch, which it
+makes after the person continues.
 
 **VTI-LNK-052** — A reader MUST resolve the contact's DID document and verify it
-(for `did:webvh`, the log verifies) before sending anything. If it cannot, it
-MUST stop with `did-document-unverified` (outcome `invalid`) and send nothing.
-After verification it MUST show the verified details, and MUST send nothing
-until the person approves. A reader MUST NOT show any field of the link other
+before sending anything. Each method defines what verification means: for
+`did:webvh`, the log and its SCID chain verify; for `did:webs`, the KERI key
+event log verifies; for a ledger method, the document matches the ledger's
+state. If it cannot, it MUST stop with `did-document-unverified` (outcome
+`invalid`) and send nothing. After verification it MUST show the verified
+details, and MUST send nothing until the person approves; the domain-linkage
+fetch of route B (VTI-LNK-120) sends nothing to the contact's services and is
+not held back by this rule. A reader MUST NOT show any field of the link other
 than the contact as a statement of what the exchange is.
 
 **VTI-LNK-053** — A reader MUST take the transport and endpoint from the
@@ -388,7 +398,9 @@ chosen to act on that page, and resolving early lets the reader show verified
 details, and refuse a page that is not the portal (VTI-LNK-105), before the
 person is asked anything; a camera scan carries no such choice, and a
 `vta-claim` Farm is a first contact. Even then only the DID document is
-fetched: the contact's services learn nothing until the person approves. The
+fetched: the contact's services learn nothing until the person approves, and
+the domain-linkage fetch of route B waits for the person to continue in every
+case (VTI-LNK-122). The
 transport comes only from the verified document, so a link cannot point a
 wallet at an endpoint of the link-maker's choosing. A fresh identifier for the
 first request means a code seen by a stranger cannot be used to correlate the
@@ -577,11 +589,9 @@ using a DID hosting service), and MAY then continue with the same link.
 a service of type `SignInPortal` whose endpoint is an `https` URL meeting the
 host rules (VTI-LNK-060). Its origin is the portal's origin. Without one, a
 reader MUST stop with `no-portal-service` (outcome `invalid`) and send
-nothing. A reader MUST accept as a contact only a DID of a method whose
-identifier names the host that serves its document, whose document can list
-services, and whose document the reader verifies under VTI-LNK-052; in
-practice `did:webvh` and `did:web`. A reader MUST refuse any other contact with
-`from-not-allowed`.
+nothing. A reader MUST accept as a contact only a DID that qualifies under the
+contact rule (VTI-LNK-118), and MUST refuse with `from-not-allowed` a contact
+that no route of that rule can qualify.
 
 **VTI-LNK-103** — A VTC SHOULD use a 16-byte handle (22 characters) for
 `sign-in`.
@@ -599,14 +609,6 @@ origin in the verified DID document. If they differ, it MUST stop with
 `wrong-origin` (outcome `invalid`) and send nothing. A service that offers
 sign-in to several surfaces, such as an operator console, serves them from the
 `SignInPortal` origin.
-
-*Rationale for VTI-LNK-102.* The contact rule is an allow-list by capability
-rather than a refusal of named methods. A method that does not name a host
-gives the person no domain to recognise before continuing (VTI-LNK-050), and a
-document that is not served from a host the identifier names can claim any
-portal origin; refusing only `did:key` would admit both kinds as soon as a
-reader supported another method. A new method that has the three properties
-qualifies without a change to this specification.
 
 *Rationale for VTI-LNK-105.* A page can show a genuine sign-in code it obtained
 from a portal, so that the person signs in a session the page's owner holds. A
@@ -649,9 +651,11 @@ and the reader cannot choose.
 is a first contact, and nothing is resolved before the person continues.
 
 **VTI-LNK-112** — For `vta-claim`, the contact's verified DID document MUST list
-the Farm's claim service. A reader MUST accept as a contact only a DID that the
-contact rule of VTI-LNK-102 accepts, and MUST refuse any other contact with
-`from-not-allowed`.
+the Farm's claim service. A reader MUST accept as a contact only a DID that
+qualifies under the contact rule (VTI-LNK-118), and MUST refuse with
+`from-not-allowed` a contact that no route of that rule can qualify. For a
+contact that qualifies only through route B (VTI-LNK-120), the claim service's
+endpoint MUST be an `https` URL meeting the host rules (VTI-LNK-060).
 
 **VTI-LNK-113** — For `vta-claim`, the issuer of the first request (VTI-LNK-054)
 is the identifier the claim makes an administrator of the VTA. A reader MUST NOT
@@ -698,6 +702,100 @@ level M, `_from` and `_id` share 163 bytes: `_from` is at most 141 with a
 22-character handle, and a Farm with a longer identifier renders its codes
 without a logo.
 
+#### The contact rule
+
+The contact rule decides which DIDs `sign-in` and `vta-claim` accept as a
+contact. It qualifies a contact by what the reader can prove about it, not by
+its DID method: a contact qualifies through one of two routes, and a method
+that meets either qualifies without a change to this specification. The
+**contact's origin** is, for `sign-in`, the portal's origin (VTI-LNK-102), and,
+for `vta-claim`, the origin of the claim service's endpoint (VTI-LNK-112).
+
+**VTI-LNK-118** — A contact qualifies under the **contact rule** only if all of
+the following hold, and it also qualifies through route A (VTI-LNK-119) or
+route B (VTI-LNK-120):
+
+1. The reader resolves the contact's DID with a method it supports, and
+   verifies the document under VTI-LNK-052.
+2. The document lists the service the flow requires: for `sign-in`, a
+   `SignInPortal` service (VTI-LNK-102); for `vta-claim`, the Farm's claim
+   service (VTI-LNK-112).
+
+A reader that has no resolver for the contact's method MUST stop with
+`unsupported-vid` (outcome `update`), not `from-not-allowed`. A reader MUST
+refuse with `from-not-allowed` only a contact that no route can qualify, such
+as a DID of a method whose documents cannot list services (`did:key`).
+
+**VTI-LNK-119** — Route A, **host-named**: the contact's method names, in the
+identifier, the host that serves its document, and resolution confirms that
+the document came from that host; for example `did:webvh`, `did:web` and
+`did:webs`. A contact that meets VTI-LNK-118 and qualifies through route A
+needs no further check.
+
+**VTI-LNK-120** — Route B, **domain-linked**: for a contact of any method that
+route A does not cover, a reader MUST confirm, before it sends the first
+request, that the contact's origin is linked to the contact's DID by the
+Well-Known DID Configuration [DID-CONFIG]. The reader MUST fetch
+`<contact's origin>/.well-known/did-configuration.json` with a `GET` that
+carries no cookies and no credentials, follows no redirect to another origin,
+gives up after a timeout, and reads at most 64 KiB. The resource MUST be a JSON
+object whose `@context` is
+`https://identity.foundation/.well-known/did-configuration/v1` and whose
+`linked_dids` array holds Domain Linkage Credentials.
+
+**VTI-LNK-121** — A reader MUST treat the contact's origin as linked only on a
+credential in `linked_dids` that meets all of the following, and MUST ignore
+every other credential there:
+
+1. Its issuer and its `credentialSubject.id` both equal the contact's DID; for
+   a JWT, so do `iss` and `sub`.
+2. Its `credentialSubject.origin` equals the contact's origin exactly.
+3. It is valid now, by its issuance and expiry dates, allowing the reader's
+   clock 60 seconds either way, as for `_exp` (VTI-LNK-020, step 10).
+4. Its signature verifies with a key listed under `assertionMethod` in the
+   contact's verified DID document.
+
+A credential MUST be either a JWT [RFC 7519] whose `alg` is `EdDSA` [RFC 8037]
+or `ES256` [RFC 7518], or a JSON-LD credential with a Data Integrity proof
+[VC-DATA-INTEGRITY] using the `eddsa-jcs-2022` cryptosuite [VC-DI-EDDSA]. A
+reader MUST support at least one of the two formats and SHOULD support both. A
+credential in a format the reader does not support links nothing.
+
+**VTI-LNK-122** — A reader MUST make the fetch of VTI-LNK-120 only after the
+person has continued (VTI-LNK-050), whatever the activation: a camera scan, a
+paste or a page (VTI-LNK-056). It MUST NOT make it before, including under
+VTI-LNK-051. This fetch is the reader's first contact with the host of the
+contact's origin. Until the check succeeds, a reader MUST NOT show the
+contact's origin as the contact's verified domain.
+
+**VTI-LNK-123** — If the check of VTI-LNK-120 and VTI-LNK-121 fails for any
+reason, a failed fetch included, a reader MUST stop with `domain-not-linked`
+(outcome `invalid`) and MUST send nothing to the contact's services.
+
+**VTI-LNK-124** — An inviter whose DID qualifies only through route B MUST
+publish at the contact's origin a DID configuration that VTI-LNK-121 accepts
+before it emits a `sign-in` or `vta-claim` link, and SHOULD include a credential
+in each of the two formats.
+
+*Rationale for VTI-LNK-118 to VTI-LNK-124.* Qualifying a contact by what the
+reader can prove, rather than by naming methods, lets a future method such as
+`did:scid`, `did:webs` or a ledger method (`did:cheqd`, `did:ethr`, `did:ion`)
+take part with no change to this specification: adding a method is a reader
+capability. A reader without a resolver for the method says so with
+`unsupported-vid`, so a newer wallet can act on the same link;
+`from-not-allowed` is kept for a contact no route can ever qualify. Route B is
+what makes an identifier that names no host safe to show the person as a
+domain. Without it, a document could name any portal origin, and the person
+would recognise a domain the contact has no claim to. Route A needs no such
+check, because resolution already shows that the document came from the host
+the identifier names. The page-origin check of VTI-LNK-105 proves that the page
+is the portal the document names, not that the DID and the domain belong
+together, so route B applies to page activations as well. The fetch is made
+only after the person continues, so that a camera scan still makes the phone
+contact no host the person did not choose (VTI-LNK-050); it carries no
+credentials and is bounded, so the portal's host learns only that a wallet is
+checking it, and only once the person has chosen to go ahead.
+
 ### Examples
 
 These examples are informative. The DIDs are made up.
@@ -734,7 +832,10 @@ https://link.trustoverip.org/t#_from=did:webvh:QmPEQVM1JPTyrvEgBcDXwjK4TeyLGSX1P
 | `_from=EKYLUMmNPZeEs77Zvclf0bSN5IN-mLfLpx2ySb-HDlk4` (not a DID) | `unsupported-vid` (`update`) |
 | `_from=` (empty) | `bad-from` (`invalid`) |
 | `_from=did:key:z6Mk…` | `from-not-allowed` (`invalid`) for `sign-in` |
-| `_from=did:peer:2…`, for a reader that supports `did:peer` | `from-not-allowed` (`invalid`) for `sign-in`: the identifier names no host |
+| `_from=did:peer:2…`, for a reader that supports `did:peer` | accepted at parsing; for `sign-in`, the contact qualifies only through route B (VTI-LNK-120), checked after the person continues |
+| `_from=did:scid:vh:1:Qm…`, for a reader that supports `did:scid`, whose portal's origin publishes a DID configuration linking that DID | accepted; the contact qualifies through route B after the person continues |
+| `_from=did:scid:vh:1:Qm…`, for a reader that supports `did:scid`, whose portal's origin publishes no DID configuration, or one that does not link that DID | `domain-not-linked` (`invalid`) after the person continues; nothing is sent to the contact's services |
+| `_from=did:scid:vh:1:Qm…`, for a reader with no `did:scid` resolver | `unsupported-vid` (`update`) |
 | `_from=did:web:example.com%253A8443` | parses as `did:web:example.com%3A8443`, then refused at resolution: the host rules forbid a port |
 | The reader's clock 59 seconds past `_exp` | accepted |
 | The reader's clock 60 seconds past `_exp` | `expired` |
