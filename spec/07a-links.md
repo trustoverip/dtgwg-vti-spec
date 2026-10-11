@@ -70,7 +70,7 @@ inviter's DID document advertises (Transports, messaging and delivery).
 The chapter has two parts. **The trigger-link format** is protocol-neutral:
 any party can use it, with any kind of first request. **VTI's use of trigger
 links** is what VTI adopts on top of it: the Trust Task first request
-(VTI-LNK-057), the flow registry (VTI-LNK-046), and the `sign-in` and
+(VTI-LNK-054), the flow registry (VTI-LNK-046), and the `sign-in` and
 `vta-claim` flows. Every VTI flow uses both parts; a party outside VTI can use
 the format alone.
 
@@ -79,7 +79,7 @@ Terms used in this chapter:
 | Term | Meaning |
 |---|---|
 | **Trigger link** | The text defined by this chapter. |
-| **Inviter** | The party that produces a trigger link and receives the first request. For `sign-in`, the VTC; for `vta-claim`, the VTA Farm. |
+| **Inviter** | The party that produces a trigger link and receives the first request. For `sign-in`, the service offering sign-in, such as a VTC; for `vta-claim`, the VTA Farm. |
 | **Reader** | A client that reads a trigger link and acts on it: a wallet. |
 | **Producer** | Anything that emits a trigger link on the inviter's behalf: the inviter, or a page or service it operates. |
 | **Link host** | The host named in the link's authority, which serves the platform association files and a page for people with no wallet. |
@@ -157,13 +157,18 @@ in another order if it always reports the same reason for the same text.
    parsing as for an `https` URL, fails the host rules (VTI-LNK-060):
    `bad-authority`.
 5. A reserved name occurs more than once: `repeated-param`.
-6. `_from` is absent: `missing-from`. `_from` is not a well-formed contact
-   (VTI-LNK-030): `bad-from`. `_from` is a contact form the reader does not
-   support: `unsupported-vid`.
+6. `_from` is absent: `missing-from`. `_from` is empty: `bad-from`. `_from`
+   contains `/@` (VTI-LNK-032): `unsupported-vid`, before any check of DID
+   syntax. `_from` begins with `did:` and is not a DID [DID-CORE], or fails the
+   syntax of an identifier type the reader supports (VTI-LNK-030): `bad-from`.
+   `_from` is a DID of a method the reader does not support, or is not a DID
+   and not of another identifier type the reader supports (VTI-LNK-031):
+   `unsupported-vid`.
 7. `_id` is absent or not as VTI-LNK-033 requires: `bad-id`. `_exp` is present
    and not as VTI-LNK-036 requires: `bad-exp`.
 8. `_type` is present and not as VTI-LNK-040 requires: `bad-type`. The resolved
-   flow names a flow the reader implements, on a different host: `wrong-host`.
+   flow's path, without its version segment, is the path of a flow the reader
+   implements, on a different host (VTI-LNK-043): `wrong-host`.
    The resolved flow, without its version segment, is not a flow the reader
    implements: `unknown-flow`. Its version is one the reader does not accept
    (VTI-LNK-044): `unsupported-version`.
@@ -208,7 +213,10 @@ against the syntax of its identifier type.
 **VTI-LNK-031** — A flow MAY restrict the identifier types it accepts as a
 contact. A reader MUST refuse a contact the flow does not allow with
 `from-not-allowed`, and MUST refuse an identifier type it does not support with
-`unsupported-vid`.
+`unsupported-vid`. A value that is neither a DID nor an agent name, such as an
+identifier of a type the reader does not know, is an identifier type the reader
+does not support unless the reader implements that type: a reader cannot tell
+a type it does not know from one that does not exist.
 
 **VTI-LNK-032** — A value of `_from` containing the two characters `/@` is
 reserved for agent names. Until this specification defines agent names as a
@@ -222,7 +230,9 @@ third the length of a `did:webvh` and shows the person a domain they recognise.
 Its canonical form, what a community name (`example.com/@`) resolves to, and the
 redirect contract are not yet settled; the reservation lets a later revision
 admit it without changing how existing links are read. A DID cannot contain `/`
-outside a DID URL, so no valid DID is mistaken for an agent name.
+outside a DID URL, so no valid DID is mistaken for an agent name; the `/@` test
+comes before the DID syntax test (VTI-LNK-020, step 6), so
+`did:web:example.com/@alice` is `unsupported-vid`, not `bad-from`.
 
 ##### `_id`: the handle
 
@@ -260,12 +270,16 @@ path, and resolved against that host. Any party may define a flow under an
 whichever flows it chooses, and the path form gives every host's own flows
 the same shorthand.
 
-**VTI-LNK-040** — `_type`, where present, MUST be either an absolute `https` URI
-with no query or fragment whose last segment is `<MAJOR>.<MINOR>` in decimal
-with no leading zeros, or a **path form**: a path starting with exactly one `/`,
-containing only `A-Za-z0-9-._~/`, with no `.` or `..` segment and no
-percent-encoding, whose last segment is a version as above. A reader MUST refuse
-any other value with `bad-type`, and MUST NOT normalise one into shape.
+**VTI-LNK-040** — `_type`, where present, MUST be either a **path form** or an
+**absolute form**. The path form is a path starting with exactly one `/`,
+containing only `A-Za-z0-9-._~/`, with no empty, `.` or `..` segment and no
+percent-encoding, whose last segment is `<MAJOR>.<MINOR>` in decimal with no
+leading zeros. The absolute form is `https://` in lower case, then a host in
+lower case that meets the host rules (VTI-LNK-060), with no userinfo and no
+port, then a path that meets every constraint of the path form, and no query or
+fragment. A reader MUST check `_type` as written in the link, before
+percent-decoding, MUST refuse any other value with `bad-type`, and MUST NOT
+normalise one into shape.
 
 **VTI-LNK-041** — A reader MUST resolve a path form against `https://` and the
 link's host, lowercased, whatever the link's scheme. The flow is identified by
@@ -275,7 +289,10 @@ the resolved URI, compared as a whole string.
 link's own host, and MUST use the absolute form otherwise.
 
 **VTI-LNK-043** — A reader MUST refuse with `wrong-host` a resolved flow whose
-path names a flow the reader implements but whose host differs from that flow's.
+path, without its version segment, is the path of a flow the reader implements,
+but whose host differs from that flow's. The comparison is of the path only;
+the flow is still identified by its whole string (VTI-LNK-041), so a match on
+the path never makes the two the same flow.
 
 *Rationale.* A flow is identified by its whole string, never by its final name
 alone, so the same name under another host is a different flow. The path form
@@ -283,7 +300,9 @@ is a standard relative reference [RFC 3986], not a name completed against an
 assumed registry, and it removes the scheme and host from the code, which is
 most of `_type`'s length. Resolving against `https` and the lowercased host,
 whatever scheme the link arrived under, keeps an alias scheme and an
-upper-cased host from producing a URI that matches no flow. A path that names a
+upper-cased host from producing a URI that matches no flow; the absolute form
+gets no such repair, because it is written out in full, and is held to the
+path form's constraints so that one flow has one spelling. A path that names a
 known flow on another host is refused as `wrong-host` rather than
 `unknown-flow`, because telling the person to update the app would be wrong.
 
@@ -306,7 +325,7 @@ and only a new version achieves that.
 
 **VTI-LNK-050** — Before any network activity, DID resolution included, a
 reader MUST show the person who the contact claims to be, marked unverified,
-and MUST wait for the person to continue. For a contact with a domain, the
+and, except as VTI-LNK-051 allows, MUST wait for the person to continue. For a contact with a domain, the
 reader shows the domain, followed by the path where the identifier has one (for
 example `dids.example.org/farm-auth` for
 `did:webvh:<SCID>:dids.example.org:farm-auth`). For one without, it shows its own label for that
@@ -314,6 +333,13 @@ contact if it has one, and otherwise says the contact has no domain to show.
 
 **VTI-LNK-051** — For a flow that acts only for contacts already in the reader's
 own records, a reader MAY resolve such a contact before the person continues.
+A reader that received the link from a person's activation on a page
+(VTI-LNK-056) MAY also resolve and verify the contact before the person
+continues, for any flow except `vta-claim` (VTI-LNK-111). A link read by a
+camera or pasted MUST NOT be resolved early on that ground. Early resolution
+fetches only what resolving and verifying the DID document needs; a reader MUST
+NOT send anything to the contact's services, or fetch any endpoint the
+document lists, before the person approves (VTI-LNK-052).
 
 **VTI-LNK-052** — A reader MUST resolve the contact's DID document and verify it
 (for `did:webvh`, the log verifies) before sending anything. If it cannot, it
@@ -326,45 +352,58 @@ than the contact as a statement of what the exchange is.
 verified DID document, and never from the link. Candidates are the services of
 the document whose `type` maps to a binding the reader implements, matched on
 `type` and never on `id`, whose endpoint is an `https` URL or a DID, and whose
-endpoint host, where it has one, meets the host rules. The reader's own
+endpoint host meets the host rules: the URL's host, or, for a DID endpoint, the
+host the DID names where its method names one (VTI-LNK-060). The reader's own
 preference order chooses among bindings; among candidates of one type the first
 in document order wins. With no candidate the reader MUST stop with
 `no-common-transport`, MUST send nothing, and MUST NOT fall back to anything in
 the link. A reader MUST resolve the document afresh for each exchange.
 
-**VTI-LNK-054** — A flow MUST state the request a reader sends first. A reader
-MUST send the first request only after the person approves (VTI-LNK-052),
-only over the transport chosen under VTI-LNK-053, and with the handle, so
-that the inviter can find the pending exchange. A first request the reader
-signs MUST be signed by a key made for this exchange and used nowhere else,
-unless the flow defines a signature by an identifier the person chose when
-approving.
-
 **VTI-LNK-055** — Where `_type` is absent, a reader MAY ask the inviter what it
 supports, through a discovery mechanism of a protocol both implement (for
-Trust Tasks, `trust-task-discovery`), and MAY refuse a link it cannot place,
-with outcome `invalid`.
+Trust Tasks, `trust-task-discovery`), and MAY refuse a link it cannot place
+with `untyped` (outcome `invalid`).
 
 **VTI-LNK-056** — A reader that receives a trigger link from the activation of
 a link on a page, such as a browser extension, MUST record the origin of that
 page at activation, and MUST NOT act on an activation the person did not make.
 
+**VTI-LNK-057** — A flow MUST state the request a reader sends first. A reader
+MUST send the first request only after the person approves (VTI-LNK-052),
+only over the transport chosen under VTI-LNK-053, and with the handle, so
+that the inviter can find the pending exchange. A first request the reader
+signs MUST be signed by a key made for this exchange and used for no other
+exchange, unless the flow defines a signature by an identifier the person
+chooses when approving. A flow that defines such a signature MUST state why
+the exchange needs an identifier the person already uses, and a reader MUST
+tell the person, before approval, which identifier the inviter will see.
+
 *Rationale.* The link is unauthenticated text that has been on screens,
 photographed, previewed and logged. Showing the contact as unverified before
 any network activity stops a code from making a phone contact a host the person
-never chose; VTI-LNK-051 relaxes that only where the reader already knows the
-contact, so the host contacted is one the person chose when they joined. The
+never chose. VTI-LNK-051 relaxes that in two cases. Where the reader already
+knows the contact, the host contacted is one the person chose when they
+joined. Where the person activated the link on a page, the person has already
+chosen to act on that page, and resolving early lets the reader show verified
+details, and refuse a page that is not the portal (VTI-LNK-105), before the
+person is asked anything; a camera scan carries no such choice, and a
+`vta-claim` Farm is a first contact. Even then only the DID document is
+fetched: the contact's services learn nothing until the person approves. The
 transport comes only from the verified document, so a link cannot point a
 wallet at an endpoint of the link-maker's choosing. A fresh identifier for the
 first request means a code seen by a stranger cannot be used to correlate the
-person's other exchanges. VTI-LNK-054 leaves the kind of first request to the
-flow so that the format can carry flows that are not Trust Tasks, such as a
-DIDComm or OpenID exchange.
+person's other exchanges, which is why VTI-LNK-057 admits an identifier the
+person already uses only where the flow says why it needs one. VTI-LNK-057
+leaves the kind of first request to the flow so that the format can carry
+flows that are not Trust Tasks, such as a DIDComm or OpenID exchange.
 
 #### The host rules
 
 **VTI-LNK-060** — The host rules apply to the link host, to the host of a
-contact that has one, and to every endpoint host a reader contacts. A host MUST
+contact that has one, to the host a DID endpoint names (for `did:web` and
+`did:webvh`, the domain segment after percent-decoding, so that
+`did:web:localhost` and `did:web:example.com%3A8443` both fail), and to every
+endpoint host a reader contacts. A host MUST
 be a DNS name of at least two labels and at most 253 characters, with no
 trailing dot. Each label is 1 to 63 of lowercase `a-z`, `0-9` and `-`, not
 beginning or ending with `-`, and the last label is not all digits. A host MUST
@@ -415,8 +454,8 @@ script that sends it.
 **VTI-LNK-083** — A redirect from a page that carries a trigger link MUST give
 the target an explicit fragment, possibly empty.
 
-**VTI-LNK-084** — A producer MUST NOT show a trigger link whose link host is the
-domain of the page showing it.
+**VTI-LNK-084** — A producer MUST NOT show a trigger link whose link host is, or
+shares a registrable domain [URL] with, the host of the page showing it.
 
 **VTI-LNK-085** — An inviter MUST publish in the contact's DID document a
 service a reader can select under VTI-LNK-053.
@@ -481,16 +520,22 @@ request, and a registry of the flows this specification defines.
 
 #### The first request for VTI flows
 
-**VTI-LNK-057** — For every flow in this specification's registry
-(VTI-LNK-046), the first request MUST be a Trust Task document whose issuer
-is an identifier generated by the reader for this exchange and used nowhere
-else, whose recipient is the contact, with a unique `id`, carrying the handle
-as `parentThreadId`, and signed by the key of that identifier.
+**VTI-LNK-054** — For every flow in this specification's registry
+(VTI-LNK-046), the first request (VTI-LNK-057) MUST be a Trust Task document
+whose issuer is a `did:key` identifier [DID-KEY] for a fresh Ed25519 key,
+generated by the reader for this exchange and used for no other exchange,
+whose recipient is the contact, with a unique `id`, carrying the handle as
+`parentThreadId`, and signed by the key of that identifier. A reader MUST send
+it only after the person approves (VTI-LNK-052), and only over the transport
+chosen under VTI-LNK-053. No flow in this registry uses the exception of
+VTI-LNK-057 for an identifier the person chooses.
 
-*Rationale for VTI-LNK-057.* VTI-LNK-054 leaves the kind of first request to
+*Rationale for VTI-LNK-054.* VTI-LNK-057 leaves the kind of first request to
 each flow. VTI makes one choice for all of its flows, so that every VTI
 exchange starts on the Trust Task operation surface, with one way to sign the
-first request and one way to verify it.
+first request and one way to verify it. A `did:key` needs no resolution, so the
+inviter can verify the first request from the request alone, and a fresh one
+links the exchange to nothing else the person does.
 
 #### The flow registry
 
@@ -507,7 +552,7 @@ side and on each reader that implements it.
 
 | Flow | Identifier (version 0.1, draft) | Contact | Expiry |
 |---|---|---|---|
-| Sign in to a community portal | `https://link.trustoverip.org/vti/flow/sign-in/0.1` | the VTC's VID | required |
+| Sign in to a service's portal | `https://link.trustoverip.org/vti/flow/sign-in/0.1` | the service's VID (a VTC, or another service offering sign-in, such as a DID hosting service) | required |
 | Claim a VTA from a VTA Farm | `https://link.trustoverip.org/vti/flow/vta-claim/0.1` | the Farm's VID | required |
 
 *Note.* Step-up and device enrolment, if started by a trigger link, are
@@ -515,31 +560,53 @@ separate flows, each named when it is designed.
 
 #### The `sign-in` flow
 
-The `sign-in` flow starts a member's sign-in to a community portal from a code
-the portal shows. The contact is the community's VTC.
+The `sign-in` flow starts a person's sign-in to a service's portal from a code
+the portal shows. The contact is the service's VID: a VTC, or another service
+offering sign-in, such as a DID hosting service.
 
 **VTI-LNK-100** — For `sign-in`, `_exp` is required, and MUST be no later than
 300 seconds after the code is made.
 
-**VTI-LNK-101** — For `sign-in`, a reader MUST act only for a community already
-in its own records. For a contact that is not, a reader MUST send nothing to it,
-and SHOULD offer to join the community.
+**VTI-LNK-101** — For `sign-in`, a reader MUST act only for a service already
+in its own records. For one that is not, it MUST send nothing to it until the
+person has added it to those records. It SHOULD offer the relationship the
+contact's verified document advertises (for example, joining a community, or
+using a DID hosting service), and MAY then continue with the same link.
 
-**VTI-LNK-102** — For `sign-in`, the contact's resolved DID document MUST list
-the portal's service. A reader MUST refuse with `from-not-allowed` a contact
-whose identifier type cannot carry one, such as `did:key`.
+**VTI-LNK-102** — For `sign-in`, the contact's verified DID document MUST list
+a service of type `SignInPortal` whose endpoint is an `https` URL meeting the
+host rules (VTI-LNK-060). Its origin is the portal's origin. Without one, a
+reader MUST stop with `no-portal-service` (outcome `invalid`) and send
+nothing. A reader MUST accept as a contact only a DID of a method whose
+identifier names the host that serves its document, whose document can list
+services, and whose document the reader verifies under VTI-LNK-052; in
+practice `did:webvh` and `did:web`. A reader MUST refuse any other contact with
+`from-not-allowed`.
 
 **VTI-LNK-103** — A VTC SHOULD use a 16-byte handle (22 characters) for
 `sign-in`.
 
-**VTI-LNK-104** — Before the first request, a reader MUST show the community's
-name from its own records, and MUST flag any difference from the name the VTC
-supplies.
+**VTI-LNK-104** — Before the first request, a reader MUST show the name it
+holds for the contact in its own records, and the portal origin from the
+verified DID document, and never a name taken from the link. When a signed
+reply from the contact gives a name that differs from that record, the reader
+MUST flag the difference before the person approves anything further. A name
+that is empty or is a DID is not a different name.
 
 **VTI-LNK-105** — For `sign-in`, a reader that recorded the origin of the page
 the link was activated from (VTI-LNK-056) MUST compare it with the portal's
 origin in the verified DID document. If they differ, it MUST stop with
-`wrong-origin` (outcome `invalid`) and send nothing.
+`wrong-origin` (outcome `invalid`) and send nothing. A service that offers
+sign-in to several surfaces, such as an operator console, serves them from the
+`SignInPortal` origin.
+
+*Rationale for VTI-LNK-102.* The contact rule is an allow-list by capability
+rather than a refusal of named methods. A method that does not name a host
+gives the person no domain to recognise before continuing (VTI-LNK-050), and a
+document that is not served from a host the identifier names can claim any
+portal origin; refusing only `did:key` would admit both kinds as soon as a
+reader supported another method. A new method that has the three properties
+qualifies without a change to this specification.
 
 *Rationale for VTI-LNK-105.* A page can show a genuine sign-in code it obtained
 from a portal, so that the person signs in a session the page's owner holds. A
@@ -557,11 +624,12 @@ share 91, so `_from` is at most 69 with a 22-character handle, and a `did:webvh`
 then fits only with a host of 12 characters or fewer.
 
 *Note on the exchange that follows.* The Trust Tasks of the sign-in exchange,
-and whether the first request locks the request to the first reader that claims
-it, are being specified separately and are not part of this revision. Whatever
-they are, VTI-LNK-050 to VTI-LNK-057 order them: the reader shows the community
-from its own records, the member continues, and only then is anything signed
-sent.
+`auth/oob/*`, are specified separately (trustoverip/dtgwg-trust-tasks-tf#738)
+and are not part of this revision. The first reader whose signed first request
+the service accepts locks the request to itself; every later claim for the same
+handle gets `alreadyClaimed`. Whatever the tasks, VTI-LNK-050 to VTI-LNK-057
+order them: the reader shows the service from its own records, the person
+continues, and only then is anything signed sent.
 
 #### The `vta-claim` flow
 
@@ -580,11 +648,12 @@ and the reader cannot choose.
 **VTI-LNK-111** — For `vta-claim`, a reader MUST NOT apply VTI-LNK-051: the Farm
 is a first contact, and nothing is resolved before the person continues.
 
-**VTI-LNK-112** — For `vta-claim`, the contact's resolved DID document MUST list
-the Farm's claim service. A reader MUST refuse with `from-not-allowed` a contact
-whose identifier type cannot carry one, such as `did:key`.
+**VTI-LNK-112** — For `vta-claim`, the contact's verified DID document MUST list
+the Farm's claim service. A reader MUST accept as a contact only a DID that the
+contact rule of VTI-LNK-102 accepts, and MUST refuse any other contact with
+`from-not-allowed`.
 
-**VTI-LNK-113** — For `vta-claim`, the issuer of the first request (VTI-LNK-057)
+**VTI-LNK-113** — For `vta-claim`, the issuer of the first request (VTI-LNK-054)
 is the identifier the claim makes an administrator of the VTA. A reader MUST NOT
 use an identifier it already uses for another VTA or another exchange.
 
@@ -597,11 +666,16 @@ a **claim check**, and a reader SHOULD show the same claim check computed from
 its own identifier. The claim check is the first six characters of the base32
 encoding [RFC 4648] (section 6, upper case) of the SHA-256 hash [FIPS-180-4] of
 the identifier's UTF-8 string. A Farm SHOULD NOT release the VTA from the reservation until the person
-confirms on the page that the two match, and SHOULD revoke the identifier and
+confirms on the page that the two match, and SHOULD discard the identifier and
 return the VTA to the pool when the person says they do not.
 
 **VTI-LNK-116** — A Farm SHOULD use a 16-byte handle (22 characters) for
 `vta-claim`.
+
+**VTI-LNK-117** — A Farm that uses `vta-claim` to add an administrator to a
+running VTA MUST show that code only to a signed-in account that already
+controls the VTA, and MUST apply the claim check of VTI-LNK-115 before the
+identifier is written.
 
 *Rationale for VTI-LNK-114 and VTI-LNK-115.* A forged code is harmless: the
 reader talks only to the endpoint in the Farm's verified document, so a made-up
@@ -612,9 +686,10 @@ the claim. A first contact has nothing to check against beforehand, so the claim
 check catches it afterwards, before the VTA is handed over.
 
 *Note on adding a device.* A code that adds an administrator to a running VTA
-is worth more to an attacker than one for an empty VTA. Whether such a code is
-shown only to a signed-in administrator, which role the added identifier gets,
-and whether the claim check is then required are open with the Farm's authors.
+is worth more to an attacker than one for an empty VTA, which is why
+VTI-LNK-117 makes the claim check a requirement there. The role the added
+identifier gets is the Farm's choice; the VTA Farm grants the same role as the
+first administrator.
 
 *Note on the size budget.* With the path form on `link.trustoverip.org/t`, the
 parts of a `vta-claim` link other than `_from` and `_id` take 88 bytes. At
@@ -645,12 +720,21 @@ https://link.trustoverip.org/t#_from=did:webvh:QmPEQVM1JPTyrvEgBcDXwjK4TeyLGSX1P
 | `_type=//evil.example/vti/flow/sign-in/0.1` | `bad-type` (`invalid`) |
 | `_type=/vti/flow/../flow/sign-in/0.1` | `bad-type` (`invalid`) |
 | `_type=/vti/flow/sign%2Din/0.1` | `bad-type` (`invalid`) |
+| `_type=/vti//flow/sign-in/0.1` | `bad-type` (`invalid`) |
+| `_type=https://LINK.trustoverip.org/vti/flow/sign-in/0.1` | `bad-type` (`invalid`) |
+| `_type=https://link.trustoverip.org:443/vti/flow/sign-in/0.1` | `bad-type` (`invalid`) |
+| `_type=https://flows.example.org/vti/flow/sign-in/0.9` | `wrong-host` (`invalid`) |
 | `_id` of 23 characters | accepted |
 | `_id` of 21, 25 or 44 characters | `bad-id` (`invalid`) |
 | `_id` of 22 characters whose last character has non-zero unused bits | `bad-id` (`invalid`) |
 | `_id` appears twice | `repeated-param` (`invalid`) |
 | `_from=members.example.org/@` | `unsupported-vid` (`update`) |
+| `_from=did:web:example.com/@alice` | `unsupported-vid` (`update`) |
+| `_from=did:web:example.com/alice` | `bad-from` (`invalid`) |
+| `_from=EKYLUMmNPZeEs77Zvclf0bSN5IN-mLfLpx2ySb-HDlk4` (not a DID) | `unsupported-vid` (`update`) |
+| `_from=` (empty) | `bad-from` (`invalid`) |
 | `_from=did:key:z6Mk…` | `from-not-allowed` (`invalid`) for `sign-in` |
+| `_from=did:peer:2…`, for a reader that supports `did:peer` | `from-not-allowed` (`invalid`) for `sign-in`: the identifier names no host |
 | `_from=did:web:example.com%253A8443` | parses as `did:web:example.com%3A8443`, then refused at resolution: the host rules forbid a port |
 | The reader's clock 59 seconds past `_exp` | accepted |
 | The reader's clock 60 seconds past `_exp` | `expired` |
