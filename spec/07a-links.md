@@ -443,7 +443,9 @@ fetch by reference.
 **VTI-LNK-073** — A reader MUST NOT log the link, the handle or the contact, and
 MUST NOT put them in an error, a notification or analytics, or send them
 anywhere but to the inviter in the first request. A reader MAY log the outcome
-of a link.
+of a link. A reader MAY show the contact, and the detail of a refusal that names
+it, to the person in the reader's own window; that is not an error,
+notification or analytics within this rule.
 
 *Rationale for VTI-LNK-072.* Link previews, mail scanners and browsers fetch
 links nobody tapped. A handle spent by a GET is spent by whichever of them gets
@@ -601,7 +603,9 @@ holds for the contact in its own records, and the portal origin from the
 verified DID document, and never a name taken from the link. When a signed
 reply from the contact gives a name that differs from that record, the reader
 MUST flag the difference before the person approves anything further. A name
-that is empty or is a DID is not a different name.
+that is empty, is a DID, or is the host of the verified portal origin is not a
+different name. Names are compared after trimming, folding runs of white space
+to one space, and ignoring case.
 
 **VTI-LNK-105** — For `sign-in`, a reader that recorded the origin of the page
 the link was activated from (VTI-LNK-056) MUST compare it with the portal's
