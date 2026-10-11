@@ -87,6 +87,25 @@ device — holds a replayable impersonation of its subject. The credential
 formats do not make this mistake; compositions do, by treating a valid
 signature over a valid credential as though it were an authenticated session.
 
+**VTI-CRD-024** — Where a presentation arrives through a foreign-protocol
+interface (VTI-OPS-095), the audience of VTI-CRD-020 MUST be the verifier's
+identifier in that protocol — for OpenID4VP, its client identifier, prefix
+included — and the challenge of VTI-CRD-022 MUST be one the exchange's own
+beginning task issued.
+
+**VTI-CRD-025** — The presenter whose control VTI-CRD-021 establishes is the
+holder of the presented credential. Where a presentation is made into an
+exchange another party began, the verifier MUST NOT treat the holder as that
+party unless the protocol binds the two, and MUST record them separately.
+
+*Rationale for VTI-CRD-025.* A wallet presenting into an exchange that someone
+else began — the usual shape when a person scans a code shown by the device they
+are applying from — proves possession of its own key and nothing about who
+showed the code. Anyone who can see the code can answer it. Recording the holder
+and the party who began the exchange as one identity would turn a relayed
+presentation into an impersonation; recording them apart leaves the decision of
+how much the link is worth with the policy that consumes the evidence.
+
 ### What verification establishes
 
 **VTI-CRD-030** — Successful verification MUST be treated as establishing the
