@@ -318,6 +318,47 @@ carries no authority, in which case it is noise, or it carries authority peers
 on other bindings cannot express, which makes a node's behaviour depend on how
 its caller arrived.
 
+### Foreign-protocol interfaces
+
+**VTI-OPS-095** — A node MAY expose a *foreign-protocol interface*: an endpoint
+whose wire an external protocol fixes, for a counterparty that cannot produce an
+operation document — a credential wallet that speaks OpenID4VP, for example. A
+foreign-protocol interface that meets VTI-OPS-096 to VTI-OPS-099 is not a
+parallel interface under VTI-OPS-002.
+
+**VTI-OPS-096** — A foreign-protocol interface MUST serve an exchange that a
+catalogue task began, and MUST NOT begin an operation of its own. The task that
+begins the exchange MUST establish its parties, its purpose and its authority,
+and the interface MUST be reachable only within the exchange that task
+established.
+
+**VTI-OPS-097** — A foreign-protocol interface MUST NOT confer authority. What
+arrives through it is evidence for the exchange that began it, and any decision
+that evidence feeds MUST be taken under the authority of the task that began the
+exchange.
+
+**VTI-OPS-098** — An exchange served by a foreign-protocol interface MUST be
+single-use and MUST expire. The interface MUST meet the security requirements of
+its own protocol in full — its signatures, its encryption, the binding of a
+response to its request — and not a subset of them.
+
+**VTI-OPS-099** — The outcome of an exchange MUST be readable through a
+catalogue task. A node MUST document each foreign-protocol interface it exposes
+together with the task whose exchange it serves.
+
+*Rationale.* VTI-OPS-002 exists so that authorization, refusal and replay are
+written once, against the task. Some counterparties cannot meet a node on the
+task surface at all: a wallet that implements OpenID4VP presents in that
+protocol's terms, signs nothing a node could read as an operation document, and
+receives no message a node sends. The choice is then between refusing them and
+opening a second way in. These requirements take neither. The task keeps the
+authority, and the foreign protocol carries only what its counterparty can say,
+inside an exchange the task opened, once. The interface has nothing to authorize
+that a task did not already authorize, so the security argument is still made
+once about the task, and once about the foreign protocol's own guarantees —
+which its own specification makes, and which VTI-OPS-098 requires a node to take
+whole.
+
 ### The catalogue and its registries
 
 Task identifiers, capability names and refusal codes are extension points.
