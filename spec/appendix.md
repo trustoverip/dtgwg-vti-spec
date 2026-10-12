@@ -278,6 +278,7 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `vtc.surface.admin` | the community's public profile, website, schemas and admission criteria | — | — |
 | `vtc.registry.admin` | trust registry publication and recognition | — | — |
 | `vtc.sessions.revoke` | ending other subjects' sessions and console keys | — | — |
+| `vtc.rooms.admin` | hosting the community's data rooms: storage configs and their credentials, which config each room stores to, room limits and usage | — | — |
 | `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
 | `git.repo.manage` | creating, adopting, archiving and transferring repositories | — | by namespace or repository |
 | `git.commit.sign` | the commit right a namespace's checks accept | — | by namespace or repository |
@@ -291,6 +292,14 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `credential-officer` | `vtc.credentials.issue`, `vtc.credentials.revoke` |
 | `auditor` | `vtc.audit.read` |
 | `approver` | no act authority; approve authority as granted (VTI-ACL-041) |
+
+`vtc.rooms.admin` is the host's authority over rooms, never a room's own: what
+a member may do inside a room is decided by the credentials that room issued, and
+this capability confers none of it. It is not conferring, but the storage changes
+it gates — creating, changing and retiring a storage config, setting a stored
+credential, and reassigning or migrating a room — are parked for other
+administrators' consent by their own task definitions, because they decide where
+members' files are kept and what reaches them.
 
 A community MAY define further roles, each a ceiling drawn from this registry;
 defining one is itself subject to VTI-APV-018.
