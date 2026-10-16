@@ -146,13 +146,13 @@ meeting the requirement as it stood before the change.
 single requester may hold, and SHOULD alert the other eligible approvers to a
 burst of requests from one requester.
 
-**VTI-APV-022** — Second-party consent (VTI-APV-014, VTI-APV-018 – 020) is
-recommended practice, not every deployment's requirement: a community run by one
-person has no second party to ask, even where that person administers it under
-several identifiers, such as one per device. A node MAY operate in
-**single-administrator mode**, in which an operation those recommendations
-cover is authorized by the requester's re-authentication bound to that
-operation under VTI-APV-015 in place of another party's consent, whether or
+**VTI-APV-022** — Second-party consent (VTI-APV-014, VTI-APV-018 – 020,
+VTI-APV-023) is recommended practice, not every deployment's requirement: a
+community run by one person has no second party to ask, even where that person
+administers it under several identifiers, such as one per device. A node MAY
+operate in **single-administrator mode**, in which an operation those
+recommendations cover is authorized by the requester's re-authentication bound
+to that operation under VTI-APV-015 in place of another party's consent, whether or
 not other administrators' entries exist. A node that does not apply those
 recommendations MUST do so only through this mode, and the mode:
 
@@ -164,6 +164,21 @@ recommendations MUST do so only through this mode, and the mode:
 4. MUST be audited at the node's highest severity when it takes effect, each
    time the node starts with it in effect, and for every operation whose
    consent it waived.
+
+**VTI-APV-023** — A change to configuration that decides who may become a
+member (join or admission criteria), what evidence counts towards that decision
+(the list of witnesses whose credentials a community trusts), or who is
+recognised as a person (personhood policy) SHOULD require consent from an
+administrator other than the requester. The recommendation covers every change
+made through the node's operation surface — adding, replacing or removing an
+entry alike — and not only one that loosens the configuration. A criterion's
+requirements include every way it can be met, so publishing or withdrawing a
+means of meeting one — such as a hidden-vetting requirement, which lets an
+applicant prove vetting without naming the vetters — is a change to the
+criteria under this requirement. Such a change is
+configuration that alters trust semantics (VTI-CMP-090); where it is expressed
+as community policy, the policy still MUST NOT confer authority
+(VTI-VTC-022). VTI-APV-022 governs a node that does not apply it.
 
 *Rationale for VTI-APV-013.* An approval is only as good as the correspondence
 between what the human saw and what the system committed to. Where the display
@@ -241,3 +256,18 @@ factor bound to that operation, the mode cannot be switched on by anyone the
 consent rules are meant to restrain, and it is never quiet. An administrator
 who is in fact a different person sees it in every session (item 3) and can
 have it turned off on the host, at which point ordinary consent applies again.
+
+*Rationale for VTI-APV-023.* Authority over a community is not only who
+administers it; it is also who is let in. Admission criteria, the witnesses
+whose word is evidence, and the rule that recognises a person are the inputs
+from which every membership decision follows, and a change to any of them
+alters the community's trust behaviour without granting anyone anything — so
+the consent rules that guard grants (VTI-APV-018) never see it. One
+administrator who can rewrite them alone can admit whomever they choose by
+changing what admission means, and the other administrators learn of it only
+from the members who arrive. Treating these changes as governance changes
+(VTI-CMP-090) means holding them for the same second party as a grant. Every
+change is covered, not only a loosening, because whether an edit widens or
+narrows admission depends on the rest of the configuration and on the evidence
+applicants hold, which the node is badly placed to judge; and removing the one
+criterion an applicant cannot meet is as decisive as adding one they can.
