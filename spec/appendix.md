@@ -279,6 +279,7 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `vtc.registry.admin` | trust registry publication and recognition | — | — |
 | `vtc.sessions.revoke` | ending other subjects' sessions and console keys | — | — |
 | `vtc.rooms.admin` | hosting the community's data rooms: storage configs and their credentials, which config each room stores to, room limits and usage | — | — |
+| `vtc.rooms.manage` | the data rooms the community itself owns: creating them, offering admission, and admitting and removing their members | — | — |
 | `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
 | `git.repo.manage` | creating, adopting, archiving and transferring repositories | — | by namespace or repository |
 | `git.commit.sign` | the commit right a namespace's checks accept | — | by namespace or repository |
@@ -300,6 +301,19 @@ it gates — creating, changing and retiring a storage config, setting a stored
 credential, and reassigning or migrating a room — are parked for other
 administrators' consent by their own task definitions, because they decide where
 members' files are kept and what reaches them.
+
+`vtc.rooms.manage` is the community's authority as a room's **owner**, where
+`vtc.rooms.admin` is its authority as a room's **host**; a community may let
+someone run its board room without letting them reassign every room's storage,
+and the reverse. The community exercises ownership through its own agent, which
+holds the room's keys and its place in the room's group; the capability decides
+only who may ask the community to. It is not conferring: it grants no community
+authority, and the room authority it has the agent issue never includes `admin`
+on the room, which stays the community's own. It confers nothing inside a room
+on its holder: reading a room takes an admission, made and audited like any
+other. Like `vtc.rooms.admin`, it is within `community-admin`'s ceiling, which
+holds every `vtc.*` capability, and a community may place either in a narrower
+role's.
 
 A community MAY define further roles, each a ceiling drawn from this registry;
 defining one is itself subject to VTI-APV-018.
