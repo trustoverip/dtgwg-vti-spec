@@ -149,10 +149,10 @@ burst of requests from one requester.
 **VTI-APV-022** — Second-party consent (VTI-APV-014, VTI-APV-018 – 020,
 VTI-APV-023) is recommended practice, not every deployment's requirement: a
 community run by one person has no second party to ask, even where that person
-administers it under several identifiers, such as one per device. A node MAY operate in
-**single-administrator mode**, in which an operation those recommendations
-cover is authorized by the requester's re-authentication bound to that
-operation under VTI-APV-015 in place of another party's consent, whether or
+administers it under several identifiers, such as one per device. A node MAY
+operate in **single-administrator mode**, in which an operation those
+recommendations cover is authorized by the requester's re-authentication bound
+to that operation under VTI-APV-015 in place of another party's consent, whether or
 not other administrators' entries exist. A node that does not apply those
 recommendations MUST do so only through this mode, and the mode:
 
