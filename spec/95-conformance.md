@@ -18,6 +18,7 @@ requirement identifiers.
 |---|---|
 | `Core` | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; Identity, DIDs and key management; Sessions and authentication; Client onboarding and lifecycle; Operation surface; Credentials and presentations |
 | `Delivery` | Transports, messaging and delivery |
+| `Links` | Trigger links |
 | `Community` | The Verifiable Trust Community; Membership lifecycle and community credentials; Trust registries and cross-community recognition |
 | `Network` | The Verifiable Trust Network |
 | `Composition` | Composition requirements |
@@ -25,15 +26,19 @@ requirement identifiers.
 
 ### Targets
 
-| Target | `Core` | `Delivery` | `Community` | `Network` | `Composition` | `Operations` |
-|---|---|---|---|---|---|---|
-| VTA | MUST | MUST | MAY | MAY | MUST | MUST |
-| VTC | MUST | MUST | MUST | MAY | MUST | MUST |
-| VTN *(provisional)* | MUST | MUST | MAY | MUST | MUST | MUST |
-| Client | MUST | MUST | MAY | MAY | MUST | MAY |
-| Mediator | MAY | MUST | MAY | MAY | MAY | MUST |
-| Host service | MAY | MUST | MAY | MAY | MAY | MUST |
-| Trust registry | MAY | MAY | MUST | MAY | MUST | MUST |
+| Target | `Core` | `Delivery` | `Links` | `Community` | `Network` | `Composition` | `Operations` |
+|---|---|---|---|---|---|---|---|
+| VTA | MUST | MUST | MAY | MAY | MAY | MUST | MUST |
+| VTC | MUST | MUST | MAY | MUST | MAY | MUST | MUST |
+| VTN *(provisional)* | MUST | MUST | MAY | MAY | MUST | MUST | MUST |
+| Client | MUST | MUST | MAY | MAY | MAY | MUST | MAY |
+| Mediator | MAY | MUST | MAY | MAY | MAY | MAY | MUST |
+| Host service | MAY | MUST | MAY | MAY | MAY | MAY | MUST |
+| Trust registry | MAY | MAY | MAY | MUST | MAY | MUST | MUST |
+
+*Note on the `Links` profile.* It is MAY for every target because most
+implementations neither show nor read codes. A target that reads, produces or
+hosts trigger links implements it under VTI-LNK-001.
 
 *Note on the VTN target.* The Verifiable Trust Network has no implementation at
 the time of publication, and whether it is a distinct target or a role of the
@@ -70,6 +75,7 @@ Areas allocated:
 | `TRN` | Transports, messaging and delivery |
 | `SES` | Sessions and authentication |
 | `CLT` | Client onboarding and lifecycle |
+| `LNK` | Trigger links — the link, its fields, flows, readers, producers and link hosts |
 | `OPS` | Operation surface — precedence, documents, versioning, retry |
 | `CRD` | Credentials and presentations |
 | `VTA` | The Verifiable Trust Agent |
