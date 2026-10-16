@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-10-16T10:37:50.613Z"
+      "lastUpdated": "2026-10-16T10:41:35.405Z"
     }
   ]
 };</script>
@@ -7014,6 +7014,18 @@ marked <em>qualified</em> take a resource qualifier (VTI-ACL-035).</p>
 <td>—</td>
 </tr>
 <tr>
+<td><code>vtc.rooms.admin</code></td>
+<td>hosting the community’s data rooms: storage configs and their credentials, which config each room stores to, room limits and usage</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.rooms.manage</code></td>
+<td>the data rooms the community itself owns: creating them, offering admission, and admitting and removing their members</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
 <td><code>git.ns.admin</code></td>
 <td>a repository namespace</td>
 <td>yes, within the namespace</td>
@@ -7071,7 +7083,26 @@ marked <em>qualified</em> take a resource qualifier (VTI-ACL-035).</p>
 </tr>
 </tbody>
 </table>
-</div><p>A community MAY define further roles, each a ceiling drawn from this registry;
+</div><p><code>vtc.rooms.admin</code> is the host’s authority over rooms, never a room’s own: what
+a member may do inside a room is decided by the credentials that room issued, and
+this capability confers none of it. It is not conferring, but the storage changes
+it gates — creating, changing and retiring a storage config, setting a stored
+credential, and reassigning or migrating a room — are parked for other
+administrators’ consent by their own task definitions, because they decide where
+members’ files are kept and what reaches them.</p>
+<p><code>vtc.rooms.manage</code> is the community’s authority as a room’s <strong>owner</strong>, where
+<code>vtc.rooms.admin</code> is its authority as a room’s <strong>host</strong>; a community may let
+someone run its board room without letting them reassign every room’s storage,
+and the reverse. The community exercises ownership through its own agent, which
+holds the room’s keys and its place in the room’s group; the capability decides
+only who may ask the community to. It is not conferring: it grants no community
+authority, and the room authority it has the agent issue never includes <code>admin</code>
+on the room, which stays the community’s own. It confers nothing inside a room
+on its holder: reading a room takes an admission, made and audited like any
+other. Like <code>vtc.rooms.admin</code>, it is within <code>community-admin</code>’s ceiling, which
+holds every <code>vtc.*</code> capability, and a community may place either in a narrower
+role’s.</p>
+<p>A community MAY define further roles, each a ceiling drawn from this registry;
 defining one is itself subject to VTI-APV-018.</p>
 <h3 id="appendix-d%3A-context-path-grammar" tabindex="-1"><a class="toc-anchor d-print-none" href="#appendix-d%3A-context-path-grammar">§</a> Appendix D: Context path grammar</h3>
 <p>This appendix is normative. It states the grammar referenced by VTI-CTX-010
@@ -7785,8 +7816,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-10-16T10:37:50.101Z">
-                            Generated: 2026-10-16T10:37:50.101Z
+                        <time class="timestamp" datetime="2026-10-16T10:41:34.641Z">
+                            Generated: 2026-10-16T10:41:34.641Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
