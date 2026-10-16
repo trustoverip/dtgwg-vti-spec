@@ -171,7 +171,11 @@ member (join or admission criteria), what evidence counts towards that decision
 recognised as a person (personhood policy) SHOULD require consent from an
 administrator other than the requester. The recommendation covers every change
 made through the node's operation surface — adding, replacing or removing an
-entry alike — and not only one that loosens the configuration. Such a change is
+entry alike — and not only one that loosens the configuration. A criterion's
+requirements include every way it can be met, so publishing or withdrawing a
+means of meeting one — such as a hidden-vetting requirement, which lets an
+applicant prove vetting without naming the vetters — is a change to the
+criteria under this requirement. Such a change is
 configuration that alters trust semantics (VTI-CMP-090); where it is expressed
 as community policy, the policy still MUST NOT confer authority
 (VTI-VTC-022). VTI-APV-022 governs a node that does not apply it.
