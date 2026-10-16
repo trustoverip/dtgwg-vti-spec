@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-10-16T10:41:35.405Z"
+      "lastUpdated": "2026-10-16T14:03:01.259Z"
     }
   ]
 };</script>
@@ -1754,13 +1754,13 @@ meeting the requirement as it stood before the change.</p>
 <p><strong>VTI-APV-021</strong> — A node SHOULD bound the number of pending consent requests a
 single requester may hold, and SHOULD alert the other eligible approvers to a
 burst of requests from one requester.</p>
-<p><strong>VTI-APV-022</strong> — Second-party consent (VTI-APV-014, VTI-APV-018 – 020) is
-recommended practice, not every deployment’s requirement: a community run by one
-person has no second party to ask, even where that person administers it under
-several identifiers, such as one per device. A node MAY operate in
-<strong>single-administrator mode</strong>, in which an operation those recommendations
-cover is authorized by the requester’s re-authentication bound to that
-operation under VTI-APV-015 in place of another party’s consent, whether or
+<p><strong>VTI-APV-022</strong> — Second-party consent (VTI-APV-014, VTI-APV-018 – 020,
+VTI-APV-023) is recommended practice, not every deployment’s requirement: a
+community run by one person has no second party to ask, even where that person
+administers it under several identifiers, such as one per device. A node MAY
+operate in <strong>single-administrator mode</strong>, in which an operation those
+recommendations cover is authorized by the requester’s re-authentication bound
+to that operation under VTI-APV-015 in place of another party’s consent, whether or
 not other administrators’ entries exist. A node that does not apply those
 recommendations MUST do so only through this mode, and the mode:</p>
 <ol>
@@ -1773,6 +1773,20 @@ it is in effect; and</li>
 time the node starts with it in effect, and for every operation whose
 consent it waived.</li>
 </ol>
+<p><strong>VTI-APV-023</strong> — A change to configuration that decides who may become a
+member (join or admission criteria), what evidence counts towards that decision
+(the list of witnesses whose credentials a community trusts), or who is
+recognised as a person (personhood policy) SHOULD require consent from an
+administrator other than the requester. The recommendation covers every change
+made through the node’s operation surface — adding, replacing or removing an
+entry alike — and not only one that loosens the configuration. A criterion’s
+requirements include every way it can be met, so publishing or withdrawing a
+means of meeting one — such as a hidden-vetting requirement, which lets an
+applicant prove vetting without naming the vetters — is a change to the
+criteria under this requirement. Such a change is
+configuration that alters trust semantics (VTI-CMP-090); where it is expressed
+as community policy, the policy still MUST NOT confer authority
+(VTI-VTC-022). VTI-APV-022 governs a node that does not apply it.</p>
 <p><em>Rationale for VTI-APV-013.</em> An approval is only as good as the correspondence
 between what the human saw and what the system committed to. Where the display
 is rendered from one structure and the digest computed over another, the
@@ -1840,6 +1854,20 @@ factor bound to that operation, the mode cannot be switched on by anyone the
 consent rules are meant to restrain, and it is never quiet. An administrator
 who is in fact a different person sees it in every session (item 3) and can
 have it turned off on the host, at which point ordinary consent applies again.</p>
+<p><em>Rationale for VTI-APV-023.</em> Authority over a community is not only who
+administers it; it is also who is let in. Admission criteria, the witnesses
+whose word is evidence, and the rule that recognises a person are the inputs
+from which every membership decision follows, and a change to any of them
+alters the community’s trust behaviour without granting anyone anything — so
+the consent rules that guard grants (VTI-APV-018) never see it. One
+administrator who can rewrite them alone can admit whomever they choose by
+changing what admission means, and the other administrators learn of it only
+from the members who arrive. Treating these changes as governance changes
+(VTI-CMP-090) means holding them for the same second party as a grant. Every
+change is covered, not only a loosening, because whether an edit widens or
+narrows admission depends on the rest of the configuration and on the evidence
+applicants hold, which the node is badly placed to judge; and removing the one
+criterion an applicant cannot meet is as decisive as adding one they can.</p>
 <!-- file: 03c-audit.md -->
 <h2 id="audit" tabindex="-1"><a class="toc-anchor d-print-none" href="#audit">§</a> Audit</h2>
 <p>This section is normative.</p>
@@ -7671,6 +7699,12 @@ were written; they were drafted from the change that closed it.</p>
 <td>At one community node any administrator, including one scoped to contexts, may replace the policy for role changes and removals — including the default rule that refuses removing an administrator</td>
 <td>Implement: policy changes are gated by the <code>vtc.policy.admin</code> capability per purpose, and those deciding authority are consent-gated</td>
 </tr>
+<tr>
+<td>VTI-APV-023 <em>(observed)</em></td>
+<td>Changes to join criteria, the trusted-witness list and personhood policy take another administrator’s consent</td>
+<td>At one community node the trusted-witness list is consent-gated, but join criteria are added, replaced and deleted, hidden vetting is published on and withdrawn from them, and the personhood policy is replaced or activated, by one administrator alone</td>
+<td>Implement: every runtime change to a join criterion (hidden-vetting publication and withdrawal included) and to the personhood policy is held for the other administrators’ consent; single-administrator mode waives it on the requester’s operation-bound re-authentication (VTI-APV-022)</td>
+</tr>
 </tbody>
 </table>
 </div><h4 id="f.8-how-to-add-an-entry" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.8-how-to-add-an-entry">§</a> F.8 How to add an entry</h4>
@@ -7816,8 +7850,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-10-16T10:41:34.641Z">
-                            Generated: 2026-10-16T10:41:34.641Z
+                        <time class="timestamp" datetime="2026-10-16T14:03:00.380Z">
+                            Generated: 2026-10-16T14:03:00.380Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
