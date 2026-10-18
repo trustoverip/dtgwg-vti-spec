@@ -392,10 +392,26 @@ on changes.
 
 **VTI-DIR-073** — Group membership MUST be held against the entry identifier.
 
+**VTI-DIR-074** — A member MAY opt out of any dynamic group, and a VTC MUST
+honour the opt-out for as long as the member keeps it: the member MUST NOT be a
+member of the group whatever its rule computes, their group membership
+credential MUST NOT be renewed (VTI-DIR-085), and the group's room bindings MUST
+treat them as having left it (VTI-DIR-092). A community MUST NOT exempt a
+dynamic group from opt-out.
+
 *Rationale for VTI-DIR-070.* Knowing that a group exists and knowing who is in
 it are different disclosures, and communities need them apart: a support group
 whose existence is common knowledge and whose members are known only to its
 moderators is the ordinary case, not a corner case.
+
+*Rationale for VTI-DIR-074.* A static group is joined, or added to by someone
+who decided to; a dynamic group gathers members by a rule nobody applied to
+them in particular, and its membership is evidenced to rooms, peers and other
+communities by a credential in the member's name. A member who never chose to
+be counted in a group must be able to stop being counted. No dynamic group
+needs an exemption, because none carries authority (VTI-DIR-103): opting out
+can cost a member access to a room, never a duty the community relies on them
+to hold.
 
 *Rationale for VTI-DIR-072.* A rule over self-asserted values is a door any
 member opens by editing their own card. The rule is only as trustworthy as the
@@ -419,7 +435,9 @@ MUST be held with the custody VTI-KEY-110 requires of an `attestation` key.
 **VTI-DIR-081** — A VTC MUST NOT record a group before its identifier exists.
 
 **VTI-DIR-082** — A group's identifier document MUST NOT carry the group's name,
-its description, or anything else that identifies its purpose or its members.
+its description, or anything else that identifies its purpose or its members,
+and MUST NOT advertise a transport at which the community does not serve the
+group's identifier (VTI-KEY-050).
 
 **VTI-DIR-083** — The community MUST authorize a group's identifier to issue
 membership credentials by an authorization credential, issued by the community
@@ -440,6 +458,10 @@ also revoke the community's authorization credential to the group's identifier
 (VTI-DIR-083). The validity period MUST be short enough that the credential's
 validity does not change within it, so that VTI-CRD-010 does not require it to
 carry status, and it bounds how long a removal takes to reach a verifier.
+
+*Note.* A validity of thirty days, renewed when ten remain, is a reasonable
+default. A group whose membership is sensitive, or whose removals must reach
+verifiers quickly, suits a shorter one.
 
 **VTI-DIR-086** — A verifier relying on a group membership credential MUST
 verify it and its validity period, the community's authorization credential to
