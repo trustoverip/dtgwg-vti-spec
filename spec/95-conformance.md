@@ -19,7 +19,7 @@ requirement identifiers.
 | `Core` | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; Identity, DIDs and key management; Sessions and authentication; Client onboarding and lifecycle; Operation surface; Credentials and presentations |
 | `Delivery` | Transports, messaging and delivery |
 | `Links` | Trigger links |
-| `Community` | The Verifiable Trust Community; Membership lifecycle and community credentials; Trust registries and cross-community recognition |
+| `Community` | The Verifiable Trust Community; Membership lifecycle and community credentials; The community directory and groups; Trust registries and cross-community recognition |
 | `Network` | The Verifiable Trust Network |
 | `Composition` | Composition requirements |
 | `Operations` | Operational and assurance requirements |
@@ -39,6 +39,10 @@ requirement identifiers.
 *Note on the `Links` profile.* It is MAY for every target because most
 implementations neither show nor read codes. A target that reads, produces or
 hosts trigger links implements it under VTI-LNK-001.
+
+*Note on the community directory and groups.* The chapter is in the
+`Community` profile, and binds a VTC only for what it offers: a VTC that offers
+neither a member directory nor groups satisfies it by offering neither.
 
 *Note on the VTN target.* The Verifiable Trust Network has no implementation at
 the time of publication, and whether it is a distinct target or a role of the
@@ -82,6 +86,7 @@ Areas allocated:
 | `VTC` | The Verifiable Trust Community |
 | `VTN` | The Verifiable Trust Network |
 | `MEM` | Membership lifecycle and community credentials |
+| `DIR` | The community directory and groups — cards, audiences, discoverability, introductions, groups, group identities and credentials, room and grant bindings |
 | `REG` | Trust registries and recognition |
 | `CMP` | Composition requirements |
 | `OPR` | Operational and assurance requirements |

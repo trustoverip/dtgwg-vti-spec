@@ -22,13 +22,14 @@ two plausible owners is a decision that gets made twice, differently.
 This chapter specifies the community node: what it is, how it is stood up, and
 which authority decisions belong to it rather than to the VTA beneath it.
 
-It is the first of three chapters on the community. What a community does once
-it is stood up is specified in the two that follow the Verifiable Trust Network
-chapter: Membership Lifecycle and Community Credentials, for how a subject
-becomes, remains and ceases to be a member; and Trust Registries and
-Cross-Community Recognition, for what a community publishes and how
-communities recognise each other. An implementer of the VTC target needs all
-three.
+It is the first of four chapters on the community. What a community does once
+it is stood up is specified in the three that follow the Verifiable Trust
+Network chapter: Membership Lifecycle and Community Credentials, for how a
+subject becomes, remains and ceases to be a member; The Community Directory and
+Groups, for how members find each other and how the community organises them;
+and Trust Registries and Cross-Community Recognition, for what a community
+publishes and how communities recognise each other. An implementer of the VTC
+target needs all four, the third only where it offers a directory or groups.
 
 ### Provisioning and dependency
 
