@@ -9,14 +9,39 @@ states what it adds.
 
 ### Publication
 
-**VTI-REG-001** — A community MUST NOT publish personal data beyond what
-recognition by other communities requires.
+**VTI-REG-001** — A community MUST NOT publish personal data, for the purpose
+of recognition by other communities, beyond what that recognition requires.
 
 **VTI-REG-002** — A published entry MUST identify the framework under which it
 is made, so that a consumer can determine what the entry asserts.
 
 **VTI-REG-003** — A consumer MUST NOT infer any authority from a registry entry
 beyond what the entry's framework states it asserts.
+
+**VTI-REG-004** — A community that publishes personal data for any purpose
+other than recognition:
+
+1. MUST state the purpose, in the published entry and to the subject;
+2. MUST tell the subject, before the data is first published, what will be
+   published, for what purpose and to whom;
+3. MUST NOT publish anything beyond what that purpose needs; and
+4. where the data is the subject's own statement about themselves, such as a
+   profile, MUST publish it only as a statement the subject has signed, and
+   MUST NOT sign or compose it itself.
+
+*Rationale for VTI-REG-001 and VTI-REG-004.* Recognition is the purpose
+registries were first built for, and VTI-REG-001 bounds publication by it. A
+community also publishes for other purposes — the rights a member holds over a
+repository, so that a forge's checks can verify a commit's signer, or a card a
+member chose to make public. Read as covering every publication, VTI-REG-001
+forbids those outright; read as covering recognition only, it leaves them with
+no bound at all. VTI-REG-004 is the bound: the purpose is stated so a reader can
+tell what the entry is for, the subject is told first so that publication is
+never how they find out, and what is published is limited by the purpose it
+serves. Where the data is the member's own statement — what they call
+themselves, what they do — the community mirrors what the member signed rather
+than asserting it, so that the community is never the author of a claim about
+a person that the person did not make.
 
 ### What a registry answer establishes
 

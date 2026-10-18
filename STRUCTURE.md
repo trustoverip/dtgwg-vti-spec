@@ -46,6 +46,7 @@ Three bodies of normative material:
 | | The Verifiable Trust Community | `spec/11-vtc.md` |
 | | The Verifiable Trust Network | `spec/11a-vtn.md` |
 | | Membership lifecycle and community credentials | `spec/12-vtc-lifecycle.md` |
+| | The community directory and groups | `spec/12a-vtc-directory.md` |
 | | Trust registries and cross-community recognition | `spec/13-registries.md` |
 | D — System properties | Composition requirements | `spec/14-composition.md` |
 | | Operational and assurance requirements | `spec/15-operational.md` |
@@ -119,7 +120,7 @@ where unresolved propositions are published with their status visible.
 
 | # | Decision | Resolution |
 |---|---|---|
-| **D1** | Is the VTC in scope, or referenced? | **In scope, fully.** Chapters 11–13, with `spec/11-vtc.md` stating which authority decisions are the VTC's and which remain the VTA's. |
+| **D1** | Is the VTC in scope, or referenced? | **In scope, fully.** Chapters 11–13 (with 12a), with `spec/11-vtc.md` stating which authority decisions are the VTC's and which remain the VTA's. |
 | **D2** | Is the post-enrolment key roll MUST or SHOULD? | **SHOULD.** The strength of the recommendation tracks the exposure of the bootstrap identifier. The *mechanism* is REQUIRED of a VTA, an unrolled bootstrap entry MUST expire, and a roll that does happen MUST be atomic and preserve scope exactly. |
 | **D3** | Trust Tasks or bespoke interfaces? | **Trust Task wherever one exists.** A private interface is permitted only where no canonical task covers the operation, and must be namespaced, discoverable, and carry a retirement path. Private is a waiting room, not a destination. |
 | **D4** | Who defines conformance? | **VTI does.** Conformance (does an implementation satisfy the spec) and assurance (does a deployment hold its properties in composition) are separated. VTI defines an *assessment interface* so that any number of programmes can contribute evidence, none of which holds normative authority. |
@@ -152,6 +153,7 @@ where unresolved propositions are published with their status visible.
 | The Verifiable Trust Community | **drafted** (`VTC`) |
 | The Verifiable Trust Network | **drafted** (`VTN`) — specification-first; no implementation, and D9 open |
 | Membership lifecycle | **drafted** (`MEM`) |
+| The community directory and groups | **drafted** (`DIR`) — directory, introductions, groups with identities and credentials of their own, room and grant bindings |
 | Trust registries and recognition | **drafted** (`REG`) |
 | Composition requirements | **drafted** (`CMP`) |
 | Operational and assurance | **drafted** (`OPR`) |

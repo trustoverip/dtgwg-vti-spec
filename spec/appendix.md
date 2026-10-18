@@ -280,6 +280,9 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `vtc.sessions.revoke` | ending other subjects' sessions and console keys | — | — |
 | `vtc.rooms.admin` | hosting the community's data rooms: storage configs and their credentials, which config each room stores to, room limits and usage | — | — |
 | `vtc.rooms.manage` | the data rooms the community itself owns: creating them, offering admission, and admitting and removing their members | — | — |
+| `vtc.directory.admin` | the member directory: its fields and their ceilings, administrator-asserted values, the defaults new cards take, and exporting it | — | — |
+| `vtc.directory.notes` | reading and writing administrators' notes about members (VTI-DIR-030 – 033) | — | — |
+| `vtc.groups.manage` | community groups: creating, changing and deleting them, their membership, and their bindings to rooms and capabilities | — | by group (`group:<id>`) |
 | `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
 | `git.repo.manage` | creating, adopting, archiving and transferring repositories | — | by namespace or repository |
 | `git.commit.sign` | the commit right a namespace's checks accept | — | by namespace or repository |
@@ -314,6 +317,19 @@ on its holder: reading a room takes an admission, made and audited like any
 other. Like `vtc.rooms.admin`, it is within `community-admin`'s ceiling, which
 holds every `vtc.*` capability, and a community may place either in a narrower
 role's.
+
+`vtc.directory.admin`, `vtc.directory.notes` and `vtc.groups.manage` serve the
+Community Directory and Groups chapter. `vtc.directory.notes` is apart from
+`vtc.directory.admin` so that a community can let a moderator keep notes about
+members without letting them change what the directory discloses, and the
+reverse. None of the three is conferring. `vtc.groups.manage` decides who may
+change a group, not what changing it costs: binding an authority-conferring
+capability to a group, and adding a member to a group that carries one, are
+grants in their own right and take the consent VTI-APV-018 recommends however
+the requester came to manage the group (VTI-DIR-104); a binding to a room also
+takes `vtc.rooms.manage` over the room (VTI-DIR-090). Qualified by a group, it
+lets a member run that group alone, and its grant is a delegation bounded by the
+granter's own (VTI-DIR-071). All three are within `community-admin`'s ceiling.
 
 A community MAY define further roles, each a ceiling drawn from this registry;
 defining one is itself subject to VTI-APV-018.
@@ -519,7 +535,7 @@ different thing from a requirement that is met.
 | Requirement | This specification requires | Reported behaviour | Resolution |
 |---|---|---|---|
 | VTI-VTC-021, VTI-APV-003, VTI-APV-015 *(observed)* | An administrative action on the community is subject to the Approvals, Consent and Step-Up chapter; a re-authentication on a signed document is the caller's own additional factor, bound to that one operation | At one community node, the design of the `git-ns/*` task family, which governs repositories on external forges, places a step-up in front of granting or revoking the ownership and repository-creation rights, and of transferring, archiving and adopting a repository; and a step-up with a confirmation in front of binding or unbinding a namespace and granting or revoking the namespace-administration right. The node has no step-up a member can perform on a signed document: its only step-up raises an administrator's session, and a document has no session. In its place a configuration switch, on by default, accepts an action in either class only from a community administrator — a subject whose entry holds the administrative role with unrestricted act scope — in addition to the right the action requires. The stand-in narrows and never widens, but it is not re-authentication: it establishes who signed, not that the signer is present, and an administrator's signing key alone satisfies it. The classes are fixed in code rather than expressed as approval rules under VTI-APV-001 — the node evaluates none on this path — and the check runs inside each operation rather than at the policy gate (VTI-OPS-051). Under the default, a repository owner cannot transfer, archive or name a co-owner without an administrator; with the switch off, nothing stands in for the step-up at all | Implement operation-bound re-authentication under VTI-APV-015 for signed documents, express the classes as approval rules evaluated at the policy gate, and retire the switch. Until then the switch stays on by default, and a deployment that turns it off runs these actions under the rights model alone |
-| VTI-REG-001 *(observed)* | A community publishes no personal data beyond what recognition by other communities requires | At one community node, for every live right in a bound namespace of the `git-ns/*` task family, the node publishes to its Trust Registry an authorization record naming the holder's identifier, the right and the repository, with the period it is active; the registry answers anonymous queries. That lets a repository's CI check verify a commit's signer against the community, and it is not recognition: it tells anyone which members hold which rights on which repositories. It also publishes more than the check needs — verifiers ask only for the commit right, and the namespace-administration, repository-creation, ownership and maintenance rights are published beside it. The task family's own specification requires the publication, and requires that the administrator binding a namespace be told that rights under it are public; the member whose identifier is published is not asked. Who granted a right, the reason given, and members' forge accounts are not published | Two routes, not exclusive. In the implementation, publish the commit right only, which is all a verifier asks for; that needs the task family's specification to stop requiring the rest. Against the requirement, a change proposal scoping VTI-REG-001 to recognition, together with a requirement for what a community publishes for any other purpose — the purpose stated, the subject told before their identifier is published, and nothing beyond what the purpose needs — so that the scoping does not leave such publication with no bound at all. Until one lands the entry stands |
+| VTI-REG-004 *(observed, re-filed)* | A community publishing personal data for a purpose other than recognition states the purpose, tells the subject before publication, and publishes nothing beyond what the purpose needs | At one community node, for every live right in a bound namespace of the `git-ns/*` task family, the node publishes to its Trust Registry an authorization record naming the holder's identifier, the right and the repository, with the period it is active; the registry answers anonymous queries. That lets a repository's CI check verify a commit's signer against the community, and it is not recognition. It publishes more than the check needs — verifiers ask only for the commit right, and the namespace-administration, repository-creation, ownership and maintenance rights are published beside it (item 3). The task family's own specification requires the publication, and requires that the administrator binding a namespace be told that rights under it are public; the member whose identifier is published is neither asked nor told (item 2). Whether the record states its purpose (item 1) has not been established. Who granted a right, the reason given, and members' forge accounts are not published. This entry was first recorded against VTI-REG-001, with a change proposal as one route to resolution; that proposal has landed — VTI-REG-001 now bounds publication for recognition, and VTI-REG-004 bounds every other — so the entry is re-filed against the requirement that now governs the behaviour, which it still does not meet | Publish the commit right only, which is all a verifier asks for; that needs the task family's specification to stop requiring the rest. Tell each member, before their identifier is first published under a namespace, what is published and why, and state the purpose in the record. Item 4 does not apply: a right is the community's grant, not the member's statement about themselves |
 
 #### F.6 Key roles and custody
 
@@ -591,6 +607,12 @@ Where a divergence is evidence that the requirement itself is wrong rather than
 the implementation, that is a change proposal against the requirement, not an
 entry here. Both are welcome; they are different things, and conflating them is
 how a register turns into a set of exemptions.
+
+**Re-file an entry whose requirement has changed, and mark it re-filed.**
+Where a change proposal alters the requirement an entry is recorded against,
+the entry is re-filed against the requirement that now governs the behaviour,
+saying what changed, and closed only if the behaviour now conforms. A change to
+a requirement is not a closure of the divergences recorded against it.
 
 **Correct an entry that turns out to be wrong, and mark it corrected.** An
 entry is a factual claim about an implementation, and one made from a partial

@@ -64,6 +64,14 @@ community policy to a disposition that retains their personal data.
 **VTI-MEM-033** — A departure MUST propagate to whatever the community has
 published about the member.
 
+*Note.* What the community has published about a member includes, where it
+offers them, the member's directory entry — within the community and, where the
+member chose, beyond it — and their memberships of community groups, with the
+group membership credentials evidencing them (Community Directory and Groups
+chapter, VTI-DIR-120). Administrators' notes about the member are not
+published, but they are personal data the departure disposition reaches
+(VTI-MEM-031, VTI-MEM-032, VTI-DIR-121).
+
 **VTI-MEM-034** — Where erasures are propagated in batches to reduce timing
 correlation, the batching interval MUST NOT delay the effect of the departure on
 the member's credential status.
