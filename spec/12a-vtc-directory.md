@@ -404,6 +404,10 @@ it are different disclosures, and communities need them apart: a support group
 whose existence is common knowledge and whose members are known only to its
 moderators is the ordinary case, not a corner case.
 
+*Rationale for VTI-DIR-072.* A rule over self-asserted values is a door any
+member opens by editing their own card. The rule is only as trustworthy as the
+least-verified fact it reads.
+
 *Rationale for VTI-DIR-074.* A static group is joined, or added to by someone
 who decided to; a dynamic group gathers members by a rule nobody applied to
 them in particular, and its membership is evidenced to rooms, peers and other
@@ -412,10 +416,6 @@ be counted in a group must be able to stop being counted. No dynamic group
 needs an exemption, because none carries authority (VTI-DIR-103): opting out
 can cost a member access to a room, never a duty the community relies on them
 to hold.
-
-*Rationale for VTI-DIR-072.* A rule over self-asserted values is a door any
-member opens by editing their own card. The rule is only as trustworthy as the
-least-verified fact it reads.
 
 ### Group identity and credentials
 
@@ -455,9 +455,9 @@ be entered in a status set of the group's own. Its expiry is its revocation:
 the member leaving the group, the member departing the community, and the
 group being deleted MUST each stop its renewal, and deleting the group MUST
 also revoke the community's authorization credential to the group's identifier
-(VTI-DIR-083). The validity period MUST be short enough that the credential's
-validity does not change within it, so that VTI-CRD-010 does not require it to
-carry status, and it bounds how long a removal takes to reach a verifier.
+(VTI-DIR-083). The validity period bounds how long a removal takes to reach a verifier,
+and MUST be short enough that the credential needs no status under
+VTI-CRD-010.
 
 *Note.* A validity of thirty days, renewed when ten remain, is a reasonable
 default. A group whose membership is sensitive, or whose removals must reach
