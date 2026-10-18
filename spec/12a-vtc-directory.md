@@ -250,7 +250,8 @@ and external settings, each the subject's to choose:
 
 1. listing: `listed`, returned when members browse; `findable`, returned only
    by a search that matches it; or `hidden`, returned to no member by browsing
-   or searching;
+   or searching. Every subject MAY choose any of the three, and a community
+   MUST NOT withhold `hidden` from any subject;
 2. search: whether a search may match the subject's name or nickname, only an
    exact nickname, or nothing;
 3. introductions: from whom the subject accepts introductions (VTI-DIR-060);
@@ -427,18 +428,23 @@ to the group's identifier, which is an attestation artefact of the community
 
 **VTI-DIR-084** — The group's identifier MUST issue a membership credential to
 each member when they join the group, naming the member's membership
-identifier as subject. That credential MUST carry a status mechanism
-(VTI-CRD-010), and the group MUST revoke it when the member leaves the group,
-when the member departs the community, and when the group is deleted.
+identifier as subject, and MUST renew it, through the community's VTA, for as
+long as the member remains in the group and in the community.
 
-**VTI-DIR-085** — The status of a group's membership credentials MUST satisfy
-VTI-CRD-013 and VTI-CRD-014. A group too small for its own credentials to form
-a set of the size VTI-CRD-014 requires MUST NOT be given a status set of its
-own.
+**VTI-DIR-085** — A group membership credential MUST be short-lived, with a
+validity period the community states, and MUST NOT carry a status mechanism or
+be entered in a status set of the group's own. Its expiry is its revocation:
+the member leaving the group, the member departing the community, and the
+group being deleted MUST each stop its renewal, and deleting the group MUST
+also revoke the community's authorization credential to the group's identifier
+(VTI-DIR-083). The validity period MUST be short enough that the credential's
+validity does not change within it, so that VTI-CRD-010 does not require it to
+carry status, and it bounds how long a removal takes to reach a verifier.
 
 **VTI-DIR-086** — A verifier relying on a group membership credential MUST
-verify it, the community's authorization credential to the group's identifier,
-and the status of both, and MUST refuse where any of them fails. A verifier
+verify it and its validity period, the community's authorization credential to
+the group's identifier, and that credential's status, and MUST refuse where any
+of them fails. A verifier
 MUST NOT rely on a group membership credential as evidence of membership of the
 community without that chain.
 
@@ -468,14 +474,19 @@ community may have shown only to the group's own members — and a name like
 
 *Rationale for VTI-DIR-085.* A status list is fetched by whoever checks a
 credential on it, and fetching the list of a five-member group tells the list's
-host that one of five people is being checked. A small group's credentials take
-their status from a set large enough to hide in, or the status check identifies
-the member the credential was meant to let stay unnamed.
+host that one of five people is being checked: a status set per group is the
+set per cohort VTI-CRD-014 forbids, and for a small group the crowd is too
+small to hide in. A short-lived credential needs no status query at all, so the
+check identifies nobody. The cost is that a removal reaches a verifier when the
+last credential expires rather than at once, which is why the validity period
+is short and stated, and why the community's own authorization credential —
+one per group, not per member — keeps a status a verifier can check when the
+whole group goes.
 
 *Rationale for VTI-DIR-087.* A credential in a member's hands is portable and
 long-lived; the community's access control entry is neither. Accepting the
 first as authority at the community would let it outlive a removal from the
-group until its status caught up, and would make the group record a second
+group until it expired, and would make the group record a second
 authority model by the back door. The credential is for parties who cannot
 read the community's access control, which is precisely who has no other
 evidence.
@@ -610,7 +621,7 @@ aggregate answers become individual ones.
 **VTI-DIR-120** — A member's departure MUST, at once, withdraw any external
 publication of their card, remove their entry from every directory read, and
 remove them from every group, with the effects on rooms, capabilities and group
-credentials that removal has (VTI-DIR-084, VTI-DIR-092, VTI-DIR-101).
+credentials that removal has (VTI-DIR-085, VTI-DIR-092, VTI-DIR-101).
 Withdrawing external publication MUST precede the rest.
 
 **VTI-DIR-121** — The departure disposition (VTI-MEM-031, VTI-MEM-032) MUST
@@ -620,8 +631,8 @@ about them.
 **VTI-DIR-122** — Rotation of a member's identifier (VTI-MEM-041) MUST carry
 their card, group memberships, notes about them and the capabilities groups
 provisioned for them to the new identifier, without changing their entry
-identifier. Group membership credentials naming the previous identifier MUST be
-revoked and reissued to the new one.
+identifier. Group membership credentials naming the previous identifier MUST
+no longer be renewed, and MUST be issued to the new one.
 
 *Rationale for VTI-DIR-120.* What the community published about a member
 outside its walls is the part it cannot recall by deleting a record, and every
