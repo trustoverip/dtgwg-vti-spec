@@ -283,6 +283,7 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `vtc.directory.admin` | the member directory: its fields and their ceilings, administrator-asserted values, the defaults new cards take, and exporting it | — | — |
 | `vtc.directory.notes` | reading and writing administrators' notes about members (VTI-DIR-030 – 033) | — | — |
 | `vtc.groups.manage` | community groups: creating, changing and deleting them, their membership, and their bindings to rooms and capabilities | — | by group (`group:<id>`) |
+| `vtc.elections.manage` | the community's elections: creating, closing early, cancelling and certifying them (VTI-VOT-080) | — | — |
 | `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
 | `git.repo.manage` | creating, adopting, archiving and transferring repositories | — | by namespace or repository |
 | `git.commit.sign` | the commit right a namespace's checks accept | — | by namespace or repository |
@@ -330,6 +331,13 @@ the requester came to manage the group (VTI-DIR-104); a binding to a room also
 takes `vtc.rooms.manage` over the room (VTI-DIR-090). Qualified by a group, it
 lets a member run that group alone, and its grant is a delegation bounded by the
 granter's own (VTI-DIR-071). All three are within `community-admin`'s ceiling.
+
+`vtc.elections.manage` serves the Community Voting chapter. It is not
+conferring: a result decides what its manifest says and grants nothing by itself
+(VTI-VOT-080), and creating a binding election takes the consent VTI-VOT-081
+recommends however the requester came to hold the capability. It confers no
+access to ballots, which the community never holds (VTI-VOT-001). It is within
+`community-admin`'s ceiling.
 
 A community MAY define further roles, each a ceiling drawn from this registry;
 defining one is itself subject to VTI-APV-018.

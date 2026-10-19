@@ -142,7 +142,7 @@ The specification is in four parts.
 |---|---|---|
 | **A — Foundations** | Introduction; Terminology; Architecture and conformance targets | nothing normatively; fixes the vocabulary and names the targets |
 | **B — The common model** | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; Identity, DIDs and key management; Transports, messaging and delivery; Sessions and authentication; Client onboarding and lifecycle; Trigger links; Operation surface; Credentials and presentations | every node type |
-| **C — Node specifications** | The Verifiable Trust Agent; The Verifiable Trust Community; The Verifiable Trust Network; Membership lifecycle and community credentials; The community directory and groups; Trust registries and cross-community recognition | the named node |
+| **C — Node specifications** | The Verifiable Trust Agent; The Verifiable Trust Community; The Verifiable Trust Network; Membership lifecycle and community credentials; The community directory and groups; Community voting; Trust registries and cross-community recognition | the named node |
 | **D — System properties** | Composition requirements; Operational and assurance requirements; Considerations; Conformance | the deployment and the relying party |
 
 A node type's chapter in Part C states what it adds to the common model, not
@@ -175,7 +175,7 @@ formulation is one that has already been implemented, and has already failed.
 | Deciding whether VTI fits your ecosystem | This chapter, then Architecture and conformance targets |
 | Implementing a client | Client onboarding and lifecycle; Sessions and authentication; Operation surface; Trigger links, for a wallet that reads codes |
 | Implementing or operating a VTA | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; The Verifiable Trust Agent; Operational and assurance requirements |
-| Implementing or operating a VTC | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; The Verifiable Trust Community; Membership lifecycle and community credentials; The community directory and groups, for a community that offers them; Trust registries and cross-community recognition |
+| Implementing or operating a VTC | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; The Verifiable Trust Community; Membership lifecycle and community credentials; The community directory and groups, and Community voting, for a community that offers them; Trust registries and cross-community recognition |
 | Curating communities into a network | The Verifiable Trust Network; Trust registries and cross-community recognition |
 | Assessing a deployment | Composition requirements; Conformance; Appendix E |
 | Writing a governance framework | Access control and authority; Approvals, consent and step-up; Governance Considerations |
