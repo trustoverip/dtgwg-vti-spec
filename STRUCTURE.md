@@ -47,6 +47,7 @@ Three bodies of normative material:
 | | The Verifiable Trust Network | `spec/11a-vtn.md` |
 | | Membership lifecycle and community credentials | `spec/12-vtc-lifecycle.md` |
 | | The community directory and groups | `spec/12a-vtc-directory.md` |
+| | Community voting | `spec/12b-vtc-voting.md` |
 | | Trust registries and cross-community recognition | `spec/13-registries.md` |
 | D — System properties | Composition requirements | `spec/14-composition.md` |
 | | Operational and assurance requirements | `spec/15-operational.md` |
@@ -154,6 +155,7 @@ where unresolved propositions are published with their status visible.
 | The Verifiable Trust Network | **drafted** (`VTN`) — specification-first; no implementation, and D9 open |
 | Membership lifecycle | **drafted** (`MEM`) |
 | The community directory and groups | **drafted** (`DIR`) — directory, introductions, groups with identities and credentials of their own, room and grant bindings |
+| Community voting | **drafted** (`VOT`) — tickets from a predicate credential system, a ballot box apart from the community, an append-only board, three secrecy levels, results anyone permitted can recompute |
 | Trust registries and recognition | **drafted** (`REG`) |
 | Composition requirements | **drafted** (`CMP`) |
 | Operational and assurance | **drafted** (`OPR`) |

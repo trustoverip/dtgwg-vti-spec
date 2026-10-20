@@ -19,7 +19,7 @@ requirement identifiers.
 | `Core` | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; Identity, DIDs and key management; Sessions and authentication; Client onboarding and lifecycle; Operation surface; Credentials and presentations |
 | `Delivery` | Transports, messaging and delivery |
 | `Links` | Trigger links |
-| `Community` | The Verifiable Trust Community; Membership lifecycle and community credentials; The community directory and groups; Trust registries and cross-community recognition |
+| `Community` | The Verifiable Trust Community; Membership lifecycle and community credentials; The community directory and groups; Community voting; Trust registries and cross-community recognition |
 | `Network` | The Verifiable Trust Network |
 | `Composition` | Composition requirements |
 | `Operations` | Operational and assurance requirements |
@@ -87,6 +87,7 @@ Areas allocated:
 | `VTN` | The Verifiable Trust Network |
 | `MEM` | Membership lifecycle and community credentials |
 | `DIR` | The community directory and groups — cards, audiences, discoverability, introductions, groups, group identities and credentials, room and grant bindings |
+| `VOT` | Community voting — elections and manifests, tickets, casts, the ballot box and its board, secrecy levels and trustees, results and audit |
 | `REG` | Trust registries and recognition |
 | `CMP` | Composition requirements |
 | `OPR` | Operational and assurance requirements |

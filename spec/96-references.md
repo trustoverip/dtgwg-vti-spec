@@ -95,6 +95,12 @@ their current versions before this specification leaves Working Draft.
   OPTIONAL algorithm under VTI-KEY-011, named in VTI-KEY-103 as the second
   member of a hybrid `attestation` proof set.
   <https://csrc.nist.gov/pubs/fips/204/final>
+- [RFC 9162] *Certificate Transparency Version 2.0* — the Merkle tree log, its
+  signed heads, and its inclusion and consistency proofs, as the form of an
+  election's board (VTI-VOT-050). <https://datatracker.ietf.org/doc/html/rfc9162>
+- [PCS] *Predicate credential system* — the class credentials, blind issuance and
+  tags a ticket and a cast are made with (VTI-VOT-020, VTI-VOT-031), as hidden
+  vetting uses them. *(pending)*
 
 ### Informative References
 
@@ -104,6 +110,9 @@ their current versions before this specification leaves Working Draft.
   the proposal the Trigger Links chapter was agreed from, with its annex on
   platform link handling, device tests and conformance vectors.
   <https://github.com/berkmancenter/keyring-wallet/pull/354>
+- [BELENIOS] *Belenios specification* — the separation of credential authority,
+  voting server and trustees the Community Voting chapter draws on.
+  <https://www.belenios.org/specification.pdf>
 - [RFC 6973] *Privacy Considerations for Internet Protocols.*
   <https://datatracker.ietf.org/doc/html/rfc6973>
 - [TOIP-GOV] *ToIP Governance Metamodel Specification.*
