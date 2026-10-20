@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-10-20T03:17:38.960Z"
+      "lastUpdated": "2026-10-20T08:10:29.178Z"
     }
   ]
 };</script>
@@ -3816,6 +3816,9 @@ reader that received the link from the person’s activation on that page
 (VTI-LNK-056), whose recorded origin matched the portal’s origin
 (VTI-LNK-105), MAY read the number from the element of that page whose
 <code>data-oob-request-id</code> equals the link’s handle, and enter it for the person.
+An element inside an open shadow root that contains the activated link is of
+that page; a portal that draws its sign-in box in a closed shadow root hides
+the number from the reader, and the person enters it.
 It MUST read it only from the page the link was activated on, only for that
 handle, and only while the page’s origin is still the one it recorded, and
 MUST NOT send anything to the page. When it does not find the number, or when
@@ -8898,8 +8901,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-10-20T03:17:38.289Z">
-                            Generated: 2026-10-20T03:17:38.289Z
+                        <time class="timestamp" datetime="2026-10-20T08:10:28.685Z">
+                            Generated: 2026-10-20T08:10:28.685Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
