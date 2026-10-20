@@ -82,6 +82,14 @@ voter's membership identifier or any other durable identifier of the voter
 It MUST accept a cast over a binding whose sender holds no persistent identifier
 and no session, and MAY accept one over any other binding it serves.
 
+**VTI-VOT-005** — A ballot box MUST advertise in its DID document every binding it
+serves, and MUST serve at least one end-to-end messaging binding (Transports
+chapter) besides the binding VTI-VOT-004 requires. A community MUST send its
+registration, close and cancellation, and SHOULD send its reads, over the
+highest-preference messaging binding both parties advertise. Where a messaging
+binding proves the sender, a ballot box MUST refuse a document whose `issuer` is
+not that sender.
+
 *Rationale for VTI-VOT-001 – 003.* Linking a voter to a ballot needs two facts:
 who held a ticket, and which ballot came from where and when. The registrar
 holds the first and the ballot box the second. Keeping them in different hands
@@ -94,7 +102,16 @@ one place and undoes the separation whatever cryptography follows.
 mediator session to receive on and no relationship with the ballot box. The
 preference for end-to-end messaging (Transports chapter) assumes both parties
 hold identifiers; here only one does, by design, and the receipt is the only
-answer the voter needs.
+answer the voter needs. A messaging binding could carry a cast only if the
+one-time key opened a mediator session of its own, which would give the
+mediator an account for it, a relationship record, and the voter's network
+address and timing.
+
+*Rationale for VTI-VOT-005.* Everything other than a cast is sent by a party
+that holds an identifier — the community, an auditor — and so takes the
+preference for end-to-end messaging like any other exchange. A registration is
+authority over an election, so it travels on a binding that proves its sender as
+well as carrying its own proof.
 
 ### Elections and their manifests
 
