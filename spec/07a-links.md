@@ -608,7 +608,9 @@ further. When a signed
 reply from the contact gives a name that differs from that record, the reader
 MUST flag the difference before the person approves anything further. A name
 that is empty, is a DID, or is the host of the verified portal origin is not a
-different name. Names are compared after trimming, folding runs of white space
+different name. Nor is any name different from a record whose name is that
+host: such a record holds the label a reader made for itself, not a name the
+person gave the contact. Names are compared after trimming, folding runs of white space
 to one space, and ignoring case.
 
 **VTI-LNK-105** — For `sign-in`, a reader that recorded the origin of the page
