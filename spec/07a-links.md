@@ -353,7 +353,8 @@ before sending anything. Each method defines what verification means: for
 event log verifies; for a ledger method, the document matches the ledger's
 state. If it cannot, it MUST stop with `did-document-unverified` (outcome
 `invalid`) and send nothing. After verification it MUST show the verified
-details, and MUST send nothing until the person approves; the domain-linkage
+details, and MUST send nothing until the person approves, except as
+VTI-LNK-106 allows for `sign-in`; the domain-linkage
 fetch of route B (VTI-LNK-120) sends nothing to the contact's services and is
 not held back by this rule. A reader MUST NOT show any field of the link other
 than the contact as a statement of what the exchange is.
@@ -379,7 +380,8 @@ a link on a page, such as a browser extension, MUST record the origin of that
 page at activation, and MUST NOT act on an activation the person did not make.
 
 **VTI-LNK-057** — A flow MUST state the request a reader sends first. A reader
-MUST send the first request only after the person approves (VTI-LNK-052),
+MUST send the first request only after the person approves (VTI-LNK-052, and
+VTI-LNK-106 for `sign-in`),
 only over the transport chosen under VTI-LNK-053, and with the handle, so
 that the inviter can find the pending exchange. A first request the reader
 signs MUST be signed by a key made for this exchange and used for no other
@@ -600,7 +602,9 @@ that no route of that rule can qualify.
 
 **VTI-LNK-104** — Before the first request, a reader MUST show the name it
 holds for the contact in its own records, and the portal origin from the
-verified DID document, and never a name taken from the link. When a signed
+verified DID document, and never a name taken from the link. A reader acting
+under VTI-LNK-106 shows them instead before the person approves anything
+further. When a signed
 reply from the contact gives a name that differs from that record, the reader
 MUST flag the difference before the person approves anything further. A name
 that is empty, is a DID, or is the host of the verified portal origin is not a
@@ -622,6 +626,50 @@ refused before anything is signed. On a phone the operating system opens the
 wallet without telling it the page, so this check is available only to a reader
 that sees the activation itself.
 
+**VTI-LNK-106** — For `sign-in`, a reader that received the link from the
+person's activation on a page (VTI-LNK-056), whose recorded origin matched the
+portal's origin (VTI-LNK-105), for a service already in its own records
+(VTI-LNK-101), MAY take that activation as the person continuing and approving
+the first request (VTI-LNK-050, VTI-LNK-052, VTI-LNK-057), when its records
+hold exactly one identity for that service. Records that name the same
+identifier count once. With more than one identity it MUST let the person
+choose, and continue only when they do. The activation stands for continuing
+for every rule that waits for it, the domain-linkage fetch of route B
+included (VTI-LNK-122). It approves nothing the exchange asks afterwards: a
+reader MUST still show the person, before they approve the sign-in itself,
+the service's name and portal origin (VTI-LNK-104) and what the exchange's
+tasks require to be shown.
+
+**VTI-LNK-107** — For `sign-in`, where the exchange asks the person to enter
+a number the portal shows, the portal SHOULD mark the element that shows it,
+while it shows it, with the attributes `data-oob-request-id`, whose value is
+the handle (`_id`), and `data-oob-match-number`, whose value is the number. A
+reader that received the link from the person's activation on that page
+(VTI-LNK-056), whose recorded origin matched the portal's origin
+(VTI-LNK-105), MAY read the number from the element of that page whose
+`data-oob-request-id` equals the link's handle, and enter it for the person.
+It MUST read it only from the page the link was activated on, only for that
+handle, and only while the page's origin is still the one it recorded, and
+MUST NOT send anything to the page. When it does not find the number, or when
+a signed reply from the service gives a name that differs from its records
+(VTI-LNK-104), it MUST ask the person to enter the number.
+
+*Rationale for VTI-LNK-106 and VTI-LNK-107.* On a phone, a reader cannot tell
+which page showed a code, so the person's tap on Continue and the number they
+type are what tie the exchange to them and to a screen they can see. The
+number answers two attacks: a code relayed from an attacker's browser, and a
+code sent by email or chat to someone with no screen showing a number. A
+reader that saw the activation itself has already refused both under
+VTI-LNK-105: a relayed page or a mailed link is not on the portal's origin.
+What is left for the person to decide is which identity to use, when there is
+a choice, and whether to approve the sign-in once the service has said where
+the request came from. That decision, and the user verification that goes
+with it, are not shortened. The number is still entered and still checked by
+the service; the reader enters it from the screen the person clicked. A
+reader that reads it from any other page, or for another handle, could be fed
+a number for a request the person never saw, which is why the rule binds it to
+the activation's page, origin and handle.
+
 *Note on the size budget.* With the path form on `link.trustoverip.org/t`, the
 parts of a `sign-in` link other than `_from` and `_id` take 86 bytes. At level
 M, VTI-LNK-081 leaves 165 bytes for `_from` and `_id` together: `_from` at most
@@ -635,7 +683,8 @@ and are not part of this revision. The first reader whose signed first request
 the service accepts locks the request to itself; every later claim for the same
 handle gets `alreadyClaimed`. Whatever the tasks, VTI-LNK-050 to VTI-LNK-057
 order them: the reader shows the service from its own records, the person
-continues, and only then is anything signed sent.
+continues (or, under VTI-LNK-106, has activated the code on the portal), and
+only then is anything signed sent.
 
 #### The `vta-claim` flow
 
