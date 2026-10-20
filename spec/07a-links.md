@@ -650,6 +650,9 @@ reader that received the link from the person's activation on that page
 (VTI-LNK-056), whose recorded origin matched the portal's origin
 (VTI-LNK-105), MAY read the number from the element of that page whose
 `data-oob-request-id` equals the link's handle, and enter it for the person.
+An element inside an open shadow root that contains the activated link is of
+that page; a portal that draws its sign-in box in a closed shadow root hides
+the number from the reader, and the person enters it.
 It MUST read it only from the page the link was activated on, only for that
 handle, and only while the page's origin is still the one it recorded, and
 MUST NOT send anything to the page. When it does not find the number, or when
