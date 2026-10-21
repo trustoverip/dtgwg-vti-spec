@@ -8,7 +8,8 @@ them, the roles a node's keys play, and the lifecycle of all three.
 ### Identifier methods
 
 **VTI-KEY-001** — The durable identity of a VTA, a VTC or a host service MUST
-be a `did:webvh` identifier.
+be a `did:webvh` identifier, or a `did:scid:vh:1` identifier whose source is a
+`did:webvh` log (VTI-KEY-160). `did:webvh` is the default (VTI-KEY-165).
 
 **VTI-KEY-002** — A client bootstrap identity MUST be a `did:key` identifier, as
 required by VTI-CLT-003.
@@ -29,6 +30,108 @@ bootstrap identity is minted before the client has standing, network access or
 anywhere to publish, so it has to be derivable from a key and nothing else.
 VTI-KEY-004 states what the durable position depends on, so that a future
 method can be evaluated against the requirement rather than against the name.
+
+### The `did:scid` form of a `did:webvh` identifier
+
+`did:scid` [DID-SCID] is a metamethod: a `did:scid` identifier is a
+self-certifying identifier of a source method, and its `src` parameter says
+where the source method publishes its verification metadata. For the `vh`
+format, the source method is `did:webvh`, so a `did:scid:vh:1` identity is
+verified by the same log as a `did:webvh` one, but is not bound to the host
+that serves it: the log can move and the identifier stays the same. This
+specification admits only that format to the durable position; other
+`did:scid` formats are OPTIONAL to resolve and are not durable identities.
+
+**VTI-KEY-160** — A `did:scid:vh:1` identity is the DID `did:scid:vh:1:<scid>`.
+The `src` query parameter is a locator, not part of the identity:
+`did:scid:vh:1:<scid>?src=<source>` says that the identity's log is published
+as `did:webvh:<scid>:<tail>`, where `<tail>` is `<source>` with each `/`
+replaced by `:`. A producer MUST write `<source>` as `<tail>` with each `:`
+replaced by `/`, keeping the percent-encoding of the `did:webvh` form (a port
+is `%3A<port>`). A reader MUST also accept a `<source>` with an `https://`
+scheme, a trailing `/` or a literal `:` before a port, and normalise it to
+`<tail>`. A node MUST compare `did:scid` identities by DID, with any `src`
+removed: two DID URLs that differ only in `src` name the same subject.
+
+**VTI-KEY-161** — A node MUST resolve a `did:scid:vh:1` identity by deriving
+the `did:webvh` form from a source, resolving it, and verifying the log as
+`did:webvh` requires. The source is the `src` of the DID URL being resolved
+where it has one, and otherwise one the node already holds for that SCID
+(VTI-KEY-162); a node holding none MUST fail resolution without caching the
+failure as a statement that the identifier does not exist (VTI-KEY-061). The
+resolved document MUST be the identity's own: its `id` is the `did:scid` DID;
+every reference in it to the `did:webvh` DID, with or without a fragment, is
+the same reference under the `did:scid` DID; and its `alsoKnownAs` lists the
+`did:webvh` DID and the `did:scid` DID URL with the `src` it was resolved
+through.
+
+**VTI-KEY-162** — A node SHOULD keep, for each SCID, the source of its last
+successful resolution, and use it to resolve the DID when no `src` is given. A
+source is untrusted: the SCID makes the log verifiable wherever it is fetched
+from, but a source can serve an older version of it. A node MUST NOT accept,
+for a SCID, a log whose latest version precedes one it has already verified for
+that SCID, whatever the source.
+
+**VTI-KEY-163** — A node presenting a `did:scid` identity MUST give it out as a
+DID URL with `src` wherever the recipient may not hold a source for it: in
+trigger links, invitations, credentials it issues and the first message it
+sends a peer. The identity's document lists its key and service references
+under the DID (`did:scid:vh:1:<scid>#<fragment>`). A reference the recipient
+uses to resolve the key, such as a DIDComm `skid` or a proof's
+`verificationMethod`, MAY carry `src` before the fragment
+(`did:scid:vh:1:<scid>?src=<source>#<fragment>`), and so MAY a field that
+names the sender, such as a DIDComm `from`. A recipient MUST dereference such a
+reference by DID and fragment, ignoring `src`, and MUST match a reference to its
+sender or issuer by DID, ignoring `src`; it MUST NOT ignore any other query
+parameter on that ground. Where a format binds a key reference to a named
+issuer by exact string, as a Trust Task binds its proof's `verificationMethod`
+to its `issuer`, a producer MUST write the two in the same form.
+
+**VTI-KEY-164** — A node MUST use a `did:scid` identity as itself: it MUST
+address, encrypt to, verify, authorise and record the subject under the
+`did:scid` DID, and MUST NOT substitute the `did:webvh` form, or the reverse.
+The two forms are distinct identifiers. A node MUST NOT treat them as one
+subject unless the `did:webvh` form's document lists the `did:scid` form in
+`alsoKnownAs` (VTI-KEY-166), and MAY where it does, for example to carry an
+access control entry or a membership from one form to the other.
+
+**VTI-KEY-165** — A node that creates durable identities MUST create them as
+`did:webvh` logs, and MUST present each new identity in the `did:webvh` form
+unless the request, or the configuration of VTI-VTA-034 or VTI-VTC-004, selects
+the `did:scid` form. The log is the same either way; the form decides which
+identity the node gives out.
+
+**VTI-KEY-166** — When it creates a `did:webvh` log, a node MUST, unless the
+request or its configuration says otherwise, list the `did:scid` DID URL of the
+new log, with its `src`, in the first version's `alsoKnownAs`. It MUST list it
+where the identity is presented in the `did:scid` form, and MUST NOT offer an
+option to leave it out in that case.
+
+*Rationale for VTI-KEY-160 to VTI-KEY-166.* The `did:scid` form costs the
+durable position nothing it depends on: VTI-KEY-004's four properties come
+from the `did:webvh` log. What it adds is an identity that does not name its
+host. A `did:webvh` identifier changes when its log moves; a `did:scid`
+identity keeps its DID and changes only its `src`, which is why the DID and
+not the DID URL is the identity (VTI-KEY-160), and why the resolved document
+must be the identity's own (VTI-KEY-161): DID Core requires a document's `id`
+to be the DID resolved, and a party verifying a key under the `did:scid` DID
+must find it there.
+
+Moving `src` out of the identity is what makes sources a concern (VTI-KEY-162).
+Forgery is not one, because the SCID commits to the log's first entry and every
+later entry is signed under keys that entry commits to. Replay of an old
+version is, because any host can serve a copy of a log it once fetched.
+
+VTI-KEY-164 keeps the two forms apart because a subject that chose one has not
+necessarily chosen the other. The alias in `alsoKnownAs` is the controller
+saying that it has, which is why it is listed by default (VTI-KEY-166): an
+identity created without it cannot later be recognised in the other form
+until it publishes a new version.
+
+*Note.* `did:webvh` stays the default form presented, so a deployment that
+configures nothing presents exactly what it did before. The new requirements
+on such a deployment are to resolve the `did:scid` form (VTI-KEY-161, VTI-KEY-162)
+and to accept a peer that presents it.
 
 ### Correlation and identifier reuse
 
@@ -376,7 +479,7 @@ listed in a relationship its role does not permit.
 
 **VTI-KEY-093** — `keyRoles` MUST NOT list the `update` role. The update
 authority is stated only where the identifier method states it — for
-`did:webvh`, the log's update keys — and an update key MUST NOT appear as a
+`did:webvh` and its `did:scid` form, the log's update keys — and an update key MUST NOT appear as a
 verification method in the document.
 
 **VTI-KEY-094** — A verifier MUST select a node's key by role, through

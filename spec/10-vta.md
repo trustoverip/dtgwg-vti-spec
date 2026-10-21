@@ -142,6 +142,33 @@ sealed for them. The second channel is what closes that, and it is required
 rather than recommended because the relaying party is precisely the party in a
 position to substitute.
 
+**VTI-VTA-034** — A VTA MUST let its operator configure the identifier form in
+which it presents the durable identities it creates (VTI-KEY-165): `did:webvh`
+or the `did:scid:vh:1` form. The default MUST be `did:webvh`. A request to
+create an identity MAY name a form, and a VTA MUST then use that form in
+place of any configured one.
+
+**VTI-VTA-035** — A VTA MUST let its operator configure whether a new
+`did:webvh` log lists its `did:scid` form in `alsoKnownAs` (VTI-KEY-166), and
+the default MUST be to list it. A request MAY override the configuration,
+except where the identity is presented in the `did:scid` form.
+
+**VTI-VTA-036** — A VTA MUST apply, for each identity it creates, the first of
+these that states a value: the request; the configuration of the VTC the
+identity is created for, where there is one (VTI-VTC-004); the VTA's own
+configuration; the defaults of VTI-VTA-034 and VTI-VTA-035. It MUST report in
+its response to the request the form it presented and whether it listed the
+alias.
+
+*Rationale for VTI-VTA-034 to VTI-VTA-036.* The VTA is the only node that
+creates durable identities (VTI-VTA-020), so it is the one place where a
+deployment's choice of form takes effect. The choice is configuration rather
+than a fixed rule because the forms trade off differently by deployment: the
+`did:webvh` form names its host and is what every existing peer expects, while
+the `did:scid` form survives a move of the log. Reporting what was applied lets
+a caller that named nothing find out what it got without resolving the new
+identity.
+
 ### Delegation to software agents
 
 **VTI-VTA-040** — A software agent acting for the principal MUST have its own

@@ -331,7 +331,8 @@ reader MUST show the person who the contact claims to be, marked unverified,
 and, except as VTI-LNK-051 allows, MUST wait for the person to continue. For a contact with a domain, the
 reader shows the domain, followed by the path where the identifier has one (for
 example `dids.example.org/farm-auth` for
-`did:webvh:<SCID>:dids.example.org:farm-auth`). For one without, it shows its own label for that
+`did:webvh:<SCID>:dids.example.org:farm-auth`, and the source for
+`did:scid:vh:1:<SCID>?src=dids.example.org/farm-auth`). For one without, it shows its own label for that
 contact if it has one, and otherwise says the contact has no domain to show.
 
 **VTI-LNK-051** — For a flow that acts only for contacts already in the reader's
@@ -349,7 +350,9 @@ makes after the person continues.
 
 **VTI-LNK-052** — A reader MUST resolve the contact's DID document and verify it
 before sending anything. Each method defines what verification means: for
-`did:webvh`, the log and its SCID chain verify; for `did:webs`, the KERI key
+`did:webvh`, the log and its SCID chain verify; for `did:scid:vh:1`, the
+log verifies as for `did:webvh`, through the source the contact names
+(VTI-KEY-161); for `did:webs`, the KERI key
 event log verifies; for a ledger method, the document matches the ledger's
 state. If it cannot, it MUST stop with `did-document-unverified` (outcome
 `invalid`) and send nothing. After verification it MUST show the verified
@@ -415,7 +418,9 @@ flows that are not Trust Tasks, such as a DIDComm or OpenID exchange.
 
 **VTI-LNK-060** — The host rules apply to the link host, to the host of a
 contact that has one, to the host a DID endpoint names (for `did:web` and
-`did:webvh`, the domain segment after percent-decoding, so that
+`did:webvh`, the domain segment after percent-decoding, and for a
+`did:scid:vh:1` identifier, the host of its `src` parameter after
+percent-decoding, so that
 `did:web:localhost` and `did:web:example.com%3A8443` both fail), and to every
 endpoint host a reader contacts. A host MUST
 be a DNS name of at least two labels and at most 253 characters, with no
@@ -790,7 +795,10 @@ public identity, and it cannot be updated where others can see the change.
 **VTI-LNK-119** — Route A, **host-named**: the contact's method names, in the
 identifier, the host that serves its document, and resolution confirms that
 the document came from that host; for example `did:webvh`, `did:web` and
-`did:webs`. A contact that meets VTI-LNK-118 and qualifies through route A
+`did:webs`, and a `did:scid:vh:1` DID URL with a `src` parameter, whose host
+is the host of `src` (VTI-KEY-160). A producer MUST give a `did:scid:vh:1`
+contact with its `src` (VTI-KEY-163). A contact without `src` names no host, so
+route A cannot qualify it; a reader MUST refuse it with `from-not-allowed`. A contact that meets VTI-LNK-118 and qualifies through route A
 needs no further check.
 
 **VTI-LNK-120** — Route B, **domain-linked**: for a contact of any method that
@@ -897,9 +905,11 @@ https://link.trustoverip.org/t#_from=did:webvh:QmPEQVM1JPTyrvEgBcDXwjK4TeyLGSX1P
 | `_from=` (empty) | `bad-from` (`invalid`) |
 | `_from=did:key:z6Mk…` | `from-not-allowed` (`invalid`) for `sign-in` |
 | `_from=did:peer:2…` | `from-not-allowed` (VTI-LNK-118): a peer DID is never a contact, by either route |
-| `_from=did:scid:vh:1:Qm…`, for a reader that supports `did:scid`, whose portal's origin publishes a DID configuration linking that DID | accepted; the contact qualifies through route B after the person continues |
-| `_from=did:scid:vh:1:Qm…`, for a reader that supports `did:scid`, whose portal's origin publishes no DID configuration, or one that does not link that DID | `domain-not-linked` (`invalid`) after the person continues; nothing is sent to the contact's services |
-| `_from=did:scid:vh:1:Qm…`, for a reader with no `did:scid` resolver | `unsupported-vid` (`update`) |
+| `_from=did:scid:vh:1:Qm…?src=dids.example.org/farm-auth`, for a reader that supports `did:scid` | accepted; the contact qualifies through route A, the reader shows `dids.example.org/farm-auth`, and records the contact as `did:scid:vh:1:Qm…` |
+| `_from=did:scid:vh:1:Qm…?src=dids.example.org/farm-auth`, whose log at that source is older than one the reader has verified for that SCID | `did-document-unverified` (`invalid`) (VTI-KEY-162); nothing is sent to the contact's services |
+| `_from=did:scid:vh:1:Qm…?src=localhost%3A8000` | refused at resolution: the host rules forbid `localhost` and a port |
+| `_from=did:scid:vh:1:Qm…` (no `src`) | `from-not-allowed` (`invalid`): it names no host, so no route can qualify it |
+| `_from=did:scid:vh:1:Qm…?src=dids.example.org`, for a reader with no `did:scid` resolver | `unsupported-vid` (`update`) |
 | `_from=did:web:example.com%253A8443` | parses as `did:web:example.com%3A8443`, then refused at resolution: the host rules forbid a port |
 | The reader's clock 59 seconds past `_exp` | accepted |
 | The reader's clock 60 seconds past `_exp` | `expired` |
