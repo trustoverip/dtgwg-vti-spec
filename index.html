@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-10-22T00:17:52.677Z"
+      "lastUpdated": "2026-10-22T18:48:07.862Z"
     }
   ]
 };</script>
@@ -1968,12 +1968,18 @@ every reference in it to the <code>did:webvh</code> DID, with or without a fragm
 the same reference under the <code>did:scid</code> DID; and its <code>alsoKnownAs</code> lists the
 <code>did:webvh</code> DID and the <code>did:scid</code> DID URL with the <code>src</code> it was resolved
 through.</p>
-<p><strong>VTI-KEY-162</strong> — A node SHOULD keep, for each SCID, the source of its last
-successful resolution, and use it to resolve the DID when no <code>src</code> is given. A
-source is untrusted: the SCID makes the log verifiable wherever it is fetched
-from, but a source can serve an older version of it. A node MUST NOT accept,
-for a SCID, a log whose latest version precedes one it has already verified for
-that SCID, whatever the source.</p>
+<p><strong>VTI-KEY-162</strong> — A node SHOULD keep, for each SCID, the sources it has
+verified the identity’s log at, and use them to resolve the DID when no <code>src</code>
+is given. A source is untrusted: the SCID makes the log verifiable wherever it
+is fetched from, but a source can serve an older version of it. A node MUST
+NOT accept, for a SCID, a log whose latest version precedes one it has already
+verified for that SCID, whatever the source. When it resolves a DID URL whose
+<code>src</code> is not one it holds for that identity, a node that holds other sources
+MUST also check what they serve, and MUST refuse the presented one if they
+serve a later version. A node MUST persist the sources and latest verified
+version of every <code>did:scid</code> identity it authorises — an access control
+entry’s subject, an owner, a member, an administrator — so that a restart does
+not reset what it refuses.</p>
 <p><strong>VTI-KEY-163</strong> — A node presenting a <code>did:scid</code> identity MUST give it out as a
 DID URL with <code>src</code> wherever the recipient may not hold a source for it: in
 trigger links, invitations, credentials it issues and the first message it
@@ -2016,8 +2022,15 @@ to be the DID resolved, and a party verifying a key under the <code>did:scid</co
 must find it there.</p>
 <p>Moving <code>src</code> out of the identity is what makes sources a concern (VTI-KEY-162).
 Forgery is not one, because the SCID commits to the log’s first entry and every
-later entry is signed under keys that entry commits to. Replay of an old
-version is, because any host can serve a copy of a log it once fetched.</p>
+later entry is signed under keys that entry commits to, and <code>did:webvh</code>
+verification binds each entry to the host its own identifier names, so a host
+the log never named cannot serve it. Replay of an old version is: a portable
+log that has moved still names its former host in its early entries, and
+whoever holds that host later can serve the log as it stood before the move,
+with keys its controller has since rotated away. Under <code>did:webvh</code> that replay
+yields a different identifier; under <code>did:scid</code> it yields the same identity,
+which is why VTI-KEY-162 checks a new source against the known ones and makes
+the floor durable for every identity a node grants authority to.</p>
 <p>VTI-KEY-164 keeps the two forms apart because a subject that chose one has not
 necessarily chosen the other. The alias in <code>alsoKnownAs</code> is the controller
 saying that it has, which is why it is listed by default (VTI-KEY-166): an
@@ -9040,8 +9053,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-10-22T00:17:52.051Z">
-                            Generated: 2026-10-22T00:17:52.051Z
+                        <time class="timestamp" datetime="2026-10-22T18:48:07.215Z">
+                            Generated: 2026-10-22T18:48:07.215Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
