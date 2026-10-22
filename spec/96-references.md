@@ -23,6 +23,10 @@ their current versions before this specification leaves Working Draft.
   identities by VTI-KEY-002.
 - [DID-WEBVH] *The did:webvh Method* — the method required for durable node
   identities by VTI-KEY-001.
+- [DID-SCID] *DID SCID Method Specification*, Working Draft 03, Trust over IP
+  Foundation — the `did:scid` metamethod, whose `vh` format is the alternative
+  form of a durable node identity under VTI-KEY-001 and VTI-KEY-160.
+  <https://lf-toip.atlassian.net/wiki/spaces/HOME/pages/88572360/DID+SCID+Method+Specification>
 - [DID-CONFIG] *Well-Known DID Configuration*, v1.0, Decentralized Identity
   Foundation — the DID configuration resource and Domain Linkage Credentials
   for route B of the contact rule (VTI-LNK-120, VTI-LNK-121).

@@ -42,6 +42,13 @@ in order to operate.
 **VTI-VTC-003** — A VTC's identifier MUST be resolvable by a party with no prior
 relationship to the community, using a method satisfying VTI-KEY-001.
 
+**VTI-VTC-004** — A VTC MAY state the identifier form, and whether to list the
+`did:scid` alias, that its VTA applies to identities created for the community
+(VTI-VTA-036). A VTC that states neither inherits its VTA's configuration. A
+VTC MUST accept a member, an administrator or a peer that presents a
+`did:webvh` or a `did:scid:vh:1` identity, whatever form it states for itself,
+and MUST record each under the identity it presented (VTI-KEY-164).
+
 ### Which authority lives where
 
 **VTI-VTC-010** — A VTC MUST NOT create trust contexts and MUST NOT derive keys.

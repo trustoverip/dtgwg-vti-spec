@@ -166,7 +166,7 @@ A representative entry:
   "expiresAt": "2026-10-10T00:00:00Z",
   "label": "summariser agent, laptop",
   "createdAt": "2026-09-10T09:14:00Z",
-  "createdBy": "did:webvh:example.com:acme-admin",
+  "createdBy": "did:webvh:{SCID}:example.com:acme-admin",
   "ext": {}
 }
 ```
