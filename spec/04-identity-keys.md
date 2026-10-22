@@ -65,12 +65,18 @@ the same reference under the `did:scid` DID; and its `alsoKnownAs` lists the
 `did:webvh` DID and the `did:scid` DID URL with the `src` it was resolved
 through.
 
-**VTI-KEY-162** — A node SHOULD keep, for each SCID, the source of its last
-successful resolution, and use it to resolve the DID when no `src` is given. A
-source is untrusted: the SCID makes the log verifiable wherever it is fetched
-from, but a source can serve an older version of it. A node MUST NOT accept,
-for a SCID, a log whose latest version precedes one it has already verified for
-that SCID, whatever the source.
+**VTI-KEY-162** — A node SHOULD keep, for each SCID, the sources it has
+verified the identity's log at, and use them to resolve the DID when no `src`
+is given. A source is untrusted: the SCID makes the log verifiable wherever it
+is fetched from, but a source can serve an older version of it. A node MUST
+NOT accept, for a SCID, a log whose latest version precedes one it has already
+verified for that SCID, whatever the source. When it resolves a DID URL whose
+`src` is not one it holds for that identity, a node that holds other sources
+MUST also check what they serve, and MUST refuse the presented one if they
+serve a later version. A node MUST persist the sources and latest verified
+version of every `did:scid` identity it authorises — an access control
+entry's subject, an owner, a member, an administrator — so that a restart does
+not reset what it refuses.
 
 **VTI-KEY-163** — A node presenting a `did:scid` identity MUST give it out as a
 DID URL with `src` wherever the recipient may not hold a source for it: in
@@ -119,8 +125,15 @@ must find it there.
 
 Moving `src` out of the identity is what makes sources a concern (VTI-KEY-162).
 Forgery is not one, because the SCID commits to the log's first entry and every
-later entry is signed under keys that entry commits to. Replay of an old
-version is, because any host can serve a copy of a log it once fetched.
+later entry is signed under keys that entry commits to, and `did:webvh`
+verification binds each entry to the host its own identifier names, so a host
+the log never named cannot serve it. Replay of an old version is: a portable
+log that has moved still names its former host in its early entries, and
+whoever holds that host later can serve the log as it stood before the move,
+with keys its controller has since rotated away. Under `did:webvh` that replay
+yields a different identifier; under `did:scid` it yields the same identity,
+which is why VTI-KEY-162 checks a new source against the known ones and makes
+the floor durable for every identity a node grants authority to.
 
 VTI-KEY-164 keeps the two forms apart because a subject that chose one has not
 necessarily chosen the other. The alias in `alsoKnownAs` is the controller
