@@ -101,6 +101,21 @@ requirements of its own; each item names the requirements that carry it.
     VTI-KEY-112, VTI-KEY-116); a lost VTA is recovered through the committed
     next update key and re-issuance (VTI-KEY-117), so there is no second copy
     of the community's seal wherever backups happen to be kept.
+24. **One source is a single point of failure, not a design.** A durable
+    identifier whose log lives at one host or one domain loses resolvability
+    the moment that host or domain does, for reasons that have nothing to do
+    with the identifier itself (VTI-KEY-064). Reading that unavailability as
+    absence or deactivation converts an outage into a wrong answer
+    (VTI-KEY-065).
+25. **More sources remove one single point of failure and open another.**
+    Publishing a log at more than one source defeats an outage, but a source
+    an attacker controls or can substitute for can serve a genuine, stale copy
+    once the real one is taken down. A resolver that has seen the identifier
+    before refuses to go backward (VTI-KEY-066); sources that fork are believed
+    on nothing (VTI-KEY-067); and a resolver seeing an identifier for the first
+    time from a single source has no defence but the freshness bound it
+    applies, which is why the rule does not demand a second source and so does
+    not punish the publisher who provided one (VTI-KEY-067, VTI-KEY-162).
 
 ## Privacy Considerations
 
