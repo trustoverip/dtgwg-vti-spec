@@ -252,6 +252,58 @@ subject can be reached.
 **VTI-KEY-051** — A peer MUST NOT assume a single transport, and MUST select
 from what the document offers.
 
+**VTI-KEY-052** — An identifier document MAY carry a reference to the
+governance framework applicable to its subject, as a service whose `type` is
+`GovernanceFramework`, whose `serviceEndpoint` is the URI of the framework's
+primary document as [TOIP-GOV] defines that term, and which carries two
+further members: `version`, a string holding the framework's own version
+label, and `digestMultibase`, the multibase-encoded multihash of the primary
+document's bytes, in the `DigestMultibase` form [TRUST-TASKS] defines. All
+three members are REQUIRED where the service is present. A consumer that
+fetches the primary document MUST compute the digest of the bytes it received
+and compare it with `digestMultibase`; where the two differ, the outcome MUST
+be indeterminate under VTI-CMP-080 — not the document's content, and not a
+failure.
+
+```json
+{
+  "id": "#governance",
+  "type": "GovernanceFramework",
+  "serviceEndpoint": "https://community.example/governance/framework-v2.pdf",
+  "version": "2.0",
+  "digestMultibase": "zQmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"
+}
+```
+
+*Rationale.* This is a MAY here because not every durable identifier has a
+governance framework behind it. Where one does, the requirement is a mechanism
+— a place to point — and not an opinion about what governance frameworks
+contain; that is out of this specification's scope, as stated in the
+Introduction. [TOIP-GOV] supplies the one term this chapter borrows: a
+governance framework is a set of documents of which one, the primary document,
+names the rest, so the reference points at that one and the framework's own
+structure does the rest. A service is the document's existing place for a
+thing a peer may need to find — the transports of VTI-KEY-050 are carried the
+same way — so a peer that knows to look for one already knows to look for the
+other, and naming the `type` and the members is what makes the requirement
+testable: a producer that omits the digest has not met it, and a consumer that
+finds the service knows what each member is without a second discovery
+mechanism. The digest is not optional: a version label identifies which
+release is meant, but only a digest lets a consumer detect that the content
+served under that label has changed since it was pinned — without it,
+VTI-VTC-034's statement that resolving the reference establishes what the
+document states would not hold. It is taken over the document's bytes rather
+than a canonical form because a primary document is an opaque artefact — a
+page, a PDF — and not a JSON document; and it is a multihash in multibase so
+that the algorithm and the encoding travel with the value, which is why the
+shape is the one [TRUST-TASKS] already defines rather than one minted here. A
+mismatch is indeterminate rather than a failure because it says only that the
+document served is not the one pinned: a new release not yet reflected in the
+identifier document and a substitution look the same from the consumer's
+side, and neither is evidence about the subject (VTI-CMP-081). Which subjects
+are required to carry the reference is a node specification's decision, not
+this chapter's: see VTI-VTC-033 and VTI-VTN-006.
+
 ### Resolution, caching and deactivation
 
 **VTI-KEY-060** — A resolver MUST respect the validity period stated by a

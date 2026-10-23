@@ -82,6 +82,24 @@ model.
 **VTI-VTN-005** — An administrative action on the network MUST be subject to the
 approval requirements of the Approvals, Consent and Step-Up chapter.
 
+**VTI-VTN-006** — A VTN's identifier document MUST carry the reference to the
+governance framework VTI-VTN-002 requires of it, as VTI-KEY-052 requires.
+
+**VTI-VTN-007** — A consumer MUST NOT treat a resolution of the reference
+required by VTI-VTN-006 as establishing that the referenced framework currently
+governs the network. Resolving it establishes that the primary document exists
+and, where its digest matches as VTI-KEY-052 requires, what that document
+states, and nothing further. See VTI-CMP-032 and VTI-CMP-040.
+
+*Rationale for VTI-VTN-006 and VTI-VTN-007.* Unlike a VTC's governance
+framework, a VTN's is not optional — VTI-VTN-002 already requires one, so
+VTI-VTN-006 carries no equivalent condition to VTI-VTC-033's: a VTN always has
+a framework to point to. The two requirements otherwise track VTI-VTC-033 and
+VTI-VTC-034 exactly, for the same reason: a criteria-for-listing document
+nobody can find or version-check is unenforceable regardless of which node
+type publishes it, and finding it is still not the same question as whether it
+currently applies.
+
 *Rationale for VTI-VTN-002.* A curated set is a published assertion about other
 parties, made without their agreement. The owner is what makes such an
 assertion contestable: a list nobody owns is a list nobody can be asked to
