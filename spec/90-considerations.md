@@ -101,6 +101,21 @@ requirements of its own; each item names the requirements that carry it.
     VTI-KEY-112, VTI-KEY-116); a lost VTA is recovered through the committed
     next update key and re-issuance (VTI-KEY-117), so there is no second copy
     of the community's seal wherever backups happen to be kept.
+24. **One source is a single point of failure, not a design.** A durable
+    identifier whose log lives at one host or one domain loses resolvability
+    the moment that host or domain does, for reasons that have nothing to do
+    with the identifier itself (VTI-KEY-064). Reading that unavailability as
+    absence or deactivation converts an outage into a wrong answer
+    (VTI-KEY-065).
+25. **More sources remove one single point of failure and open another.**
+    Publishing a log at more than one source defeats an outage, but a source
+    an attacker controls or can substitute for can serve a genuine, stale copy
+    once the real one is taken down. A resolver that has seen the identifier
+    before refuses to go backward (VTI-KEY-066); sources that fork are believed
+    on nothing (VTI-KEY-067); and a resolver seeing an identifier for the first
+    time from a single source has no defence but the freshness bound it
+    applies, which is why the rule does not demand a second source and so does
+    not punish the publisher who provided one (VTI-KEY-067, VTI-KEY-162).
 
 ## Privacy Considerations
 
@@ -156,6 +171,16 @@ This section is informative.
     partitions or identifies the membership (VTI-KEY-153). A message that need
     not be relied on by anyone else is better authenticated than signed, so
     that its recipient does not hold transferable proof of it (VTI-KEY-152).
+16. **Resolving a framework reference tells the framework's host who is
+    evaluating whom.** A fetch of the primary document VTI-KEY-052 points at
+    reaches the framework's host, which may not be the community, and comes
+    from whoever is deciding whether to rely on that community — so the host
+    learns which parties evaluate which community, and when, a correlator of
+    the kind VTI-CMP-062 names. A consumer should cache the document for as
+    long as its digest matches, and fetch it through the same channel it uses
+    for its other resolution rather than directly, so that the fetch is one
+    more of the requests that channel already carries (VTI-VTC-033,
+    VTI-VTN-006).
 
 ## Governance Considerations
 
@@ -178,6 +203,11 @@ This section is informative.
 6. **Ownership of a requirement is recorded, not assumed** (VTI-CMP-120,
    Appendix E). Where this specification is silent about who owns a decision,
    an implementation refuses rather than choosing (VTI-ACL-092).
+7. **A governance framework has to be findable to bind anyone** (VTI-VTC-033,
+   VTI-VTN-006). Finding it and it currently applying are different
+   questions: resolving the reference is not evidence that the referenced
+   framework still governs (VTI-VTC-034, VTI-VTN-007, VTI-CMP-032,
+   VTI-CMP-040).
 
 ## Internationalization Considerations
 
