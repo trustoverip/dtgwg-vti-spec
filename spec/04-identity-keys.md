@@ -334,6 +334,85 @@ timeout is evidence about the network and none at all about the identifier, so
 recording it as a fact about the identifier converts a transient condition into
 a durable wrong answer.
 
+**VTI-KEY-064** — The log underlying a durable identifier's verifiable history
+SHOULD be retrievable from more than one independently operated source. Where
+it is, the log SHOULD itself record the set of sources, so that a copy obtained
+from any one of them carries the whole set rather than only the source that
+served it. For `did:webvh` the recorded set is the log's `watchers` parameter
+[DID-WEBVH].
+
+**VTI-KEY-065** — A resolver MUST treat the unavailability of every source it
+knows for a durable identifier's log as indeterminate under VTI-CMP-080, and
+MUST NOT treat it as evidence that the identifier does not exist or has been
+deactivated.
+
+**VTI-KEY-066** — A resolver MUST NOT accept, for a durable identifier, a log
+whose latest version precedes one it has already verified for that identifier,
+whatever source serves it. A node MUST persist the latest verified version of
+every durable identifier it authorises — an access control entry's subject, an
+owner, a member, an administrator — so that a restart does not reset what it
+refuses.
+
+**VTI-KEY-067** — Where the sources that answer for a durable identifier's log
+disagree — neither copy they serve is a prefix of the other — or where every
+answer precedes a version the resolver has already verified, the outcome MUST
+be indeterminate under VTI-CMP-080, not the state asserted by any one of them.
+Where the answers agree, a resolver MUST accept the latest version served; a
+single answering source that serves the latest version the resolver knows of,
+or a later one, is sufficient, and a resolver MUST NOT make an answer
+indeterminate for want of a second source. A consumer MUST apply a freshness
+bound to the result, as VTI-REG-011 requires of a registry answer. A resolver
+directed, for an identifier it has verified before, to a source it does not
+hold MUST also check what the sources it holds serve, and MUST refuse the
+directed source where they serve a later version.
+
+*Rationale for VTI-KEY-064 to VTI-KEY-067.* VTI-KEY-061 already separates a
+transport failure from an authoritative negative result for a single
+resolution attempt; VTI-KEY-065 extends the same separation to the case where
+the failure is total because every place the log was published is unreachable
+— a host taken down, a domain that stops resolving, a network that blocks it.
+The identifier's history does not depend on where a copy came from, only on
+whether it verifies against the identifier, and nothing about that
+verification depends on any one source being up. VTI-KEY-064 is a SHOULD
+because it is a publication practice this specification cannot enforce on a
+resolver's behalf — but a deployment that skips it is the one for which
+VTI-KEY-065 will be hardest to honour, since indeterminate is the only honest
+answer once the single source is gone. Recording the set in the log is what
+lets it travel: a resolver that obtained the log from one watcher learns the
+others from the copy itself.
+
+More than one source solves unavailability and opens a different failure: a
+party that can take down or block one source and control, or substitute for,
+another can serve a genuine, correctly signed, but stale copy of the log — one
+predating a rotation or deactivation the attacker would rather the resolver
+not see. VTI-KEY-066 closes this for a resolver that has seen the identifier
+before, the way a ratchet cannot be turned backward: an earlier state does not
+become current by being served again, however validly it verifies, and the
+floor is persisted for the identities a node has granted authority to because
+those are the ones a rollback would restore a retired key over. VTI-KEY-067
+states what the sources can establish between them: copies of one
+hash-chained log can differ only in length, so two that are not prefix-related
+are a fork — something only the update key could have produced, or a forgery
+— and no state asserted by either is the identifier's. These are the
+method-neutral rules of which VTI-KEY-162 is the `did:scid` instance, where
+moving the host out of the identity makes every source untrusted and the
+version floor the only defence; `did:webvh` names its host in the identifier,
+so a source other than the host is a watcher, but the rules are the same.
+
+What VTI-KEY-067 does not require is corroboration. A rule that made a single
+answer indeterminate whenever more than one source was known would penalise
+exactly the publisher who follows VTI-KEY-064: two sources with one down would
+be worse off than one source with it up. The takedown-plus-stale-mirror attack
+is a disagreement whenever an honest source still answers, and when none does,
+no rule about corroboration helps a resolver seeing the identifier for the
+first time — it has nothing to compare against. That case is not solved here,
+and this specification does not claim otherwise: a first-time resolver with
+one answering source cannot detect a rollback, and what bounds its exposure is
+the freshness bound it applies and VTI-KEY-066 from its next resolution on.
+VTI-KEY-001 scopes the durable position to a VTA, a VTC, or a host service;
+whichever of those controls a given identifier is the party VTI-KEY-064 asks
+to arrange publication at more than one source.
+
 ### Key roles
 
 A durable node identity signs two very different kinds of thing. Some of what
