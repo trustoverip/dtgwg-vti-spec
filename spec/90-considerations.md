@@ -156,6 +156,16 @@ This section is informative.
     partitions or identifies the membership (VTI-KEY-153). A message that need
     not be relied on by anyone else is better authenticated than signed, so
     that its recipient does not hold transferable proof of it (VTI-KEY-152).
+16. **Resolving a framework reference tells the framework's host who is
+    evaluating whom.** A fetch of the primary document VTI-KEY-052 points at
+    reaches the framework's host, which may not be the community, and comes
+    from whoever is deciding whether to rely on that community — so the host
+    learns which parties evaluate which community, and when, a correlator of
+    the kind VTI-CMP-062 names. A consumer should cache the document for as
+    long as its digest matches, and fetch it through the same channel it uses
+    for its other resolution rather than directly, so that the fetch is one
+    more of the requests that channel already carries (VTI-VTC-033,
+    VTI-VTN-006).
 
 ## Governance Considerations
 
@@ -178,6 +188,11 @@ This section is informative.
 6. **Ownership of a requirement is recorded, not assumed** (VTI-CMP-120,
    Appendix E). Where this specification is silent about who owns a decision,
    an implementation refuses rather than choosing (VTI-ACL-092).
+7. **A governance framework has to be findable to bind anyone** (VTI-VTC-033,
+   VTI-VTN-006). Finding it and it currently applying are different
+   questions: resolving the reference is not evidence that the referenced
+   framework still governs (VTI-VTC-034, VTI-VTN-007, VTI-CMP-032,
+   VTI-CMP-040).
 
 ## Internationalization Considerations
 
