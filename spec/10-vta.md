@@ -160,14 +160,24 @@ configuration; the defaults of VTI-VTA-034 and VTI-VTA-035. It MUST report in
 its response to the request the form it presented and whether it listed the
 alias.
 
-*Rationale for VTI-VTA-034 to VTI-VTA-036.* The VTA is the only node that
+**VTI-VTA-037** — A VTA MUST let a caller authorised to update a `did:webvh`
+identity it holds the update authority for list or remove that log's
+`did:scid` alias (VTI-KEY-167) by asking for it by name, without supplying the
+document or the DID URL, and MUST derive the DID URL itself. It MUST gate the
+request as it gates any other update to that identity, and MUST NOT publish a
+version that changes nothing.
+
+*Rationale for VTI-VTA-034 to VTI-VTA-037.* The VTA is the only node that
 creates durable identities (VTI-VTA-020), so it is the one place where a
 deployment's choice of form takes effect. The choice is configuration rather
 than a fixed rule because the forms trade off differently by deployment: the
 `did:webvh` form names its host and is what every existing peer expects, while
 the `did:scid` form survives a move of the log. Reporting what was applied lets
 a caller that named nothing find out what it got without resolving the new
-identity.
+identity. VTI-VTA-037 extends the choice to identities that already exist, and
+puts the derivation of the DID URL in the VTA because its `src` encoding is the
+part a client gets wrong; refusing an empty version matters because every
+version of a pre-rotation log moves its update key.
 
 ### Delegation to software agents
 
