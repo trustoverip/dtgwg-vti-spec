@@ -56,6 +56,10 @@ their current versions before this specification leaves Working Draft.
 
 **Credentials**
 
+- [CID] *Controlled Identifiers v1.0*, W3C — the `revoked` property of a
+  verification method, by which a revocation for compromise is recorded
+  (VTI-KEY-126). <https://www.w3.org/TR/cid-1.0/>
+
 - [VC-DATA-INTEGRITY] *Verifiable Credential Data Integrity 1.0* — proof sets,
   and the rule that a proof's verification method is listed in the
   relationship its proof purpose names (VTI-KEY-100, VTI-KEY-102).

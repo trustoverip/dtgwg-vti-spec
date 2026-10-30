@@ -137,7 +137,7 @@ where unresolved propositions are published with their status visible.
 | Chapter | State |
 |---|---|
 | Introduction and scope | **drafted** |
-| Terminology | **drafted** — 31 terms, cross-linked, none dangling |
+| Terminology | **drafted** — 39 terms, cross-linked, none dangling |
 | Architecture and conformance targets | **drafted** |
 | Trust contexts | **drafted** (`CTX`) |
 | Access control and authority | **drafted** (`ACL`) |
