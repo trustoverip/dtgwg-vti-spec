@@ -529,7 +529,12 @@ VTI-KEY-210 to VTI-KEY-221 bind wherever a threshold custodian is used.
 **VTI-KEY-196** — A VTC and a VTN SHOULD be at level 2 or higher, and SHOULD be at
 level 3 where the attestation artefacts it issues confer authority on others — a
 grant of the standing to vet or endorse, or a listing in a network. A VTA's own
-identity SHOULD be at level 2 or higher.
+identity SHOULD be at level 2 or higher. An implementation SHOULD give a new service
+DID, by default, the level this requirement recommends for the kind of service it
+is, so that an operator receives it without choosing, and MAY let the description
+of a kind of service — such as a DID template — set a floor below which that kind
+is not created. Neither the default nor the floor MAY exceed what the operator can
+raise: a level is always the operator's to increase.
 
 **VTI-KEY-197** — A service DID at level 2 or 3 MUST declare its level in its
 identifier document, in a top-level `keyAssurance` member: an object whose `level`
@@ -1574,16 +1579,21 @@ authorized by its current update authority, that:
    custody the new level tightens: from level 1, every role, with the routine
    update key and its committed successor; from level 2 to level 3, the
    `attestation` keys and the routine update key and its committed successor;
-2. removes every key it replaces from every verification relationship and from
-   `keyRoles` — retiring it, or, where it may have been exposed, revoking it under
-   VTI-KEY-126 with a compromise time under VTI-KEY-121;
+2. settles every key it replaces: it SHOULD retire it, removing it from every
+   verification relationship and from `keyRoles` with overlap (VTI-KEY-122); it
+   MUST revoke it instead, under VTI-KEY-126 with a compromise time under
+   VTI-KEY-121, where it may have been exposed; and, from level 1 only, it MAY
+   keep the single key as the `operational` key and no other;
 3. declares the new level in `keyAssurance` (VTI-KEY-197), and, at level 3, commits
    the recovery key (VTI-KEY-119) and is witnessed (VTI-KEY-129).
 
 No key MAY keep its place across a raise unless its custody already meets the new
 level, as the `operational` and `messaging` keys of a level-2 identity meet level 3.
-Key material MUST NOT move from one role to another in a raise (VTI-KEY-071): the
-single key of a level-1 identity becomes no role's key.
+Key material MUST NOT move from one role to another in a raise (VTI-KEY-071). The
+single key of a level-1 identity has been held by the service process, which is
+`operational` custody and no more: it MUST NOT become an `attestation` or `update`
+key, and whether it is kept as the `operational` key or retired, everything it signed
+before the raise remains an artefact of level 1 (VTI-KEY-201).
 
 **VTI-KEY-148** — A service DID's key assurance level MUST NOT be lowered. A VTA MUST
 refuse to publish a version that declares a lower level than the version before
