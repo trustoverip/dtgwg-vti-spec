@@ -49,6 +49,12 @@ VTC MUST accept a member, an administrator or a peer that presents a
 `did:webvh` or a `did:scid:vh:1` identity, whatever form it states for itself,
 and MUST record each under the identity it presented (VTI-KEY-164).
 
+**VTI-VTC-005** — A VTC MUST recognise a member, an administrator or a peer in
+either form of a `did:webvh` log as VTI-KEY-169 provides, and MUST let a member
+or an administrator migrate their standing to the other form of the same log on
+a request they sign in that form, as it lets them rotate their DID, without
+vetting them again. A VTC MUST NOT switch its own identity's form (VTI-KEY-168).
+
 ### Which authority lives where
 
 **VTI-VTC-010** — A VTC MUST NOT create trust contexts and MUST NOT derive keys.

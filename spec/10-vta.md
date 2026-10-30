@@ -167,7 +167,23 @@ document or the DID URL, and MUST derive the DID URL itself. It MUST gate the
 request as it gates any other update to that identity, and MUST NOT publish a
 version that changes nothing.
 
-*Rationale for VTI-VTA-034 to VTI-VTA-037.* The VTA is the only node that
+**VTI-VTA-038** — A VTA MUST let a caller authorised to update a `did:webvh`
+identity it holds switch the form in which the VTA presents it (VTI-KEY-168),
+in either direction, gated as any other update to that identity. It MUST
+refuse a switch to the `did:scid` form while the log's latest version does not
+list the alias, and MUST NOT list it as part of the switch; MUST refuse to
+switch the VTA's own identity or one it holds as another node's durable
+identity; and MUST refuse a switch to the form already presented. On a switch
+it MUST re-point to the new form every trust context whose primary DID is
+either form of the log, and MUST report the form it now presents.
+
+**VTI-VTA-039** — When it switches an identity, a VTA MUST migrate
+(VTI-KEY-169) the standing it has itself recorded for either form of that
+identity — access control entries, consent grants, passkeys and the holder of
+each credential it has issued — to the form it now presents, in the same
+change as the switch, and MUST end the sessions open under the former form.
+
+*Rationale for VTI-VTA-034 to VTI-VTA-039.* The VTA is the only node that
 creates durable identities (VTI-VTA-020), so it is the one place where a
 deployment's choice of form takes effect. The choice is configuration rather
 than a fixed rule because the forms trade off differently by deployment: the
@@ -177,7 +193,14 @@ a caller that named nothing find out what it got without resolving the new
 identity. VTI-VTA-037 extends the choice to identities that already exist, and
 puts the derivation of the DID URL in the VTA because its `src` encoding is the
 part a client gets wrong; refusing an empty version matters because every
-version of a pre-rotation log moves its update key.
+version of a pre-rotation log moves its update key. VTI-VTA-038 keeps the
+switch apart from listing the alias for the same reason: listing rotates the
+update key and is consented to as an update, while a switch publishes nothing,
+so a caller who wants both asks for each. The VTA is both the holder of the
+identity and the node that recorded its own standing for it, so VTI-VTA-039
+has it migrate that standing with the switch rather than leave its own records
+to recognition; the identity's peers carry theirs by recognition, or migrate
+them when the subject asks.
 
 ### Delegation to software agents
 
