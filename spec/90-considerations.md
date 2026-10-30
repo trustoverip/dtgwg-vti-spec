@@ -78,9 +78,10 @@ requirements of its own; each item names the requirements that carry it.
     may hold (VTI-KEY-080, VTI-KEY-081, VTI-KEY-111). Compromise of the exposed
     process then yields a caller of the signing oracle, not the community's
     seal — and a forged status list, which would silently un-revoke every
-    suspended member, stays out of reach (VTI-KEY-080). An identity that does
-    not separate the two is non-conformant and its credentials are refused; it
-    is replaced, not migrated (VTI-KEY-146 through VTI-KEY-148).
+    suspended member, stays out of reach (VTI-KEY-080). That separation is key
+    assurance level 2. A single-key identity is level 1: conformant, judged by
+    each verifier's policy, and raised in place when its operator wants more
+    (VTI-KEY-194, VTI-KEY-200, VTI-KEY-147).
 21. **A verifier selects keys by role, never by name.** A key in a relationship
     its role does not permit, or in no role at all, is refused
     (VTI-KEY-092, VTI-KEY-094), and every evaluated proof in a proof set must
@@ -96,11 +97,25 @@ requirements of its own; each item names the requirements that carry it.
     record, never from the artefact's own dates (VTI-KEY-131), and a key
     revoked for compromise is distinguished from one retired in the ordinary
     course (VTI-KEY-120).
-23. **The seal is not in the backup.** `attestation` and `update` keys are
-    generated rather than derived and are never backed up (VTI-KEY-110,
-    VTI-KEY-112, VTI-KEY-116); a lost VTA is recovered through the committed
-    next update key and re-issuance (VTI-KEY-117), so there is no second copy
-    of the community's seal wherever backups happen to be kept.
+23. **At level 3, the seal is not in the backup.** `attestation` and `update`
+    keys are generated rather than derived and are never backed up (VTI-KEY-110,
+    VTI-KEY-112, VTI-KEY-116); a lost VTA is recovered through a recovery key
+    held outside it and re-issuance (VTI-KEY-117), so there is no second copy
+    of the community's seal wherever backups happen to be kept. At level 2 the
+    backup holds the seal, which is what lets a restore bring it back; a
+    verifier's policy decides whether that is enough (VTI-KEY-200).
+24. **A level is a checked structure and an unchecked claim.** A verifier can
+    establish from the document and its history that roles are separated, that
+    a recovery commitment is named, carried forward and witnessed, and that the
+    level never fell; it cannot establish where any key is held (VTI-KEY-199
+    and the note after it). A level that falls is treated as a compromise.
+25. **A threshold custodian is only as many approvers as it has operators.**
+    FROST lets t of n VTAs sign without the key existing anywhere, and each
+    participant checks what it signs; one person approving at every
+    participant reduces that to one approver (VTI-KEY-211, VTI-KEY-214). A
+    nonce used twice yields the participant's share (VTI-KEY-215), and a
+    fallback that reconstructs the key when too few answer is the attack, not a
+    remedy (VTI-KEY-219, VTI-KEY-220).
 
 ## Privacy Considerations
 

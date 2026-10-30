@@ -103,6 +103,15 @@ their current versions before this specification leaves Working Draft.
   OPTIONAL algorithm under VTI-KEY-011, named in VTI-KEY-103 as the second
   member of a hybrid `attestation` proof set.
   <https://csrc.nist.gov/pubs/fips/204/final>
+- [RFC 9591] *The Flexible Round-Optimized Schnorr Threshold (FROST) Protocol
+  for Two-Round Schnorr Signatures* — FROST(Ed25519, SHA-512), the signing
+  protocol of a threshold custodian (VTI-KEY-210, VTI-KEY-215, VTI-KEY-216).
+  <https://datatracker.ietf.org/doc/html/rfc9591>
+- [FROST20] Komlo, C. and Goldberg, I., *FROST: Flexible Round-Optimized
+  Schnorr Threshold Signatures*, Selected Areas in Cryptography 2020 — the
+  distributed key generation, with proofs of knowledge, by which a threshold
+  custodian's key is made without a dealer (VTI-KEY-212).
+  <https://eprint.iacr.org/2020/852>
 - [RFC 9162] *Certificate Transparency Version 2.0* — the Merkle tree log, its
   signed heads, and its inclusion and consistency proofs, as the form of an
   election's board (VTI-VOT-050). <https://datatracker.ietf.org/doc/html/rfc9162>
