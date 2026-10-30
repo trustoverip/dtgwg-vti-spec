@@ -78,13 +78,14 @@ who is a member, in which role, endorsed for what, and whether any of that
 still holds — is signed by its VTA at the VTC's request, under a key the VTC
 never holds.
 
-**VTI-VTC-040** — A VTC's identity MUST bind its keys to key roles as required
-by VTI-KEY-070. Its `operational` and `messaging` keys MUST be derived by its
-VTA and delivered under VTI-VTA-030, consistently with VTI-VTC-010. A VTC
-identity that does not bind key roles is replaced by a new one, not migrated
-(VTI-KEY-146 through VTI-KEY-148).
+**VTI-VTC-040** — A VTC's identity SHOULD be at key assurance level 2 or higher
+(VTI-KEY-196), and at level 2 or 3 MUST bind its keys to key roles as required by
+VTI-KEY-070. Its `operational` and `messaging` keys MUST be derived by its VTA and
+delivered under VTI-VTA-030, consistently with VTI-VTC-010. A VTC identity at level
+1 is conformant, and is raised in place, not replaced (VTI-KEY-147).
 
-**VTI-VTC-041** — A VTC MUST NOT hold its `attestation` or `update` keys. It MUST
+**VTI-VTC-041** — A VTC whose identity is at level 2 or 3 MUST NOT hold its
+`attestation` or `update` keys. It MUST
 obtain every attestation artefact — membership, role and endorsement credentials,
 vetter grants and status lists (VTI-KEY-080) — by a signing request to its VTA,
 as required by VTI-KEY-111, and MUST NOT sign an attestation artefact itself.
@@ -94,8 +95,8 @@ MUST have its own identity and keys and MUST sign as itself, as required by
 VTI-KEY-076. It MUST be authorized by an access control entry or an attestation
 artefact of the VTC, and never by a key in the VTC's identifier document.
 
-**VTI-VTC-043** — A backup of a VTC MUST NOT contain an `attestation` or `update`
-key, as required by VTI-KEY-112.
+**VTI-VTC-043** — A backup of a VTC whose identity is at level 2 or 3 MUST NOT
+contain an `attestation` or `update` key, as required by VTI-KEY-112.
 
 *Rationale.* The paragraph that opens this chapter says a compromised secretary
 can wrongly admit, remove and recognise. VTI-VTC-041 narrows that further: a

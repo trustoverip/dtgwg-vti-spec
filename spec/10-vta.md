@@ -37,7 +37,8 @@ export MUST be gated by a capability distinct from the capability to use the key
 and MUST be audited.
 
 *Note.* No capability permits the export of an `attestation` or `update` key:
-VTI-KEY-110 and VTI-KEY-113 make them non-exportable at creation.
+VTI-KEY-110 and VTI-KEY-113 permit them to leave the VTA only in its own backup, at
+level 2, and never at level 3.
 
 *Rationale.* The distinction in VTI-VTA-002 is what makes revocation
 meaningful. A caller that holds a key retains it after its authority is
@@ -65,8 +66,9 @@ and a node MUST NOT satisfy a request of the second kind under a grant of the
 first.
 
 **VTI-VTA-008** — A VTA MUST hold the `attestation` and `update` keys of its own
-identity, and of every VTC and VTN provisioned on it, under VTI-KEY-110 and
-VTI-KEY-113, and MUST be the only party that signs with them.
+identity, and of every VTC and VTN provisioned on it, wherever that identity is at
+key assurance level 2 or 3, with the custody VTI-KEY-110 and VTI-KEY-113 require at
+its level, and MUST be the only party that signs with them.
 
 **VTI-VTA-009** — A VTA MUST sign with an `attestation` key only material it has
 parsed as an attestation artefact (VTI-KEY-080, VTI-KEY-082) of the identity whose
@@ -91,10 +93,13 @@ identifier means — are the keys this chapter's custody requirements exist for.
 Holding them in the VTA, rather than in the process that serves the
 community's traffic, means a compromise of that process yields a caller of this
 oracle, bounded by VTI-VTA-004 through VTI-VTA-007, rather than a holder of the
-key. The VTA's own identity follows the same key roles (VTI-KEY-070): it issues
+key. The VTA's own identity follows the same key roles (VTI-KEY-070) at level 2 and 3: it issues
 credentials under its `attestation` key and signs its own messages under its
-`operational` key, and a VTA identity that does not is replaced by a new one
-rather than migrated (VTI-KEY-146 through VTI-KEY-148).
+`operational` key. A VTA identity at level 1 is conformant, and is raised in place
+rather than replaced when its operator wants more (VTI-KEY-147). For a VTA's own
+identity, level 2 separates what the VTA signs by role without separating custody,
+since the VTA is its own service process; level 3 is what protects it against its
+own compromise or loss.
 
 ### Credentials held for the principal
 
@@ -204,11 +209,13 @@ is not a delegate; it is a copy.
 **VTI-VTA-050** — A backup MUST be encrypted, and MUST NOT be usable without
 material held separately from it.
 
-*Note.* `attestation` and `update` keys are generated rather than derived, and
-are never part of a backup (VTI-KEY-110, VTI-KEY-112, VTI-KEY-116). A VTA
-restored from a backup recovers the identities it serves through their
-committed next update keys, publishes new `attestation` keys, and re-issues
-(VTI-KEY-117).
+*Note.* What a backup restores depends on each identity's key assurance level
+(VTI-KEY-194). At level 1 and level 2, the identity's keys are in the VTA's backup
+(VTI-KEY-112), and a restore brings the identity back as it was. At level 3,
+`attestation` and `update` keys are generated rather than derived, and are never
+part of a backup (VTI-KEY-110, VTI-KEY-112, VTI-KEY-116): a VTA restored from a
+backup recovers those identities through their recovery keys, publishes new
+`attestation` keys, and re-issues (VTI-KEY-117).
 
 **VTI-VTA-051** — A restore MUST be recorded in the audit trail, and a node MUST
 be able to report that its current state derives from a restore and from when.

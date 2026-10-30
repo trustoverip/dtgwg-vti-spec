@@ -103,6 +103,10 @@ their current versions before this specification leaves Working Draft.
   OPTIONAL algorithm under VTI-KEY-011, named in VTI-KEY-103 as the second
   member of a hybrid `attestation` proof set.
   <https://csrc.nist.gov/pubs/fips/204/final>
+- [VC-COND] W3C Credentials Community Group, *Verifiable Conditions*, draft
+  community group report — the threshold-condition shape (`threshold`,
+  `conditionThreshold`) that a threshold custodian's declaration follows
+  (VTI-KEY-210). Informative. <https://w3c-ccg.github.io/verifiable-conditions/>
 - [RFC 9162] *Certificate Transparency Version 2.0* — the Merkle tree log, its
   signed heads, and its inclusion and consistency proofs, as the form of an
   election's board (VTI-VOT-050). <https://datatracker.ietf.org/doc/html/rfc9162>

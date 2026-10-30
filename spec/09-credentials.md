@@ -33,8 +33,10 @@ identifier, and a verifier MUST resolve it rather than relying on a name
 carried in the credential.
 
 *Note.* Where the issuer is a VTA, a VTC or a VTN, the credential is an attestation
-artefact, and a verifier selects the issuer's key by role and refuses one that
-is not an `attestation` key (VTI-KEY-080, VTI-KEY-094, VTI-KEY-101).
+artefact. Where the issuer's identity is at key assurance level 2 or 3, a verifier
+selects the issuer's key by role and refuses one that is not an `attestation` key
+(VTI-KEY-080, VTI-KEY-094, VTI-KEY-101); whatever the level, the verifier's policy
+decides the minimum level it accepts (VTI-KEY-200).
 
 **VTI-CRD-003** — A credential MUST identify its subject in a form that permits
 a verifier to establish, at presentation, that the presenter controls it.
