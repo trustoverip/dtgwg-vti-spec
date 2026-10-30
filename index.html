@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-10-30T16:11:34.681Z"
+      "lastUpdated": "2026-10-30T18:05:07.265Z"
     }
   ]
 };</script>
@@ -2009,13 +2009,13 @@ address, encrypt to, verify, authorise and record the subject under the
 <code>did:scid</code> DID, and MUST NOT substitute the <code>did:webvh</code> form, or the reverse.
 The two forms are distinct identifiers. A node MUST NOT treat them as one
 subject unless the <code>did:webvh</code> form’s document lists the <code>did:scid</code> form in
-<code>alsoKnownAs</code> (VTI-KEY-166), and MAY where it does, for example to carry an
-access control entry or a membership from one form to the other.</p>
+<code>alsoKnownAs</code> (VTI-KEY-166), and then only as VTI-KEY-169 provides.</p>
 <p><strong>VTI-KEY-165</strong> — A node that creates durable identities MUST create them as
 <code>did:webvh</code> logs, and MUST present each new identity in the <code>did:webvh</code> form
 unless the request, or the configuration of VTI-VTA-034 or VTI-VTC-004, selects
 the <code>did:scid</code> form. The log is the same either way; the form decides which
-identity the node gives out.</p>
+identity the node gives out. The form MAY later be changed only as VTI-KEY-168
+provides.</p>
 <p><strong>VTI-KEY-166</strong> — When it creates a <code>did:webvh</code> log, a node MUST, unless the
 request or its configuration says otherwise, list the <code>did:scid</code> DID URL of the
 new log, with its <code>src</code>, in the first version’s <code>alsoKnownAs</code>. It MUST list it
@@ -2029,9 +2029,33 @@ the same SCID that names an earlier location. It MUST NOT remove it while it
 presents the identity in the <code>did:scid</code> form (VTI-KEY-166). The forms are one
 subject (VTI-KEY-164) only from the version that lists the alias: a node MUST
 NOT carry to the other form anything authorised against a version that did not
-list it, and MUST stop treating the forms as one subject from a version that
-removes it.</p>
-<p><em>Rationale for VTI-KEY-160 to VTI-KEY-167.</em> The <code>did:scid</code> form costs the
+list it, except by migration (VTI-KEY-169), and MUST stop treating the forms as
+one subject from a version that removes it.</p>
+<p><strong>VTI-KEY-168</strong> — A node that holds the update authority of a <code>did:webvh</code> log
+and presents it as an identity it holds for a trust context, a persona, a group
+or a room MAY switch the form in which it presents it, in either direction. It
+MUST NOT switch the durable identity of a node (VTI-KEY-001), its own or one it
+holds for another node, whose form stays as created. It MUST NOT switch to the
+<code>did:scid</code> form unless the log’s latest version lists the alias (VTI-KEY-166),
+and a switch publishes no version of its own. From the switch, the node MUST
+give the identity out in the new form (VTI-KEY-163) and MUST name it in that
+form wherever it names the identity as itself: as a sender, an issuer, a
+proof’s verification method and a trust context’s primary DID. An artefact it
+issued in the former form stays verifiable against the same log, and the node
+MUST NOT re-issue it for the switch alone.</p>
+<p><strong>VTI-KEY-169</strong> — A node that recorded standing for one form of a <code>did:webvh</code>
+log — an access control entry, an ownership, a membership, an administrator, a
+consent grant, a credential’s subject — MUST treat the other form as the
+subject of that standing if, and only if, the <code>did:webvh</code> document lists the
+alias in every version from the one in effect when the standing was recorded to
+the latest (recognition). Standing that recognition does not carry the node
+MAY carry by migration: recording it anew under the other form, as its own
+gating of that standing allows, on a request the subject signs in the form it
+moves to, after resolving that form and verifying that the log’s latest
+version lists the alias. Migrated standing is dated by the migration. A
+session is not standing: a node MUST NOT carry one across forms, and the
+subject authenticates again in the form it presents.</p>
+<p><em>Rationale for VTI-KEY-160 to VTI-KEY-169.</em> The <code>did:scid</code> form costs the
 durable position nothing it depends on: VTI-KEY-004’s four properties come
 from the <code>did:webvh</code> log. What it adds is an identity that does not name its
 host. A <code>did:webvh</code> identifier changes when its log moves; a <code>did:scid</code>
@@ -2061,6 +2085,21 @@ statement and a statement made today says nothing about what the subject chose
 before. A stale <code>src</code> is replaced rather than kept because a former location is
 the one a replayed old log is served from (VTI-KEY-162), and an alias naming it
 would point a recipient there.</p>
+<p>A switch (VTI-KEY-168) changes what the node gives out, not what the log
+proves, so it publishes nothing and leaves earlier artefacts as they are. It is
+limited to identities the node holds for others to address — a context, a
+persona, a group, a room — because a node’s own durable identity is also the
+key of state that cannot follow it: a mediator registration, a deployment’s
+configuration and, for a VTC, every member pseudonym, which is a digest over
+the community’s DID. Recognition (VTI-KEY-169) is what lets a switch break
+nothing that was recorded while the alias was listed; requiring the alias in
+every version since closes the gap a removal and a later re-listing would
+otherwise open. Standing recorded before the alias is the case VTI-KEY-167
+refuses to carry, because the subject had stated nothing then; migration
+carries it only when the node that granted it decides to, on the subject’s
+request in the new form, which is a new grant rather than an inference.
+Sessions are left out because a session proves who authenticated, in which
+form, and a switch is exactly a change of that answer.</p>
 <p><em>Note.</em> <code>did:webvh</code> stays the default form presented, so a deployment that
 configures nothing presents exactly what it did before. The new requirements
 on such a deployment are to resolve the <code>did:scid</code> form (VTI-KEY-161, VTI-KEY-162)
@@ -5185,7 +5224,21 @@ identity it holds the update authority for list or remove that log’s
 document or the DID URL, and MUST derive the DID URL itself. It MUST gate the
 request as it gates any other update to that identity, and MUST NOT publish a
 version that changes nothing.</p>
-<p><em>Rationale for VTI-VTA-034 to VTI-VTA-037.</em> The VTA is the only node that
+<p><strong>VTI-VTA-038</strong> — A VTA MUST let a caller authorised to update a <code>did:webvh</code>
+identity it holds switch the form in which the VTA presents it (VTI-KEY-168),
+in either direction, gated as any other update to that identity. It MUST
+refuse a switch to the <code>did:scid</code> form while the log’s latest version does not
+list the alias, and MUST NOT list it as part of the switch; MUST refuse to
+switch the VTA’s own identity or one it holds as another node’s durable
+identity; and MUST refuse a switch to the form already presented. On a switch
+it MUST re-point to the new form every trust context whose primary DID is
+either form of the log, and MUST report the form it now presents.</p>
+<p><strong>VTI-VTA-039</strong> — When it switches an identity, a VTA MUST migrate
+(VTI-KEY-169) the standing it has itself recorded for either form of that
+identity — access control entries, consent grants, passkeys and the holder of
+each credential it has issued — to the form it now presents, in the same
+change as the switch, and MUST end the sessions open under the former form.</p>
+<p><em>Rationale for VTI-VTA-034 to VTI-VTA-039.</em> The VTA is the only node that
 creates durable identities (VTI-VTA-020), so it is the one place where a
 deployment’s choice of form takes effect. The choice is configuration rather
 than a fixed rule because the forms trade off differently by deployment: the
@@ -5195,7 +5248,14 @@ a caller that named nothing find out what it got without resolving the new
 identity. VTI-VTA-037 extends the choice to identities that already exist, and
 puts the derivation of the DID URL in the VTA because its <code>src</code> encoding is the
 part a client gets wrong; refusing an empty version matters because every
-version of a pre-rotation log moves its update key.</p>
+version of a pre-rotation log moves its update key. VTI-VTA-038 keeps the
+switch apart from listing the alias for the same reason: listing rotates the
+update key and is consented to as an update, while a switch publishes nothing,
+so a caller who wants both asks for each. The VTA is both the holder of the
+identity and the node that recorded its own standing for it, so VTI-VTA-039
+has it migrate that standing with the switch rather than leave its own records
+to recognition; the identity’s peers carry theirs by recognition, or migrate
+them when the subject asks.</p>
 <h3 id="delegation-to-software-agents" tabindex="-1"><a class="toc-anchor d-print-none" href="#delegation-to-software-agents">§</a> Delegation to software agents</h3>
 <p><strong>VTI-VTA-040</strong> — A software agent acting for the principal MUST have its own
 identifier and its own access control entry, and MUST NOT operate under the
@@ -5276,6 +5336,11 @@ relationship to the community, using a method satisfying VTI-KEY-001.</p>
 VTC MUST accept a member, an administrator or a peer that presents a
 <code>did:webvh</code> or a <code>did:scid:vh:1</code> identity, whatever form it states for itself,
 and MUST record each under the identity it presented (VTI-KEY-164).</p>
+<p><strong>VTI-VTC-005</strong> — A VTC MUST recognise a member, an administrator or a peer in
+either form of a <code>did:webvh</code> log as VTI-KEY-169 provides, and MUST let a member
+or an administrator migrate their standing to the other form of the same log on
+a request they sign in that form, as it lets them rotate their DID, without
+vetting them again. A VTC MUST NOT switch its own identity’s form (VTI-KEY-168).</p>
 <h3 id="which-authority-lives-where" tabindex="-1"><a class="toc-anchor d-print-none" href="#which-authority-lives-where">§</a> Which authority lives where</h3>
 <p><strong>VTI-VTC-010</strong> — A VTC MUST NOT create trust contexts and MUST NOT derive keys.
 See VTI-ACL-090.</p>
@@ -9299,8 +9364,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-10-30T16:11:34.038Z">
-                            Generated: 2026-10-30T16:11:34.038Z
+                        <time class="timestamp" datetime="2026-10-30T18:05:06.605Z">
+                            Generated: 2026-10-30T18:05:06.605Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
