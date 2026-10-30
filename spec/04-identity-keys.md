@@ -30,6 +30,8 @@ bootstrap identity is minted before the client has standing, network access or
 anywhere to publish, so it has to be derivable from a key and nothing else.
 VTI-KEY-004 states what the durable position depends on, so that a future
 method can be evaluated against the requirement rather than against the name.
+Which methods can carry a key-role identity is a stricter question, answered
+by VTI-KEY-170 to VTI-KEY-173.
 
 ### The `did:scid` form of a `did:webvh` identifier
 
@@ -310,7 +312,10 @@ once taken, verifiable by a third party.
 **VTI-KEY-070** — The durable identity of a VTA, a VTC and a VTN MUST bind every
 key it publishes, and the key or keys holding its identifier-log update
 authority, to exactly one key role registered under VTI-KEY-072. This binding is
-how such an identity satisfies VTI-KEY-020.
+how such an identity satisfies VTI-KEY-020. It applies whatever the identity's
+identifier method; what depends on the method is stated by the method's profile
+(VTI-KEY-172). An identity satisfying VTI-KEY-070 through VTI-KEY-096 is a
+[[ref: key-role identity]].
 
 **VTI-KEY-071** — A key MUST NOT be bound to more than one key role. Key
 material MUST NOT be reused across key roles, across the identities of different
@@ -327,7 +332,8 @@ appear in; the proof purposes its proofs may carry; and its custody class.
 | `attestation` | attestation artefacts (VTI-KEY-080) | `assertionMethod`, and no other | `assertionMethod` | held only by the VTA; non-exportable (VTI-KEY-110) |
 | `operational` | the node's own operational material (VTI-KEY-081) | `authentication`, and no other | `authentication` | MAY be held by the node's service process (VTI-KEY-114) |
 | `messaging` | key agreement for encrypted transports; signs nothing | `keyAgreement`, and no other | none | MAY be held by the node's service process (VTI-KEY-114) |
-| `update` | entries in the identifier's verifiable history | none: named only as the method's update authority, never as a verification method | as the identifier method defines for log entries | held only by the VTA; non-exportable (VTI-KEY-113) |
+| `update` | entries in the identifier's verifiable history | none: named only as the method's update authority, never as a verification method | as the identifier method defines for log entries | the routine key held only by the VTA, non-exportable (VTI-KEY-113); the recovery key held outside the VTA's protection boundary (VTI-KEY-116) |
+| `authenticator` | a person's WebAuthn assertions — sign-in and step-up evidence; signs no Data Integrity proof | `authentication`, and no other | none | held on the person's own authenticator; never by a VTA, and never on a node's identity (VTI-KEY-154) |
 
 **VTI-KEY-073** — A registration MUST NOT widen what an existing role permits,
 and MUST NOT permit a verification relationship or proof purpose already
@@ -491,8 +497,9 @@ method that is absent from `keyRoles`, listed under more than one role, or
 listed in a relationship its role does not permit.
 
 **VTI-KEY-093** — `keyRoles` MUST NOT list the `update` role. The update
-authority is stated only where the identifier method states it — for
-`did:webvh` and its `did:scid` form, the log's update keys — and an update key MUST NOT appear as a
+authority is stated only where the identifier method states it, as its method
+profile says (VTI-KEY-172) — for `did:webvh` and its `did:scid` form, the log's
+update keys and next-key commitments — and an update key MUST NOT appear as a
 verification method in the document.
 
 **VTI-KEY-094** — A verifier MUST select a node's key by role, through
@@ -537,11 +544,30 @@ verifier that selects by it — `#key-0` is the signing key — has made the nod
 naming convention part of its security decision. The convention is not stated
 anywhere a verifier can check, and it changes with every template.
 
-*Open issue.* `keyRoles` needs a term definition — a JSON-LD context and a
-stable IRI — before a document carrying it is valid JSON-LD. Whether it belongs
-in the identifier document, in the identifier method's own parameters, or in a
-resource the document links to is also open; the requirements above are stated
-so that any of the three can satisfy them.
+**VTI-KEY-095** — `keyRoles` MUST be a top-level member of the identifier
+document. It MUST NOT be carried instead in the identifier method's own
+parameters, or in a resource the document links to.
+
+**VTI-KEY-096** — Where an identifier document is processed as JSON-LD, its
+`@context` MUST define `keyRoles` with the term definition below, and role
+identifiers are index keys, compared as strings:
+
+```json
+{ "keyRoles": { "@id": "https://w3id.org/vti#keyRoles", "@container": "@index", "@type": "@id" } }
+```
+
+*Rationale for VTI-KEY-095.* The property qualifies the verification
+relationships, so it has to arrive with them. Method parameters differ by
+method and many resolvers do not return them; a linked resource is a second
+fetch whose authenticity the verifier has to establish separately, and whose
+absence a verifier would read as "no roles" — the failure VTI-KEY-092 exists to
+make safe, not to invite. In the document, it is covered by everything that
+makes the document authentic.
+
+*Open issue.* The IRI `https://w3id.org/vti#keyRoles` and the context URL
+`https://w3id.org/vti/v1` need a w3id.org registration redirecting to a context
+document the working group publishes. The term definition is fixed by
+VTI-KEY-096; only where it is served remains to be done.
 
 ### Selecting and verifying by role
 
@@ -666,21 +692,51 @@ process, including every key and secret it holds, does not yield the ability to
 produce an attestation artefact or an identifier-log entry other than by a request
 the VTA authorizes and records.
 
-**VTI-KEY-116** — An `update` key, and every committed next update key, MUST be
-generated rather than derived, and is exempt from VTI-KEY-030. A committed next
-update key MUST be held, with the custody VTI-KEY-110 requires, in a protection
-boundary other than the one holding the current update key, so that the loss of
-the VTA does not lose both.
+**VTI-KEY-116** — An `update` key, and every committed successor update key,
+MUST be generated rather than derived, and is exempt from VTI-KEY-030. Every
+version of a key-role identity's history MUST commit, besides any routine
+successor the VTA holds, to a **recovery key** held by a recovery custodian in a
+[[ref: protection boundary]] other than the VTA's. The VTA MUST NOT hold,
+generate or be able to derive the recovery key.
 
 **VTI-KEY-117** — Recovery of a node's identity after the loss of its VTA MUST
-rely on the committed next update key (VTI-KEY-124) and on re-issuance, and on
-nothing restored from a backup. The recovering VTA MUST publish, in one
-history entry made with the committed key, new `attestation` keys, a new
-committed next update key, and the retirement of the lost `attestation` keys.
+rely on the recovery key (VTI-KEY-116) and on re-issuance, and on nothing
+restored from a backup. The recovering VTA MUST publish, in one history entry
+authorized by the recovery key, new `attestation` keys, new routine update keys,
+a fresh recovery commitment, and the retirement of the lost `attestation` keys.
 It MUST re-sign every status list at once, and MUST re-issue every other
 attestation artefact still in force no later than its renewal. Where the loss
 may have exposed the keys rather than destroyed them, the retirement MUST be a
 revocation for compromise.
+
+**VTI-KEY-118** — Two keys are in the same protection boundary whenever one
+compromise or one loss reaches both — including through a backup, a seed, a key
+derived from a seed, or credentials one holds to the other's store. At rest, an
+`attestation` or `update` key MUST be protected under a key that is not
+derivable from the VTA's seed and is not present in, or recoverable from, any
+backup.
+
+**VTI-KEY-119** — A VTA MUST carry the recovery commitment forward unchanged in
+every version it publishes, except one authorized by the recovery key or one
+that replaces the commitment under VTI-KEY-181. It MUST accept a recovery
+commitment only with a proof of possession of the recovery key bound to the
+change that commits it, and MUST refuse to create a key-role identity, or to
+publish a version, that would leave the identity without one. A VTA with one
+protection boundary MUST obtain the recovery commitment from an external
+custodian, and MUST NOT create a key-role identity without one.
+
+*Note — protection boundaries in practice.* A plain VTA is one boundary: its
+host, the store on it and the credentials it holds to its seed backend. A
+hardened VTA encrypts its store, but under a key derived from its seed, so it is
+the same one boundary. A TEE VTA is a stronger boundary — the host cannot read
+inside the enclave — but every key it generates is inside it, so it too is one.
+A mnemonic locked in a safe is a second boundary against loss but not against
+compromise of any key derived from it, because the running VTA holds the seed.
+A second boundary is a party holding a key no VTA of the identity can reach: a
+second VTA with its own seed, operator and host; a hardware token kept offline;
+or a hardware security module or cloud key service whose use needs credentials
+the VTA does not hold. Every VTA is therefore, by itself, a one-boundary VTA, and
+VTI-KEY-119 is what every VTA does today.
 
 *Rationale for VTI-KEY-110 and VTI-KEY-111.* The service process is the part
 of a node that parses untrusted input from the network, and it is therefore the
@@ -704,8 +760,13 @@ its separately held material can re-derive it, so the backup becomes a second
 copy of the community's seal and of control of its identifier, kept wherever
 backups are kept. Generating the keys removes that copy. The cost is that a
 lost VTA loses them, and the design pays it with mechanisms that already exist
-for other reasons: the committed next update key recovers control of the
-identifier, and re-issuance replaces the artefacts. A lost `attestation` key is
+for other reasons: the recovery key recovers control of the identifier, and
+re-issuance replaces the artefacts. Commitment to a next key protects an
+identity only if the key that authorizes the next change is out of reach of
+whoever compromised the current one; a successor key generated and held by the
+same VTA is pre-rotation in form and nothing in substance, which is why
+VTI-KEY-116 requires the recovery key to be held elsewhere and VTI-KEY-118 says
+what elsewhere means. A lost `attestation` key is
 destroyed rather than stolen, so what it signed before the loss stays valid
 under VTI-KEY-132 and is replaced at renewal; only the status lists, which must
 go on being updated, need re-signing at once.
@@ -745,8 +806,10 @@ verification relationship and from `keyRoles` in the same history entry that
 records the revocation. It MUST NOT use an overlap.
 
 **VTI-KEY-124** — The `update` role MUST be used with commitment to the next
-update key made (VTI-KEY-043). Where an update key is compromised, the node MUST
-rotate to the committed key. Where no uncompromised committed key remains, the
+update key made (VTI-KEY-043). Where a routine update key is compromised and the
+VTA's protection boundary is not, the node MUST rotate to the committed routine
+successor; where the boundary may be compromised, it MUST rotate to the recovery
+key (VTI-KEY-116). Where no uncompromised committed key remains, the
 identifier MUST be deactivated, and a successor identity established; a node
 MUST NOT continue to operate an identifier whose history it no longer solely
 controls.
@@ -769,14 +832,51 @@ retirement time bounds the issuance time from above (VTI-KEY-132). A retired key
 that is kept can still sign, and its signatures carry whatever dates the signer
 chooses.
 
-*Open issue.* No identifier method this specification requires records the
-reason for a key's removal. VTI-KEY-120 and VTI-KEY-121 need an encoding — a
-member of the log entry or of `keyRoles` naming each revoked key and its
-compromise time, or a status entry the VTA writes — and the working group has to
-fix one. Until it does, VTI-KEY-120 cannot be met, and the only reading of a
-removed `attestation` key that is safe for a verifier is as revoked for compromise
-from the time it was first published — which turns every planned rotation into
-a re-issuance.
+**VTI-KEY-126** — A revocation for compromise MUST be recorded in the
+identifier document by keeping the revoked verification method in
+`verificationMethod`, outside every verification relationship and `keyRoles`,
+with the `revoked` property of W3C Controlled Identifiers [CID] set to the
+compromise time. A planned retirement MUST remove the verification method from
+the document and MUST NOT set `revoked`.
+
+**VTI-KEY-127** — A node MUST keep a revoked verification method, with its
+`revoked` value, in every later version of the document for the life of the
+identity. A verifier MUST treat a verification method carrying `revoked` as
+revoked for compromise from that time, under VTI-KEY-133.
+
+**VTI-KEY-128** — A history entry authorized by the recovery key MUST commit a
+fresh recovery key held as VTI-KEY-116 requires, so that a recovery key
+authorizes one entry. A recovery custodian MUST check the entry it is asked to
+authorize — that it reveals the key the custodian holds and commits to a fresh
+one it also holds — and MUST NOT authorize on the strength of the requester's
+description of it.
+
+**VTI-KEY-129** — Where the identifier method has witnesses, a key-role identity
+SHOULD be witnessed by at least one witness outside the VTA's protection boundary
+whose policy refuses an entry that removes or replaces the recovery commitment,
+unless the recovery key authorizes it or it carries the approvals VTI-KEY-181
+requires. Where the method can require the recovery key for every rotation of the
+change authority by a next-key threshold, its profile SHOULD so require.
+
+*Rationale for VTI-KEY-126 and VTI-KEY-127.* `revoked` is already defined, already
+in the contexts a Multikey document uses, and already acted on by generic Data
+Integrity verifiers, which will not verify a proof by a revoked method; a bespoke
+member would protect only VTI verifiers. Keeping the method listed outside every
+relationship and outside `keyRoles` makes it inert to a VTI verifier (VTI-KEY-092)
+while publishing the compromise time where every verifier resolving the current
+document will see it, without walking the history. Reserving `revoked` for
+compromise is what makes the two events distinguishable (VTI-KEY-120): a verifier
+reading it refuses everything the key signed that is not otherwise proven
+earlier, which a planned retirement must not cause.
+
+*Rationale for VTI-KEY-129.* VTI-KEY-119 binds a conforming VTA, and a
+compromised VTA is not one. Under a method in which every entry is authorized by
+a committed key, as in `did:webvh`, the routine successor is in the VTA, so a
+party holding the VTA can append an entry dropping the recovery commitment before
+the operator uses it. Against loss the recovery key always works; against
+compromise only a second party can enforce it. A method whose next-key threshold
+can require the recovery key for rotation, as KERI's can, closes the gap without
+one.
 
 ### Judging material signed before a rotation
 
@@ -851,6 +951,93 @@ VTI-KEY-133 refuses every artefact under such a key and relies on re-issuance.
 load of re-resolution against the time a verifier can go on accepting a key the
 node has revoked, and the working group may set it per role or leave the
 tighter bound to the document's own validity period.
+
+### Approving changes to key roles
+
+**VTI-KEY-180** — A VTA MUST require a step-up bound to a preview the VTA
+computed — the complete resulting identifier document, and every change the
+entry makes, including any movement of the update authority — before creating a
+key-role identity, before adding, rotating, retiring or revoking an `attestation`
+or `update` key, before replacing a recovery commitment, and before a recovery
+under VTI-KEY-117. A session elevation MUST NOT satisfy it, and the VTA MUST apply
+exactly the previewed change or nothing.
+
+**VTI-KEY-181** — Replacing a recovery commitment MUST require approvals from two
+distinct approvers wherever two eligible approvers exist. Adding, rotating or
+retiring an `attestation` key, and rotating a routine update key, SHOULD. The
+initiator counts once at most.
+
+**VTI-KEY-182** — A revocation for compromise MUST NOT require more than one
+approval, and MUST NOT be blocked by a pending, staged or overlapping change to
+the same role, which it supersedes. Revocation of an `attestation`, `operational`
+or `messaging` key MUST be within the authority of the identity's context
+administrator.
+
+**VTI-KEY-183** — An approval of a change to a key-role identity MUST be the
+approver's own evidence: a proof by a key of the approver's own identifier, or an
+assertion by a passkey registered to the approver. A proof by a key that a node
+records as acting for the approver — a console signing key, or any other
+delegation — MUST NOT count as an approval; no key of the identity being changed,
+and no key of any node's own identity, MUST count as an approver.
+
+*Rationale.* The two changes that matter most are the two an attacker holding one
+administrator's credential would make first: replacing the seal, and disarming
+the recovery. A preview bound into the approval is what makes the approval mean
+the change rather than a window in which any change can be made (VTI-APV-013).
+Revocation runs the other way: it removes authority and cannot gain any, and
+every approval it waits for is time during which a stolen key is trusted.
+Replacing the recovery commitment is never urgent, which is why it can afford the
+quorum the others cannot always.
+
+### Algorithms of role keys
+
+**VTI-KEY-184** — A successor key MUST keep its predecessor's algorithm unless the
+request names another. A node MUST NOT substitute an algorithm for one a request
+names or a template lists, and MUST refuse a change it cannot make with it. A node
+MUST NOT publish an X25519 key computed from an Ed25519 key, or any key computed
+from a key of another role.
+
+*Rationale.* A substitution is a downgrade nobody approved: a deployment meant to
+carry a post-quantum `attestation` proof would ship classical keys and report
+nothing. A key-agreement key computed from a signing key makes the `messaging`
+role a function of the `operational` one, which VTI-KEY-071 forbids by another
+route.
+
+### Identifier method profiles
+
+**VTI-KEY-170** — An identifier method can carry a key-role identity only if it
+provides: a verifiable history with a change authority; commitment to more than
+one successor of the change authority; rotation without change of the
+identifier, and deactivation; verification relationships the controller chooses,
+with the change authority in none of them; resolution of a past version of the
+document; and a document in which `keyRoles` and `revoked` can be published.
+
+**VTI-KEY-171** — A node MUST refuse to create a key-role identity under a method
+that does not meet VTI-KEY-170, or for which it holds no method profile.
+`did:key`, `did:jwk`, `did:peer` and `did:web` do not meet it.
+
+**VTI-KEY-172** — What this chapter leaves to the identifier method — what the
+change authority is, how routine and recovery keys are committed, which changes
+move it, versions and past resolution, how roles, `keyRoles` and `revoked` are
+rendered, the validity period, the artefacts published and the form of a
+recovery proof — MUST be stated by a method profile, and only there. The method
+profiles are published with the definitions of the key-role operations
+([TRUST-TASKS], `vta/dids/_shared/0.1/method-profiles`).
+
+**VTI-KEY-173** — `did:webvh` and its `did:scid:vh:1` form meet VTI-KEY-170.
+`did:webs`, as published, does not: its document is derived from its key event
+log, every key of the current key state is placed in both `authentication` and
+`assertionMethod`, and there is no member for `keyRoles` or `revoked`. A node
+MUST NOT create a key-role identity under `did:webs` until the method, or an
+extension to it, lets the controller bind keys to roles in the derived document
+and keep the key-state keys out of every relationship.
+
+*Open issue.* Making `did:webs` eligible needs either an extension to that method
+in which role keys are anchored in the key event log and the key-state keys are
+rendered into no relationship, or an amendment to VTI-KEY-093 tolerating a
+change-authority key that the method itself renders, absent from `keyRoles` and
+never used to sign anything but log events. The first keeps VTI-KEY-093 intact and
+is preferred; the method profile states the mapping either would use.
 
 ### Identities that do not bind key roles
 
@@ -931,3 +1118,27 @@ linkable to the node by design: an issuer that could not be identified could
 not be trusted. What these requirements prevent is the keys revealing more than
 the issuer — how the node is built, who operates it, or whom it has been
 dealing with.
+
+### Authenticator keys
+
+**VTI-KEY-154** — A key held on a person's own authenticator — a WebAuthn passkey —
+MAY appear in the identifier document of that person's own identity, bound to the
+`authenticator` role, in `authentication` and no other relationship. It MUST NOT
+appear in the identifier document of a VTA, a VTC, a VTN, or any service or
+integration, and a VTA MUST refuse to enrol one there.
+
+**VTI-KEY-155** — A verifier MUST accept a key bound to `authenticator` only to
+verify a WebAuthn assertion of the person — a sign-in, or step-up evidence — and
+MUST NOT accept under it a Data Integrity proof, or any material that VTI-KEY-080
+or VTI-KEY-081 assigns to another role. A verifier of operational material MUST
+NOT accept an `authenticator` key, though both appear in `authentication`.
+
+*Rationale.* A passkey belongs to a person, and no other role fits it: it is not
+the node's voice, because the node does not hold it, and it signs no proof a
+relying party keeps. In a node's document it would be a key the node does not
+hold that can speak as the node, and it would name a person in a document that
+is public by design (VTI-KEY-151). The `authenticator` and `operational` roles
+share `authentication`, which VTI-KEY-073 permits only with a reason the two
+cannot be confused: `keyRoles` states which is which, and the two are verified
+in different formats, so a verifier that selects by role (VTI-KEY-094) never
+takes one for the other.
