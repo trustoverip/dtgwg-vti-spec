@@ -110,12 +110,13 @@ requirements of its own; each item names the requirements that carry it.
     level never fell; it cannot establish where any key is held (VTI-KEY-199
     and the note after it). A level that falls is treated as a compromise.
 25. **A threshold custodian is only as many approvers as it has operators.**
-    FROST lets t of n VTAs sign without the key existing anywhere, and each
-    participant checks what it signs; one person approving at every
-    participant reduces that to one approver (VTI-KEY-211, VTI-KEY-214). A
-    nonce used twice yields the participant's share (VTI-KEY-215), and a
-    fallback that reconstructs the key when too few answer is the attack, not a
-    remedy (VTI-KEY-219, VTI-KEY-220).
+    A threshold of whole keys lets t of n custodians authorize a recovery, each
+    checking what it signs, with the count made by the witness and by verifiers
+    rather than by the VTA (VTI-KEY-212, VTI-KEY-215); one person approving at
+    every member reduces that to one approver (VTI-KEY-211, VTI-KEY-214). A
+    fallback that lowers the threshold when too few answer is the attack, not a
+    remedy, and a key reconstructed from shares to sign is no threshold custodian
+    at all (VTI-KEY-217, VTI-KEY-220).
 
 ## Privacy Considerations
 

@@ -541,7 +541,9 @@ identifier document, in a top-level `keyAssurance` member: an object whose `leve
 is the integer 2 or 3. At level 3, `keyAssurance` MUST also carry
 `recoveryCommitment`: the recovery commitment of VTI-KEY-116 as it appears among the
 identifier method's next-key commitments in the same version, in the form the
-method profile states (VTI-KEY-172). A service DID at level 1 MAY declare
+method profile states (VTI-KEY-172), or, where a threshold custodian holds the
+recovery key (VTI-KEY-210), an object naming every member's commitment and the
+threshold: `{ "threshold": t, "commitments": [ … ] }`. A service DID at level 1 MAY declare
 `{ "level": 1 }`, and MAY omit `keyAssurance`; a document without it is at level 1.
 `keyAssurance` MUST carry nothing else.
 
@@ -561,11 +563,14 @@ history, and MUST NOT take a level higher than the structure supports:
    `keyRoles`, or lists one verification method in more than one verification
    relationship.
 3. A version declaring level 3 is at most level 2 where `keyAssurance` carries no
-   `recoveryCommitment`; where the recovery commitment is not among the method's
-   next-key commitments in that version, or is the only one; where the method has
-   witnesses and the version is not witnessed (VTI-KEY-129); or where the
-   recovery commitment differs from the previous version's and the version is
-   neither authorized by the previous recovery key nor witnessed.
+   `recoveryCommitment`; where any recovery commitment it names is not among the
+   method's next-key commitments in that version, or the named commitments are
+   all of them; where it names a threshold t with t < 2 or t ≥ the number of
+   commitments; where the method has witnesses and the version is not witnessed
+   (VTI-KEY-129); or where the recovery commitment differs from the previous
+   version's and the version is neither authorized by the previous recovery key
+   — by t of its members, for a threshold custodian (VTI-KEY-215) — nor
+   witnessed.
 4. Where the history shows a version declaring a lower level than an earlier one
    (VTI-KEY-148), every version from it on is at level 1.
 
@@ -1082,157 +1087,140 @@ operator to act.
 
 ### Threshold custody
 
-A recovery key, and at most an identity's routine update keys, MAY be held by a
-group of VTAs none of which holds the key: FROST [RFC 9591], with the Ed25519
-ciphersuite, lets any t of n participants produce one ordinary Ed25519 signature
-together, while fewer than t can produce nothing and learn nothing about the key.
-To the identifier method, to a witness and to a verifier, the group's key is one
-Ed25519 key and its signature one Ed25519 signature, so no identifier method has
-to change.
+A recovery key MAY be held by a group rather than by one custodian: n members,
+each holding one whole recovery key of its own, of which any t must authorize a
+recovery. The threshold is a **condition over whole keys**, declared in the
+identifier document and enforced by the witness and by every verifier, not a
+threshold signature scheme: no key is shared, nothing is assembled, each member
+signs the exact entry with its own key, and every signature names its signer. Any
+signature algorithm the identifier method admits serves, including a post-quantum
+one where the method accepts it.
 
-**VTI-KEY-210** — A [[ref: threshold custodian]] is a group of n VTAs, its
-participants, holding shares of one Ed25519 key under FROST(Ed25519, SHA-512)
-[RFC 9591] with a threshold t, where 2 ≤ t < n. A group signature MUST be one that
-Ed25519 verification [RFC 8032] accepts, and MUST be used wherever the identifier
-method, a proof of possession or a recovery proof expects an Ed25519 signature,
-with no change to its form.
+**VTI-KEY-210** — A [[ref: threshold custodian]] is a group of n members, each a
+recovery custodian of kind 1 or kind 2 of VTI-KEY-205 in a protection boundary of
+its own, each holding one recovery key of its own, with a threshold t where
+2 ≤ t < n. Every member's key MUST be committed in the identifier's history as
+VTI-KEY-116 requires of a recovery key, and the identifier document MUST name every
+such commitment and t in `keyAssurance.recoveryCommitment` (VTI-KEY-197).
 
-**VTI-KEY-211** — Every participant MUST be in a protection boundary of its own,
+**VTI-KEY-211** — Every member MUST be in a protection boundary of its own,
 outside the boundary of every VTA that holds a key of the identity and outside
-every other participant's. In particular:
+every other member's. In particular:
 
-1. no two participants share a seed, a store, a host machine, or — for a virtual
+1. no two members share a seed, a store, a host machine, or — for a virtual
    machine or an enclave — a host or a cloud account;
-2. no participant holds credentials that reach another participant's seed, store,
-   secret backend or backups, or those of a VTA holding a key of the identity;
-3. no participant's backups are readable by another participant or by such a VTA;
+2. no member holds credentials that reach another member's seed, store, secret
+   backend or backups, or those of a VTA holding a key of the identity;
+3. no member's backups are readable by another member or by such a VTA;
 4. no subject — an administrator, a delegate, or any credential — holds, at t or
-   more participants, the authority to approve a signing.
+   more members, the authority to approve a signing.
 
-Participants SHOULD be operated by different people or organisations, and SHOULD be
-in different failure domains, such as different providers or regions.
+Members SHOULD be operated by different people or organisations, and SHOULD be in
+different failure domains, such as different providers or regions.
 
-**VTI-KEY-212** — The group's key MUST be generated by a distributed key generation
-with no dealer, such that no party, at any time, holds or can compute the group's
-secret: the key generation of [FROST20], in which every participant proves
-knowledge of its secret term and commits to its polynomial. Every participant MUST
-verify each other participant's proof and each share it receives against its
-sender's commitments, and MUST abort on any failure; MUST confirm with every other
-participant, by comparing a digest of the commitments each received, that all
-received the same commitments, before it accepts the group's key; and MUST record
-the group's key and every participant's verification share. Key generation by a
-trusted dealer (RFC 9591, Appendix C) MUST NOT be used.
+**VTI-KEY-212** — A verifier and a witness MUST count toward the threshold only
+proofs by distinct members whose keys the previous version committed. A proof by
+any other key counts for nothing, and a member counts once however many proofs it
+makes.
 
-**VTI-KEY-213** — A participant MUST hold its share with the custody VTI-KEY-110,
-VTI-KEY-112 and VTI-KEY-118 require of a level-3 `attestation` key: generated within
-the participant, non-exportable, protected at rest under a key its seed cannot
-produce, and included in no backup, export or transfer. A lost share is replaced by
-refresh (VTI-KEY-218), never by restore.
+**VTI-KEY-213** — A member that is a VTA MUST hold its key with the custody
+VTI-KEY-110, VTI-KEY-112 and VTI-KEY-118 require of a level-3 `attestation` key:
+generated within the member, non-exportable, protected at rest under a key its seed
+cannot produce, and included in no backup, export or transfer. A member that is a
+separately held key is held as VTI-KEY-205 item 1 requires. A lost member key is
+replaced under VTI-KEY-218, never restored.
 
-**VTI-KEY-214** — Before it contributes to a signing, every participant MUST obtain
-the identity's history itself, compute from the unsigned change and the proof
-options the exact message the signature will cover, and check the change as
-VTI-KEY-128 requires of a recovery custodian, or, for a proof of possession, that
-the message is the proof of possession of the group's key for the change it was
-shown. It MUST NOT sign a message it did not compute, or on the strength of the
-description sent with it, and MUST obtain its own operator's approval under
-VTI-KEY-206.
+**VTI-KEY-214** — Before it signs, every member MUST obtain the identity's history
+itself, compute from the unsigned change and the proof options the exact entry its
+proof will cover, and check the change as VTI-KEY-128 requires of a recovery
+custodian, or, for a proof of possession, that the message is the proof of
+possession of its own key for the change it was shown. It MUST NOT sign on the
+strength of the description sent with a request, and a member that is a VTA MUST
+obtain its own operator's approval under VTI-KEY-206.
 
-**VTI-KEY-215** — A participant MUST generate its signing nonces as RFC 9591
-requires, from fresh randomness and its share, for one signing only. It MUST keep
-them only for that signing, in no persistent store and in no backup, and MUST delete
-them once its signature share is produced, or when the signing is aborted, expires,
-or the participant restarts. It MUST NOT produce a signature share for nonces it
-cannot show are unused, and MUST refuse a signing whose commitment list omits its
-own commitment, names a participant twice, or has fewer than t members.
+**VTI-KEY-215** — An entry that a threshold custodian authorizes — a recovery, or
+a replacement of the recovery commitment under VTI-KEY-181 — MUST carry proofs by
+at least t distinct members. Where the identifier method accepts an entry on one
+proof, the method's proof is one of the t. A witness MUST refuse to witness an
+entry with fewer, and a verifier MUST treat an entry with fewer as not authorized,
+so that VTI-KEY-199 item 4 applies from that version on.
 
-**VTI-KEY-216** — The party that coordinates a signing — any participant, or the VTA
-that asked for the signature — MUST verify every signature share against its
-participant's verification share before aggregating (RFC 9591), and where a share
-fails MUST name the participant that produced it, record the failure in its audit
-trail and report it to every participant, and exclude that participant from any
-retry, which uses fresh nonces. The coordinator is trusted with nothing secret and
-with nothing a participant checks for itself.
+**VTI-KEY-216** — A request to a member that is a VTA to sign MUST be a Trust Task
+over a transport that authenticates the sender and encrypts to the recipient — TSP
+where both parties advertise it, otherwise DIDComm authenticated encryption — and
+the member MUST refuse one not from the identity's VTA or its operator, or one
+already accepted (VTI-OPS-026). A member that is a separately held key is asked out
+of band. No message of the group carries anything secret.
 
-**VTI-KEY-217** — Participants MUST exchange every message of key generation,
-signing and refresh as Trust Tasks over a transport that authenticates the sender
-and encrypts to the recipient — TSP where both parties advertise it, otherwise
-DIDComm authenticated encryption — and MUST refuse a message not from a participant
-of the group, or one already accepted (VTI-OPS-026). The shares of key generation
-and refresh MUST be encrypted end to end to the participant they are for.
+**VTI-KEY-217** — Where fewer than t members can be reached, the change MUST wait.
+A member, the identity's VTA or its operator MUST NOT fall back to a lower
+threshold or to a key outside the group. A group SHOULD confirm regularly that at
+least t + 1 members can sign, by each signing a challenge that cannot be read as
+any change of an identity, and SHOULD replace a member under VTI-KEY-218 before
+only t remain. Where fewer than t members remain for good, the operator MUST
+replace the recovery commitment under VTI-KEY-181 while the identity's VTA still
+holds its routine authority.
 
-**VTI-KEY-218** — A group MAY refresh its shares, and in doing so replace, add or
-remove participants or change t, without changing the group's key, by a
-distributed protocol among at least t current participants in which no party learns
-the group's secret. Every participant of the new set MUST verify its new share
-against the commitments of the refresh, and every participant of the old set MUST
-delete its old share once the refresh completes. The new set MUST satisfy
-VTI-KEY-210 and VTI-KEY-211. A refresh changes no identifier document. A group
-SHOULD refresh when a participant leaves, is lost, or may be compromised.
+**VTI-KEY-218** — Adding or removing a member, or changing t, is a replacement of
+the recovery commitment: an entry authorized by t current members under
+VTI-KEY-215, witnessed under VTI-KEY-129, that commits a fresh key for every member
+of the new group and names the new commitments and threshold. A member key that
+signed is revealed by use and MUST NOT be committed again. The new group MUST
+satisfy VTI-KEY-210 and VTI-KEY-211.
 
-**VTI-KEY-219** — Where fewer than t participants can be reached, no signature can
-be produced, and the change MUST wait. A participant or coordinator MUST NOT fall
-back to reconstructing the key, to a dealer, to a lower threshold, or to a key
-outside the group. A group SHOULD confirm regularly that at least t + 1
-participants can sign, by signing a challenge that cannot be read as any change of
-an identity, and SHOULD refresh to replace a participant before only t remain.
-Where fewer than t participants remain for good, the key is lost; for a recovery
-key, the operator MUST replace the recovery commitment under VTI-KEY-181 while the
-identity's VTA still holds its routine authority.
+**VTI-KEY-219** — A member's key MUST be of an algorithm the identifier method's
+profile admits for the proof it makes. Where the method admits one algorithm for an
+entry's proof, every member key the method counts is of that algorithm; a member
+MAY in addition hold a key of another algorithm, such as ML-DSA, whose proof is
+carried in the same entry's proof set for verifiers whose policy requires it, and a
+verifier MAY count toward its own policy only members that supplied one. Where
+the method has a threshold of its own over whole keys, such as `did:webs`, the
+condition is expressed as the method's threshold and the method enforces it.
 
 **VTI-KEY-220** — A key split by secret sharing and reconstructed in one place to
 sign — Shamir's scheme, or SLIP-39 — is not a threshold custodian, and MUST NOT be
 described or counted as one. Such a split MAY protect a separately held key against
 loss, where the reconstructed key and the machine it is reconstructed on meet
-VTI-KEY-205 item 1.
+VTI-KEY-205 item 1. A threshold signature scheme that produces one signature from
+shares of one key is not a threshold custodian under this specification either: it
+is not what the condition declares, and a verifier cannot count its members.
 
-**VTI-KEY-221** — A threshold custodian MAY hold a recovery key and the routine
-update keys of a level-3 identity, and SHOULD NOT hold an `attestation` key.
+**VTI-KEY-221** — A threshold custodian MAY hold a recovery key, MUST NOT hold an
+`attestation` key, and SHOULD NOT hold the routine update keys of an identity under
+a method that moves the update authority on every change.
 
-*Rationale for VTI-KEY-210 and VTI-KEY-212.* A threshold of at least two means no
-participant can sign alone, and a threshold below n means the group survives the
-loss of a participant, which is the reason a recovery custodian exists. A dealer
-would hold the whole key at the moment it is made, which is the one property the
-group exists to avoid; the key generation of [FROST20] has every participant
-contribute randomness and prove it, so the key exists only as its shares. Comparing
-what each participant received is what stops a participant from sending different
-commitments to different peers and splitting the group into parties holding shares
-of different keys.
+*Rationale for VTI-KEY-210, VTI-KEY-212 and VTI-KEY-215.* A threshold of at least
+two means no member can authorize alone, and a threshold below n means the group
+survives the loss of a member, which is the reason a recovery custodian exists. A
+condition over whole keys gives both with no cryptography beyond ordinary
+signatures: each member's proof is checked as any proof is, each names its
+signer, and the only new rule is who counts. An earlier draft used a threshold
+signature scheme, which hides the group behind one key but needs a distributed
+key generation, single-use nonces whose reuse yields a share, a refresh protocol
+and ceremonies of its own, and has no post-quantum form; nothing the recovery key
+has to do needs any of it. With distinct operators, that is the two-approver rule
+of VTI-KEY-181 enforced by the proof set, counted outside the VTA, rather than by
+the VTA's policy; where one person approves at every member, it is one approver
+however large t is, which is why VTI-KEY-211 item 4 forbids one subject approving
+at t members.
 
-*Rationale for VTI-KEY-214 and VTI-KEY-206.* Every participant checks the change and
-asks its own operator, so t participants are t independent checks of the same
-entry, each by a party in its own boundary. Where the participants have different
-operators, that is the two-approver rule of VTI-KEY-181 enforced by the signature
-itself rather than by the VTA's policy; where one person approves at every
-participant, it is one approver however large t is, which is why VTI-KEY-211 item 4
-forbids one subject approving at t participants.
-
-*Rationale for VTI-KEY-215 and VTI-KEY-216.* A nonce used for two different messages
-lets anyone holding both signature shares compute the participant's share, so a
-nonce is used once and does not survive anything that could replay it, a restart
-or a restore included. FROST is not robust: one participant can make a signing
-fail. What it guarantees is that the participant can be identified, so the
-remedy is to name it and sign again without it.
-
-*Rationale for VTI-KEY-219 and VTI-KEY-220.* A fallback that reconstructs the key
-when too few participants answer is the attack: an adversary who can make
-participants unreachable chooses when the key exists in one place. Reconstructing
-to sign has the same flaw on every use: at the moment the key matters, it exists
-whole on one machine, whose compromise yields it, and only that machine checks what
-is signed. Threshold signing never has that moment.
+*Rationale for VTI-KEY-217 and VTI-KEY-220.* A fallback that lowers the threshold
+when too few members answer is the attack: an adversary who can make members
+unreachable chooses when one party suffices. Reconstructing a split key to sign has
+the same flaw on every use: at the moment the key matters, it exists whole on one
+machine, whose compromise yields it, and only that machine checks what is signed.
+A condition over whole keys never has that moment.
 
 *Rationale for VTI-KEY-221.* A recovery key signs once in the life of most
-identities, and a routine update key once per change of the identity, so waiting
-for t operators costs little against what it protects. An `attestation` key signs
-every credential and every status-list update. Holding it in a group would stop the
-community issuing whenever fewer than t operators answer, would multiply the
-signing rounds and the nonces whose reuse is fatal by every credential issued, and
-would make every participant parse and constrain every artefact (VTI-VTA-004 to
-VTI-VTA-007); its compromise, unlike the update authority's, is recoverable by
-revocation and re-issuance. Where the identifier method moves the update authority
-on every change, as `did:webvh` does, a threshold routine authority also needs a key
-generation for every change, so it suits identities that change rarely; its method
-profile says what it costs.
+identities, so waiting for t operators costs little against what it protects, and t
+independent checks are what the one entry that takes an identity back deserves. An
+`attestation` key signs every credential and every status-list update: holding it
+in a group would stop the community issuing whenever fewer than t operators
+answer, and its compromise, unlike the update authority's, is recoverable by
+revocation and re-issuance. Where the method moves the update authority on every
+change, as `did:webvh` does, a threshold routine authority would make every routine
+change a t-member ceremony that reveals t committed keys; a method with a native
+threshold over routine keys, as `did:webs` has, offers it on its own terms.
 
 ### Rotation and revocation by role
 
@@ -1454,9 +1442,9 @@ lost, the replacement MUST require approvals from two distinct approvers whereve
 two eligible approvers exist, and so MUST raising an identity to level 3. Adding,
 rotating or retiring an `attestation` key, and rotating a routine update key,
 SHOULD. The initiator counts once at most. Where the recovery custodian is a
-threshold custodian whose participants satisfy VTI-KEY-211, a replacement it
-authorizes needs no further approval: its t participants' approvals (VTI-KEY-206)
-are the quorum.
+threshold custodian whose members satisfy VTI-KEY-211, a replacement it
+authorizes needs no further approval: its t members' proofs (VTI-KEY-215), each
+made after its own check and approval (VTI-KEY-206), are the quorum.
 
 **VTI-KEY-182** — A revocation for compromise MUST NOT require more than one
 approval, and MUST NOT be blocked by a pending, staged or overlapping change to
