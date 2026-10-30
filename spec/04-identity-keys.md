@@ -115,7 +115,18 @@ new log, with its `src`, in the first version's `alsoKnownAs`. It MUST list it
 where the identity is presented in the `did:scid` form, and MUST NOT offer an
 option to leave it out in that case.
 
-*Rationale for VTI-KEY-160 to VTI-KEY-166.* The `did:scid` form costs the
+**VTI-KEY-167** — A node that holds the update authority of an existing
+`did:webvh` log MAY list its `did:scid` DID URL in `alsoKnownAs` in a later
+version, or remove it. When it lists it, it MUST name the log's current
+location as `src`, and MUST replace, rather than keep beside it, an entry for
+the same SCID that names an earlier location. It MUST NOT remove it while it
+presents the identity in the `did:scid` form (VTI-KEY-166). The forms are one
+subject (VTI-KEY-164) only from the version that lists the alias: a node MUST
+NOT carry to the other form anything authorised against a version that did not
+list it, and MUST stop treating the forms as one subject from a version that
+removes it.
+
+*Rationale for VTI-KEY-160 to VTI-KEY-167.* The `did:scid` form costs the
 durable position nothing it depends on: VTI-KEY-004's four properties come
 from the `did:webvh` log. What it adds is an identity that does not name its
 host. A `did:webvh` identifier changes when its log moves; a `did:scid`
@@ -141,7 +152,12 @@ VTI-KEY-164 keeps the two forms apart because a subject that chose one has not
 necessarily chosen the other. The alias in `alsoKnownAs` is the controller
 saying that it has, which is why it is listed by default (VTI-KEY-166): an
 identity created without it cannot later be recognised in the other form
-until it publishes a new version.
+until it publishes a new version, which VTI-KEY-167 provides for. The link is
+dated by the version that states it, because the alias is the controller's
+statement and a statement made today says nothing about what the subject chose
+before. A stale `src` is replaced rather than kept because a former location is
+the one a replayed old log is served from (VTI-KEY-162), and an alias naming it
+would point a recipient there.
 
 *Note.* `did:webvh` stays the default form presented, so a deployment that
 configures nothing presents exactly what it did before. The new requirements
