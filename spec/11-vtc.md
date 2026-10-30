@@ -152,3 +152,30 @@ authority or security semantics is subject to VTI-CMP-090.
 decision, and a deployment that cannot say which policy governed a past
 admission cannot explain that admission afterwards. Recording the version is
 what turns "the policy allowed it" from an assertion into a checkable claim.
+
+**VTI-VTC-033** — Where a VTC operates under a governance framework, its
+identifier document MUST carry the reference to that framework as VTI-KEY-052
+requires. This specification does not require a VTC to operate under a
+governance framework; VTI-VTC-030 already states that one is optional.
+
+**VTI-VTC-034** — A consumer MUST NOT treat a resolution of the reference
+required by VTI-VTC-033 as establishing that the referenced framework currently
+governs the community. Resolving it establishes that the primary document
+exists and, where its digest matches as VTI-KEY-052 requires, what that
+document states, and nothing further. See VTI-CMP-032 and VTI-CMP-040.
+
+*Rationale for VTI-VTC-033 and VTI-VTC-034.* Where a governance framework
+exists, VTI-VTC-030 through VTI-VTC-032 depend on a relying party being able to
+find it, version-check it and know that what it reads is what the community
+pinned; without VTI-VTC-033 that framework is binding on paper and unreachable
+in practice. Finding it answers a different question from whether it still
+applies: the referenced document can be superseded, amended, or repudiated
+after the last time anyone resolved it, and only a check made at the time of
+the decision — never the act of resolution — can say which is current, the
+same distinction VTI-CMP-040 draws for any historical evidence and VTI-REG-010
+already applies to a registry entry. A consumer that skips VTI-VTC-034 and
+treats a successful resolution as current governance has made that mistake one
+level up from where VTI-CMP-032 names it for an issuer's authority.
+VTI-VTC-033 binds only a VTC that has adopted a governance framework in the
+first place — it does not, on its own, make adopting one mandatory, which
+remains VTI-VTC-030's decision to leave open.
