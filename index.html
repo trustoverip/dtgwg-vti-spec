@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-10-30T18:06:23.114Z"
+      "lastUpdated": "2026-10-31T02:18:09.620Z"
     }
   ]
 };</script>
@@ -1981,12 +1981,14 @@ through.</p>
 <p><strong>VTI-KEY-162</strong> — A node SHOULD keep, for each SCID, the sources it has
 verified the identity’s log at, and use them to resolve the DID when no <code>src</code>
 is given. A source is untrusted: the SCID makes the log verifiable wherever it
-is fetched from, but a source can serve an older version of it. A node MUST
-NOT accept, for a SCID, a log whose latest version precedes one it has already
-verified for that SCID, whatever the source. When it resolves a DID URL whose
-<code>src</code> is not one it holds for that identity, a node that holds other sources
-MUST also check what they serve, and MUST refuse the presented one if they
-serve a later version. A node MUST persist the sources and latest verified
+is fetched from, but a source can serve an older version of it, or a fork
+signed with a leaked update key. A node MUST NOT accept, for a SCID, a log
+whose latest version precedes one it has already verified for that SCID, or a
+log whose entry at that version’s number is not the entry it verified,
+whatever the source. When it resolves a DID URL whose <code>src</code> is not one it holds
+for that identity, a node that holds other sources MUST also check what they
+serve, and MUST refuse the presented one if they serve a later version or one
+the presented log does not contain. A node MUST persist the sources and latest verified
 version of every <code>did:scid</code> identity it authorises — an access control
 entry’s subject, an owner, a member, an administrator — so that a restart does
 not reset what it refuses.</p>
@@ -2015,7 +2017,13 @@ subject unless the <code>did:webvh</code> form’s document lists the <code>did:
 unless the request, or the configuration of VTI-VTA-034 or VTI-VTC-004, selects
 the <code>did:scid</code> form. The log is the same either way; the form decides which
 identity the node gives out. The form MAY later be changed only as VTI-KEY-168
-provides.</p>
+provides. A node MUST NOT present an identity in the <code>did:scid</code> form unless its
+log is witnessed: every version from the first one the identity is presented
+from carries the <code>did:webvh</code> witness approvals its threshold requires, the
+threshold can be met only by witnesses the node holding the update keys does
+not control, and each of those witnesses refuses to approve an entry that
+conflicts with one it has already approved. A new identity presented in the
+<code>did:scid</code> form is witnessed from its first version.</p>
 <p><strong>VTI-KEY-166</strong> — When it creates a <code>did:webvh</code> log, a node MUST, unless the
 request or its configuration says otherwise, list the <code>did:scid</code> DID URL of the
 new log, with its <code>src</code>, in the first version’s <code>alsoKnownAs</code>. It MUST list it
@@ -2036,8 +2044,10 @@ and presents it as an identity it holds for a trust context, a persona, a group
 or a room MAY switch the form in which it presents it, in either direction. It
 MUST NOT switch the durable identity of a node (VTI-KEY-001), its own or one it
 holds for another node, whose form stays as created. It MUST NOT switch to the
-<code>did:scid</code> form unless the log’s latest version lists the alias (VTI-KEY-166),
-and a switch publishes no version of its own. From the switch, the node MUST
+<code>did:scid</code> form unless the log’s latest version lists the alias (VTI-KEY-166)
+and the log is witnessed (VTI-KEY-165), and unless it holds no private key that
+a version before the first witnessed one commits to as an update key. A switch
+publishes no version of its own. From the switch, the node MUST
 give the identity out in the new form (VTI-KEY-163) and MUST name it in that
 form wherever it names the identity as itself: as a sender, an issuer, a
 proof’s verification method and a trust context’s primary DID. An artefact it
@@ -2100,6 +2110,23 @@ carries it only when the node that granted it decides to, on the subject’s
 request in the new form, which is a new grant rather than an inference.
 Sessions are left out because a session proves who authenticated, in which
 form, and a switch is exactly a change of that answer.</p>
+<p>A leaked update key is worse under the <code>did:scid</code> form than under <code>did:webvh</code>.
+To forge a <code>did:webvh</code> identity, the holder of a leaked key also needs write
+access to the host its identifier names; a fork published anywhere else is a
+different identifier, to which nobody has granted anything. A <code>did:scid</code>
+identity names no host, so a fork signed with the key and served from any host
+is the same identity, and can be numbered past the controller’s latest version
+so that a version floor alone does not refuse it. VTI-KEY-162 therefore refuses
+a log that does not contain the version already verified, and not only one
+that is older. That check needs something to compare against, and a node
+meeting the identity for the first time has nothing; witnesses put back the
+second factor the host provided (VTI-KEY-165). They protect only the versions
+they approve, because the witnesses that approve an entry are those named by
+the entry before it: a fork from an earlier version needs no approvals. That
+is why an existing log can switch only once the keys its unwitnessed versions
+committed to are gone (VTI-KEY-168). Witnesses do nothing against an old copy
+of the log served from a former host, which carries genuine approvals; the
+version floor of VTI-KEY-162 is what refuses that.</p>
 <p><em>Note.</em> <code>did:webvh</code> stays the default form presented, so a deployment that
 configures nothing presents exactly what it did before. The new requirements
 on such a deployment are to resolve the <code>did:scid</code> form (VTI-KEY-161, VTI-KEY-162)
@@ -5207,7 +5234,9 @@ position to substitute.</p>
 which it presents the durable identities it creates (VTI-KEY-165): <code>did:webvh</code>
 or the <code>did:scid:vh:1</code> form. The default MUST be <code>did:webvh</code>. A request to
 create an identity MAY name a form, and a VTA MUST then use that form in
-place of any configured one.</p>
+place of any configured one. A VTA MUST refuse to create an identity in the
+<code>did:scid</code> form when it cannot have the log witnessed from its first version
+(VTI-KEY-165).</p>
 <p><strong>VTI-VTA-035</strong> — A VTA MUST let its operator configure whether a new
 <code>did:webvh</code> log lists its <code>did:scid</code> form in <code>alsoKnownAs</code> (VTI-KEY-166), and
 the default MUST be to list it. A request MAY override the configuration,
@@ -5228,7 +5257,8 @@ version that changes nothing.</p>
 identity it holds switch the form in which the VTA presents it (VTI-KEY-168),
 in either direction, gated as any other update to that identity. It MUST
 refuse a switch to the <code>did:scid</code> form while the log’s latest version does not
-list the alias, and MUST NOT list it as part of the switch; MUST refuse to
+list the alias or is not witnessed (VTI-KEY-165), and MUST NOT list the alias
+or add witnesses as part of the switch; MUST refuse to
 switch the VTA’s own identity or one it holds as another node’s durable
 identity; and MUST refuse a switch to the form already presented. On a switch
 it MUST re-point to the new form every trust context whose primary DID is
@@ -9357,15 +9387,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 30 October 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 31 October 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-10-30T18:06:22.624Z">
-                            Generated: 2026-10-30T18:06:22.624Z
+                        <time class="timestamp" datetime="2026-10-31T02:18:09.053Z">
+                            Generated: 2026-10-31T02:18:09.053Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
