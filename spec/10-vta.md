@@ -146,7 +146,9 @@ position to substitute.
 which it presents the durable identities it creates (VTI-KEY-165): `did:webvh`
 or the `did:scid:vh:1` form. The default MUST be `did:webvh`. A request to
 create an identity MAY name a form, and a VTA MUST then use that form in
-place of any configured one.
+place of any configured one. A VTA MUST refuse to create an identity in the
+`did:scid` form when it cannot have the log witnessed from its first version
+(VTI-KEY-165).
 
 **VTI-VTA-035** — A VTA MUST let its operator configure whether a new
 `did:webvh` log lists its `did:scid` form in `alsoKnownAs` (VTI-KEY-166), and
@@ -171,7 +173,8 @@ version that changes nothing.
 identity it holds switch the form in which the VTA presents it (VTI-KEY-168),
 in either direction, gated as any other update to that identity. It MUST
 refuse a switch to the `did:scid` form while the log's latest version does not
-list the alias, and MUST NOT list it as part of the switch; MUST refuse to
+list the alias or is not witnessed (VTI-KEY-165), and MUST NOT list the alias
+or add witnesses as part of the switch; MUST refuse to
 switch the VTA's own identity or one it holds as another node's durable
 identity; and MUST refuse a switch to the form already presented. On a switch
 it MUST re-point to the new form every trust context whose primary DID is

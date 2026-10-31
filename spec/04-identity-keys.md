@@ -70,12 +70,14 @@ through.
 **VTI-KEY-162** — A node SHOULD keep, for each SCID, the sources it has
 verified the identity's log at, and use them to resolve the DID when no `src`
 is given. A source is untrusted: the SCID makes the log verifiable wherever it
-is fetched from, but a source can serve an older version of it. A node MUST
-NOT accept, for a SCID, a log whose latest version precedes one it has already
-verified for that SCID, whatever the source. When it resolves a DID URL whose
-`src` is not one it holds for that identity, a node that holds other sources
-MUST also check what they serve, and MUST refuse the presented one if they
-serve a later version. A node MUST persist the sources and latest verified
+is fetched from, but a source can serve an older version of it, or a fork
+signed with a leaked update key. A node MUST NOT accept, for a SCID, a log
+whose latest version precedes one it has already verified for that SCID, or a
+log whose entry at that version's number is not the entry it verified,
+whatever the source. When it resolves a DID URL whose `src` is not one it holds
+for that identity, a node that holds other sources MUST also check what they
+serve, and MUST refuse the presented one if they serve a later version or one
+the presented log does not contain. A node MUST persist the sources and latest verified
 version of every `did:scid` identity it authorises — an access control
 entry's subject, an owner, a member, an administrator — so that a restart does
 not reset what it refuses.
@@ -107,7 +109,13 @@ subject unless the `did:webvh` form's document lists the `did:scid` form in
 unless the request, or the configuration of VTI-VTA-034 or VTI-VTC-004, selects
 the `did:scid` form. The log is the same either way; the form decides which
 identity the node gives out. The form MAY later be changed only as VTI-KEY-168
-provides.
+provides. A node MUST NOT present an identity in the `did:scid` form unless its
+log is witnessed: every version from the first one the identity is presented
+from carries the `did:webvh` witness approvals its threshold requires, the
+threshold can be met only by witnesses the node holding the update keys does
+not control, and each of those witnesses refuses to approve an entry that
+conflicts with one it has already approved. A new identity presented in the
+`did:scid` form is witnessed from its first version.
 
 **VTI-KEY-166** — When it creates a `did:webvh` log, a node MUST, unless the
 request or its configuration says otherwise, list the `did:scid` DID URL of the
@@ -131,8 +139,10 @@ and presents it as an identity it holds for a trust context, a persona, a group
 or a room MAY switch the form in which it presents it, in either direction. It
 MUST NOT switch the durable identity of a node (VTI-KEY-001), its own or one it
 holds for another node, whose form stays as created. It MUST NOT switch to the
-`did:scid` form unless the log's latest version lists the alias (VTI-KEY-166),
-and a switch publishes no version of its own. From the switch, the node MUST
+`did:scid` form unless the log's latest version lists the alias (VTI-KEY-166)
+and the log is witnessed (VTI-KEY-165), and unless it holds no private key that
+a version before the first witnessed one commits to as an update key. A switch
+publishes no version of its own. From the switch, the node MUST
 give the identity out in the new form (VTI-KEY-163) and MUST name it in that
 form wherever it names the identity as itself: as a sender, an issuer, a
 proof's verification method and a trust context's primary DID. An artefact it
@@ -200,6 +210,24 @@ carries it only when the node that granted it decides to, on the subject's
 request in the new form, which is a new grant rather than an inference.
 Sessions are left out because a session proves who authenticated, in which
 form, and a switch is exactly a change of that answer.
+
+A leaked update key is worse under the `did:scid` form than under `did:webvh`.
+To forge a `did:webvh` identity, the holder of a leaked key also needs write
+access to the host its identifier names; a fork published anywhere else is a
+different identifier, to which nobody has granted anything. A `did:scid`
+identity names no host, so a fork signed with the key and served from any host
+is the same identity, and can be numbered past the controller's latest version
+so that a version floor alone does not refuse it. VTI-KEY-162 therefore refuses
+a log that does not contain the version already verified, and not only one
+that is older. That check needs something to compare against, and a node
+meeting the identity for the first time has nothing; witnesses put back the
+second factor the host provided (VTI-KEY-165). They protect only the versions
+they approve, because the witnesses that approve an entry are those named by
+the entry before it: a fork from an earlier version needs no approvals. That
+is why an existing log can switch only once the keys its unwitnessed versions
+committed to are gone (VTI-KEY-168). Witnesses do nothing against an old copy
+of the log served from a former host, which carries genuine approvals; the
+version floor of VTI-KEY-162 is what refuses that.
 
 *Note.* `did:webvh` stays the default form presented, so a deployment that
 configures nothing presents exactly what it did before. The new requirements
