@@ -294,7 +294,14 @@ text — MUST NOT be given this level.
 
 **VTI-VOT-065** — Answers to text questions MUST NOT be disclosed until the
 number of counted ballots reaches the threshold the manifest states, which MUST
-be at least 10.
+be at least 1 and SHOULD be at least 10. Where the threshold is below 10, the
+statement a member is shown before they request a ticket (VTI-VOT-090) MUST say
+so, and MUST say that a written answer may identify its author.
+
+*Rationale for VTI-VOT-065.* A written answer can identify its author by what it
+says or how it is phrased, and the fewer the ballots released together, the
+easier that is. Small communities and surveys still need written answers, so a
+low threshold is disclosed to the member rather than forbidden.
 
 *Rationale for VTI-VOT-060.* The ticket keeps a ballot anonymous whatever the
 level, so an open or sealed ballot can be published whole, and any question
@@ -342,8 +349,10 @@ it SHOULD require consent from an administrator other than the requester.
 they request a ticket for an election, a statement of: who operates the ballot
 box; whether the same party operates the VTC; the trustees and their threshold;
 the auditors and the board's visibility; whether a later ballot replaces an
-earlier one; and that a member can prove how they voted, so that the community
-cannot protect a member against being made to vote a certain way.
+earlier one; where the threshold for disclosing text answers is below 10, that
+it is and that a written answer may identify its author (VTI-VOT-065); and that
+a member can prove how they voted, so that the community cannot protect a member
+against being made to vote a certain way.
 
 ### Audit
 
