@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-10-31T02:18:09.620Z"
+      "lastUpdated": "2026-11-01T15:58:21.717Z"
     }
   ]
 };</script>
@@ -6657,7 +6657,13 @@ MUST NOT be decrypted. A manifest whose questions cannot be totalled — ranking
 text — MUST NOT be given this level.</p>
 <p><strong>VTI-VOT-065</strong> — Answers to text questions MUST NOT be disclosed until the
 number of counted ballots reaches the threshold the manifest states, which MUST
-be at least 10.</p>
+be at least 1 and SHOULD be at least 10. Where the threshold is below 10, the
+statement a member is shown before they request a ticket (VTI-VOT-090) MUST say
+so, and MUST say that a written answer may identify its author.</p>
+<p><em>Rationale for VTI-VOT-065.</em> A written answer can identify its author by what it
+says or how it is phrased, and the fewer the ballots released together, the
+easier that is. Small communities and surveys still need written answers, so a
+low threshold is disclosed to the member rather than forbidden.</p>
 <p><em>Rationale for VTI-VOT-060.</em> The ticket keeps a ballot anonymous whatever the
 level, so an open or sealed ballot can be published whole, and any question
 type can be asked. Encryption at the sealed level hides results until close.
@@ -6693,8 +6699,10 @@ it SHOULD require consent from an administrator other than the requester.</p>
 they request a ticket for an election, a statement of: who operates the ballot
 box; whether the same party operates the VTC; the trustees and their threshold;
 the auditors and the board’s visibility; whether a later ballot replaces an
-earlier one; and that a member can prove how they voted, so that the community
-cannot protect a member against being made to vote a certain way.</p>
+earlier one; where the threshold for disclosing text answers is below 10, that
+it is and that a written answer may identify its author (VTI-VOT-065); and that
+a member can prove how they voted, so that the community cannot protect a member
+against being made to vote a certain way.</p>
 <h3 id="audit-1" tabindex="-1"><a class="toc-anchor d-print-none" href="#audit-1">§</a> Audit</h3>
 <p><strong>VTI-VOT-100</strong> — A VTC MUST record an audit event for the creation, early
 closure, cancellation and certification of an election and for each ticket it
@@ -9387,15 +9395,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 31 October 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 01 November 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-10-31T02:18:09.053Z">
-                            Generated: 2026-10-31T02:18:09.053Z
+                        <time class="timestamp" datetime="2026-11-01T15:58:21.044Z">
+                            Generated: 2026-11-01T15:58:21.044Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
