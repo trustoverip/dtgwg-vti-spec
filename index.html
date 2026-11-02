@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-01T15:58:21.717Z"
+      "lastUpdated": "2026-11-02T11:04:46.916Z"
     }
   ]
 };</script>
@@ -6226,7 +6226,11 @@ community without that chain.</p>
 group’s record, to decide whether a subject is authorized (VTI-VTC-020,
 VTI-ACL-070). A group membership credential is evidence for parties outside the
 community’s access control: a room’s host, a peer, another community. Another
-community that relies on one is bound by VTI-REG-023.</p>
+community that relies on one is bound by VTI-REG-023. Eligibility for a ticket
+under a credential roll that names the group (VTI-VOT-025) is not authority,
+since a ticket and a result confer none (Community Voting chapter); a VTC
+deciding it verifies the credential as such a party does, and checks its own
+records besides.</p>
 <p><em>Rationale for VTI-DIR-080.</em> The keys that make a group’s credentials are
 attestation keys in all but name: whoever holds them can say who is in the
 group to everyone who trusts the group. Holding them where the community’s own
@@ -6440,7 +6444,7 @@ Step-Up chapters (VTI-VTC-020), like any other change.</p>
 <tr>
 <td><strong>Registrar</strong></td>
 <td>the community’s VTC</td>
-<td>who asked for a ticket, and when</td>
+<td>who asked for a ticket, and when; under a credential roll, that they hold the membership credential it names</td>
 <td>any ballot, any tag, the address or time of any cast</td>
 </tr>
 <tr>
@@ -6557,19 +6561,81 @@ purpose, and under a class that names one election and no other. A ticket MUST
 be issued blind: the VTC MUST NOT learn the ticket it issues, or anything that
 would let it recognise a cast made with it.</p>
 <p><strong>VTI-VOT-021</strong> — A VTC MUST decide eligibility for a ticket by the election’s
-roll rule — its active members, its active members and parties the manifest
-lists, or only parties the manifest lists — read from its own records at the
-time it issues. It MUST NOT issue a ticket to a member who is not active at that
-time.</p>
+roll rule — its active members; its active members and parties the manifest
+lists; only parties the manifest lists; or the holders of a membership
+credential for the one identifier the manifest names (a <strong>credential roll</strong>,
+VTI-VOT-025) — at the time it issues: from its own records under the first
+three rules, and from the presentation the requester makes, checked as
+VTI-VOT-025 requires, under the fourth. It MUST NOT issue a ticket to a member
+of the community who is not active at that time.</p>
 <p><strong>VTI-VOT-022</strong> — A VTC MUST issue at most one ticket for an election to each
 eligible party, and MUST record each issuance durably, before answering, against
 the requesting party, under a request that party signed with its membership
-identifier (or, for a listed non-member, the identifier the manifest lists).</p>
+identifier (or, for a listed non-member, the identifier the manifest lists; or,
+under a credential roll, the identifier VTI-VOT-027 holds the issuance against).
+Where a member’s identifier is rotated (VTI-MEM-041), the VTC MUST carry their
+issuance records to the new identifier, so that rotation never yields a second
+ticket for an election.</p>
 <p><strong>VTI-VOT-023</strong> — A voter’s agent SHOULD generate the key a ticket is requested
 under for that election alone, and MUST derive it as it derives any other key of
 the voter’s context (VTI-KEY-030).</p>
 <p><strong>VTI-VOT-024</strong> — A VTC MUST NOT issue a ticket for an election after its voting
 closes, or for an election that has been cancelled.</p>
+<p><strong>VTI-VOT-025</strong> — Under a credential roll, a VTC MUST establish a party’s
+eligibility when the party requests its ticket, and MUST NOT establish it, or
+fix the roll, when the election is created. The request MUST carry a
+presentation of the requester’s membership credential for the identifier the
+roll names, made by the credential’s subject and satisfying VTI-CRD-020 to
+VTI-CRD-022 with the community as its audience. The VTC MUST issue a ticket only
+where, at the time it issues:</p>
+<ol>
+<li>the credential’s proof verifies and its issuer is the identifier the roll
+names, and, where that identifier is one of the community’s groups, the
+community’s authorization credential to the group also verifies
+(VTI-DIR-083, VTI-DIR-086);</li>
+<li>the credential is within its validity period;</li>
+<li>the party that signed the request is the credential’s subject;</li>
+<li>neither the credential, nor any authorization credential its issuer’s
+authority rests on, is revoked or suspended, as its status — its status
+list, or the trust registry its issuer publishes status through — shows at
+that time (VTI-CRD-011, VTI-MEM-030); a credential that carries no status
+mechanism is checked by its validity period alone (VTI-DIR-085);</li>
+<li>where the roll names the community or one of its groups, the subject is an
+active member of the community, and of the group, in the community’s own
+records; and</li>
+<li>where the roll names any other identifier, that identifier’s own membership
+of the community (VTI-VOT-026) is active — neither expired, suspended,
+revoked nor removed — in the community’s own records and as the status of
+the membership credential the community issued it shows at that time.</li>
+</ol>
+<p>Where any of these cannot be determined — a status list or a trust registry
+that cannot be reached — the outcome MUST be indeterminate (VTI-CRD-012,
+VTI-REG-012), and the VTC MUST NOT issue the ticket. The VTC MUST NOT retain
+the presentation once it has decided, and MUST record with the issuance only
+what VTI-VOT-022 and VTI-VOT-027 need (VTI-CRD-042).</p>
+<p><strong>VTI-VOT-026</strong> — A VTC MUST NOT create an election under a credential roll
+unless the identifier the roll names is the community’s own, the identifier of
+one of its groups, or the identifier of a party that is itself an active member
+of the community — holding a membership credential the community issued it,
+neither expired, suspended nor revoked, as the community’s records show at
+creation — such as another community, a group of another community, or a
+network. It MUST refuse to create one naming any other identifier, and MUST NOT
+treat recognition of a party through a trust registry (VTI-REG-020) as
+membership for this purpose. The roll MUST name exactly one identifier. A roll
+that names a party admits the holders of that party’s own membership
+credentials, never the members of the parties it lists or recognises in turn
+(VTI-REG-024, VTI-VTN-022).</p>
+<p><strong>VTI-VOT-027</strong> — Under a credential roll, the party VTI-VOT-022 holds to one
+ticket is the subject of the credential presented, never the identifier the
+roll names. Where the roll names the community or one of its groups, the VTC
+MUST hold the issuance against the member the subject identifies in its
+records, so that it follows the member through rotation (VTI-VOT-022). Where
+the roll names any other party, the VTC MUST hold it against the subject’s
+identifier.</p>
+<p><strong>VTI-VOT-028</strong> — Under a credential roll, the number of parties the roll
+admits is not known to the community, and a VTC MUST NOT state one. Where it
+reports turnout, it MUST report it as the number of counted ballots against the
+number of tickets it issued (VTI-VOT-072).</p>
 <p><em>Rationale for VTI-VOT-020.</em> A ticket under a class that names one election is
 what makes the roll real: a member who left before the roll closed has no ticket,
 because no class credential issued for an earlier period stands for this
@@ -6579,6 +6645,45 @@ purpose, such as hidden vetting, can never be presented as a ticket.</p>
 election. A key used across elections leaves every tag of the voter recoverable
 together should that key be exposed, including by a future adversary able to
 compute discrete logarithms; a key per election limits that to one election.</p>
+<p><em>Rationale for VTI-VOT-025.</em> A credential roll lets a community put a question
+to a set of people whose list it does not keep — the members of one of its
+groups, or of a community, group or network that is itself its member — by
+asking each of them, when they
+come for a ticket, to show the credential that makes them one. Checking it then,
+and not when the election is called, is what keeps the roll honest in both
+directions: a person who joins after the election is called holds a credential
+when they ask and is admitted, and a person removed in the meantime has a
+credential that is revoked or expired and is not. A roll fixed at creation
+would have to be a copy of another party’s roster, which the community has no
+right to and which would be stale by the first ballot. The check is made in the
+one exchange in which the community already learns who is asking, so it
+learns nothing else about the voter, and the ticket stays blind
+(VTI-VOT-020). Where the roll names the community or one of its groups, the
+community’s own records are the fresher evidence, and a credential that has
+not yet expired does not outvote them.</p>
+<p><em>Rationale for VTI-VOT-026.</em> A credential roll hands the decision of who may
+vote to whoever issues the credentials. Naming any identifier would let
+whoever controls it enfranchise anyone they like, and the administrator who
+called the election would not see it happen. A party from outside the community
+is therefore trusted for this only by being a member of it: admitted by the
+community’s own decision (VTI-MEM-011), evidenced by a credential the community
+issued, and removable by the community’s own lifecycle. Recognition through a
+registry is a weaker, one-sided relationship and is not enough. The community
+itself and its own groups need no such membership, because their
+membership credentials already come from the community. Checking that
+membership again at each issuance means a party whose membership lapses or is
+revoked during an election stops yielding tickets, as a revoked credential
+does.</p>
+<p><em>Rationale for VTI-VOT-027.</em> The identifier the roll names is shared by
+everyone the roll admits; one ticket per roll identifier would be one ticket
+for the whole roll. What one ticket per party must count is the person
+holding the credential, and the subject is the only identifier of them the
+presentation proves.</p>
+<p><em>Rationale for VTI-VOT-028.</em> A community cannot count the members of a party
+whose roster it does not hold, and an estimate presented as a roll size would
+make turnout look like a measurement. Tickets issued is a number the community
+does hold, is the bound certification already holds the count to, and says
+what turnout can honestly say: how many of those who came for a ticket voted.</p>
 <h3 id="casting" tabindex="-1"><a class="toc-anchor d-print-none" href="#casting">§</a> Casting</h3>
 <p><strong>VTI-VOT-030</strong> — A cast MUST carry the ballot and a proof, made with the
 voter’s ticket, that the holder holds a ticket of the election’s class. The
@@ -6700,14 +6805,32 @@ they request a ticket for an election, a statement of: who operates the ballot
 box; whether the same party operates the VTC; the trustees and their threshold;
 the auditors and the board’s visibility; whether a later ballot replaces an
 earlier one; where the threshold for disclosing text answers is below 10, that
-it is and that a written answer may identify its author (VTI-VOT-065); and that
-a member can prove how they voted, so that the community cannot protect a member
-against being made to vote a certain way.</p>
+it is and that a written answer may identify its author (VTI-VOT-065); under a
+credential roll, the identifier the roll names, whether it is the community, one
+of its groups, or another party that is a member of the community, and that
+claiming a ticket shows the community the member’s membership of it
+(VTI-VOT-025); and that a member can prove how they voted, so that the community
+cannot protect a member against being made to vote a certain way.</p>
 <h3 id="audit-1" tabindex="-1"><a class="toc-anchor d-print-none" href="#audit-1">§</a> Audit</h3>
 <p><strong>VTI-VOT-100</strong> — A VTC MUST record an audit event for the creation, early
 closure, cancellation and certification of an election and for each ticket it
 issues. An audit record of a VTC or a ballot box MUST NOT pair a voter’s
 identifier with a tag, a cast or a ballot.</p>
+<p><em>Open issue.</em> Under a credential roll that names a party other than the
+community, the registrar learns, from the presentation, that the
+requester is a member of that party — a fact it may not otherwise hold, about
+a person who may not be its member at all. A presentation of a predicate
+credential system proof that the requester holds such a credential, under a
+pseudonym scoped to the election, would let the registrar enforce the roll and
+one ticket per party without learning which member asked. This chapter does not
+yet specify it.</p>
+<p><em>Open issue.</em> Where a credential roll names a party other than the community or
+one of its groups, the registrar cannot follow a rotation of the subject’s identifier at that party
+(VTI-VOT-027): a member who rotates there during an election, and presents the
+credential issued to their new identifier, is a new subject to the registrar.
+The count is still bounded by the tickets issued (VTI-VOT-072), but one ticket
+per party then rests on the issuing party’s credentials carrying an identifier
+that survives rotation, which this specification does not yet require.</p>
 <p><em>Open issue.</em> This chapter does not provide resistance to coercion or vote
 buying: a voter can prove how they voted by revealing their key’s tag, and a
 later ballot replacing an earlier one mitigates this only partly. Ranked
@@ -9395,15 +9518,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 01 November 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 02 November 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-01T15:58:21.044Z">
-                            Generated: 2026-11-01T15:58:21.044Z
+                        <time class="timestamp" datetime="2026-11-02T11:04:46.296Z">
+                            Generated: 2026-11-02T11:04:46.296Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
