@@ -100,13 +100,16 @@ send one enfranchise whoever receives it.
 ### Kinds
 
 **VTI-NTF-010** — Every notification MUST name a kind. A kind is either
-registered in the catalogue's notification kind registry, or named under a
-domain its definer controls.
+registered in the notification kind registry of Appendix G, or named under a
+domain its definer controls. Registering a kind MUST NOT require a new version
+of the notification or relay operation: the operation fixes only the form of a
+kind's name.
 
 **VTI-NTF-011** — A kind's definition MUST state: what the thing is; the
 operation by which it is opened; what the audience means for it; what a
 notification of the kind may carry beyond the members of VTI-NTF-002, which is
-nothing unless the definition says otherwise; whether it may be relayed; and
+nothing unless the definition says otherwise; whether it may be relayed, and,
+where it may, what a relay of it discloses to the parties it is relayed to; and
 when it lapses.
 
 **VTI-NTF-012** — A recipient MUST NOT act on a notification of a kind it does
@@ -115,8 +118,9 @@ one as anything but what VTI-NTF-002 states of it.
 
 *Rationale.* A closed set of kinds would make every new use a new version of
 the notification operation and every recipient a party to every use. A
-registry keeps the operation fixed and the uses open, as the capability
-registry does (Appendix C), and the rule of VTI-NTF-012 is what makes an
+registry kept in this specification, rather than in the operation's schema,
+keeps the operation fixed and the uses open, as the capability registry does
+(Appendix C), and the rule of VTI-NTF-012 is what makes an
 unknown kind safe: a recipient that does not understand a notification can
 still show that it exists, and does nothing else with it.
 
@@ -131,10 +135,15 @@ treat it as delivered only on the evidence VTI-TRN-040 requires.
 retry class of VTI-OPS-060. The originator's identifier for a notification,
 with its revision, is the operation's idempotency key: every attempt at one
 delivery, and every new document VTI-TRN-046 issues for it, MUST carry the same
-identifier and revision.
+identifier and revision. An originator MUST issue every revision of a
+notification as the same identity, and a node MUST issue its notifications as
+its durable identity (VTI-KEY-001), whose identifier a key rotation does not
+change.
 
 **VTI-NTF-022** — A recipient MUST hold at most one record of a notification
-for each pair of originator and notification identifier. A higher revision
+for each pair of originator identifier and notification identifier, comparing
+originator identifiers as VTI-KEY-160 – VTI-KEY-169 require for the form they
+take. A higher revision
 MUST replace the record; a revision equal to or lower than the one held MUST
 NOT change it.
 
@@ -148,7 +157,7 @@ at all (VTI-NTF-030).
 withdraws it because the thing has been cancelled or is no longer open to the
 audience, MUST do so by issuing a higher revision under the same identifier to
 the same addressee. It SHOULD withdraw a notification whose thing is cancelled
-before it lapses.
+before it lapses, and MUST where the thing's kind requires it.
 
 *Rationale for VTI-NTF-021 and VTI-NTF-022.* A notification is delivered by
 store-and-forward, retried by its sender, re-issued under VTI-TRN-046 when a
@@ -157,7 +166,10 @@ relayers. Each of those is the same notification. Keying the recipient's record
 on the originator's own identifier, rather than on the identifier of the
 document that carried it, is what makes all of them one record, and the
 revision is what lets the originator change or withdraw it without the change
-being taken for a repeat.
+being taken for a repeat. The key holds only while the originator's identifier
+does, which is why a node issues notifications as its durable identity: a
+`did:webvh` identifier, in either of its forms, survives the rotation of every
+key behind it.
 
 *Rationale for VTI-NTF-023.* A reply that said "accepted" or "declined" would
 tell any sender whether the recipient has a relationship with it, and a reply
@@ -171,8 +183,9 @@ The reply confirms receipt, which is what VTI-NTF-020 needs, and nothing else.
 acceptance policy that it states. A VTA's policy MUST, unless the principal has
 chosen otherwise, accept a notification only from a party with which the
 principal holds a relationship: a community, group or network whose membership
-credential the principal holds; a party holding an access control entry at the
-VTA; or a party the principal has chosen to accept notifications from.
+credential the principal holds; a party with which the principal holds a
+verifiable relationship credential; a party holding an access control entry at
+the VTA; or a party the principal has chosen to accept notifications from.
 
 **VTI-NTF-031** — For a relayed notification, the relationship VTI-NTF-030
 counts MUST be the recipient's relationship with the relayer that delivered it,
@@ -224,8 +237,22 @@ notification to, how many, or whether it relayed it at all, and an originator
 MUST NOT ask it to. Delivery evidence for a relay goes to the relayer only.
 
 **VTI-NTF-044** — A relayer SHOULD apply its own acceptance policy to a
-notification before relaying it, and SHOULD relay a later revision it accepts,
-including a withdrawal, to every party it relayed an earlier revision to.
+notification before relaying it. It MUST relay every later revision of a
+notification it relayed, including a withdrawal, to every party it relayed an
+earlier revision to, and MUST therefore keep a record of those parties. It MUST
+keep that record until the notification's period ends, or, for a notification
+that states no period, for a period the relayer states and applies to every
+such notification, and MUST NOT use the record for any other purpose. A
+relayer MAY relay a revision that arrives after it has discarded the record to
+the parties it would relay a new notification to.
+
+**VTI-NTF-046** — Before a relayer relays a notification of a kind whose
+definition says that a relay discloses something about the relayer, whoever
+decides the relay — the relayer's administrator, or for an individual, the
+principal — MUST have been shown what it discloses. For the kind `election`,
+that is that relaying shows each party it is relayed to that the relayer is a
+member of the community holding the election, which the relayer's own listing
+in that community's directory may otherwise keep from them (VTI-DIR-040).
 
 **VTI-NTF-045** — A relay MUST NOT be read as a statement by the relayer about
 the thing. It states only that the relayer passed the originator's notification
@@ -245,6 +272,21 @@ to spare, and stops a loop from growing a relay without end.
 of another party does not hold that party's roster and has no right to it
 (VTI-VOT-028). A relay that reported back would hand it the roster one receipt
 at a time.
+
+*Rationale for VTI-NTF-044.* A member who was told of an election and is not
+told it was cancelled holds a notification that points at nothing, and may
+present a credential to open it. The relayer is the only party that knows whom
+it told, so it is the only party that can tell them again. Keeping that record
+until the notification lapses is the least that does this; keeping it longer,
+or for anything else, would turn the relayer's courtesy into a log of whom it
+reached.
+
+*Rationale for VTI-NTF-046.* Relaying is the relayer's own disclosure, not the
+originator's. A community that notifies a member party tells that party only
+what it already knows, that it is a member; a party that relays the
+notification tells its own members, some of whom it may have chosen not to tell.
+That choice is the relayer's to make, and it is made well only by whoever has
+been shown what it reveals.
 
 ### The recipient's agent
 
@@ -278,8 +320,8 @@ notification tells nobody anything; acting on it is the principal's decision.
 
 ### The election kind
 
-The catalogue's notification kind registry registers the kind `election`, which
-this section defines.
+The notification kind registry (Appendix G) registers the kind `election`,
+which this section defines.
 
 **VTI-NTF-060** — A notification of the kind `election` MUST name the community
 as the thing's holder, the election's identifier as the thing's identifier, and
@@ -287,13 +329,15 @@ the catalogue's operation for reading one election as the operation that opens
 it. Its audience MUST be the identifier the election's roll names under a
 credential roll (VTI-VOT-026), and the community's own identifier otherwise. It
 MAY state the election's voting period as its period, and lapses when voting
-closes. It MUST carry nothing else of the election, and it MAY be relayed.
+closes. It MUST carry nothing else of the election. It MAY be relayed, and a
+relay of it discloses that the relayer is a member of the community
+(VTI-NTF-046).
 
 **VTI-NTF-061** — A VTC that holds an election under a credential roll naming a
-party that is itself a member of the community SHOULD notify that party once
-the election is registered with its ballot box, MUST NOT notify any party but
-that one, and MUST withdraw the notification if the election is cancelled
-before voting closes.
+party that is itself a member of the community MUST notify that party once the
+election is registered with its ballot box, MUST NOT notify any party but that
+one, and MUST withdraw the notification if the election is cancelled before
+voting closes.
 
 **VTI-NTF-062** — A VTC MAY notify its members, or the members of one of its
 groups, of an election their own list already shows them (VTI-VOT-015), and
@@ -321,14 +365,20 @@ election exists that their party's members may take part in. What the election
 asks, and whether this member may vote in it, they learn only by opening it and
 presenting the credential that makes them one, which is the member's choice.
 
-*Open issue.* Whether a VTC MUST, rather than SHOULD, notify the party a
-credential roll names is not settled. A community that does not leaves the
-party's members to learn of the election from a link or from outside VTI, and
-an election that its voters cannot find is one whose turnout says little.
+*Open issue.* A notification's originator is compared by its identifier
+(VTI-NTF-022). A change of the identifier method an originator issues under —
+not a key rotation, which leaves a `did:webvh` identifier unchanged, but a move
+to another method, or a presented form a recipient cannot match to the earlier
+one — makes a later revision a new notification at the recipient. This chapter
+does not yet say how a recipient recognises the same originator across such a
+change.
 
-*Open issue.* A relayed notification tells each member the relayer reaches that
-the originator holds something for the audience. For an election, that is
-that the community holds an election and that the party is its member, which
-the party's own listing in the community's directory may otherwise keep from
-those members (VTI-DIR-040). The relayer decides, by relaying, but this
-chapter does not yet require a relayer to be told what a relay discloses.
+*Open issue.* A principal's client cannot yet send a notification through its
+VTA as the principal. A party wanting to notify others sends the notification
+operation itself; a VTA operation that signs and sends one for its principal is
+deferred.
+
+*Open issue.* A group, community or network that receives notifications holds
+them as its own node decides. This chapter specifies the held notifications of
+a VTA's principal (VTI-NTF-050), and does not yet specify how the
+administrators of a group, community or network see what was addressed to it.

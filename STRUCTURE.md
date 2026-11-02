@@ -55,7 +55,7 @@ Three bodies of normative material:
 | | Considerations (security, privacy, governance, i18n, accessibility) | `spec/90-considerations.md` |
 | | Conformance | `spec/95-conformance.md` |
 | | References | `spec/96-references.md` |
-| | Appendices A–F | `spec/appendix.md` |
+| | Appendices A–H | `spec/appendix.md` |
 
 One chapter per file, because `markdown_paths` order is the rendered order and
 the file split becomes the working group's unit of assignment and review. This
@@ -170,6 +170,7 @@ where unresolved propositions are published with their status visible.
 | Appendix D — context path grammar | **drafted** |
 | Appendix E — composition catalogue | **drafted** — E.1 (record form) normative, the rest informative |
 | Appendix F — divergence register | **drafted**; seeded, and open for implementer entries |
+| Appendix G — notification kind registry | **drafted** — `election` registered |
 
 Known gaps. Every chapter and appendix now has text; what remains are the
 items only the working group can close:

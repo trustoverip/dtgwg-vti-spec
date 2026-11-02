@@ -635,7 +635,24 @@ parameter as accepted-and-ignored when the node in question never accepted it.
 A register that quietly drops such entries teaches its readers not to trust the
 ones that remain.
 
-### Appendix G: Acknowledgements
+### Appendix G: Notification kind registry
+
+This appendix is normative. It is the registry of notification kinds that
+VTI-NTF-010 names. A kind is registered by a change to this appendix that adds
+its row and the definition VTI-NTF-011 requires, and registering one changes no
+operation: the notification operation's schema fixes only the form of a kind's
+name — a lowerCamelCase name registered here, or `<reverse-DNS domain>:<name>`
+for a kind defined under a domain its definer controls, which needs no row.
+
+A registered kind's name MUST NOT be reused for another kind, and a kind
+withdrawn from use is marked withdrawn and keeps its row (VTI-CNF-004 applies to
+kind names as it does to requirement identifiers).
+
+| Kind | Thing | Holder / identifier | Opened by | Audience | Carries beyond VTI-NTF-002 | Relayable | A relay discloses | Lapses | Defined by |
+|---|---|---|---|---|---|---|---|---|---|
+| `election` | an election, poll or survey of a community | the community / the election's identifier | the catalogue's operation for reading one election | the identifier a credential roll names, or the community's own | nothing; the period is the voting period | yes | that the relayer is a member of the community | when voting closes | VTI-NTF-060 – VTI-NTF-063 |
+
+### Appendix H: Acknowledgements
 
 This specification draws on composition-assurance work carried out elsewhere in
 the DTG portfolio, recorded in Appendix E, and on operational experience from
