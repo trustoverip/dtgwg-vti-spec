@@ -47,7 +47,7 @@ Five parties take part, and the chapter keeps what each learns apart, as
 
 | Party | Played by | Learns | Never learns |
 |---|---|---|---|
-| **Registrar** | the community's VTC | who asked for a ticket, and when; under a credential roll, that they hold the membership credential it names | any ballot, any tag, the address or time of any cast |
+| **Registrar** | the community's VTC | who asked for a ticket, and when; under a credential roll, that they hold the membership credential it names, and, where that roll names a member party, that a member read the election | any ballot, any tag, the address or time of any cast |
 | **Ballot box** | a voting service, which is a host service (Architecture chapter) | ballots, tags, the address and time of each cast | which member any tag belongs to |
 | **Voter's agent** | the voter's VTA | the voter's tag and ballot | other voters' tags and ballots |
 | **Trustees** | parties named for one election, each through its own VTA | a share of the election key; at close, what decryption reveals | who cast which ballot |
@@ -146,10 +146,79 @@ refuse every other change to a registered election.
 registering only option counts and question types with it. A board that is not
 public SHOULD do so.
 
+**VTI-VOT-015** — A VTC MUST show an election — its manifest, or any part of
+it — and MUST confirm that the election exists, only to a party holding
+`vtc.elections.manage` (VTI-VOT-080) or to a party the election concerns, which
+is:
+
+1. under the first three roll rules (VTI-VOT-021), a party the roll admits as
+   the VTC's records stand at the time of the read;
+2. under a credential roll naming the community or one of its groups, an active
+   member of the community, and, for a group, a member of that group, in the
+   community's own records; and
+3. under a credential roll naming any other party (VTI-VOT-026), that party
+   itself, by its own active membership of the community, or a requester who
+   presents, in the read itself, its membership credential for that party,
+   bound to that read and checked as VTI-VOT-025 requires of the presentation a
+   ticket request carries.
+
+To any other party the VTC MUST answer as it answers for an election that does
+not exist. Where the outcome of a check under item 3 is indeterminate, the VTC
+MUST NOT show the election. A VTC MUST NOT ask a party to present a credential
+in order to list the community's elections, and MUST NOT include an election
+item 3 governs in a list it gives any party other than the one item 3 names or
+a party holding `vtc.elections.manage` — not even its identifier. It MUST NOT
+retain a presentation made in a read once it has decided (VTI-CRD-042), and
+MUST NOT accept one bound to a read it has already accepted one for
+(VTI-CRD-022).
+
+**VTI-VOT-016** — A member's agent MUST present a membership credential in a
+read of an election only where the member chose to present that credential to
+that community, and MUST bind the presentation to that read alone.
+
 *Rationale for VTI-VOT-011.* A ticket proves that its holder may vote; it does
 not prove what they were asked. Binding the cast to the digest means a community
 that shows different questions to different members produces casts that do not
 count, rather than results nobody can interpret.
+
+*Rationale for VTI-VOT-015.* An election is the community's business with the
+parties it concerns, and its questions and options can say as much as its
+result: that a merger is being weighed, or a partner's standing put to a vote.
+Under the first three roll rules and under a credential roll naming the
+community or one of its groups, the community's own records say whom an
+election concerns. Under a credential roll naming a member party they cannot:
+the party's members are people the community holds no record of, so the only
+evidence that a reader is one of them is the credential they would present for
+a ticket. Showing such an election to any reader instead would publish it to
+the world. The party itself may read it by its own membership, because it is
+the one whose members are asked, and because it could in any case issue
+itself a credential and present that.
+
+A list carries no presentation, because a reader who presented every
+membership credential they hold to find the elections that concern them would
+show the community all their memberships, of which at most one matters to any
+election. A list could still show such an election as a stub — its identifier,
+the party it names and its schedule, without its title or questions — so that
+its voters could find it. The requirement omits even that. A stub would go to
+any reader, since a list proves nothing about its reader, and would publish
+that the community holds the election, when, under what identifier (which a
+community may well make descriptive), and that the party it names is a member
+of the community, which the member's own listing in the directory may keep
+from that reader (VTI-DIR-040). The cost is discovery: a member of the party
+learns of the election from outside the community's list — from the party itself, which the
+list does show it to and which alone holds the roster of those the election
+concerns, or from a link the community or the party sends. A party member has
+to learn of the community from somewhere in any case, since they hold no
+relationship with it, and the same message can carry the election's identifier.
+
+A read that admits on a presentation is the one read in which the reader shows
+the community a membership before they have seen the election, so that
+presentation is the member's choice (VTI-VOT-016, VTI-VOT-090), and is held to
+the checks and the single use that a ticket request's presentation is held to.
+A presentation that could be replayed would let anyone who captured one read
+the election. Failing closed when a status cannot be determined matches
+VTI-VOT-025: a distinct answer would tell the holder of a revoked credential
+that the election exists.
 
 ### Tickets
 
@@ -463,8 +532,13 @@ it is and that a written answer may identify its author (VTI-VOT-065); under a
 credential roll, the identifier the roll names, whether it is the community, one
 of its groups, or another party that is a member of the community, and that
 claiming a ticket shows the community the member's membership of it
-(VTI-VOT-025); and that a member can prove how they voted, so that the community
-cannot protect a member against being made to vote a certain way.
+(VTI-VOT-025); where the community puts elections to the members of a party
+that is itself its member, that such an election is shown only to a member who
+presents their membership credential for that party in reading it, so that
+reading it already shows the community that membership, before the member has
+seen the election (VTI-VOT-015); and that a member can prove how they voted,
+so that the community cannot protect a member against being made to vote a
+certain way.
 
 ### Audit
 
@@ -474,7 +548,8 @@ issues. An audit record of a VTC or a ballot box MUST NOT pair a voter's
 identifier with a tag, a cast or a ballot.
 
 *Open issue.* Under a credential roll that names a party other than the
-community, the registrar learns, from the presentation, that the
+community, the registrar learns, from the presentation made when a member
+reads the election (VTI-VOT-015) or claims its ticket, that the
 requester is a member of that party — a fact it may not otherwise hold, about
 a person who may not be its member at all. A presentation of a predicate
 credential system proof that the requester holds such a credential, under a
