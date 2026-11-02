@@ -474,7 +474,11 @@ community without that chain.
 group's record, to decide whether a subject is authorized (VTI-VTC-020,
 VTI-ACL-070). A group membership credential is evidence for parties outside the
 community's access control: a room's host, a peer, another community. Another
-community that relies on one is bound by VTI-REG-023.
+community that relies on one is bound by VTI-REG-023. Eligibility for a ticket
+under a credential roll that names the group (VTI-VOT-025) is not authority,
+since a ticket and a result confer none (Community Voting chapter); a VTC
+deciding it verifies the credential as such a party does, and checks its own
+records besides.
 
 *Rationale for VTI-DIR-080.* The keys that make a group's credentials are
 attestation keys in all but name: whoever holds them can say who is in the
