@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-02T11:04:46.916Z"
+      "lastUpdated": "2026-11-02T14:06:15.581Z"
     }
   ]
 };</script>
@@ -6444,7 +6444,7 @@ Step-Up chapters (VTI-VTC-020), like any other change.</p>
 <tr>
 <td><strong>Registrar</strong></td>
 <td>the community’s VTC</td>
-<td>who asked for a ticket, and when; under a credential roll, that they hold the membership credential it names</td>
+<td>who asked for a ticket, and when; under a credential roll, that they hold the membership credential it names, and, where that roll names a member party, that a member read the election</td>
 <td>any ballot, any tag, the address or time of any cast</td>
 </tr>
 <tr>
@@ -6548,10 +6548,74 @@ refuse every other change to a registered election.</p>
 <p><strong>VTI-VOT-014</strong> — A manifest MAY hold its question text outside the ballot box,
 registering only option counts and question types with it. A board that is not
 public SHOULD do so.</p>
+<p><strong>VTI-VOT-015</strong> — A VTC MUST show an election — its manifest, or any part of
+it — and MUST confirm that the election exists, only to a party holding
+<code>vtc.elections.manage</code> (VTI-VOT-080) or to a party the election concerns, which
+is:</p>
+<ol>
+<li>under the first three roll rules (VTI-VOT-021), a party the roll admits as
+the VTC’s records stand at the time of the read;</li>
+<li>under a credential roll naming the community or one of its groups, an active
+member of the community, and, for a group, a member of that group, in the
+community’s own records; and</li>
+<li>under a credential roll naming any other party (VTI-VOT-026), that party
+itself, by its own active membership of the community, or a requester who
+presents, in the read itself, its membership credential for that party,
+bound to that read and checked as VTI-VOT-025 requires of the presentation a
+ticket request carries.</li>
+</ol>
+<p>To any other party the VTC MUST answer as it answers for an election that does
+not exist. Where the outcome of a check under item 3 is indeterminate, the VTC
+MUST NOT show the election. A VTC MUST NOT ask a party to present a credential
+in order to list the community’s elections, and MUST NOT include an election
+item 3 governs in a list it gives any party other than the one item 3 names or
+a party holding <code>vtc.elections.manage</code> — not even its identifier. It MUST NOT
+retain a presentation made in a read once it has decided (VTI-CRD-042), and
+MUST NOT accept one bound to a read it has already accepted one for
+(VTI-CRD-022).</p>
+<p><strong>VTI-VOT-016</strong> — A member’s agent MUST present a membership credential in a
+read of an election only where the member chose to present that credential to
+that community, and MUST bind the presentation to that read alone.</p>
 <p><em>Rationale for VTI-VOT-011.</em> A ticket proves that its holder may vote; it does
 not prove what they were asked. Binding the cast to the digest means a community
 that shows different questions to different members produces casts that do not
 count, rather than results nobody can interpret.</p>
+<p><em>Rationale for VTI-VOT-015.</em> An election is the community’s business with the
+parties it concerns, and its questions and options can say as much as its
+result: that a merger is being weighed, or a partner’s standing put to a vote.
+Under the first three roll rules and under a credential roll naming the
+community or one of its groups, the community’s own records say whom an
+election concerns. Under a credential roll naming a member party they cannot:
+the party’s members are people the community holds no record of, so the only
+evidence that a reader is one of them is the credential they would present for
+a ticket. Showing such an election to any reader instead would publish it to
+the world. The party itself may read it by its own membership, because it is
+the one whose members are asked, and because it could in any case issue
+itself a credential and present that.</p>
+<p>A list carries no presentation, because a reader who presented every
+membership credential they hold to find the elections that concern them would
+show the community all their memberships, of which at most one matters to any
+election. A list could still show such an election as a stub — its identifier,
+the party it names and its schedule, without its title or questions — so that
+its voters could find it. The requirement omits even that. A stub would go to
+any reader, since a list proves nothing about its reader, and would publish
+that the community holds the election, when, under what identifier (which a
+community may well make descriptive), and that the party it names is a member
+of the community, which the member’s own listing in the directory may keep
+from that reader (VTI-DIR-040). The cost is discovery: a member of the party
+learns of the election from outside the community’s list — from the party itself, which the
+list does show it to and which alone holds the roster of those the election
+concerns, or from a link the community or the party sends. A party member has
+to learn of the community from somewhere in any case, since they hold no
+relationship with it, and the same message can carry the election’s identifier.</p>
+<p>A read that admits on a presentation is the one read in which the reader shows
+the community a membership before they have seen the election, so that
+presentation is the member’s choice (VTI-VOT-016, VTI-VOT-090), and is held to
+the checks and the single use that a ticket request’s presentation is held to.
+A presentation that could be replayed would let anyone who captured one read
+the election. Failing closed when a status cannot be determined matches
+VTI-VOT-025: a distinct answer would tell the holder of a revoked credential
+that the election exists.</p>
 <h3 id="tickets" tabindex="-1"><a class="toc-anchor d-print-none" href="#tickets">§</a> Tickets</h3>
 <p>A community’s <strong>voting key</strong> is the key it signs tickets with. A ticket is a
 class credential of a predicate credential system [PCS] issued under the class
@@ -6809,15 +6873,21 @@ it is and that a written answer may identify its author (VTI-VOT-065); under a
 credential roll, the identifier the roll names, whether it is the community, one
 of its groups, or another party that is a member of the community, and that
 claiming a ticket shows the community the member’s membership of it
-(VTI-VOT-025); and that a member can prove how they voted, so that the community
-cannot protect a member against being made to vote a certain way.</p>
+(VTI-VOT-025); where the community puts elections to the members of a party
+that is itself its member, that such an election is shown only to a member who
+presents their membership credential for that party in reading it, so that
+reading it already shows the community that membership, before the member has
+seen the election (VTI-VOT-015); and that a member can prove how they voted,
+so that the community cannot protect a member against being made to vote a
+certain way.</p>
 <h3 id="audit-1" tabindex="-1"><a class="toc-anchor d-print-none" href="#audit-1">§</a> Audit</h3>
 <p><strong>VTI-VOT-100</strong> — A VTC MUST record an audit event for the creation, early
 closure, cancellation and certification of an election and for each ticket it
 issues. An audit record of a VTC or a ballot box MUST NOT pair a voter’s
 identifier with a tag, a cast or a ballot.</p>
 <p><em>Open issue.</em> Under a credential roll that names a party other than the
-community, the registrar learns, from the presentation, that the
+community, the registrar learns, from the presentation made when a member
+reads the election (VTI-VOT-015) or claims its ticket, that the
 requester is a member of that party — a fact it may not otherwise hold, about
 a person who may not be its member at all. A presentation of a predicate
 credential system proof that the requester holds such a credential, under a
@@ -9525,8 +9595,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-02T11:04:46.296Z">
-                            Generated: 2026-11-02T11:04:46.296Z
+                        <time class="timestamp" datetime="2026-11-02T14:06:15.120Z">
+                            Generated: 2026-11-02T14:06:15.120Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
