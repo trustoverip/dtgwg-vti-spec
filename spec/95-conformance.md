@@ -19,6 +19,7 @@ requirement identifiers.
 | `Core` | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; Identity, DIDs and key management; Sessions and authentication; Client onboarding and lifecycle; Operation surface; Credentials and presentations |
 | `Delivery` | Transports, messaging and delivery |
 | `Links` | Trigger links |
+| `Notifications` | Notifications |
 | `Community` | The Verifiable Trust Community; Membership lifecycle and community credentials; The community directory and groups; Community voting; Trust registries and cross-community recognition |
 | `Network` | The Verifiable Trust Network |
 | `Composition` | Composition requirements |
@@ -26,19 +27,26 @@ requirement identifiers.
 
 ### Targets
 
-| Target | `Core` | `Delivery` | `Links` | `Community` | `Network` | `Composition` | `Operations` |
-|---|---|---|---|---|---|---|---|
-| VTA | MUST | MUST | MAY | MAY | MAY | MUST | MUST |
-| VTC | MUST | MUST | MAY | MUST | MAY | MUST | MUST |
-| VTN *(provisional)* | MUST | MUST | MAY | MAY | MUST | MUST | MUST |
-| Client | MUST | MUST | MAY | MAY | MAY | MUST | MAY |
-| Mediator | MAY | MUST | MAY | MAY | MAY | MAY | MUST |
-| Host service | MAY | MUST | MAY | MAY | MAY | MAY | MUST |
-| Trust registry | MAY | MAY | MAY | MUST | MAY | MUST | MUST |
+| Target | `Core` | `Delivery` | `Links` | `Notifications` | `Community` | `Network` | `Composition` | `Operations` |
+|---|---|---|---|---|---|---|---|---|
+| VTA | MUST | MUST | MAY | MUST | MAY | MAY | MUST | MUST |
+| VTC | MUST | MUST | MAY | MUST | MUST | MAY | MUST | MUST |
+| VTN *(provisional)* | MUST | MUST | MAY | MUST | MAY | MUST | MUST | MUST |
+| Client | MUST | MUST | MAY | MAY | MAY | MAY | MUST | MAY |
+| Mediator | MAY | MUST | MAY | MAY | MAY | MAY | MAY | MUST |
+| Host service | MAY | MUST | MAY | MAY | MAY | MAY | MAY | MUST |
+| Trust registry | MAY | MAY | MAY | MAY | MUST | MAY | MUST | MUST |
 
 *Note on the `Links` profile.* It is MAY for every target because most
 implementations neither show nor read codes. A target that reads, produces or
 hosts trigger links implements it under VTI-LNK-001.
+
+*Note on the `Notifications` profile.* It binds a target for the parts it
+plays. A VTA holds the notifications it accepts for its principal and offers
+their list, read and dismissal (VTI-NTF-050), so the profile is MUST for it. A
+VTC or VTN is bound by the requirements on an originator, a recipient and a
+relayer only where it sends, accepts or relays a notification; one that does
+none of these satisfies the profile by doing none of them.
 
 *Note on the community directory and groups.* The chapter is in the
 `Community` profile, and binds a VTC only for what it offers: a VTC that offers
@@ -77,6 +85,7 @@ Areas allocated:
 | `AUD` | Audit |
 | `KEY` | Identity, DIDs and key management |
 | `TRN` | Transports, messaging and delivery |
+| `NTF` | Notifications — the notification, kinds, delivery, acceptance, relaying, the recipient's agent, the `election` kind |
 | `SES` | Sessions and authentication |
 | `CLT` | Client onboarding and lifecycle |
 | `LNK` | Trigger links — the link, its fields, flows, readers, producers and link hosts |

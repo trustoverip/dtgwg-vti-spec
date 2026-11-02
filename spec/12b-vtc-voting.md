@@ -294,6 +294,12 @@ faster, which tells a prober presenting a credential of that issuer that
 someone presented one recently — a hint that an election naming that party
 exists. Refreshing caches on the VTC's own schedule closes it.
 
+*Note.* The members of a party that is itself a member of the community learn
+of an election put to them through a notification of the kind `election`: the
+community notifies the party, and the party may relay it to its members with
+the community's signature intact (Notifications chapter, VTI-NTF-060 –
+VTI-NTF-063).
+
 ### Tickets
 
 A community's **voting key** is the key it signs tickets with. A ticket is a
@@ -378,6 +384,22 @@ membership for this purpose. The roll MUST name exactly one identifier. A roll
 that names a party admits the holders of that party's own membership
 credentials, never the members of the parties it lists or recognises in turn
 (VTI-REG-024, VTI-VTN-022).
+
+**VTI-VOT-029** — Where a credential roll names one of the community's groups
+and the community no longer holds that group, a VTC MUST show the election, and
+confirm that it exists, only to a party holding `vtc.elections.manage`
+(VTI-VOT-015), and MUST refuse every ticket request for it: to a holder of
+`vtc.elections.manage`, as for a roll whose named party is no longer trusted,
+and to any other requester as VTI-VOT-017 requires. It MUST NOT treat the
+deleted group's identifier as that of a party outside the community.
+
+*Rationale for VTI-VOT-029.* A deleted group has no members in the community's
+records, so item 2 of VTI-VOT-015 admits nobody, and its authorization
+credential is revoked (VTI-DIR-085), so no credential it issued still proves
+anything. What remains is the identifier, and read as a member party's it would
+let a holder of an unexpired group credential reach the presentation path of
+VTI-VOT-015 item 3 for a roll the community can no longer stand behind.
+Managers still see the election, because they are the ones who must cancel it.
 
 **VTI-VOT-027** — Under a credential roll, the party VTI-VOT-022 holds to one
 ticket is the subject of the credential presented, never the identifier the
