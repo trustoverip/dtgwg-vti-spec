@@ -220,6 +220,12 @@ the election. Failing closed when a status cannot be determined matches
 VTI-VOT-025: a distinct answer would tell the holder of a revoked credential
 that the election exists.
 
+*Note.* The members of a party that is itself a member of the community learn
+of an election put to them through a notification of the kind `election`: the
+community notifies the party, and the party may relay it to its members with
+the community's signature intact (Notifications chapter, VTI-NTF-060 –
+VTI-NTF-063).
+
 ### Tickets
 
 A community's **voting key** is the key it signs tickets with. A ticket is a

@@ -263,6 +263,14 @@ to have.
 |---|---|
 | `delivery` | receipt; status of an outbound message |
 
+`Notifications` — every node that sends, relays or holds notifications
+(Notifications chapter):
+
+| Family | Operations |
+|---|---|
+| `notifications` | notify; relay |
+| `notifications` *(at a VTA, for the principal)* | list *(context filter, page)*; read; dismiss |
+
 `Community` — a VTC:
 
 | Family | Operations |
