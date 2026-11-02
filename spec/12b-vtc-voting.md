@@ -202,12 +202,17 @@ where, at the time it issues:
 2. the credential is within its validity period;
 3. the party that signed the request is the credential's subject;
 4. neither the credential, nor any authorization credential its issuer's
-   authority rests on, is revoked or suspended, as its status shows at that
-   time (VTI-CRD-011, VTI-MEM-030), and the identifier the roll names is still
-   one the community trusts under VTI-VOT-026; and
+   authority rests on, is revoked or suspended, as its status — its status
+   list, or the trust registry its issuer publishes status through — shows at
+   that time (VTI-CRD-011, VTI-MEM-030); a credential that carries no status
+   mechanism is checked by its validity period alone (VTI-DIR-085);
 5. where the roll names the community or one of its groups, the subject is an
    active member of the community, and of the group, in the community's own
-   records.
+   records; and
+6. where the roll names any other identifier, that identifier's own membership
+   of the community (VTI-VOT-026) is active — neither expired, suspended,
+   revoked nor removed — in the community's own records and as the status of
+   the membership credential the community issued it shows at that time.
 
 Where any of these cannot be determined — a status list or a trust registry
 that cannot be reached — the outcome MUST be indeterminate (VTI-CRD-012,
@@ -217,21 +222,24 @@ what VTI-VOT-022 and VTI-VOT-027 need (VTI-CRD-042).
 
 **VTI-VOT-026** — A VTC MUST NOT create an election under a credential roll
 unless the identifier the roll names is the community's own, the identifier of
-one of its groups, or that of a community or a network the community recognises
-under the explicit policy VTI-REG-023 and VTI-VTN-023 require, and MUST refuse
-to create one naming any other identifier. The roll MUST name exactly one
-identifier. Recognising a network MUST NOT be taken to extend to the parties
-it lists (VTI-VTN-022): a roll that names a network admits the holders of the
-network's own membership credentials, not the members of the communities it
-lists.
+one of its groups, or the identifier of a party that is itself an active member
+of the community — holding a membership credential the community issued it,
+neither expired, suspended nor revoked, as the community's records show at
+creation — such as another community, a group of another community, or a
+network. It MUST refuse to create one naming any other identifier, and MUST NOT
+treat recognition of a party through a trust registry (VTI-REG-020) as
+membership for this purpose. The roll MUST name exactly one identifier. A roll
+that names a party admits the holders of that party's own membership
+credentials, never the members of the parties it lists or recognises in turn
+(VTI-REG-024, VTI-VTN-022).
 
 **VTI-VOT-027** — Under a credential roll, the party VTI-VOT-022 holds to one
 ticket is the subject of the credential presented, never the identifier the
 roll names. Where the roll names the community or one of its groups, the VTC
 MUST hold the issuance against the member the subject identifies in its
 records, so that it follows the member through rotation (VTI-VOT-022). Where
-the roll names another community or a network, the VTC MUST hold it against
-the subject's identifier.
+the roll names any other party, the VTC MUST hold it against the subject's
+identifier.
 
 **VTI-VOT-028** — Under a credential roll, the number of parties the roll
 admits is not known to the community, and a VTC MUST NOT state one. Where it
@@ -251,7 +259,8 @@ compute discrete logarithms; a key per election limits that to one election.
 
 *Rationale for VTI-VOT-025.* A credential roll lets a community put a question
 to a set of people whose list it does not keep — the members of one of its
-groups, of a partner community, of a network — by asking each of them, when they
+groups, or of a community, group or network that is itself its member — by
+asking each of them, when they
 come for a ticket, to show the credential that makes them one. Checking it then,
 and not when the election is called, is what keeps the roll honest in both
 directions: a person who joins after the election is called holds a credential
@@ -266,14 +275,18 @@ community's own records are the fresher evidence, and a credential that has
 not yet expired does not outvote them.
 
 *Rationale for VTI-VOT-026.* A credential roll hands the decision of who may
-vote to whoever issues the credentials. Naming an identifier the community does
-not recognise would let anyone who controls that identifier enfranchise anyone
-they like, and the administrator who called the election would not see it
-happen. Restricting the roll to the community, its groups and the parties it
-already recognises keeps that decision with parties the community has decided,
-explicitly and accountably, to trust. Checking again at each issuance means a
-recognition withdrawn during an election stops further tickets under it, as a
-revoked credential does.
+vote to whoever issues the credentials. Naming any identifier would let
+whoever controls it enfranchise anyone they like, and the administrator who
+called the election would not see it happen. A party from outside the community
+is therefore trusted for this only by being a member of it: admitted by the
+community's own decision (VTI-MEM-011), evidenced by a credential the community
+issued, and removable by the community's own lifecycle. Recognition through a
+registry is a weaker, one-sided relationship and is not enough. The community
+itself and its own groups need no such membership, because their
+membership credentials already come from the community. Checking that
+membership again at each issuance means a party whose membership lapses or is
+revoked during an election stops yielding tickets, as a revoked credential
+does.
 
 *Rationale for VTI-VOT-027.* The identifier the roll names is shared by
 everyone the roll admits; one ticket per roll identifier would be one ticket
@@ -448,7 +461,7 @@ the auditors and the board's visibility; whether a later ballot replaces an
 earlier one; where the threshold for disclosing text answers is below 10, that
 it is and that a written answer may identify its author (VTI-VOT-065); under a
 credential roll, the identifier the roll names, whether it is the community, one
-of its groups, or a community or network the community recognises, and that
+of its groups, or another party that is a member of the community, and that
 claiming a ticket shows the community the member's membership of it
 (VTI-VOT-025); and that a member can prove how they voted, so that the community
 cannot protect a member against being made to vote a certain way.
@@ -460,8 +473,8 @@ closure, cancellation and certification of an election and for each ticket it
 issues. An audit record of a VTC or a ballot box MUST NOT pair a voter's
 identifier with a tag, a cast or a ballot.
 
-*Open issue.* Under a credential roll that names another community, a
-network or a group, the registrar learns, from the presentation, that the
+*Open issue.* Under a credential roll that names a party other than the
+community, the registrar learns, from the presentation, that the
 requester is a member of that party — a fact it may not otherwise hold, about
 a person who may not be its member at all. A presentation of a predicate
 credential system proof that the requester holds such a credential, under a
@@ -469,8 +482,8 @@ pseudonym scoped to the election, would let the registrar enforce the roll and
 one ticket per party without learning which member asked. This chapter does not
 yet specify it.
 
-*Open issue.* Where a credential roll names another community or a network,
-the registrar cannot follow a rotation of the subject's identifier at that party
+*Open issue.* Where a credential roll names a party other than the community or
+one of its groups, the registrar cannot follow a rotation of the subject's identifier at that party
 (VTI-VOT-027): a member who rotates there during an election, and presents the
 credential issued to their new identifier, is a new subject to the registrar.
 The count is still bounded by the tickets issued (VTI-VOT-072), but one ticket
