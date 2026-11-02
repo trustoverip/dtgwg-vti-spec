@@ -163,8 +163,9 @@ is:
    ticket request carries.
 
 To any other party the VTC MUST answer as it answers for an election that does
-not exist. Where the outcome of a check under item 3 is indeterminate, the VTC
-MUST NOT show the election. A VTC MUST NOT ask a party to present a credential
+not exist, and a ticket request is answered under the same rule (VTI-VOT-017).
+Where the outcome of a check under item 3 cannot be determined, the VTC MUST NOT
+show the election, and MUST answer as VTI-VOT-018 requires. A VTC MUST NOT ask a party to present a credential
 in order to list the community's elections, and MUST NOT include an election
 item 3 governs in a list it gives any party other than the one item 3 names or
 a party holding `vtc.elections.manage` — not even its identifier. It MUST NOT
@@ -174,7 +175,37 @@ MUST NOT accept one bound to a read it has already accepted one for
 
 **VTI-VOT-016** — A member's agent MUST present a membership credential in a
 read of an election only where the member chose to present that credential to
-that community, and MUST bind the presentation to that read alone.
+that community, and MUST bind the presentation to that read alone. Where it is
+told which party's membership the read is to prove, it MUST NOT present a
+credential that party did not issue.
+
+**VTI-VOT-017** — A VTC MUST answer a ticket request for an election that
+VTI-VOT-015 item 3 governs as it answers a ticket request for an election that
+does not exist, unless the requester holds `vtc.elections.manage`, is the party
+that item names, or carries in that request a presentation that passes every
+check VTI-VOT-025 makes. It MUST decide this before it checks the election's
+state or the manifest the request names, and MUST NOT tell any other requester
+that a presentation is required, which check a presentation failed, or that the
+party the roll names is no longer trusted. To a requester VTI-VOT-015 lets see
+the election without a presentation, it MAY say why it refused.
+
+**VTI-VOT-018** — Where a read of an election or a ticket request carries a
+presentation, a VTC MUST verify the presentation — its binding to the request,
+its holder, the credential's proof, its validity period and its status — before
+it looks up the election the request names, and without reference to that
+election. Where a check cannot be completed because something the VTC does not
+control cannot be obtained — the issuer's identifier document, a status list, a
+trust registry — and no check has failed, the VTC MUST answer that the outcome
+is indeterminate and that the request may be retried, MUST NOT record anything
+of the request, and MUST give that answer identically whether or not the
+election exists, whatever its roll, and whether or not the requester could see
+it or is eligible. It MUST NOT answer an indeterminate outcome as it answers for
+an election that does not exist. Every check the VTC makes after looking up the
+election MUST rest on its own records alone, including its own record of the
+status of a credential it issued. A VTC SHOULD NOT let the time it takes to
+answer depend on whether the election exists, and SHOULD refresh any status list
+or identifier document it caches on a schedule of its own rather than on
+demand.
 
 *Rationale for VTI-VOT-011.* A ticket proves that its holder may vote; it does
 not prove what they were asked. Binding the cast to the digest means a community
@@ -216,9 +247,52 @@ the community a membership before they have seen the election, so that
 presentation is the member's choice (VTI-VOT-016, VTI-VOT-090), and is held to
 the checks and the single use that a ticket request's presentation is held to.
 A presentation that could be replayed would let anyone who captured one read
-the election. Failing closed when a status cannot be determined matches
-VTI-VOT-025: a distinct answer would tell the holder of a revoked credential
-that the election exists.
+the election. What an indeterminate check is answered is VTI-VOT-018's.
+
+*Rationale for VTI-VOT-016.* A member's agent presents what its client names.
+A client that names the wrong credential, or is led to name one, would show the
+community a membership that has nothing to do with the election, which the
+community could not then unlearn. An agent told which party the election's roll
+names can refuse that before anything is sent, and the comparison is exact
+because the community admits only a credential the named party itself issued
+(VTI-VOT-025).
+
+*Rationale for VTI-VOT-017.* A ticket request is a second door to the same
+election. Under VTI-VOT-015 item 3 a party that has not presented its
+membership cannot read the election, but if its ticket request were answered
+that a presentation is required, that its credential is revoked, that
+registration has not opened or that it read another manifest, each answer would
+say that an election with that identifier exists, as plainly as showing it
+would. So the presentation that lets a requester see the election has to pass
+before anything else about the election is said. Under the other rules, and
+under a credential roll naming the community or one of its groups, the
+requester the VTC may refuse with a reason already knows the election exists,
+and is better served by being told why.
+
+*Rationale for VTI-VOT-018.* An outage is the hardest answer to make give
+nothing away. Answering it as for an election that does not exist, as this
+chapter first required, hides the election, but tells a member entitled to it
+that it does not exist, and gives them no reason to try again. A distinct,
+retryable answer serves the member, but if it is given only once the election
+has been found and its roll consulted, it is an oracle: a stranger presenting a
+credential of the right issuer while that issuer's status list is unreachable
+would be told to try again for an election that exists and that no such
+election exists for one that does not. Checking the presentation first, on
+nothing but what it carries, makes the outage a property of the presentation,
+which its holder could observe anyway by fetching the status list itself. What
+follows rests on the VTC's own records, which have no outage the request could
+reveal: the VTC issued the membership credential of a member party (VTI-VOT-026)
+and the authorization credential of each of its groups, and knows their status
+without fetching it.
+
+Time is the residual channel. Checking the presentation first equalises its
+part, which is the slow, network-bound one; the rest is local, and the
+remaining difference is in how long the VTC takes to find, or fail to find, an
+election in its own records, which it can make constant. A cache fetched on
+demand is a channel between requesters: a status list already held answers
+faster, which tells a prober presenting a credential of that issuer that
+someone presented one recently — a hint that an election naming that party
+exists. Refreshing caches on the VTC's own schedule closes it.
 
 *Note.* The members of a party that is itself a member of the community learn
 of an election put to them through a notification of the kind `election`: the
@@ -286,12 +360,15 @@ where, at the time it issues:
    records; and
 6. where the roll names any other identifier, that identifier's own membership
    of the community (VTI-VOT-026) is active — neither expired, suspended,
-   revoked nor removed — in the community's own records and as the status of
-   the membership credential the community issued it shows at that time.
+   revoked nor removed — in the community's own records, including its own
+   record of the status of the membership credential the community issued it,
+   at that time.
 
 Where any of these cannot be determined — a status list or a trust registry
 that cannot be reached — the outcome MUST be indeterminate (VTI-CRD-012,
-VTI-REG-012), and the VTC MUST NOT issue the ticket. The VTC MUST NOT retain
+VTI-REG-012), the VTC MUST NOT issue the ticket, and it MUST answer as
+VTI-VOT-018 requires, having made the checks of items 2 to 4 that need nothing
+of the election before it looks the election up. The VTC MUST NOT retain
 the presentation once it has decided, and MUST record with the issuance only
 what VTI-VOT-022 and VTI-VOT-027 need (VTI-CRD-042).
 
