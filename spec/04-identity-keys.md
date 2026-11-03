@@ -727,7 +727,7 @@ document. An attestation artefact carried inside such a document keeps its own
 challenge or domain MUST refuse it unless the document it covers carries an
 intended recipient, a time of issue and a document identifier (VTI-OPS-020,
 VTI-OPS-025), and MUST apply to that document VTI-OPS-023 (it is the intended
-recipient), VTI-OPS-024 (the time of issue is within its acceptance window) and
+recipient), VTI-OPS-024 (the document is within its acceptance window) and
 VTI-OPS-026 and VTI-OPS-027 (the identifier has not already been accepted, on
 any binding). A verifier that does not apply all four MUST refuse such a proof.
 This requirement applies to the document a verifier receives. A document
