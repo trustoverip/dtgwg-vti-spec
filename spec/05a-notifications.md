@@ -679,8 +679,8 @@ bounded by the same bounds that apply to the messages delivered to it directly
 (VTI-TRN-029): a sender with no standing at the VTA counts against the bound
 for senders without standing, and the bounds of VTI-NTF-033 apply to what one
 originator or one relayer delivers to every identifier the VTA collects for in
-a context, together with what is handed to it there under VTI-NTF-054. Neither
-bound MUST be stated or applied per identifier collected for. A VTA MUST bound
+a context, together with what is handed to it there under VTI-NTF-054. A VTA MUST
+NOT state or apply either bound per identifier collected for. A VTA MUST bound
 the number of identifiers it collects for, and MUST state that bound; an
 identifier it does not collect for because of the bound it MUST show as
 uncollected in the listing of VTI-NTF-091.
