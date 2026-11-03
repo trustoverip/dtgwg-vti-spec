@@ -42,11 +42,15 @@ implementations neither show nor read codes. A target that reads, produces or
 hosts trigger links implements it under VTI-LNK-001.
 
 *Note on the `Notifications` profile.* It binds a target for the parts it
-plays. A VTA holds the notifications it accepts for its principal and offers
-their list, read and dismissal (VTI-NTF-050), so the profile is MUST for it. A
-VTC or VTN is bound by the requirements on an originator, a recipient and a
-relayer only where it sends, accepts or relays a notification; one that does
-none of these satisfies the profile by doing none of them.
+plays. A VTA holds the notifications it accepts for its principal, offers
+their list, read and dismissal (VTI-NTF-050), and accepts those its
+principal's clients hand to it (VTI-NTF-055), so the profile is MUST for it. A
+client acting for a principal is bound by VTI-NTF-054 where it receives a
+notification for an identifier whose keys the principal's VTA holds. A VTC or
+VTN is bound by the requirements on an originator, a recipient and a relayer
+only where it sends, accepts or relays a notification; a VTC that accepts one
+is also bound by VTI-NTF-070 – VTI-NTF-074. One that does none of these
+satisfies the profile by doing none of them.
 
 *Note on the community directory and groups.* The chapter is in the
 `Community` profile, and binds a VTC only for what it offers: a VTC that offers
