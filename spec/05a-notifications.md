@@ -601,8 +601,8 @@ identifier's **collector** is the party that does so. A **collection claim** is
 the VTA's record that one client of the principal is the collector of one
 identifier until a stated time, its **end**; the client is its **claimant**.
 
-**VTI-NTF-080** — A VTA MUST collect for every identifier whose `messaging` keys
-it holds in one of its principal's trust contexts and whose identifier document
+**VTI-NTF-080** — Where collection by default is enabled (VTI-NTF-093), a VTA
+MUST collect for every identifier whose `messaging` keys it holds in one of its principal's trust contexts and whose identifier document
 advertises a transport through a mediator, from the time the document first
 advertises one, except:
 
@@ -628,12 +628,15 @@ MUST stop collecting for the identifier and close every connection it holds
 for it. A claim MUST state its end, no later than a maximum period from the
 grant that the VTA states, and the VTA MUST answer the grant with that end. A
 claimant MAY renew its claim through the same operation before the claim ends,
-and a renewal moves the end and is otherwise a grant.
+and a renewal moves the end and is otherwise a grant. The VTA's stated maximum
+SHOULD NOT exceed thirty days.
 
 **VTI-NTF-083** — A claimant MUST NOT open a connection that collects for the
 identifier before it holds the VTA's grant, and MUST stop collecting for it,
 and close every such connection, before the claim's end less its clock-skew
 tolerance as its own clock reads, unless it has renewed the claim by then. A
+claimant SHOULD ask for a claim of twenty-four hours and SHOULD renew it once
+half of the period granted has passed. A
 claimant that releases its claim MUST stop collecting before it asks the VTA to
 release it.
 
@@ -715,6 +718,17 @@ whether or not the client handing it over holds a claim, and whether or not the
 VTA collects for the identifier; VTI-NTF-022 makes one record of a document that
 reaches it both ways.
 
+**VTI-NTF-093** — A VTA MUST let its operator enable and disable collection by
+default, and MUST leave it disabled unless the operator enables it. While it is
+disabled, the VTA MUST NOT collect for any identifier under VTI-NTF-080, and
+MUST still grant, renew, release and list collection claims (VTI-NTF-082,
+VTI-NTF-084, VTI-NTF-091), showing each unclaimed identifier as collected by
+nobody because collection is disabled. An operator SHOULD enable it only once
+every client of the principal that collects for the principal's identifiers
+claims them first (VTI-NTF-083). Enabling or disabling it MUST be recorded in
+the audit trail. When it is disabled while the VTA collects, the VTA MUST stop
+collecting and close its connections for the identifiers it collected for.
+
 *Rationale for VTI-NTF-080.* The identifiers a VTA creates for its principal are
 the ones whose keys it holds and no node of their own collects for, so they are
 the ones a missing collector strands. Collecting for them unless a client has
@@ -787,6 +801,17 @@ the collector looks, and messages already queued at the previous mediator are
 still the identifier's. An identifier the VTA no longer holds keys of cannot be
 collected for by it, and a claim on it would block nothing that remains.
 
+*Rationale for VTI-NTF-093.* Clients that predate this section collect for the
+principal's personas without claiming them. A VTA that began collecting by
+default beside such a client would be the second connection to every persona it
+holds, and each side would evict the other (VTI-NTF-085) — losing exactly the
+notifications collection exists to deliver. The setting lets an operator turn
+on collection once the clients in use claim first, which is the transition
+Appendix F records. Claims are served while it is off so that those clients can
+adopt them before it is turned on; a claim made while the VTA collects nothing
+changes nothing but the record, and is already in place on the day the VTA
+starts.
+
 *Rationale for VTI-NTF-092.* The hand-over and collection by the VTA are two
 paths to the same record. A client that holds a claim hands over what it
 collects exactly as before, and a client that received a notification some
@@ -797,10 +822,24 @@ held.
 *Open issue.* A VTA refuses every operation other than a notification or a relay
 that it collects for an identifier (VTI-NTF-087), so a member whose only client
 is a browser does not receive the other operations a community addresses to
-its persona, such as a step of a credential exchange. Whether a VTA should hold
-such operations for the principal's client to fetch, and on what terms, is not
-yet specified. A sender can also tell, from a refusal where a client would have
-performed the operation, that the persona has no claiming client.
+its persona, such as a step of a credential exchange. A general inbox — the VTA
+holding such operations, unperformed, for the principal's client to fetch and
+perform — is not yet specified: what it may hold, for how long, under which
+acceptance policy, and how a client performs an operation addressed to an
+identifier whose keys only the VTA holds. Until it is, VTI-NTF-087 applies. A
+sender can also tell, from a refusal where a client would have performed the
+operation, that the persona has no claiming client.
+
+*Open issue.* A claim is ended by removing its claimant's standing, but a
+client that was given an identifier's `messaging` keys keeps them, and a
+revoked device can go on collecting for the identifier without a claim. The
+VTA then meets it as a conflict (VTI-NTF-085) and stops, which leaves the
+identifier collected by the revoked device. The remedy is to rotate the
+identifier's `messaging` keys, so that what is sent to it after the rotation is
+encrypted to keys the device does not hold, and to move it to a connection the
+device cannot open. How a VTA rotates a persona's keys on revoking a client,
+and what it tells the parties the persona holds relationships with, is not yet
+specified.
 
 *Open issue.* A notification's originator is compared by its identifier
 (VTI-NTF-022). A change of the identifier method an originator issues under —

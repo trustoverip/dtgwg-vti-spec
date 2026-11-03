@@ -44,9 +44,10 @@ hosts trigger links implements it under VTI-LNK-001.
 *Note on the `Notifications` profile.* It binds a target for the parts it
 plays. A VTA holds the notifications it accepts for its principal, offers
 their list, read and dismissal (VTI-NTF-050), and accepts those its
-principal's clients hand to it (VTI-NTF-055), and collects for the
-principal's identifiers that no client has claimed (VTI-NTF-080 –
-VTI-NTF-092), so the profile is MUST for it. A client acting for a principal is
+principal's clients hand to it (VTI-NTF-055), and serves collection claims
+and, once its operator enables it, collects for the principal's identifiers
+that no client has claimed (VTI-NTF-080 – VTI-NTF-093), so the profile is MUST
+for it. A client acting for a principal is
 bound by VTI-NTF-054 where it receives a notification for an identifier whose
 keys the principal's VTA holds, and by VTI-NTF-081 and VTI-NTF-083 where it
 collects for one. A VTC or
