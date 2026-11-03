@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-03T04:36:23.023Z"
+      "lastUpdated": "2026-11-03T08:09:31.555Z"
     }
   ]
 };</script>
@@ -2572,7 +2572,7 @@ document. An attestation artefact carried inside such a document keeps its own
 challenge or domain MUST refuse it unless the document it covers carries an
 intended recipient, a time of issue and a document identifier (VTI-OPS-020,
 VTI-OPS-025), and MUST apply to that document VTI-OPS-023 (it is the intended
-recipient), VTI-OPS-024 (the time of issue is within its acceptance window) and
+recipient), VTI-OPS-024 (the document is within its acceptance window) and
 VTI-OPS-026 and VTI-OPS-027 (the identifier has not already been accepted, on
 any binding). A verifier that does not apply all four MUST refuse such a proof.
 This requirement applies to the document a verifier receives. A document
@@ -3088,16 +3088,19 @@ operator.</p>
 idempotency key, as required by VTI-OPS-061.</p>
 <h3 id="delivery-and-the-acceptance-window" tabindex="-1"><a class="toc-anchor d-print-none" href="#delivery-and-the-acceptance-window">§</a> Delivery and the acceptance window</h3>
 <p>A store-and-forward delivery can outlive the document it carries. A recipient
-refuses a document whose time of issue lies outside its acceptance window
-(VTI-OPS-024), and a message held by a mediator, refused by a hop, or escalated
-under VTI-TRN-042 can reach its recipient after that window has closed. The
-requirements below keep such a message from being counted as delivered, and say
-how a sender delivers the operation instead.</p>
-<p>In this section, the <strong>latest acceptable instant</strong> of a document at a recipient
-is the earlier of: the document’s time of issue plus the recipient’s maximum
-age and its clock-skew tolerance; and the document’s expiry, where it carries
-one. After that instant no recipient applying that window accepts the document,
-whatever its clock reads within its tolerance.</p>
+refuses a document that lies outside its acceptance window (VTI-OPS-024), and a
+message held by a mediator, refused by a hop, or escalated under VTI-TRN-042
+can reach its recipient after that window has closed. The requirements below
+keep such a message from being counted as delivered, say how a sender keeps a
+long delivery inside the window, and say how it delivers the operation where
+the window has closed anyway.</p>
+<p>In this section, a document’s <strong>acceptance end</strong> at a recipient is the one
+VTI-OPS-024 defines with that recipient’s maximum age: the document’s expiry,
+no later than its expiry horizon (VTI-OPS-028), where it states one, and
+otherwise its time of issue plus the recipient’s maximum age. Its <strong>latest
+acceptable instant</strong> is that acceptance end plus the recipient’s clock-skew
+tolerance. After that instant no recipient applying that window accepts the
+document, whatever its clock reads within its tolerance.</p>
 <p><strong>VTI-TRN-044</strong> — A sender MUST NOT treat evidence of the first or third class
 of VTI-TRN-040 as delivery where the message arrived after the latest
 acceptable instant of the document it carries. The sender MUST place the
@@ -3111,8 +3114,8 @@ window the operation’s definition states, where it states one, and otherwise a
 window the sender documents and applies to every recipient for which it has no
 other.</p>
 <p><strong>VTI-TRN-046</strong> — A sender MUST NOT send a document after its latest
-acceptable instant at the recipient, and SHOULD NOT send one after its time of
-issue plus the recipient’s maximum age. Where it would otherwise do so, where
+acceptable instant at the recipient, and SHOULD NOT send one after its
+acceptance end there. Where it would otherwise do so, where
 VTI-TRN-044 leaves an operation undelivered, and where the recipient has refused
 a document as outside its acceptance window, a sender that continues the
 delivery MUST deliver the operation as a new document: a new identifier
@@ -3132,6 +3135,11 @@ the delivery failed and surface it to the operator when the bound is reached.</l
 <p><strong>VTI-TRN-047</strong> — A node SHOULD advertise its acceptance window in its
 discovery response, where the discovery definition provides for it, and MUST
 NOT advertise a window longer than the one it applies.</p>
+<p><strong>VTI-TRN-048</strong> — Where a sender’s delivery window under VTI-TRN-042 can
+outlast the recipient’s maximum age, the sender SHOULD state an expiry on the
+document it sends, no later than the close of that delivery window. A new
+document under VTI-TRN-046 carries the original’s expiry unchanged, as it does
+every other member it does not replace.</p>
 <p><em>Rationale for VTI-TRN-044.</em> Collection is evidence that the recipient was
 reachable, not that it accepted anything. A copy collected after its window has
 closed is refused as expired, and a sender that records it as delivered has
@@ -3154,6 +3162,18 @@ while they are accepted, or recorded as delivered while they are refused. An
 advertised window longer than the one applied produces the second, which is
 why VTI-TRN-047 forbids it; one shorter than the one applied costs only the
 signatures spent on new documents the recipient did not need.</p>
+<p><em>Rationale for VTI-TRN-048.</em> A document that states no expiry is acceptable for
+the recipient’s maximum age, typically minutes, and a delivery that lasts a day
+then depends on a chain of new documents under VTI-TRN-046 and on each reaching
+the recipient before it goes stale. One that states the delivery’s own deadline
+is acceptable for as long as the delivery runs, up to the thirty-day horizon of
+VTI-OPS-028, so a copy held by a mediator while its recipient is offline is
+still acceptable when collected, and new documents are needed only where a
+recipient applies a narrower window. Because every new document carries the
+same expiry and the same idempotency key, the recipient’s record of the key
+(VTI-OPS-066) lasts as long as any of them can be accepted. The expiry is the
+close of the delivery window and not later: a document stated to stand longer
+than its sender will pursue it asks the recipient to remember it for nothing.</p>
 <p><em>Rationale for VTI-TRN-046.</em> The obvious repair — re-stamping the time of issue
 and re-signing — produces a different document under an identifier the
 recipient may already have accepted, which it refuses under VTI-OPS-026 as a
@@ -5136,8 +5156,19 @@ relieving a producer of addressing or signing the document it sends.</p>
 member it acts on, and MUST refuse a document where it does not.</p>
 <p><strong>VTI-OPS-023</strong> — A receiving node MUST verify that it is the intended
 recipient, and MUST refuse a document addressed elsewhere.</p>
-<p><strong>VTI-OPS-024</strong> — A node MUST refuse a document whose time of issue lies outside
-its acceptance window.</p>
+<p><strong>VTI-OPS-024</strong> — A node MUST refuse a document that lies outside its
+acceptance window. The window opens at the document’s time of issue and closes
+at its <strong>acceptance end</strong>: where the document states an expiry, the earlier of
+that expiry and the document’s expiry horizon (VTI-OPS-028); otherwise, its time
+of issue plus the node’s maximum age. The node MAY allow its clock-skew
+tolerance at either bound. It MUST refuse a document whose time of issue lies
+after its receipt beyond that tolerance, and one whose expiry is not after its
+time of issue.</p>
+<p><strong>VTI-OPS-028</strong> — A document’s expiry horizon is thirty days after its time of
+issue. A node MUST NOT refuse a document that states an expiry as stale before
+that document’s acceptance end, whatever the node’s maximum age. Where a document states an expiry beyond its horizon, the node
+MUST apply the horizon in its place, and MUST NOT refuse the document for
+stating it.</p>
 <p><em>Rationale for VTI-OPS-021.</em> Transport-level sender authentication and
 document-level proof answer different questions. The first says who opened this
 connection; the second says who authored this document, what it covers, and to
@@ -5147,6 +5178,27 @@ forwarded, replayed on another transport, or produced in evidence afterwards.</p
 argument uniform. Where a document is signed on one transport and merely
 authenticated on another, the deployment’s real guarantee is the weaker of the
 two, and which transport carries it is not recorded anywhere. See Appendix F.</p>
+<p><em>Rationale for VTI-OPS-024 and VTI-OPS-028.</em> An expiry is the producer’s
+statement of how long its request stands, and [TRUST-TASKS] makes it the bound
+of both acceptance and the record of accepted documents where it is present,
+with a maximum age over the time of issue only where it is not. A consumer that
+applies its maximum age whatever the expiry says turns that statement into one
+that can only shorten acceptance. Every delivery longer than the maximum age —
+a notice held for a recipient that is offline for a day, a request waiting at a
+mediator overnight — then has to be carried by a chain of re-signed documents
+(VTI-TRN-046), each of which the recipient is free to refuse as stale before it
+arrives.</p>
+<p>The objection to honouring an expiry is that it lets a producer choose how long
+a consumer must remember its document. The horizon answers it: the producer
+chooses within thirty days, and a consumer’s records are bounded by the horizon
+rather than by what any producer asks. The horizon is fixed here rather than
+left to each node because a sender has to know it without asking: a delivery
+that outlasts the maximum age is the case where the recipient cannot answer a
+discovery request (Appendix F, VTI-TRN-045). A document stating a longer expiry
+is clamped rather than refused because the producer asked for more than the node
+gives, not for something wrong: the document is acceptable for thirty days and
+then <code>expired</code>, which a producer can act on, whereas a refusal at receipt
+delivers nothing at all.</p>
 <h3 id="replay" tabindex="-1"><a class="toc-anchor d-print-none" href="#replay">§</a> Replay</h3>
 <p><strong>VTI-OPS-025</strong> — Every operation document MUST carry an identifier unique to
 that document.</p>
@@ -5155,10 +5207,19 @@ accepted within the acceptance window of VTI-OPS-024.</p>
 <p><strong>VTI-OPS-027</strong> — The record of accepted document identifiers MUST be shared
 across every binding a node exposes. A document accepted on one binding MUST NOT
 be acceptable on another.</p>
+<p><strong>VTI-OPS-029</strong> — A node MUST retain its record of an accepted document’s
+identifier until at least that document’s acceptance end (VTI-OPS-024), plus
+the clock-skew tolerance it applies, and the record MUST survive a restart of
+the node.</p>
 <p><em>Rationale.</em> Signing a document makes it durable evidence of intent, and
 durable evidence is replayable unless something remembers it. The acceptance
 window bounds how long the record must be kept; the identifier is what makes
-the record possible.</p>
+the record possible. The window and the retention are one bound: a record
+dropped while its document is still acceptable is a document that can be
+performed twice. VTI-OPS-029 says so for both ends of that bound, including the
+one a restart closes early. A record held only in a running process is forgotten
+by every restart, and with windows of up to thirty days a restart inside one is
+routine rather than rare.</p>
 <p>VTI-OPS-027 closes the case a per-binding implementation misses. A document
 captured from one binding — a log, a proxy, a stored message — is a
 well-formed, correctly signed, correctly addressed document, and the second
@@ -5521,6 +5582,15 @@ idempotency key.</p>
 <p><strong>VTI-OPS-065</strong> — A node MUST be able to return the result of a completed keyed
 operation to a caller that repeats it with the same key, rather than refusing
 the repeat.</p>
+<p><strong>VTI-OPS-066</strong> — A node MUST retain its record of a keyed operation until at
+least the latest acceptance end (VTI-OPS-024), plus the clock-skew tolerance it
+applies, of any document carrying that key that it has accepted, and the record
+MUST survive a restart of the node.</p>
+<p><strong>VTI-OPS-067</strong> — Where a node cannot establish whether an attempt at a keyed
+operation took effect — the attempt began and no outcome was recorded for it —
+the node MUST NOT perform the operation again under that key. It MUST refuse a
+repeat under that key with a refusal stating that the outcome is unknown,
+distinguishable from a refusal of the request itself.</p>
 <p><em>Rationale for VTI-OPS-062.</em> Classification is a judgement made when an
 operation is defined, and an unclassified operation is one whose author did not
 make it. Treating it as the most costly class is the direction whose error is
@@ -5533,6 +5603,25 @@ redundant, because it cannot hold a key stable. It re-invokes a client method,
 which builds a fresh document with a fresh key, which is a different operation
 as far as the node is concerned. It converts one operation retried into several
 operations performed, which is the precise failure the key exists to prevent.</p>
+<p><em>Rationale for VTI-OPS-066.</em> One key spans every attempt at an operation, and
+the attempts are separate documents: a retry or a new document under
+VTI-TRN-046 carries a new identifier and a new time of issue. The record of the
+key therefore has to outlive the last of them, not the first, and a fixed
+retention is correct only while no document under the key can be accepted after
+it. Where a delivery states an expiry of up to thirty days (VTI-TRN-048), a
+record kept for a day lets the attempt arriving on the second day perform the
+operation again.</p>
+<p><em>Rationale for VTI-OPS-067.</em> A node records an operation’s effect and the
+outcome of its key in two steps, and can stop between them. The attempt that
+then has no recorded outcome may have taken effect or not, and nothing at the
+node distinguishes the two. Performing it again on the next attempt is the
+duplicate VTI-OPS-061 forbids, in exactly the case — a lost reply after a
+failure — that keys exist for. Refusing the repeat costs the caller one look:
+it establishes whether the effect exists through the corresponding read
+operation and, if not, asks again under a new key. The refusal has to be
+distinguishable because the caller’s next step differs from that for a refused
+request, and a caller that cannot tell them apart either repeats the request
+forever or abandons an operation that may have happened.</p>
 <h3 id="composing-an-operation" tabindex="-1"><a class="toc-anchor d-print-none" href="#composing-an-operation">§</a> Composing an operation</h3>
 <p>The requirements above compose into one rule worth stating on its own: a new
 operation is defined by naming it in the catalogue, assembling its payload from
@@ -8032,9 +8121,10 @@ are within the requesting entry’s authority, and never signs opaque octets
 once, and invisibly: the resulting signature is indistinguishable from an
 intended one.</li>
 <li><strong>A signed document is replayable unless something remembers it</strong>
-(VTI-OPS-025 through VTI-OPS-027) — and the record has to be shared across
-bindings, or the node’s replay protection is as good as its least-used
-transport.</li>
+(VTI-OPS-025 through VTI-OPS-027, VTI-OPS-029) — and the record has to be
+shared across bindings and kept across restarts for as long as the document
+is acceptable, or the node’s replay protection is as good as its least-used
+transport or its last restart.</li>
 <li><strong>Negotiation is an attacker’s lever.</strong> Discovery responses are
 authenticated and each operation has a version floor a peer cannot argue a
 node below (VTI-OPS-046, VTI-OPS-047); without the floor, retiring a
@@ -8067,7 +8157,7 @@ weakest (VTI-KEY-102). A verifier that requires a particular cryptosuite
 refuses an artefact stripped of that proof, and a node says which suites it
 signs with so that the stripping can be seen (VTI-KEY-104, VTI-KEY-105).
 Operational proofs carry no challenge or domain, so their replay
-protection rests entirely on VTI-OPS-023 through VTI-OPS-027
+protection rests entirely on VTI-OPS-023 through VTI-OPS-029
 (VTI-KEY-107).</li>
 <li><strong>A stolen key writes whatever dates it likes.</strong> The time an attestation was
 issued is established from the identifier’s history or a VTA-written
@@ -9803,6 +9893,18 @@ different thing from a requirement that is met.</p>
 <td>Not established</td>
 <td>Determine whether discovery is authenticated on each binding, and whether a floor exists</td>
 </tr>
+<tr>
+<td>VTI-OPS-024, VTI-OPS-028 <em>(observed)</em></td>
+<td>A document stating an expiry is acceptable until that expiry, up to thirty days after its time of issue; the maximum age applies only to a document stating none</td>
+<td>Both node types refuse every document more than their maximum age of ten minutes, plus sixty seconds of skew, past its time of issue, whatever expiry it states, so an expiry can only shorten acceptance. The framework library both build on applies the maximum age whether or not an expiry is stated. The community node also caps its record of accepted identifiers at that bound, so that a producer cannot choose how long it is remembered</td>
+<td>Close the window at the acceptance end of VTI-OPS-024: the stated expiry, clamped to the horizon of VTI-OPS-028, and the maximum age only where none is stated. Keep the record of accepted identifiers (VTI-OPS-029) and of keyed operations (VTI-OPS-066) to the same end. The change starts in the framework library’s freshness check, and needs the next entry first</td>
+</tr>
+<tr>
+<td>VTI-OPS-029 <em>(observed)</em></td>
+<td>The record of accepted document identifiers is kept to each document’s acceptance end and survives a restart</td>
+<td>The agent keeps its record in memory, bounded by capacity, so a restart forgets every identifier and a document accepted shortly before it is acceptable again for the rest of its window. Keyed operations are protected across a restart by the agent’s idempotency record, which is persistent; operations without a key are not. The community node’s record is persistent</td>
+<td>Persist the agent’s record in its store, on the dispatch path every binding shares. While windows close ten minutes after issue, the exposure is a restart inside those minutes; once the previous entry is closed, windows of up to thirty days make a restart inside one routine</td>
+</tr>
 </tbody>
 </table>
 </div><h4 id="f.3-transports%2C-sessions-and-resolution" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.3-transports%2C-sessions-and-resolution">§</a> F.3 Transports, sessions and resolution</h4>
@@ -9839,6 +9941,12 @@ different thing from a requirement that is met.</p>
 <td>A sender takes a recipient’s acceptance window from what the recipient advertises</td>
 <td>Both node types now advertise, in <code>trust-task-discovery/0.3</code>, the window they apply: a maximum age of ten minutes and a skew tolerance of sixty seconds, drawn from the same value their consumers enforce, so VTI-TRN-047 is met and the advertisement cannot be wider than what is applied. The push engine of both node types still reads no advertised window: it applies that same value, documented, to every recipient, which is VTI-TRN-045’s final tier. Between the two node types this is correct, because it is the window each advertises. It is not correct for a recipient that applies a narrower window. Reading one needs what the engine lacks: pushes are one-way with no correlated reply path for a discovery exchange; the recipients pushed to today (approvers’ devices, members’ wallets, requesters) serve no discovery; the window matters only while a document is held, which is when the recipient cannot answer; and the engine does not observe an <code>expired</code> refusal, so the discovery definition’s re-ask rule has nothing to trigger it</td>
 <td>When a class of push recipient advertises a window: a per-recipient cache keyed by DID, with a lifetime, filled only from authenticated discovery responses, a per-type entry preferred to the response-level one and absence meaning nothing was learnt, read by the engine’s staleness decisions. That first needs a correlated reply path, or a refusal routed back to the engine</td>
+</tr>
+<tr>
+<td>VTI-TRN-048 <em>(observed)</em></td>
+<td>A sender whose delivery can outlast the recipient’s maximum age states an expiry on the document, no later than the close of its delivery window</td>
+<td>The push engine shared by both node types states no expiry on the documents it pushes. A push whose deadline runs to a day, or thirty days for a removal notice, is acceptable at the recipient for the maximum age only, and is carried after that by new documents under VTI-TRN-046</td>
+<td>Stamp the push’s deadline, at most thirty days after the time of issue, as the expiry of the documents it sends, once recipients close their window at VTI-OPS-024’s acceptance end. Until they do, a recipient refuses the document at its maximum age whatever expiry it states, so the stamp changes nothing</td>
 </tr>
 </tbody>
 </table>
@@ -10017,12 +10125,13 @@ own limits are worth carrying: domain separation makes a signature unusable
 outside the domain it was requested in without making the signing of
 unparseable material safe, and a retention watermark restores verification
 across an honest sweep while resting on a record held in the same store as the
-log it vouches for. Two entries, VTI-APV-014 and VTI-TRN-044 with
-VTI-TRN-046, are recorded here although they were never listed above: each
-divergence was known to its implementer and closed before anyone added it, and
-the history is recorded so that the omission is not taken for conformance all
-along. The second was closed before the requirements it is recorded against
-were written; they were drafted from the change that closed it.</p>
+log it vouches for. Three entries, VTI-APV-014, VTI-TRN-044 with VTI-TRN-046,
+and VTI-OPS-061 with VTI-OPS-067, are recorded here although they were never
+listed above: each divergence was known to its implementer and closed before
+anyone added it, and the history is recorded so that the omission is not taken
+for conformance all along. The second and third were closed before the
+requirements they are recorded against were written (VTI-OPS-061 apart); those
+requirements were drafted from the changes that closed them.</p>
 <div class="table-responsive-md"><table class="table table-striped table-bordered table-hover">
 <thead>
 <tr>
@@ -10074,6 +10183,10 @@ were written; they were drafted from the change that closed it.</p>
 <tr>
 <td>VTI-ACL-001, VTI-VTC-020 <em>(observed, closed)</em></td>
 <td>At one community node, the <code>git-ns/*</code> task family, which governs repositories on external forges, was authorized by a second model: <em>rights</em> held by a subject on a forge-qualified resource, in a store of their own, evaluated in code no policy reaches, with the signer’s access control entry read only for membership and for the administrative role. The rights are now capabilities on the holder’s own entry, qualified by the resource they apply to (VTI-ACL-035): namespace administration is <code>git.ns.admin</code> qualified by the namespace; ownership, maintenance and repository creation are <code>git.repo.manage</code> qualified by the repository’s identifier or by the namespace, narrowed by a grade (owner, maintainer, creator) that confers less than the capability in full — the qualifier bounds what a capability confers from above, so a narrower grade is within it, and it is what keeps an owner’s and a maintainer’s roles on the forge apart and keeps the right to create a repository from conferring anything over the repositories already there; commit signing is <code>git.commit.sign</code> qualified by either. Each grant records the subject it was delegated from (VTI-ACL-072). There is no second store: the family’s operations, the console and the node’s approver sets all ask the entry, and the store that held the rights is migrated onto the entries at start-up and on restore, with anything that could not be mapped kept inert and raised for the administrators rather than dropped or granted. The two questions the entry left open are settled. A subject with no entry may hold no right: one that holds a right without being a member — the bridge serving a namespace, an external signer — holds it on an entry of an <code>application</code> community role that is never a membership, never authenticates a session, never receives a right that carries authority over others, and is removed with its last grant (VTI-ACL-037, VTI-ACL-070); the bridge’s results and events are still accepted because the namespace records its identifier. A granted right is a delegation: it cannot exceed what the granter’s own entry holds at a covering qualifier, checked beneath the family’s own grant rules (VTI-ACL-037, VTI-ACL-071), and when its granter leaves the community it goes to review, is withdrawn if nobody re-affirms it under their own authority within the action lifetime, and is withdrawn at once if declined — the default that kept a departed granter’s grants in force is gone. The family’s fixed rules still run before the community’s policy, which can only refuse (VTI-VTC-022). What this does not close: a grant goes to review when its granter departs, not when the granter keeps its membership but loses the right it delegated from, because the family’s own transfer hands that right away by design; and the step-up and publication entries above, on the same family, are unaffected</td>
+</tr>
+<tr>
+<td>VTI-OPS-061, VTI-OPS-067 <em>(observed, never listed)</em></td>
+<td>At the agent, the dispatcher claims an idempotency key before performing a keyed operation and records the outcome after it, in two writes. A process that stopped between the operation’s effect and the record left the claim in flight, and once a ten-minute grace had passed, the next attempt under that key took the claim and performed the operation again: a repeated key-creation request produced a second key. A claim older than the grace is now reported as abandoned and never taken. A repeat under that key is refused as of unknown outcome, naming when the lost attempt began, and the caller establishes what happened before asking again under a new key. A failure to read or write the record now refuses the request instead of performing it unguarded. A test holds both across two lifetimes of the node over one retained store, and fails under the earlier behaviour</td>
 </tr>
 </tbody>
 </table>
@@ -10302,8 +10415,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-03T04:36:22.586Z">
-                            Generated: 2026-11-03T04:36:22.586Z
+                        <time class="timestamp" datetime="2026-11-03T08:09:30.870Z">
+                            Generated: 2026-11-03T08:09:30.870Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
