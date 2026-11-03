@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-02T15:19:17.175Z"
+      "lastUpdated": "2026-11-03T04:36:23.023Z"
     }
   ]
 };</script>
@@ -318,7 +318,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
                     </div>
                     <nav id="toc" class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto"
                         aria-labelledby="sidebarMenuLabel">
-                        <ul class="toc"><li><a href="#introduction">Introduction</a><ul><li><a href="#the-idea-in-plain-terms">The idea in plain terms</a><ul><li><a href="#the-three-things-that-go-wrong">The three things that go wrong</a></li><li><a href="#why-the-writing-is-careful">Why the writing is careful</a></li></ul></li><li><a href="#what-this-specification-covers">What this specification covers</a></li><li><a href="#what-this-specification-does-not-cover">What this specification does not cover</a></li><li><a href="#the-vocabulary-in-one-paragraph">The vocabulary in one paragraph</a></li><li><a href="#this-specification-is-written-first">This specification is written first</a></li><li><a href="#structure-of-this-document">Structure of this document</a></li><li><a href="#how-requirements-are-stated">How requirements are stated</a></li><li><a href="#reading-this-document-for-a-purpose">Reading this document for a purpose</a></li><li><a href="#specification-versioning">Specification Versioning</a><ul><li><a href="#ratification-and-the-stable-release-line">Ratification and the Stable Release Line</a></li></ul></li></ul></li><li><a href="#requirements-language">Requirements Language</a></li><li><a href="#terminology">Terminology</a></li><li><a href="#architecture-and-conformance-targets">Architecture and Conformance Targets</a><ul><li><a href="#the-problem-this-specification-addresses">The problem this specification addresses</a></li><li><a href="#conformance-targets">Conformance targets</a><ul><li><a href="#verifiable-trust-agent">Verifiable Trust Agent</a></li><li><a href="#verifiable-trust-community">Verifiable Trust Community</a></li><li><a href="#verifiable-trust-network">Verifiable Trust Network</a></li><li><a href="#client">Client</a></li><li><a href="#mediator%2C-host%2C-registry">Mediator, host, registry</a></li></ul></li><li><a href="#the-trust-boundary">The trust boundary</a></li><li><a href="#layering">Layering</a></li><li><a href="#the-common-model">The common model</a></li><li><a href="#a-request%2C-end-to-end">A request, end to end</a></li><li><a href="#how-requirements-are-stated-1">How requirements are stated</a></li></ul></li><li><a href="#trust-contexts">Trust Contexts</a><ul><li><a href="#in-plain-terms">In plain terms</a></li><li><a href="#what-this-chapter-defines">What this chapter defines</a></li><li><a href="#trust-contexts-1">Trust contexts</a></li><li><a href="#context-identifiers">Context identifiers</a><ul><li><a href="#ancestry">Ancestry</a></li><li><a href="#purity-of-the-authorization-gate">Purity of the authorization gate</a></li></ul></li><li><a href="#context-lifecycle">Context lifecycle</a></li></ul></li><li><a href="#access-control-and-authority">Access Control and Authority</a><ul><li><a href="#in-plain-terms-1">In plain terms</a></li><li><a href="#what-this-chapter-defines-1">What this chapter defines</a></li><li><a href="#the-access-control-entry">The access control entry</a><ul><li><a href="#every-grant-is-stated%2C-never-inferred-from-a-shape">Every grant is stated, never inferred from a shape</a></li><li><a href="#storage-of-subject-identifiers">Storage of subject identifiers</a></li></ul></li><li><a href="#roles">Roles</a></li><li><a href="#act-scope%3A-super-administrators-and-context-administrators">Act scope: super-administrators and context administrators</a></li><li><a href="#capabilities">Capabilities</a></li><li><a href="#approve-scope">Approve scope</a></li><li><a href="#visibility-and-management-of-entries">Visibility and management of entries</a></li><li><a href="#listing-entries-by-context">Listing entries by context</a></li><li><a href="#delegation">Delegation</a></li><li><a href="#revocation">Revocation</a></li><li><a href="#where-authority-decisions-live">Where authority decisions live</a></li></ul></li><li><a href="#approvals%2C-consent-and-step-up">Approvals, Consent and Step-Up</a><ul><li><a href="#in-plain-terms-2">In plain terms</a></li><li><a href="#what-this-chapter-defines-2">What this chapter defines</a></li><li><a href="#approval-rules">Approval rules</a></li></ul></li><li><a href="#audit">Audit</a><ul><li><a href="#in-plain-terms-3">In plain terms</a></li><li><a href="#what-this-chapter-defines-3">What this chapter defines</a></li></ul></li><li><a href="#identity%2C-dids-and-key-management">Identity, DIDs and Key Management</a><ul><li><a href="#identifier-methods">Identifier methods</a></li><li><a href="#the-did%3Ascid-form-of-a-did%3Awebvh-identifier">The did:scid form of a did:webvh identifier</a></li><li><a href="#correlation-and-identifier-reuse">Correlation and identifier reuse</a></li><li><a href="#cryptography">Cryptography</a></li><li><a href="#key-purposes">Key purposes</a></li><li><a href="#derivation">Derivation</a></li><li><a href="#rotation">Rotation</a></li><li><a href="#service-endpoints">Service endpoints</a></li><li><a href="#resolution%2C-caching-and-deactivation">Resolution, caching and deactivation</a></li><li><a href="#key-roles">Key roles</a><ul><li><a href="#services-operated-alongside-a-node">Services operated alongside a node</a></li></ul></li><li><a href="#what-each-role-signs">What each role signs</a><ul><li><a href="#registry-records">Registry records</a></li></ul></li><li><a href="#binding-roles-in-the-identifier-document">Binding roles in the identifier document</a></li><li><a href="#selecting-and-verifying-by-role">Selecting and verifying by role</a></li><li><a href="#custody-of-role-keys">Custody of role keys</a></li><li><a href="#rotation-and-revocation-by-role">Rotation and revocation by role</a></li><li><a href="#judging-material-signed-before-a-rotation">Judging material signed before a rotation</a></li><li><a href="#approving-changes-to-key-roles">Approving changes to key roles</a></li><li><a href="#algorithms-of-role-keys">Algorithms of role keys</a></li><li><a href="#identifier-method-profiles">Identifier method profiles</a></li><li><a href="#identities-that-do-not-bind-key-roles">Identities that do not bind key roles</a></li><li><a href="#privacy-of-key-roles">Privacy of key roles</a></li><li><a href="#authenticator-keys">Authenticator keys</a></li></ul></li><li><a href="#transports%2C-messaging-and-delivery">Transports, Messaging and Delivery</a><ul><li><a href="#in-plain-terms-4">In plain terms</a></li><li><a href="#what-this-chapter-defines-4">What this chapter defines</a></li><li><a href="#transport-independence">Transport independence</a></li><li><a href="#liveness">Liveness</a></li><li><a href="#mediators">Mediators</a></li><li><a href="#metadata-and-correlation">Metadata and correlation</a></li><li><a href="#resource-bounds">Resource bounds</a></li><li><a href="#truthful-send">Truthful send</a></li><li><a href="#delivery-confirmation">Delivery confirmation</a></li><li><a href="#delivery-and-the-acceptance-window">Delivery and the acceptance window</a></li><li><a href="#bounded-waits-and-honest-health">Bounded waits and honest health</a></li></ul></li><li><a href="#notifications">Notifications</a><ul><li><a href="#in-plain-terms-5">In plain terms</a></li><li><a href="#what-this-chapter-defines-5">What this chapter defines</a></li><li><a href="#the-notification">The notification</a></li><li><a href="#kinds">Kinds</a></li><li><a href="#delivery">Delivery</a></li><li><a href="#acceptance">Acceptance</a></li><li><a href="#relaying">Relaying</a></li><li><a href="#the-recipient%E2%80%99s-agent">The recipient’s agent</a></li><li><a href="#the-election-kind">The election kind</a></li></ul></li><li><a href="#sessions-and-authentication">Sessions and Authentication</a><ul><li><a href="#in-plain-terms-6">In plain terms</a></li><li><a href="#what-this-chapter-defines-6">What this chapter defines</a></li><li><a href="#the-challenge">The challenge</a></li><li><a href="#authentication">Authentication</a></li><li><a href="#resolving-authority">Resolving authority</a></li><li><a href="#refresh">Refresh</a></li><li><a href="#session-lifecycle">Session lifecycle</a></li></ul></li><li><a href="#client-onboarding-and-lifecycle">Client Onboarding and Lifecycle</a><ul><li><a href="#in-plain-terms-7">In plain terms</a></li><li><a href="#what-this-chapter-defines-7">What this chapter defines</a></li><li><a href="#client-classes">Client classes</a></li><li><a href="#step-1-%E2%80%94-mint-an-ephemeral-identifier-client-side">Step 1 — mint an ephemeral identifier client-side</a></li><li><a href="#step-2-%E2%80%94-enrol-the-identifier">Step 2 — enrol the identifier</a></li><li><a href="#step-3-%E2%80%94-connect%2C-then-roll-the-key">Step 3 — connect, then roll the key</a><ul><li><a href="#mint-the-replacement">Mint the replacement</a></li><li><a href="#prove-reachability-before-committing">Prove reachability before committing</a></li><li><a href="#swap-atomically">Swap atomically</a></li><li><a href="#commit%2C-then-persist%2C-before-anything-else">Commit, then persist, before anything else</a></li></ul></li><li><a href="#step-4-%E2%80%94-steady-state-use">Step 4 — steady-state use</a></li><li><a href="#lifecycle">Lifecycle</a></li><li><a href="#client-conformance-checklist">Client conformance checklist</a></li></ul></li><li><a href="#trigger-links">Trigger Links</a><ul><li><a href="#in-plain-terms-8">In plain terms</a></li><li><a href="#design-principles">Design principles</a></li><li><a href="#what-this-chapter-defines-8">What this chapter defines</a></li><li><a href="#the-trigger-link-format">The trigger-link format</a><ul><li><a href="#the-link">The link</a></li><li><a href="#reading-a-link">Reading a link</a></li><li><a href="#the-fields">The fields</a><ul></ul></li><li><a href="#flows">Flows</a><ul></ul></li><li><a href="#after-the-link">After the link</a></li><li><a href="#the-host-rules">The host rules</a></li><li><a href="#security-of-the-handle">Security of the handle</a></li><li><a href="#producers">Producers</a><ul></ul></li><li><a href="#the-link-host">The link host</a></li></ul></li><li><a href="#vti%E2%80%99s-use-of-trigger-links">VTI’s use of trigger links</a><ul><li><a href="#the-first-request-for-vti-flows">The first request for VTI flows</a></li><li><a href="#the-flow-registry">The flow registry</a></li><li><a href="#the-sign-in-flow">The sign-in flow</a></li><li><a href="#the-vta-claim-flow">The vta-claim flow</a></li><li><a href="#the-contact-rule">The contact rule</a></li></ul></li><li><a href="#examples">Examples</a></li></ul></li><li><a href="#operation-surface">Operation Surface</a><ul><li><a href="#in-plain-terms-9">In plain terms</a></li><li><a href="#what-this-chapter-defines-9">What this chapter defines</a></li><li><a href="#the-catalogue-is-the-api">The catalogue is the API</a></li><li><a href="#requirements-on-a-private-task">Requirements on a private task</a></li><li><a href="#extension-rather-than-divergence">Extension rather than divergence</a></li><li><a href="#the-operation-document">The operation document</a></li><li><a href="#replay">Replay</a></li><li><a href="#responses-and-refusals">Responses and refusals</a></li><li><a href="#shared-components">Shared components</a></li><li><a href="#the-required-catalogue">The required catalogue</a></li><li><a href="#transport-bindings">Transport bindings</a></li><li><a href="#foreign-protocol-interfaces">Foreign-protocol interfaces</a></li><li><a href="#the-catalogue-and-its-registries">The catalogue and its registries</a></li><li><a href="#versioning-and-negotiation">Versioning and negotiation</a></li><li><a href="#the-policy-gate">The policy gate</a></li><li><a href="#retry%2C-idempotency-and-the-cost-of-a-lost-reply">Retry, idempotency and the cost of a lost reply</a></li><li><a href="#composing-an-operation">Composing an operation</a></li></ul></li><li><a href="#credentials-and-presentations">Credentials and Presentations</a><ul><li><a href="#in-plain-terms-10">In plain terms</a></li><li><a href="#what-this-chapter-defines-10">What this chapter defines</a></li><li><a href="#issuance">Issuance</a></li><li><a href="#status-and-revocation">Status and revocation</a></li><li><a href="#presentation">Presentation</a></li><li><a href="#what-verification-establishes">What verification establishes</a></li><li><a href="#minimisation">Minimisation</a></li></ul></li><li><a href="#the-verifiable-trust-agent">The Verifiable Trust Agent</a><ul><li><a href="#in-plain-terms-11">In plain terms</a></li><li><a href="#what-this-chapter-defines-11">What this chapter defines</a></li><li><a href="#custody">Custody</a></li><li><a href="#the-signing-oracle">The signing oracle</a></li><li><a href="#credentials-held-for-the-principal">Credentials held for the principal</a></li><li><a href="#context-and-key-authority">Context and key authority</a></li><li><a href="#provisioning-integrations">Provisioning integrations</a></li><li><a href="#delegation-to-software-agents">Delegation to software agents</a></li><li><a href="#backup%2C-restore-and-succession">Backup, restore and succession</a></li><li><a href="#the-operator-surface">The operator surface</a></li></ul></li><li><a href="#the-verifiable-trust-community">The Verifiable Trust Community</a><ul><li><a href="#in-plain-terms-12">In plain terms</a></li><li><a href="#what-this-chapter-defines-12">What this chapter defines</a></li><li><a href="#provisioning-and-dependency">Provisioning and dependency</a></li><li><a href="#which-authority-lives-where">Which authority lives where</a></li><li><a href="#keys-and-what-the-community-signs">Keys and what the community signs</a></li><li><a href="#the-community-authority-model">The community authority model</a></li><li><a href="#governance-binding">Governance binding</a></li></ul></li><li><a href="#the-verifiable-trust-network">The Verifiable Trust Network</a><ul><li><a href="#in-plain-terms-13">In plain terms</a></li><li><a href="#what-this-chapter-defines-13">What this chapter defines</a></li><li><a href="#position-in-the-architecture">Position in the architecture</a></li><li><a href="#ownership-and-governance">Ownership and governance</a></li><li><a href="#curation-is-one-sided">Curation is one-sided</a></li><li><a href="#what-a-listing-establishes">What a listing establishes</a></li><li><a href="#networks-of-networks">Networks of networks</a></li><li><a href="#overlapping-networks">Overlapping networks</a></li><li><a href="#credentials-a-network-issues-and-receives">Credentials a network issues and receives</a></li><li><a href="#what-a-network-is-not">What a network is not</a></li><li><a href="#the-open-question%3A-one-node-type-or-two">The open question: one node type or two</a></li><li><a href="#illustrations">Illustrations</a></li></ul></li><li><a href="#membership-lifecycle-and-community-credentials">Membership Lifecycle and Community Credentials</a><ul><li><a href="#lifecycle-states">Lifecycle states</a></li><li><a href="#admission">Admission</a></li><li><a href="#membership-credentials">Membership credentials</a></li><li><a href="#suspension-and-removal">Suspension and removal</a></li><li><a href="#renewal-and-rotation">Renewal and rotation</a></li></ul></li><li><a href="#the-community-directory-and-groups">The Community Directory and Groups</a><ul><li><a href="#in-plain-terms-14">In plain terms</a></li><li><a href="#what-this-chapter-defines-14">What this chapter defines</a></li><li><a href="#what-the-community-does-not-hold">What the community does not hold</a></li><li><a href="#cards-and-fields">Cards and fields</a></li><li><a href="#audiences">Audiences</a></li><li><a href="#administrators%E2%80%99-notes">Administrators’ notes</a></li><li><a href="#discoverability">Discoverability</a></li><li><a href="#entry-identifiers-and-correlation">Entry identifiers and correlation</a></li><li><a href="#introductions">Introductions</a></li><li><a href="#groups">Groups</a></li><li><a href="#group-identity-and-credentials">Group identity and credentials</a></li><li><a href="#groups-and-rooms">Groups and rooms</a></li><li><a href="#groups-and-authority">Groups and authority</a></li><li><a href="#enumeration">Enumeration</a></li><li><a href="#departure-and-rotation">Departure and rotation</a></li><li><a href="#the-disclosure-statement">The disclosure statement</a></li></ul></li><li><a href="#community-voting">Community Voting</a><ul><li><a href="#in-plain-terms-15">In plain terms</a></li><li><a href="#what-this-chapter-defines-15">What this chapter defines</a></li><li><a href="#separation-of-the-registrar-and-the-ballot-box">Separation of the registrar and the ballot box</a></li><li><a href="#elections-and-their-manifests">Elections and their manifests</a></li><li><a href="#tickets">Tickets</a></li><li><a href="#casting">Casting</a></li><li><a href="#the-ballot-box">The ballot box</a></li><li><a href="#the-board">The board</a></li><li><a href="#secrecy-levels-and-trustees">Secrecy levels and trustees</a></li><li><a href="#results-and-audit">Results and audit</a></li><li><a href="#governance">Governance</a></li><li><a href="#disclosure">Disclosure</a></li><li><a href="#audit-1">Audit</a></li></ul></li><li><a href="#trust-registries-and-cross-community-recognition">Trust Registries and Cross-Community Recognition</a><ul><li><a href="#publication">Publication</a></li><li><a href="#what-a-registry-answer-establishes">What a registry answer establishes</a></li><li><a href="#cross-community-recognition">Cross-community recognition</a></li></ul></li><li><a href="#composition-requirements">Composition Requirements</a><ul><li><a href="#in-plain-terms-16">In plain terms</a></li><li><a href="#what-this-chapter-defines-16">What this chapter defines</a></li><li><a href="#how-a-composition-requirement-binds">How a composition requirement binds</a></li><li><a href="#composition-integrity">Composition integrity</a></li><li><a href="#semantic-completion">Semantic completion</a></li><li><a href="#authority-is-not-verification">Authority is not verification</a></li><li><a href="#currency-of-state">Currency of state</a></li><li><a href="#delegation-lineage">Delegation lineage</a></li><li><a href="#privacy-across-composition">Privacy across composition</a></li><li><a href="#false-independence">False independence</a></li><li><a href="#indeterminacy">Indeterminacy</a></li><li><a href="#configuration-materiality">Configuration materiality</a></li><li><a href="#component-substitution">Component substitution</a></li><li><a href="#human-control">Human control</a></li><li><a href="#open-propositions">Open propositions</a></li></ul></li><li><a href="#operational-and-assurance-requirements">Operational and Assurance Requirements</a><ul><li><a href="#in-plain-terms-17">In plain terms</a></li><li><a href="#what-this-chapter-defines-17">What this chapter defines</a></li><li><a href="#bootstrap">Bootstrap</a></li><li><a href="#protection-at-rest">Protection at rest</a></li><li><a href="#containment">Containment</a></li><li><a href="#audit-2">Audit</a></li><li><a href="#time">Time</a></li><li><a href="#what-an-operator-must-be-able-to-answer">What an operator must be able to answer</a></li></ul></li><li><a href="#security-considerations">Security Considerations</a></li><li><a href="#privacy-considerations">Privacy Considerations</a></li><li><a href="#governance-considerations">Governance Considerations</a></li><li><a href="#internationalization-considerations">Internationalization Considerations</a></li><li><a href="#accessibility-considerations">Accessibility Considerations</a></li><li><a href="#conformance">Conformance</a><ul><li><a href="#profiles">Profiles</a></li><li><a href="#targets">Targets</a></li><li><a href="#requirement-identifier-areas">Requirement identifier areas</a></li><li><a href="#coverage">Coverage</a></li><li><a href="#the-test-suite">The test suite</a></li><li><a href="#the-assessment-interface">The assessment interface</a></li><li><a href="#divergence-from-implementations">Divergence from implementations</a></li><li><a href="#what-an-assessment-does-not-do">What an assessment does not do</a></li></ul></li><li><a href="#references">References</a><ul><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li><li><a href="#appendices">Appendices</a><ul><li><a href="#appendix-a%3A-client-onboarding">Appendix A: Client onboarding</a><ul><li><a href="#a.1-enrolment">A.1 Enrolment</a></li><li><a href="#a.2-first-connection-and-the-key-roll">A.2 First connection and the key roll</a></li><li><a href="#a.3-worked-example">A.3 Worked example</a></li><li><a href="#a.4-failure-cases-around-the-commit-point">A.4 Failure cases around the commit point</a></li><li><a href="#a.5-test-vectors-%E2%80%94-context-paths">A.5 Test vectors — context paths</a></li><li><a href="#a.6-test-vectors-%E2%80%94-ancestry">A.6 Test vectors — ancestry</a></li><li><a href="#a.7-test-vectors-%E2%80%94-act-scope">A.7 Test vectors — act scope</a></li></ul></li><li><a href="#appendix-b%3A-access-control-entry">Appendix B: Access control entry</a></li><li><a href="#appendix-c%3A-role-and-capability-annex">Appendix C: Role and capability annex</a><ul><li><a href="#c.1-roles">C.1 Roles</a></li><li><a href="#c.2-capability-registry">C.2 Capability registry</a></li><li><a href="#c.3-community-capabilities-and-roles">C.3 Community capabilities and roles</a></li></ul></li><li><a href="#appendix-d%3A-context-path-grammar">Appendix D: Context path grammar</a></li><li><a href="#appendix-e%3A-composition-proposition-catalogue">Appendix E: Composition proposition catalogue</a><ul><li><a href="#e.1-record-form">E.1 Record form</a></li><li><a href="#e.2-evidence-families">E.2 Evidence families</a></li><li><a href="#e.3-assessment-submissions">E.3 Assessment submissions</a></li></ul></li><li><a href="#appendix-f%3A-divergence-register">Appendix F: Divergence register</a><ul><li><a href="#f.1-authority-encoding">F.1 Authority encoding</a></li><li><a href="#f.2-operations-and-versioning">F.2 Operations and versioning</a></li><li><a href="#f.3-transports%2C-sessions-and-resolution">F.3 Transports, sessions and resolution</a></li><li><a href="#f.4-signing%2C-audit-and-identifiers">F.4 Signing, audit and identifiers</a></li><li><a href="#f.5-community-defined-authority-and-publication">F.5 Community-defined authority and publication</a></li><li><a href="#f.6-key-roles-and-custody">F.6 Key roles and custody</a></li><li><a href="#f.7-closed">F.7 Closed</a></li><li><a href="#f.5a-administrative-authority-at-a-community">F.5a Administrative authority at a community</a></li><li><a href="#f.8-how-to-add-an-entry">F.8 How to add an entry</a></li></ul></li><li><a href="#appendix-g%3A-notification-kind-registry">Appendix G: Notification kind registry</a></li><li><a href="#appendix-h%3A-acknowledgements">Appendix H: Acknowledgements</a></li></ul></li></ul>
+                        <ul class="toc"><li><a href="#introduction">Introduction</a><ul><li><a href="#the-idea-in-plain-terms">The idea in plain terms</a><ul><li><a href="#the-three-things-that-go-wrong">The three things that go wrong</a></li><li><a href="#why-the-writing-is-careful">Why the writing is careful</a></li></ul></li><li><a href="#what-this-specification-covers">What this specification covers</a></li><li><a href="#what-this-specification-does-not-cover">What this specification does not cover</a></li><li><a href="#the-vocabulary-in-one-paragraph">The vocabulary in one paragraph</a></li><li><a href="#this-specification-is-written-first">This specification is written first</a></li><li><a href="#structure-of-this-document">Structure of this document</a></li><li><a href="#how-requirements-are-stated">How requirements are stated</a></li><li><a href="#reading-this-document-for-a-purpose">Reading this document for a purpose</a></li><li><a href="#specification-versioning">Specification Versioning</a><ul><li><a href="#ratification-and-the-stable-release-line">Ratification and the Stable Release Line</a></li></ul></li></ul></li><li><a href="#requirements-language">Requirements Language</a></li><li><a href="#terminology">Terminology</a></li><li><a href="#architecture-and-conformance-targets">Architecture and Conformance Targets</a><ul><li><a href="#the-problem-this-specification-addresses">The problem this specification addresses</a></li><li><a href="#conformance-targets">Conformance targets</a><ul><li><a href="#verifiable-trust-agent">Verifiable Trust Agent</a></li><li><a href="#verifiable-trust-community">Verifiable Trust Community</a></li><li><a href="#verifiable-trust-network">Verifiable Trust Network</a></li><li><a href="#client">Client</a></li><li><a href="#mediator%2C-host%2C-registry">Mediator, host, registry</a></li></ul></li><li><a href="#the-trust-boundary">The trust boundary</a></li><li><a href="#layering">Layering</a></li><li><a href="#the-common-model">The common model</a></li><li><a href="#a-request%2C-end-to-end">A request, end to end</a></li><li><a href="#how-requirements-are-stated-1">How requirements are stated</a></li></ul></li><li><a href="#trust-contexts">Trust Contexts</a><ul><li><a href="#in-plain-terms">In plain terms</a></li><li><a href="#what-this-chapter-defines">What this chapter defines</a></li><li><a href="#trust-contexts-1">Trust contexts</a></li><li><a href="#context-identifiers">Context identifiers</a><ul><li><a href="#ancestry">Ancestry</a></li><li><a href="#purity-of-the-authorization-gate">Purity of the authorization gate</a></li></ul></li><li><a href="#context-lifecycle">Context lifecycle</a></li></ul></li><li><a href="#access-control-and-authority">Access Control and Authority</a><ul><li><a href="#in-plain-terms-1">In plain terms</a></li><li><a href="#what-this-chapter-defines-1">What this chapter defines</a></li><li><a href="#the-access-control-entry">The access control entry</a><ul><li><a href="#every-grant-is-stated%2C-never-inferred-from-a-shape">Every grant is stated, never inferred from a shape</a></li><li><a href="#storage-of-subject-identifiers">Storage of subject identifiers</a></li></ul></li><li><a href="#roles">Roles</a></li><li><a href="#act-scope%3A-super-administrators-and-context-administrators">Act scope: super-administrators and context administrators</a></li><li><a href="#capabilities">Capabilities</a></li><li><a href="#approve-scope">Approve scope</a></li><li><a href="#visibility-and-management-of-entries">Visibility and management of entries</a></li><li><a href="#listing-entries-by-context">Listing entries by context</a></li><li><a href="#delegation">Delegation</a></li><li><a href="#revocation">Revocation</a></li><li><a href="#where-authority-decisions-live">Where authority decisions live</a></li></ul></li><li><a href="#approvals%2C-consent-and-step-up">Approvals, Consent and Step-Up</a><ul><li><a href="#in-plain-terms-2">In plain terms</a></li><li><a href="#what-this-chapter-defines-2">What this chapter defines</a></li><li><a href="#approval-rules">Approval rules</a></li></ul></li><li><a href="#audit">Audit</a><ul><li><a href="#in-plain-terms-3">In plain terms</a></li><li><a href="#what-this-chapter-defines-3">What this chapter defines</a></li></ul></li><li><a href="#identity%2C-dids-and-key-management">Identity, DIDs and Key Management</a><ul><li><a href="#identifier-methods">Identifier methods</a></li><li><a href="#the-did%3Ascid-form-of-a-did%3Awebvh-identifier">The did:scid form of a did:webvh identifier</a></li><li><a href="#correlation-and-identifier-reuse">Correlation and identifier reuse</a></li><li><a href="#cryptography">Cryptography</a></li><li><a href="#key-purposes">Key purposes</a></li><li><a href="#derivation">Derivation</a></li><li><a href="#rotation">Rotation</a></li><li><a href="#service-endpoints">Service endpoints</a></li><li><a href="#resolution%2C-caching-and-deactivation">Resolution, caching and deactivation</a></li><li><a href="#key-roles">Key roles</a><ul><li><a href="#services-operated-alongside-a-node">Services operated alongside a node</a></li></ul></li><li><a href="#what-each-role-signs">What each role signs</a><ul><li><a href="#registry-records">Registry records</a></li></ul></li><li><a href="#binding-roles-in-the-identifier-document">Binding roles in the identifier document</a></li><li><a href="#selecting-and-verifying-by-role">Selecting and verifying by role</a></li><li><a href="#custody-of-role-keys">Custody of role keys</a></li><li><a href="#rotation-and-revocation-by-role">Rotation and revocation by role</a></li><li><a href="#judging-material-signed-before-a-rotation">Judging material signed before a rotation</a></li><li><a href="#approving-changes-to-key-roles">Approving changes to key roles</a></li><li><a href="#algorithms-of-role-keys">Algorithms of role keys</a></li><li><a href="#identifier-method-profiles">Identifier method profiles</a></li><li><a href="#identities-that-do-not-bind-key-roles">Identities that do not bind key roles</a></li><li><a href="#privacy-of-key-roles">Privacy of key roles</a></li><li><a href="#authenticator-keys">Authenticator keys</a></li></ul></li><li><a href="#transports%2C-messaging-and-delivery">Transports, Messaging and Delivery</a><ul><li><a href="#in-plain-terms-4">In plain terms</a></li><li><a href="#what-this-chapter-defines-4">What this chapter defines</a></li><li><a href="#transport-independence">Transport independence</a></li><li><a href="#liveness">Liveness</a></li><li><a href="#mediators">Mediators</a></li><li><a href="#metadata-and-correlation">Metadata and correlation</a></li><li><a href="#resource-bounds">Resource bounds</a></li><li><a href="#truthful-send">Truthful send</a></li><li><a href="#delivery-confirmation">Delivery confirmation</a></li><li><a href="#delivery-and-the-acceptance-window">Delivery and the acceptance window</a></li><li><a href="#bounded-waits-and-honest-health">Bounded waits and honest health</a></li></ul></li><li><a href="#notifications">Notifications</a><ul><li><a href="#in-plain-terms-5">In plain terms</a></li><li><a href="#what-this-chapter-defines-5">What this chapter defines</a></li><li><a href="#the-notification">The notification</a></li><li><a href="#kinds">Kinds</a></li><li><a href="#delivery">Delivery</a></li><li><a href="#acceptance">Acceptance</a></li><li><a href="#relaying">Relaying</a></li><li><a href="#the-recipient%E2%80%99s-agent">The recipient’s agent</a></li><li><a href="#the-election-kind">The election kind</a></li><li><a href="#a-community%E2%80%99s-received-notifications">A community’s received notifications</a></li></ul></li><li><a href="#sessions-and-authentication">Sessions and Authentication</a><ul><li><a href="#in-plain-terms-6">In plain terms</a></li><li><a href="#what-this-chapter-defines-6">What this chapter defines</a></li><li><a href="#the-challenge">The challenge</a></li><li><a href="#authentication">Authentication</a></li><li><a href="#resolving-authority">Resolving authority</a></li><li><a href="#refresh">Refresh</a></li><li><a href="#session-lifecycle">Session lifecycle</a></li></ul></li><li><a href="#client-onboarding-and-lifecycle">Client Onboarding and Lifecycle</a><ul><li><a href="#in-plain-terms-7">In plain terms</a></li><li><a href="#what-this-chapter-defines-7">What this chapter defines</a></li><li><a href="#client-classes">Client classes</a></li><li><a href="#step-1-%E2%80%94-mint-an-ephemeral-identifier-client-side">Step 1 — mint an ephemeral identifier client-side</a></li><li><a href="#step-2-%E2%80%94-enrol-the-identifier">Step 2 — enrol the identifier</a></li><li><a href="#step-3-%E2%80%94-connect%2C-then-roll-the-key">Step 3 — connect, then roll the key</a><ul><li><a href="#mint-the-replacement">Mint the replacement</a></li><li><a href="#prove-reachability-before-committing">Prove reachability before committing</a></li><li><a href="#swap-atomically">Swap atomically</a></li><li><a href="#commit%2C-then-persist%2C-before-anything-else">Commit, then persist, before anything else</a></li></ul></li><li><a href="#step-4-%E2%80%94-steady-state-use">Step 4 — steady-state use</a></li><li><a href="#lifecycle">Lifecycle</a></li><li><a href="#client-conformance-checklist">Client conformance checklist</a></li></ul></li><li><a href="#trigger-links">Trigger Links</a><ul><li><a href="#in-plain-terms-8">In plain terms</a></li><li><a href="#design-principles">Design principles</a></li><li><a href="#what-this-chapter-defines-8">What this chapter defines</a></li><li><a href="#the-trigger-link-format">The trigger-link format</a><ul><li><a href="#the-link">The link</a></li><li><a href="#reading-a-link">Reading a link</a></li><li><a href="#the-fields">The fields</a><ul></ul></li><li><a href="#flows">Flows</a><ul></ul></li><li><a href="#after-the-link">After the link</a></li><li><a href="#the-host-rules">The host rules</a></li><li><a href="#security-of-the-handle">Security of the handle</a></li><li><a href="#producers">Producers</a><ul></ul></li><li><a href="#the-link-host">The link host</a></li></ul></li><li><a href="#vti%E2%80%99s-use-of-trigger-links">VTI’s use of trigger links</a><ul><li><a href="#the-first-request-for-vti-flows">The first request for VTI flows</a></li><li><a href="#the-flow-registry">The flow registry</a></li><li><a href="#the-sign-in-flow">The sign-in flow</a></li><li><a href="#the-vta-claim-flow">The vta-claim flow</a></li><li><a href="#the-contact-rule">The contact rule</a></li></ul></li><li><a href="#examples">Examples</a></li></ul></li><li><a href="#operation-surface">Operation Surface</a><ul><li><a href="#in-plain-terms-9">In plain terms</a></li><li><a href="#what-this-chapter-defines-9">What this chapter defines</a></li><li><a href="#the-catalogue-is-the-api">The catalogue is the API</a></li><li><a href="#requirements-on-a-private-task">Requirements on a private task</a></li><li><a href="#extension-rather-than-divergence">Extension rather than divergence</a></li><li><a href="#the-operation-document">The operation document</a></li><li><a href="#replay">Replay</a></li><li><a href="#responses-and-refusals">Responses and refusals</a></li><li><a href="#shared-components">Shared components</a></li><li><a href="#the-required-catalogue">The required catalogue</a></li><li><a href="#transport-bindings">Transport bindings</a></li><li><a href="#foreign-protocol-interfaces">Foreign-protocol interfaces</a></li><li><a href="#the-catalogue-and-its-registries">The catalogue and its registries</a></li><li><a href="#versioning-and-negotiation">Versioning and negotiation</a></li><li><a href="#the-policy-gate">The policy gate</a></li><li><a href="#retry%2C-idempotency-and-the-cost-of-a-lost-reply">Retry, idempotency and the cost of a lost reply</a></li><li><a href="#composing-an-operation">Composing an operation</a></li></ul></li><li><a href="#credentials-and-presentations">Credentials and Presentations</a><ul><li><a href="#in-plain-terms-10">In plain terms</a></li><li><a href="#what-this-chapter-defines-10">What this chapter defines</a></li><li><a href="#issuance">Issuance</a></li><li><a href="#status-and-revocation">Status and revocation</a></li><li><a href="#presentation">Presentation</a></li><li><a href="#what-verification-establishes">What verification establishes</a></li><li><a href="#minimisation">Minimisation</a></li></ul></li><li><a href="#the-verifiable-trust-agent">The Verifiable Trust Agent</a><ul><li><a href="#in-plain-terms-11">In plain terms</a></li><li><a href="#what-this-chapter-defines-11">What this chapter defines</a></li><li><a href="#custody">Custody</a></li><li><a href="#the-signing-oracle">The signing oracle</a></li><li><a href="#credentials-held-for-the-principal">Credentials held for the principal</a></li><li><a href="#context-and-key-authority">Context and key authority</a></li><li><a href="#provisioning-integrations">Provisioning integrations</a></li><li><a href="#delegation-to-software-agents">Delegation to software agents</a></li><li><a href="#backup%2C-restore-and-succession">Backup, restore and succession</a></li><li><a href="#the-operator-surface">The operator surface</a></li></ul></li><li><a href="#the-verifiable-trust-community">The Verifiable Trust Community</a><ul><li><a href="#in-plain-terms-12">In plain terms</a></li><li><a href="#what-this-chapter-defines-12">What this chapter defines</a></li><li><a href="#provisioning-and-dependency">Provisioning and dependency</a></li><li><a href="#which-authority-lives-where">Which authority lives where</a></li><li><a href="#keys-and-what-the-community-signs">Keys and what the community signs</a></li><li><a href="#the-community-authority-model">The community authority model</a></li><li><a href="#governance-binding">Governance binding</a></li></ul></li><li><a href="#the-verifiable-trust-network">The Verifiable Trust Network</a><ul><li><a href="#in-plain-terms-13">In plain terms</a></li><li><a href="#what-this-chapter-defines-13">What this chapter defines</a></li><li><a href="#position-in-the-architecture">Position in the architecture</a></li><li><a href="#ownership-and-governance">Ownership and governance</a></li><li><a href="#curation-is-one-sided">Curation is one-sided</a></li><li><a href="#what-a-listing-establishes">What a listing establishes</a></li><li><a href="#networks-of-networks">Networks of networks</a></li><li><a href="#overlapping-networks">Overlapping networks</a></li><li><a href="#credentials-a-network-issues-and-receives">Credentials a network issues and receives</a></li><li><a href="#what-a-network-is-not">What a network is not</a></li><li><a href="#the-open-question%3A-one-node-type-or-two">The open question: one node type or two</a></li><li><a href="#illustrations">Illustrations</a></li></ul></li><li><a href="#membership-lifecycle-and-community-credentials">Membership Lifecycle and Community Credentials</a><ul><li><a href="#lifecycle-states">Lifecycle states</a></li><li><a href="#admission">Admission</a></li><li><a href="#membership-credentials">Membership credentials</a></li><li><a href="#suspension-and-removal">Suspension and removal</a></li><li><a href="#renewal-and-rotation">Renewal and rotation</a></li></ul></li><li><a href="#the-community-directory-and-groups">The Community Directory and Groups</a><ul><li><a href="#in-plain-terms-14">In plain terms</a></li><li><a href="#what-this-chapter-defines-14">What this chapter defines</a></li><li><a href="#what-the-community-does-not-hold">What the community does not hold</a></li><li><a href="#cards-and-fields">Cards and fields</a></li><li><a href="#audiences">Audiences</a></li><li><a href="#administrators%E2%80%99-notes">Administrators’ notes</a></li><li><a href="#discoverability">Discoverability</a></li><li><a href="#entry-identifiers-and-correlation">Entry identifiers and correlation</a></li><li><a href="#introductions">Introductions</a></li><li><a href="#groups">Groups</a></li><li><a href="#group-identity-and-credentials">Group identity and credentials</a></li><li><a href="#groups-and-rooms">Groups and rooms</a></li><li><a href="#groups-and-authority">Groups and authority</a></li><li><a href="#enumeration">Enumeration</a></li><li><a href="#departure-and-rotation">Departure and rotation</a></li><li><a href="#the-disclosure-statement">The disclosure statement</a></li></ul></li><li><a href="#community-voting">Community Voting</a><ul><li><a href="#in-plain-terms-15">In plain terms</a></li><li><a href="#what-this-chapter-defines-15">What this chapter defines</a></li><li><a href="#separation-of-the-registrar-and-the-ballot-box">Separation of the registrar and the ballot box</a></li><li><a href="#elections-and-their-manifests">Elections and their manifests</a></li><li><a href="#tickets">Tickets</a></li><li><a href="#casting">Casting</a></li><li><a href="#the-ballot-box">The ballot box</a></li><li><a href="#the-board">The board</a></li><li><a href="#secrecy-levels-and-trustees">Secrecy levels and trustees</a></li><li><a href="#results-and-audit">Results and audit</a></li><li><a href="#governance">Governance</a></li><li><a href="#disclosure">Disclosure</a></li><li><a href="#audit-1">Audit</a></li></ul></li><li><a href="#trust-registries-and-cross-community-recognition">Trust Registries and Cross-Community Recognition</a><ul><li><a href="#publication">Publication</a></li><li><a href="#what-a-registry-answer-establishes">What a registry answer establishes</a></li><li><a href="#cross-community-recognition">Cross-community recognition</a></li></ul></li><li><a href="#composition-requirements">Composition Requirements</a><ul><li><a href="#in-plain-terms-16">In plain terms</a></li><li><a href="#what-this-chapter-defines-16">What this chapter defines</a></li><li><a href="#how-a-composition-requirement-binds">How a composition requirement binds</a></li><li><a href="#composition-integrity">Composition integrity</a></li><li><a href="#semantic-completion">Semantic completion</a></li><li><a href="#authority-is-not-verification">Authority is not verification</a></li><li><a href="#currency-of-state">Currency of state</a></li><li><a href="#delegation-lineage">Delegation lineage</a></li><li><a href="#privacy-across-composition">Privacy across composition</a></li><li><a href="#false-independence">False independence</a></li><li><a href="#indeterminacy">Indeterminacy</a></li><li><a href="#configuration-materiality">Configuration materiality</a></li><li><a href="#component-substitution">Component substitution</a></li><li><a href="#human-control">Human control</a></li><li><a href="#open-propositions">Open propositions</a></li></ul></li><li><a href="#operational-and-assurance-requirements">Operational and Assurance Requirements</a><ul><li><a href="#in-plain-terms-17">In plain terms</a></li><li><a href="#what-this-chapter-defines-17">What this chapter defines</a></li><li><a href="#bootstrap">Bootstrap</a></li><li><a href="#protection-at-rest">Protection at rest</a></li><li><a href="#containment">Containment</a></li><li><a href="#audit-2">Audit</a></li><li><a href="#time">Time</a></li><li><a href="#what-an-operator-must-be-able-to-answer">What an operator must be able to answer</a></li></ul></li><li><a href="#security-considerations">Security Considerations</a></li><li><a href="#privacy-considerations">Privacy Considerations</a></li><li><a href="#governance-considerations">Governance Considerations</a></li><li><a href="#internationalization-considerations">Internationalization Considerations</a></li><li><a href="#accessibility-considerations">Accessibility Considerations</a></li><li><a href="#conformance">Conformance</a><ul><li><a href="#profiles">Profiles</a></li><li><a href="#targets">Targets</a></li><li><a href="#requirement-identifier-areas">Requirement identifier areas</a></li><li><a href="#coverage">Coverage</a></li><li><a href="#the-test-suite">The test suite</a></li><li><a href="#the-assessment-interface">The assessment interface</a></li><li><a href="#divergence-from-implementations">Divergence from implementations</a></li><li><a href="#what-an-assessment-does-not-do">What an assessment does not do</a></li></ul></li><li><a href="#references">References</a><ul><li><a href="#normative-references">Normative References</a></li><li><a href="#informative-references">Informative References</a></li></ul></li><li><a href="#appendices">Appendices</a><ul><li><a href="#appendix-a%3A-client-onboarding">Appendix A: Client onboarding</a><ul><li><a href="#a.1-enrolment">A.1 Enrolment</a></li><li><a href="#a.2-first-connection-and-the-key-roll">A.2 First connection and the key roll</a></li><li><a href="#a.3-worked-example">A.3 Worked example</a></li><li><a href="#a.4-failure-cases-around-the-commit-point">A.4 Failure cases around the commit point</a></li><li><a href="#a.5-test-vectors-%E2%80%94-context-paths">A.5 Test vectors — context paths</a></li><li><a href="#a.6-test-vectors-%E2%80%94-ancestry">A.6 Test vectors — ancestry</a></li><li><a href="#a.7-test-vectors-%E2%80%94-act-scope">A.7 Test vectors — act scope</a></li></ul></li><li><a href="#appendix-b%3A-access-control-entry">Appendix B: Access control entry</a></li><li><a href="#appendix-c%3A-role-and-capability-annex">Appendix C: Role and capability annex</a><ul><li><a href="#c.1-roles">C.1 Roles</a></li><li><a href="#c.2-capability-registry">C.2 Capability registry</a></li><li><a href="#c.3-community-capabilities-and-roles">C.3 Community capabilities and roles</a></li></ul></li><li><a href="#appendix-d%3A-context-path-grammar">Appendix D: Context path grammar</a></li><li><a href="#appendix-e%3A-composition-proposition-catalogue">Appendix E: Composition proposition catalogue</a><ul><li><a href="#e.1-record-form">E.1 Record form</a></li><li><a href="#e.2-evidence-families">E.2 Evidence families</a></li><li><a href="#e.3-assessment-submissions">E.3 Assessment submissions</a></li></ul></li><li><a href="#appendix-f%3A-divergence-register">Appendix F: Divergence register</a><ul><li><a href="#f.1-authority-encoding">F.1 Authority encoding</a></li><li><a href="#f.2-operations-and-versioning">F.2 Operations and versioning</a></li><li><a href="#f.3-transports%2C-sessions-and-resolution">F.3 Transports, sessions and resolution</a></li><li><a href="#f.4-signing%2C-audit-and-identifiers">F.4 Signing, audit and identifiers</a></li><li><a href="#f.5-community-defined-authority-and-publication">F.5 Community-defined authority and publication</a></li><li><a href="#f.6-key-roles-and-custody">F.6 Key roles and custody</a></li><li><a href="#f.7-closed">F.7 Closed</a></li><li><a href="#f.5a-administrative-authority-at-a-community">F.5a Administrative authority at a community</a></li><li><a href="#f.8-how-to-add-an-entry">F.8 How to add an entry</a></li></ul></li><li><a href="#appendix-g%3A-notification-kind-registry">Appendix G: Notification kind registry</a></li><li><a href="#appendix-h%3A-acknowledgements">Appendix H: Acknowledgements</a></li></ul></li></ul>
                         <div class="spec-footer mt-3">
                             <a class="mx-auto p-2" href="https://github.com/trustoverip/spec-up-t"
                                 target="_blank" rel="noopener noreferrer">Powered By Spec-Up-T
@@ -2574,7 +2574,11 @@ intended recipient, a time of issue and a document identifier (VTI-OPS-020,
 VTI-OPS-025), and MUST apply to that document VTI-OPS-023 (it is the intended
 recipient), VTI-OPS-024 (the time of issue is within its acceptance window) and
 VTI-OPS-026 and VTI-OPS-027 (the identifier has not already been accepted, on
-any binding). A verifier that does not apply all four MUST refuse such a proof.</p>
+any binding). A verifier that does not apply all four MUST refuse such a proof.
+This requirement applies to the document a verifier receives. A document
+carried inside it as evidence, where the carrying operation’s definition says
+so (VTI-NTF-042), is not accepted by verifying its proof, and its replay is
+governed by that definition.</p>
 <p><em>Rationale for VTI-KEY-107.</em> Challenge and domain are what bind an
 <code>authentication</code> proof to one verifier and one exchange. Without them the proof
 is bound by nothing but the document’s own members and the verifier’s checks on
@@ -3230,8 +3234,12 @@ with a notification — whether it relays it, to whom, when, and by which means
 — is the addressee’s decision, and this chapter states only the properties a
 relay must have.</p>
 <p>The operations are defined by the catalogue specification: one to deliver a
-notification, one to relay it, and, at a VTA, one each to list, read and
-dismiss the notifications held for a principal.</p>
+notification, one to relay it; at a VTA, one each to list, read and dismiss the
+notifications held for a principal, and one by which the principal’s client
+hands the VTA a notification it received for an identifier whose keys the VTA
+holds; and at a VTC, one each by which its administrators list and read the
+notifications addressed to the community and decide a relay of one to its
+members.</p>
 <p>Throughout this chapter, the <strong>thing</strong> is what a notification points at — an
 election, an invitation, a document awaiting review — held by a party named in
 the notification, its <strong>holder</strong>. The <strong>audience</strong> is the identifier whose
@@ -3258,12 +3266,43 @@ take part in the thing, and the thing’s holder MUST decide that when the thing
 is opened, as if no notification had been sent.</p>
 <p><strong>VTI-NTF-005</strong> — An originator MUST address a notification only to a party the
 thing concerns, or to a party that stands for those it concerns, as the
-originator’s records show at the time it sends.</p>
+originator’s records show at the time it sends. The originator MUST apply this
+when it issues each document of the notification — every revision, and every
+new document VTI-TRN-046 issues for one — and MUST NOT send a revision that
+still offers the thing to a party its records no longer show as concerned. A
+withdrawal is not subject to this check: it MUST go to every party an earlier
+revision was sent to (VTI-NTF-024). A retransmission of the same document by
+the delivery layer is not a new issue.</p>
+<p><strong>VTI-NTF-006</strong> — The proof of a notification, and of every relay, MUST carry
+the proof purpose <code>authentication</code> and be made with an <code>operational</code> key of its
+signer (VTI-KEY-081, VTI-KEY-106). A notification is not an attestation
+artefact (VTI-KEY-082), and a recipient MUST NOT read its proof, whatever
+purpose it names, as evidence of anything but who produced the document and
+that it is unaltered.</p>
 <p><em>Rationale for VTI-NTF-001.</em> A notification that is relayed reaches parties
 that never had a session with its originator, and an authenticated transport
 tells each hop only who the previous hop was. The originator’s proof is the one
 thing that survives every relay, so a final recipient can tell who said there
 is an election from who passed the message on.</p>
+<p><em>Rationale for VTI-NTF-005.</em> The originator’s records change while a
+notification is outstanding: a party may leave the community, or stop being
+named by the thing. Checking once, when the first revision is sent, would let
+every later revision and every re-issued copy go on offering the thing to a
+party that is no longer concerned. A withdrawal is the exception because it
+offers nothing: it tells a party that what it was already told no longer
+holds, and a party left holding an unwithdrawn notification is worse off than
+one told it was withdrawn.</p>
+<p><em>Rationale for VTI-NTF-006.</em> A notification is a Trust Task request document,
+which VTI-KEY-081 puts on the <code>operational</code> key, and it asserts no decision of
+its originator about anyone’s membership, standing or authority, which is the
+test VTI-KEY-082 applies before an artefact must be an attestation. What a
+recipient, or a relay’s recipient that never had a session with the
+originator, relies on the proof for is authorship and integrity: who said the
+thing exists, and that nobody changed what they said. That is what the
+<code>authentication</code> relationship authorizes a key to show. Signing with the
+<code>attestation</code> key instead would put every notification behind the VTA’s
+non-exportable key (VTI-KEY-110) for no property a recipient checks, and would
+invite reading a notification as the attestation VTI-NTF-004 says it is not.</p>
 <p><em>Rationale for VTI-NTF-003 and VTI-NTF-004.</em> A notification travels further
 than the thing it points at: it may be relayed to every member of a network
 before any of them has shown that they may see the thing. What the thing
@@ -3322,6 +3361,8 @@ withdraws it because the thing has been cancelled or is no longer open to the
 audience, MUST do so by issuing a higher revision under the same identifier to
 the same addressee. It SHOULD withdraw a notification whose thing is cancelled
 before it lapses, and MUST where the thing’s kind requires it.</p>
+<p><strong>VTI-NTF-025</strong> — A withdrawal MUST state the same period as the revision it
+replaces, and none where that revision stated none.</p>
 <p><em>Rationale for VTI-NTF-021 and VTI-NTF-022.</em> A notification is delivered by
 store-and-forward, retried by its sender, re-issued under VTI-TRN-046 when a
 copy outlives its acceptance window, and may reach one recipient by two
@@ -3333,6 +3374,13 @@ being taken for a repeat. The key holds only while the originator’s identifier
 does, which is why a node issues notifications as its durable identity: a
 <code>did:webvh</code> identifier, in either of its forms, survives the rotation of every
 key behind it.</p>
+<p><em>Rationale for VTI-NTF-025.</em> The period is what bounds how long a recipient
+keeps a notification (VTI-NTF-052) and how long a relayer keeps its record of
+whom it relayed to (VTI-NTF-044). A withdrawal that dropped the period would be
+held for each party’s default retention, longer than the notification it
+withdraws, and a relayer would keep the record of whom it told for longer than
+VTI-NTF-044 allows; one that shortened the period could end the relayer’s
+record before the withdrawal had reached everyone it must.</p>
 <p><em>Rationale for VTI-NTF-023.</em> A reply that said “accepted” or “declined” would
 tell any sender whether the recipient has a relationship with it, and a reply
 from a relayer that said “relayed” would tell the originator that the relayer
@@ -3356,6 +3404,21 @@ relay chain fails VTI-NTF-042, or whose period has ended.</p>
 one originator and from any one relayer, and MUST bound the work it spends on
 senders with which it holds no relationship separately from the work it spends
 on those with which it does (VTI-TRN-029).</p>
+<p><strong>VTI-NTF-034</strong> — A VTC’s acceptance policy MUST, unless its administrators
+have chosen otherwise, accept a notification only from: a party holding an
+access control entry at the community; a party with which the community holds
+a verifiable relationship credential in force; or a community or network of
+which the community is itself a member, as the community’s own record of that
+membership shows. A listing the community has not acknowledged (VTI-VTN-011)
+MUST NOT count as membership.</p>
+<p><em>Rationale for VTI-NTF-034.</em> VTI-NTF-030 counts a membership by the credential
+the principal holds, and a VTC holds no vault from which to show one. What it
+has instead is its own record of the memberships it entered, which is the
+authoritative fact for the community even where the credential that evidences
+it to others is held elsewhere. A listing the community never acknowledged is
+a third party’s statement about the community, not a relationship the
+community chose, and counting it would let any network that lists the
+community reach its inbox.</p>
 <p><em>Rationale for VTI-NTF-030 and VTI-NTF-031.</em> A notification costs its sender
 one signature, and an inbox open to every sender is a channel for anyone with
 an identifier. Accepting only from parties the principal already stands in a
@@ -3375,14 +3438,21 @@ relay operation, issued and signed by the relayer, addressed to one party, and
 carrying the document the relayer received exactly as received, proof
 included. A relayer MUST NOT alter or re-sign the document it relays, MUST NOT
 relay a document that is not addressed to it, and MUST NOT relay a notification
-that states it may not be relayed or whose kind may not be relayed.</p>
+that states it may not be relayed or whose kind may not be relayed. A relayer
+MUST relay only where its relay makes at most four relays in all, counting its
+own and every relay in the chain it received: it MAY relay a notification it
+received directly or through up to three relays, and MUST NOT relay one that
+reached it through four.</p>
 <p><strong>VTI-NTF-042</strong> — A recipient of a relay MUST verify every layer of it: that
 each relay’s proof verifies against its relayer; that the document each relay
 carries is addressed to that relay’s issuer; and that the innermost document is
 a notification whose originator’s proof verifies. It MUST refuse a relay that
 carries more than four relays in all, counting its own. It MUST apply its acceptance window
 (VTI-OPS-024) to the relay it received, and MUST NOT apply it to the documents
-that relay carries, which are evidence of what was said rather than requests.</p>
+that relay carries, which are evidence of what was said rather than requests.
+VTI-KEY-107 applies to the relay it received; the proof of a document that
+relay carries is verified for its signer and integrity only, and a repeat of
+that document is absorbed by VTI-NTF-022.</p>
 <p><strong>VTI-NTF-043</strong> — A relayer MUST NOT tell the originator whom it relayed a
 notification to, how many, or whether it relayed it at all, and an originator
 MUST NOT ask it to. Delivery evidence for a relay goes to the relayer only.</p>
@@ -3402,6 +3472,8 @@ principal — MUST have been shown what it discloses. For the kind <code>electio
 that is that relaying shows each party it is relayed to that the relayer is a
 member of the community holding the election, which the relayer’s own listing
 in that community’s directory may otherwise keep from them (VTI-DIR-040).</p>
+<p><strong>VTI-NTF-047</strong> — A relayer MUST NOT relay a notification to its originator,
+to any relayer the chain it received names, or to itself.</p>
 <p><strong>VTI-NTF-045</strong> — A relay MUST NOT be read as a statement by the relayer about
 the thing. It states only that the relayer passed the originator’s notification
 to the relay’s addressee.</p>
@@ -3413,11 +3485,27 @@ someone else was given. A party that could re-sign would be an originator, and
 is one: a party that wants to say something of its own sends a notification of
 its own. The bound on depth covers the deepest chain VTI composes — a network,
 a community it lists, a group of that community, the group’s member — with one
-to spare, and stops a loop from growing a relay without end.</p>
+to spare, and stops a loop from growing a relay without end. The producer’s bound
+and the recipient’s are one bound stated from each side, so that a relay its
+relayer was permitted to make is never one its recipient must refuse. A
+forwarded layer’s proof is not applied as VTI-KEY-107 applies an
+<code>authentication</code> proof to a request because it is not a request to the
+recipient: it is addressed to the relayer, its acceptance window closed long
+ago, and its identifier was recorded by the party it was sent to. The replay
+VTI-KEY-107 guards against is that of a request; a notification replayed as
+evidence changes nothing, because the recipient holds one record for it
+whichever document carried it.</p>
 <p><em>Rationale for VTI-NTF-043.</em> A community that puts an election to the members
 of another party does not hold that party’s roster and has no right to it
 (VTI-VOT-028). A relay that reported back would hand it the roster one receipt
 at a time.</p>
+<p><em>Rationale for VTI-NTF-047.</em> A relay is itself a report that the relayer
+relayed. Relaying to the originator, or to a party that relayed the
+notification on the way here, would tell it exactly what VTI-NTF-043 forbids
+the relayer to tell it, however the relayer came to select it — a network
+that is also a member of the community it relayed to would otherwise learn,
+from the relay it receives back, that the community passed the notification
+on.</p>
 <p><em>Rationale for VTI-NTF-044.</em> A member who was told of an election and is not
 told it was cancelled holds a notification that points at nothing, and may
 present a credential to open it. The relayer is the only party that knows whom
@@ -3449,12 +3537,50 @@ notification that has lapsed or been withdrawn after a period it states.</p>
 send anything to its originator, to any relayer, or to the thing’s holder, and
 MUST NOT open the thing except at the choice of the principal or of a party
 with authority in the context.</p>
+<p><strong>VTI-NTF-054</strong> — A client acting for a principal that receives a notification
+or a relay addressed to an identifier whose keys the principal’s VTA holds, in
+a context the client has authority in, MUST hand the document to that VTA
+exactly as received, proof included, through the catalogue’s operation for
+doing so, and MUST NOT apply an acceptance policy of its own in place of the
+VTA’s. The client MUST answer the document’s sender as VTI-NTF-023 requires,
+with the same reply whatever the VTA does with the document, and is bound by
+VTI-NTF-053 as the VTA is.</p>
+<p><strong>VTI-NTF-055</strong> — A VTA MUST verify and hold a document handed to it under
+VTI-NTF-054 exactly as it would one delivered to it directly: VTI-NTF-022,
+VTI-NTF-030 – VTI-NTF-033 and VTI-NTF-042 apply unchanged, and it MUST answer
+the client as VTI-NTF-023 requires. The relationship VTI-NTF-030 counts MUST be
+the VTA’s principal’s relationship with the party that delivered the
+document — its originator, or the last relayer — and MUST NOT be the client’s
+authority at the VTA. The document’s own issuer, established by its proof,
+is the party the document is attributed to. VTI-OPS-024, VTI-OPS-026,
+VTI-OPS-027 and VTI-KEY-107 apply to the document as received by the VTA, at
+the time it is handed over.</p>
+<p><strong>VTI-NTF-056</strong> — A VTA MUST accept a document under VTI-NTF-054 only from a
+party with authority in the context named, and only where the document is
+addressed to an identifier the VTA holds keys of in that context.</p>
 <p><em>Rationale for VTI-NTF-053.</em> Opening the thing is where the holder learns who
 is reading it — for an election under a credential roll naming a member party,
 the read itself carries the member’s credential (VTI-VOT-015). An agent that
 opened every notified thing, or confirmed receipt to the originator, would turn
 each notification into a probe of which members it reached. Holding a
 notification tells nobody anything; acting on it is the principal’s decision.</p>
+<p><em>Rationale for VTI-NTF-054 – VTI-NTF-056.</em> A notification is delivered to the
+identifier it is addressed to, over the transport that identifier advertises
+(VTI-NTF-020), and the party holding that transport is not always the VTA: the
+mediator permits one connection per identifier, and for a persona identifier
+the principal’s client usually holds it. Without a hand-over, a notification
+addressed to the persona never reaches the principal’s held notifications,
+and the principal’s stated acceptance policy never sees it. A client that
+filtered what it handed over would be applying a policy the principal did not
+state; one that handed it over altered would destroy the proof every later
+reader verifies. Counting the client’s own authority as the relationship would
+let any client make the VTA hold anything addressed to the persona; counting
+the delivering party, as a direct delivery does, means a document handed over
+is accepted exactly when it would have been accepted had the VTA held the
+socket. The acceptance window is applied at the hand-over because the
+hand-over is part of the delivery: a client that holds a document past its
+window is a delivery that arrived late, and is answered by VTI-TRN-046 as any
+other is.</p>
 <h3 id="the-election-kind" tabindex="-1"><a class="toc-anchor d-print-none" href="#the-election-kind">§</a> The election kind</h3>
 <p>The notification kind registry (Appendix G) registers the kind <code>election</code>,
 which this section defines.</p>
@@ -3470,8 +3596,8 @@ relay of it discloses that the relayer is a member of the community
 <p><strong>VTI-NTF-061</strong> — A VTC that holds an election under a credential roll naming a
 party that is itself a member of the community MUST notify that party once the
 election is registered with its ballot box, MUST NOT notify any party but that
-one, and MUST withdraw the notification if the election is cancelled before
-voting closes.</p>
+one, and MUST withdraw the notification if the election is cancelled, or
+closed early, before the time the notification states voting closes.</p>
 <p><strong>VTI-NTF-062</strong> — A VTC MAY notify its members, or the members of one of its
 groups, of an election their own list already shows them (VTI-VOT-015), and
 MUST NOT notify any party of an election VTI-VOT-015 would not show it, except
@@ -3483,6 +3609,13 @@ show a notified election only as notified — its community, identifier, audienc
 and period — until the member opens it, and MUST open it only by reading the
 election from the community, presenting a credential only as VTI-VOT-016
 allows.</p>
+<p><em>Rationale for the withdrawal in VTI-NTF-061.</em> An election closed early is no
+longer open to the audience, though nothing about it was cancelled, and a
+notification that still says voting is open until the original close points
+members at an election they can no longer vote in — and may lead them to
+present a credential to find that out. The withdrawal keeps the period it
+replaces (VTI-NTF-025), so a recipient sees both that the election was
+withdrawn and when it had been due to close.</p>
 <p><em>Rationale for VTI-NTF-061 and VTI-NTF-063.</em> A community’s list never shows an
 election put to the members of a party that is itself a member of the
 community, not even its identifier (VTI-VOT-015), and the community holds no
@@ -3495,6 +3628,57 @@ who receives the relayed notification knows only that the community says an
 election exists that their party’s members may take part in. What the election
 asks, and whether this member may vote in it, they learn only by opening it and
 presenting the credential that makes them one, which is the member’s choice.</p>
+<h3 id="a-community%E2%80%99s-received-notifications" tabindex="-1"><a class="toc-anchor d-print-none" href="#a-community%E2%80%99s-received-notifications">§</a> A community’s received notifications</h3>
+<p><strong>VTI-NTF-070</strong> — A VTC MUST hold each notification it accepts, and MUST let an
+administrator holding the capability for reading received notifications list
+the notifications it holds and read one, through the catalogue’s operations.
+A read MUST return the document as it was received. A VTC MUST NOT disclose a
+notification it holds to any other party, its members included, except by
+relaying it under VTI-NTF-071.</p>
+<p><strong>VTI-NTF-071</strong> — A VTC MUST relay a notification only on the decision of an
+administrator holding the capability for relaying received notifications over
+the recipients the decision names, made through the catalogue’s operation, and
+MUST refuse a decision for a notification whose kind’s definition says a relay
+discloses something about the relayer unless the decision states that the
+administrator was shown what it discloses (VTI-NTF-046).</p>
+<p><strong>VTI-NTF-072</strong> — A relay decision MUST name its recipients as all of the
+community’s members, the members of one of its groups, or the members holding
+one community role. The VTC MUST resolve them from its own records when the
+decision is made, to members whose membership is active, and MUST leave out the
+parties VTI-NTF-047 excludes and every party it already relays the notification
+to. A member who joins the named set later MUST NOT be added without a new
+decision. Every later revision MUST be relayed to every party a decision added
+(VTI-NTF-044).</p>
+<p><strong>VTI-NTF-073</strong> — A VTC MUST audit each relay decision — the administrator, the
+notification, the revision, the recipients as named, how many parties it added,
+and the acknowledgement — and MUST NOT record in the audit trail, or return to
+the administrator, which parties it reached.</p>
+<p><strong>VTI-NTF-074</strong> — A relay decision is not authority-conferring (VTI-APV-018).
+A VTC MAY hold one for a step-up or a further administrator’s consent under its
+approval rules (VTI-APV-010), and SHOULD do so for a decision that names all of
+its members.</p>
+<p><em>Rationale for VTI-NTF-070 and VTI-NTF-071.</em> What a community has been told
+says what it belongs to — which communities, groups and networks count it a
+member — and is the community’s to disclose, so its administrators see it and
+its members do not until someone decides to tell them. VTI-NTF-046 requires that
+whoever decides a relay has been shown what it discloses; making the decision
+an operation of its own, with the acknowledgement in it, is what makes that
+checkable rather than an instruction to an interface.</p>
+<p><em>Rationale for VTI-NTF-072.</em> A relay decision names a set rather than a list of
+members because the set is what an administrator decides about — “our board”,
+“everyone” — and a list assembled by hand is a list an administrator can get
+wrong. Resolving it once, at the decision, keeps the decision what the
+administrator saw: a member who joins afterwards was not part of it, and
+adding them silently would extend a disclosure nobody decided. The record of
+whom the decision reached exists only for later revisions, so it is not
+returned, and not audited by name, which would make the audit trail the log of
+whom the community reached that VTI-NTF-044 forbids.</p>
+<p><em>Rationale for VTI-NTF-074.</em> A relay grants its recipients nothing
+(VTI-NTF-004), so it is not a grant VTI-APV-018 covers. It is irreversible all
+the same: what each member is told about the community cannot be recalled,
+and a decision that reaches every member discloses the most. A community that
+holds its other irreversible acts for a step-up has the same reason to hold
+this one.</p>
 <p><em>Open issue.</em> A notification’s originator is compared by its identifier
 (VTI-NTF-022). A change of the identifier method an originator issues under —
 not a key rotation, which leaves a <code>did:webvh</code> identifier unchanged, but a move
@@ -3506,10 +3690,11 @@ change.</p>
 VTA as the principal. A party wanting to notify others sends the notification
 operation itself; a VTA operation that signs and sends one for its principal is
 deferred.</p>
-<p><em>Open issue.</em> A group, community or network that receives notifications holds
-them as its own node decides. This chapter specifies the held notifications of
-a VTA’s principal (VTI-NTF-050), and does not yet specify how the
-administrators of a group, community or network see what was addressed to it.</p>
+<p><em>Open issue.</em> A group or network that receives notifications holds them as its
+own node decides. This chapter specifies the held notifications of a VTA’s
+principal (VTI-NTF-050 – VTI-NTF-056) and of a community (VTI-NTF-070 –
+VTI-NTF-074), and does not yet specify how the administrators of a community
+group with its own identifier, or of a network, see what was addressed to it.</p>
 <!-- file: 06-sessions-auth.md -->
 <h2 id="sessions-and-authentication" tabindex="-1"><a class="toc-anchor d-print-none" href="#sessions-and-authentication">§</a> Sessions and Authentication</h2>
 <p>This section is normative.</p>
@@ -8150,11 +8335,15 @@ requirement identifiers.</p>
 implementations neither show nor read codes. A target that reads, produces or
 hosts trigger links implements it under VTI-LNK-001.</p>
 <p><em>Note on the <code>Notifications</code> profile.</em> It binds a target for the parts it
-plays. A VTA holds the notifications it accepts for its principal and offers
-their list, read and dismissal (VTI-NTF-050), so the profile is MUST for it. A
-VTC or VTN is bound by the requirements on an originator, a recipient and a
-relayer only where it sends, accepts or relays a notification; one that does
-none of these satisfies the profile by doing none of them.</p>
+plays. A VTA holds the notifications it accepts for its principal, offers
+their list, read and dismissal (VTI-NTF-050), and accepts those its
+principal’s clients hand to it (VTI-NTF-055), so the profile is MUST for it. A
+client acting for a principal is bound by VTI-NTF-054 where it receives a
+notification for an identifier whose keys the principal’s VTA holds. A VTC or
+VTN is bound by the requirements on an originator, a recipient and a relayer
+only where it sends, accepts or relays a notification; a VTC that accepts one
+is also bound by VTI-NTF-070 – VTI-NTF-074. One that does none of these
+satisfies the profile by doing none of them.</p>
 <p><em>Note on the community directory and groups.</em> The chapter is in the
 <code>Community</code> profile, and binds a VTC only for what it offers: a VTC that offers
 neither a member directory nor groups satisfies it by offering neither.</p>
@@ -9211,6 +9400,18 @@ marked <em>qualified</em> take a resource qualifier (VTI-ACL-035).</p>
 <td>—</td>
 </tr>
 <tr>
+<td><code>vtc.notifications.read</code></td>
+<td>listing and reading the notifications addressed to the community (VTI-NTF-070)</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>vtc.notifications.relay</code></td>
+<td>deciding that the community relays a notification it received to its members (VTI-NTF-071)</td>
+<td>—</td>
+<td>by group (<code>group:&lt;id&gt;</code>)</td>
+</tr>
+<tr>
 <td><code>git.ns.admin</code></td>
 <td>a repository namespace</td>
 <td>yes, within the namespace</td>
@@ -9304,6 +9505,15 @@ conferring: a result decides what its manifest says and grants nothing by itself
 (VTI-VOT-080), and creating a binding election takes the consent VTI-VOT-081
 recommends however the requester came to hold the capability. It confers no
 access to ballots, which the community never holds (VTI-VOT-001). It is within
+<code>community-admin</code>’s ceiling.</p>
+<p><code>vtc.notifications.read</code> and <code>vtc.notifications.relay</code> serve the Notifications
+chapter. They are apart so that a community can let an administrator see what
+the community has been told without letting them pass it on: what a community
+has been told says what it belongs to, and a relay tells members so
+(VTI-NTF-046). Qualified by a group, <code>vtc.notifications.relay</code> permits a relay
+decision only to that group’s members, so that a group’s manager can pass a
+notification to their own group and no further. Neither is conferring: a
+relay grants its recipients nothing (VTI-NTF-004). Both are within
 <code>community-admin</code>’s ceiling.</p>
 <p>A community MAY define further roles, each a ceiling drawn from this registry;
 defining one is itself subject to VTI-APV-018.</p>
@@ -10085,15 +10295,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 02 November 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 03 November 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-02T15:19:16.597Z">
-                            Generated: 2026-11-02T15:19:16.597Z
+                        <time class="timestamp" datetime="2026-11-03T04:36:22.586Z">
+                            Generated: 2026-11-03T04:36:22.586Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
