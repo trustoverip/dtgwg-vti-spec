@@ -284,6 +284,8 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `vtc.directory.notes` | reading and writing administrators' notes about members (VTI-DIR-030 – 033) | — | — |
 | `vtc.groups.manage` | community groups: creating, changing and deleting them, their membership, and their bindings to rooms and capabilities | — | by group (`group:<id>`) |
 | `vtc.elections.manage` | the community's elections: creating, closing early, cancelling and certifying them (VTI-VOT-080) | — | — |
+| `vtc.notifications.read` | listing and reading the notifications addressed to the community (VTI-NTF-070) | — | — |
+| `vtc.notifications.relay` | deciding that the community relays a notification it received to its members (VTI-NTF-071) | — | by group (`group:<id>`) |
 | `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
 | `git.repo.manage` | creating, adopting, archiving and transferring repositories | — | by namespace or repository |
 | `git.commit.sign` | the commit right a namespace's checks accept | — | by namespace or repository |
@@ -337,6 +339,16 @@ conferring: a result decides what its manifest says and grants nothing by itself
 (VTI-VOT-080), and creating a binding election takes the consent VTI-VOT-081
 recommends however the requester came to hold the capability. It confers no
 access to ballots, which the community never holds (VTI-VOT-001). It is within
+`community-admin`'s ceiling.
+
+`vtc.notifications.read` and `vtc.notifications.relay` serve the Notifications
+chapter. They are apart so that a community can let an administrator see what
+the community has been told without letting them pass it on: what a community
+has been told says what it belongs to, and a relay tells members so
+(VTI-NTF-046). Qualified by a group, `vtc.notifications.relay` permits a relay
+decision only to that group's members, so that a group's manager can pass a
+notification to their own group and no further. Neither is conferring: a
+relay grants its recipients nothing (VTI-NTF-004). Both are within
 `community-admin`'s ceiling.
 
 A community MAY define further roles, each a ceiling drawn from this registry;

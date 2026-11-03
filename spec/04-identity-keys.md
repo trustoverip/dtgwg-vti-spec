@@ -730,6 +730,10 @@ VTI-OPS-025), and MUST apply to that document VTI-OPS-023 (it is the intended
 recipient), VTI-OPS-024 (the time of issue is within its acceptance window) and
 VTI-OPS-026 and VTI-OPS-027 (the identifier has not already been accepted, on
 any binding). A verifier that does not apply all four MUST refuse such a proof.
+This requirement applies to the document a verifier receives. A document
+carried inside it as evidence, where the carrying operation's definition says
+so (VTI-NTF-042), is not accepted by verifying its proof, and its replay is
+governed by that definition.
 
 *Rationale for VTI-KEY-107.* Challenge and domain are what bind an
 `authentication` proof to one verifier and one exchange. Without them the proof
