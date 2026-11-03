@@ -121,8 +121,20 @@ member it acts on, and MUST refuse a document where it does not.
 **VTI-OPS-023** — A receiving node MUST verify that it is the intended
 recipient, and MUST refuse a document addressed elsewhere.
 
-**VTI-OPS-024** — A node MUST refuse a document whose time of issue lies outside
-its acceptance window.
+**VTI-OPS-024** — A node MUST refuse a document that lies outside its
+acceptance window. The window opens at the document's time of issue and closes
+at its **acceptance end**: where the document states an expiry, the earlier of
+that expiry and the document's expiry horizon (VTI-OPS-028); otherwise, its time
+of issue plus the node's maximum age. The node MAY allow its clock-skew
+tolerance at either bound. It MUST refuse a document whose time of issue lies
+after its receipt beyond that tolerance, and one whose expiry is not after its
+time of issue.
+
+**VTI-OPS-028** — A document's expiry horizon is thirty days after its time of
+issue. A node MUST NOT refuse a document that states an expiry as stale before
+that document's acceptance end, whatever the node's maximum age. Where a document states an expiry beyond its horizon, the node
+MUST apply the horizon in its place, and MUST NOT refuse the document for
+stating it.
 
 *Rationale for VTI-OPS-021.* Transport-level sender authentication and
 document-level proof answer different questions. The first says who opened this
@@ -134,6 +146,29 @@ Making the requirement uniform across transports is what keeps the security
 argument uniform. Where a document is signed on one transport and merely
 authenticated on another, the deployment's real guarantee is the weaker of the
 two, and which transport carries it is not recorded anywhere. See Appendix F.
+
+*Rationale for VTI-OPS-024 and VTI-OPS-028.* An expiry is the producer's
+statement of how long its request stands, and [TRUST-TASKS] makes it the bound
+of both acceptance and the record of accepted documents where it is present,
+with a maximum age over the time of issue only where it is not. A consumer that
+applies its maximum age whatever the expiry says turns that statement into one
+that can only shorten acceptance. Every delivery longer than the maximum age —
+a notice held for a recipient that is offline for a day, a request waiting at a
+mediator overnight — then has to be carried by a chain of re-signed documents
+(VTI-TRN-046), each of which the recipient is free to refuse as stale before it
+arrives.
+
+The objection to honouring an expiry is that it lets a producer choose how long
+a consumer must remember its document. The horizon answers it: the producer
+chooses within thirty days, and a consumer's records are bounded by the horizon
+rather than by what any producer asks. The horizon is fixed here rather than
+left to each node because a sender has to know it without asking: a delivery
+that outlasts the maximum age is the case where the recipient cannot answer a
+discovery request (Appendix F, VTI-TRN-045). A document stating a longer expiry
+is clamped rather than refused because the producer asked for more than the node
+gives, not for something wrong: the document is acceptable for thirty days and
+then `expired`, which a producer can act on, whereas a refusal at receipt
+delivers nothing at all.
 
 ### Replay
 
@@ -147,10 +182,20 @@ accepted within the acceptance window of VTI-OPS-024.
 across every binding a node exposes. A document accepted on one binding MUST NOT
 be acceptable on another.
 
+**VTI-OPS-029** — A node MUST retain its record of an accepted document's
+identifier until at least that document's acceptance end (VTI-OPS-024), plus
+the clock-skew tolerance it applies, and the record MUST survive a restart of
+the node.
+
 *Rationale.* Signing a document makes it durable evidence of intent, and
 durable evidence is replayable unless something remembers it. The acceptance
 window bounds how long the record must be kept; the identifier is what makes
-the record possible.
+the record possible. The window and the retention are one bound: a record
+dropped while its document is still acceptable is a document that can be
+performed twice. VTI-OPS-029 says so for both ends of that bound, including the
+one a restart closes early. A record held only in a running process is forgotten
+by every restart, and with windows of up to thirty days a restart inside one is
+routine rather than rare.
 
 VTI-OPS-027 closes the case a per-binding implementation misses. A document
 captured from one binding — a log, a proxy, a stored message — is a
@@ -493,6 +538,17 @@ idempotency key.
 operation to a caller that repeats it with the same key, rather than refusing
 the repeat.
 
+**VTI-OPS-066** — A node MUST retain its record of a keyed operation until at
+least the latest acceptance end (VTI-OPS-024), plus the clock-skew tolerance it
+applies, of any document carrying that key that it has accepted, and the record
+MUST survive a restart of the node.
+
+**VTI-OPS-067** — Where a node cannot establish whether an attempt at a keyed
+operation took effect — the attempt began and no outcome was recorded for it —
+the node MUST NOT perform the operation again under that key. It MUST refuse a
+repeat under that key with a refusal stating that the outcome is unknown,
+distinguishable from a refusal of the request itself.
+
 *Rationale for VTI-OPS-062.* Classification is a judgement made when an
 operation is defined, and an unclassified operation is one whose author did not
 make it. Treating it as the most costly class is the direction whose error is
@@ -506,6 +562,27 @@ redundant, because it cannot hold a key stable. It re-invokes a client method,
 which builds a fresh document with a fresh key, which is a different operation
 as far as the node is concerned. It converts one operation retried into several
 operations performed, which is the precise failure the key exists to prevent.
+
+*Rationale for VTI-OPS-066.* One key spans every attempt at an operation, and
+the attempts are separate documents: a retry or a new document under
+VTI-TRN-046 carries a new identifier and a new time of issue. The record of the
+key therefore has to outlive the last of them, not the first, and a fixed
+retention is correct only while no document under the key can be accepted after
+it. Where a delivery states an expiry of up to thirty days (VTI-TRN-048), a
+record kept for a day lets the attempt arriving on the second day perform the
+operation again.
+
+*Rationale for VTI-OPS-067.* A node records an operation's effect and the
+outcome of its key in two steps, and can stop between them. The attempt that
+then has no recorded outcome may have taken effect or not, and nothing at the
+node distinguishes the two. Performing it again on the next attempt is the
+duplicate VTI-OPS-061 forbids, in exactly the case — a lost reply after a
+failure — that keys exist for. Refusing the repeat costs the caller one look:
+it establishes whether the effect exists through the corresponding read
+operation and, if not, asks again under a new key. The refusal has to be
+distinguishable because the caller's next step differs from that for a refused
+request, and a caller that cannot tell them apart either repeats the request
+forever or abandons an operation that may have happened.
 
 ### Composing an operation
 
