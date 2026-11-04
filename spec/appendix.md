@@ -284,7 +284,7 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `vtc.directory.notes` | reading and writing administrators' notes about members (VTI-DIR-030 – 033) | — | — |
 | `vtc.groups.manage` | community groups: creating, changing and deleting them, their membership, and their bindings to rooms and capabilities | — | by group (`group:<id>`) |
 | `vtc.elections.manage` | the community's elections: creating, closing early, cancelling and certifying them (VTI-VOT-080) | — | — |
-| `vtc.boards.manage` | the community's boards: creating and running them, deciding their ideas, and hiding notes on them (VTI-BRD-002, VTI-BRD-013) | — | by board (`board:<id>`) |
+| `vtc.boards.manage` | the community's boards: creating and running them, deciding their ideas, hiding notes on them, closing them (which ends their elections) and, unqualified, deleting them (VTI-BRD-002, VTI-BRD-006, VTI-BRD-007, VTI-BRD-013) | — | by board (`board:<id>`) |
 | `vtc.notifications.read` | listing and reading the notifications addressed to the community (VTI-NTF-070) | — | — |
 | `vtc.notifications.relay` | deciding that the community relays a notification it received to its members (VTI-NTF-071) | — | by group (`group:<id>`) |
 | `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
