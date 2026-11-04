@@ -284,6 +284,7 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `vtc.directory.notes` | reading and writing administrators' notes about members (VTI-DIR-030 – 033) | — | — |
 | `vtc.groups.manage` | community groups: creating, changing and deleting them, their membership, and their bindings to rooms and capabilities | — | by group (`group:<id>`) |
 | `vtc.elections.manage` | the community's elections: creating, closing early, cancelling and certifying them (VTI-VOT-080) | — | — |
+| `vtc.boards.manage` | the community's boards: creating and running them, deciding their ideas, and hiding notes on them (VTI-BRD-002, VTI-BRD-013) | — | by board (`board:<id>`) |
 | `vtc.notifications.read` | listing and reading the notifications addressed to the community (VTI-NTF-070) | — | — |
 | `vtc.notifications.relay` | deciding that the community relays a notification it received to its members (VTI-NTF-071) | — | by group (`group:<id>`) |
 | `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
@@ -340,6 +341,17 @@ conferring: a result decides what its manifest says and grants nothing by itself
 recommends however the requester came to hold the capability. It confers no
 access to ballots, which the community never holds (VTI-VOT-001). It is within
 `community-admin`'s ceiling.
+
+`vtc.boards.manage` serves the Community Boards chapter. It is not
+conferring: selecting an idea grants nothing (VTI-BRD-042). Unqualified it lets
+its holder create boards, together with `vtc.elections.manage`, which a board's
+election template needs because accepting an idea opens an election from it
+(VTI-BRD-002). Qualified by a board, it lets a member facilitate that board
+alone: accept, decline and merge its ideas, hide its notes and select among its
+ideas, opening elections only from the template a holder of
+`vtc.elections.manage` fixed, which is never binding (VTI-BRD-030). It confers
+no authority to close, cancel or certify those elections (VTI-BRD-032). It is
+within `community-admin`'s ceiling.
 
 `vtc.notifications.read` and `vtc.notifications.relay` serve the Notifications
 chapter. They are apart so that a community can let an administrator see what

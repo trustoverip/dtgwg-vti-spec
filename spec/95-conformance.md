@@ -105,6 +105,7 @@ Areas allocated:
 | `MEM` | Membership lifecycle and community credentials |
 | `DIR` | The community directory and groups — cards, audiences, discoverability, introductions, groups, group identities and credentials, room and grant bindings |
 | `VOT` | Community voting — elections and manifests, tickets, casts, the ballot box and its board, secrecy levels and trustees, results and audit |
+| `BRD` | Community boards — boards and their audiences, ideas, notes, the elections opened for ideas, selection, members' acts through the portal |
 | `REG` | Trust registries and recognition |
 | `CMP` | Composition requirements |
 | `OPR` | Operational and assurance requirements |
