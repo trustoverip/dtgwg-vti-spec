@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-04T14:56:17.211Z"
+      "lastUpdated": "2026-11-04T22:49:52.418Z"
     }
   ]
 };</script>
@@ -7969,10 +7969,23 @@ counted from the deletion, and MUST apply the retention in force at the deletion
 Before a board is deleted, a VTC MUST tell the party deleting it how long its
 tombstones will be kept and that, once they are gone, no voter can check a
 receipt against the community’s record of those elections (VTI-VOT-053).</p>
+<p><strong>VTI-BRD-009</strong> — While it keeps a tombstone, a VTC MUST show it to any active
+member and to any holder of <code>vtc.elections.manage</code> who names its election: the
+election’s identifier, its manifest’s digest, its ballot box, and each board head
+the community kept, with the ballot box’s signed document that carried it exactly
+as received. A VTC MUST answer a request naming an election it keeps no tombstone
+of, or one the requester may not read, in the same way, and MUST NOT carry in a
+tombstone’s answer anything VTI-BRD-007 forbids it to keep.</p>
 <p><em>Rationale for VTI-BRD-008.</em> A tombstone holds nothing anyone wrote, only what
 lets a voter or auditor check that the ballot box’s board was not rewritten. A
 community that held a board to collect session ideas may not want even that kept
 for ever, and one that ran a contested vote on it may want it kept for good.</p>
+<p><em>Rationale for VTI-BRD-009.</em> A tombstone is kept so that a voter’s agent can check
+a receipt against the community’s record after the board itself is gone
+(VTI-VOT-053); a record nobody can read checks nothing. A board head names an
+election, a size and a hash, and the ballot box’s signature over them; it says
+nothing about who voted or how, so the members the election concerned may read it
+without the election’s roll, which a tombstone no longer holds.</p>
 <h3 id="ideas" tabindex="-1"><a class="toc-anchor d-print-none" href="#ideas">§</a> Ideas</h3>
 <p><strong>VTI-BRD-010</strong> — A party the board’s audience admits MAY propose an idea while
 proposals are open. An idea MUST record who proposed it, when, its title, its
@@ -10951,8 +10964,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-04T14:56:16.595Z">
-                            Generated: 2026-11-04T14:56:16.595Z
+                        <time class="timestamp" datetime="2026-11-04T22:49:52.064Z">
+                            Generated: 2026-11-04T22:49:52.064Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
