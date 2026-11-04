@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-04T02:10:06.644Z"
+      "lastUpdated": "2026-11-04T14:56:17.211Z"
     }
   ]
 };</script>
@@ -7749,7 +7749,9 @@ head, and the consistency of any two heads.</p>
 <p><strong>VTI-VOT-051</strong> — A VTC MUST obtain and keep a signed head of each of its
 elections’ boards at least when voting opens, when it closes and when the result
 is published, and MUST verify each against the one before. A VTC MAY have its
-witnesses sign the same heads.</p>
+witnesses sign the same heads. It MUST keep them as long as it keeps the
+election, and for an election opened on a community board that is deleted, for
+that board’s tombstone retention (VTI-BRD-008).</p>
 <p><strong>VTI-VOT-052</strong> — A board MUST be either public, readable by anyone, or private,
 readable by the community, by the auditors the manifest names and, for the
 inclusion of one cast, by the holder of that cast’s receipt. A ballot box MUST
@@ -7811,7 +7813,12 @@ its outcome. A VTC MUST publish with a certified result every such credential
 it received.</p>
 <h3 id="governance" tabindex="-1"><a class="toc-anchor d-print-none" href="#governance">§</a> Governance</h3>
 <p><strong>VTI-VOT-080</strong> — Creating, closing early, cancelling and certifying an election
-MUST require <code>vtc.elections.manage</code>.</p>
+MUST require <code>vtc.elections.manage</code>, except that closing a community board closes
+early or cancels the elections opened on it (VTI-BRD-006).</p>
+<p><em>Rationale for the exception in VTI-VOT-080.</em> A board’s elections are opened only
+from a template that a holder of <code>vtc.elections.manage</code> set (VTI-BRD-002), which
+must allow closing early (VTI-BRD-030). Closing the board ends what that template
+started; it cannot open, widen or certify an election.</p>
 <p><strong>VTI-VOT-081</strong> — Creating an election whose manifest marks it binding on the
 community SHOULD require consent from a party other than the requester.
 VTI-APV-022 governs a node that does not apply it.</p>
@@ -7923,10 +7930,49 @@ party may not see, not even its identifier.</p>
 <p><strong>VTI-BRD-004</strong> — Once voting has opened on a board, its audience and the times
 voting opens and closes MUST NOT change. Its title, description, topics and
 timetable MAY change at any time before it is archived.</p>
-<p><strong>VTI-BRD-005</strong> — A closed board MUST refuse every new idea and note. An archived
-board MUST refuse every change and MAY be withdrawn from members’ lists; a VTC
+<p><strong>VTI-BRD-005</strong> — A closed board MUST refuse every new idea and note, and MUST
+NOT open an election for any idea. An archived board MUST refuse every change and
+MAY be withdrawn from members’ lists; until it is deleted (VTI-BRD-007), a VTC
 MUST keep an archived board readable to its facilitators for as long as it keeps
 the elections it opened.</p>
+<p><strong>VTI-BRD-006</strong> — Closing a board — moving it from open to closed, or straight to
+archived — MUST end the voting on it. For each of its ideas whose election has not
+closed, the VTC:</p>
+<ol>
+<li>MUST close the election early (VTI-VOT-013) where voting on it has opened and
+its manifest allows closing early, so that the ballot box counts it as it
+stands at that point and the count is final;</li>
+<li>MUST cancel the election where voting on it has not yet opened, or the ballot
+box has not yet registered it; the idea moves to <strong>not selected</strong>
+(VTI-BRD-032);</li>
+<li>MUST leave an election whose manifest does not allow closing early to close
+when its manifest says, and MUST tell the facilitator which ideas those are.</li>
+</ol>
+<p>The VTC MUST record the board as closed before it asks the ballot box to close
+or cancel anything, and MUST keep asking until the ballot box has answered each
+request. Closing a board is the authority for these acts (VTI-VOT-080): the
+facilitator who closes it MUST NOT be required to hold <code>vtc.elections.manage</code>.</p>
+<p><strong>VTI-BRD-007</strong> — Deleting a board MUST require <code>vtc.boards.manage</code> unqualified
+and a step-up bound to the deletion. A VTC MUST refuse to delete a board that is
+not closed or archived, and one with an idea whose election has not closed or
+been cancelled. Deleting a board MUST remove the board, its ideas and its notes,
+and, for each election opened on it, everything the community keeps of it but a
+<strong>tombstone</strong>: its identifier, its manifest’s digest and the board heads the
+community kept (VTI-VOT-051). A tombstone MUST NOT carry the election’s title,
+description or roll, or any record of the tickets it issued. A deleted board’s
+identifier MUST NOT be used again.</p>
+<p><strong>VTI-BRD-008</strong> — A VTC MUST keep a deleted board’s tombstones for its <strong>tombstone
+retention</strong>: a period stated in its configuration, which SHOULD default to twelve
+months, MAY be unbounded, and MAY be zero, in which case deleting a board keeps
+no tombstone. A VTC MUST remove each tombstone once its retention has passed,
+counted from the deletion, and MUST apply the retention in force at the deletion.
+Before a board is deleted, a VTC MUST tell the party deleting it how long its
+tombstones will be kept and that, once they are gone, no voter can check a
+receipt against the community’s record of those elections (VTI-VOT-053).</p>
+<p><em>Rationale for VTI-BRD-008.</em> A tombstone holds nothing anyone wrote, only what
+lets a voter or auditor check that the ballot box’s board was not rewritten. A
+community that held a board to collect session ideas may not want even that kept
+for ever, and one that ran a contested vote on it may want it kept for good.</p>
 <h3 id="ideas" tabindex="-1"><a class="toc-anchor d-print-none" href="#ideas">§</a> Ideas</h3>
 <p><strong>VTI-BRD-010</strong> — A party the board’s audience admits MAY propose an idea while
 proposals are open. An idea MUST record who proposed it, when, its title, its
@@ -7978,7 +8024,9 @@ decided except through a facilitator who reads it.</p>
 election asks, of a type the Community Voting chapter defines (VTI-VOT-010), and
 every member of a manifest except the election’s identifier, title, description
 and times, which the VTC fills in when it opens an election. The template MUST NOT
-mark the election binding (VTI-VOT-081); its roll MUST admit exactly the board’s
+mark the election binding (VTI-VOT-081), and MUST allow closing early, so that
+closing the board can end it (VTI-BRD-006); a VTC MUST open every election on a
+board allowing closing early, whatever an earlier template stated; its roll MUST admit exactly the board’s
 audience, as the roll rule of the community’s active members or a credential roll
 naming the group (VTI-VOT-021, VTI-VOT-029); and it MUST name a ballot box the community
 may register elections with (VTI-VOT-082).</p>
@@ -7993,7 +8041,7 @@ tell the facilitator why. An idea MUST NOT have more than one election.</p>
 every requirement of the Community Voting chapter applies to it, and a holder of
 <code>vtc.elections.manage</code> MAY close it early or cancel it as that chapter allows.
 A facilitator who does not hold <code>vtc.elections.manage</code> MUST NOT close, cancel or
-certify it. An idea whose election is cancelled MUST move to <strong>not selected</strong>.</p>
+certify it, except by closing its board (VTI-BRD-006). An idea whose election is cancelled MUST move to <strong>not selected</strong>.</p>
 <p><strong>VTI-BRD-033</strong> — A board MUST NOT show, to anyone, whether a party took a ticket
 for, or cast a ballot in, an idea’s election, and MUST NOT record either. What a
 board shows of an election while voting is open MUST be limited to the
@@ -8055,7 +8103,9 @@ board learns no member’s ticket or ballot; and that an idea’s title and
 description cannot change once an election is opened for it.</p>
 <h3 id="audit-2" tabindex="-1"><a class="toc-anchor d-print-none" href="#audit-2">§</a> Audit</h3>
 <p><strong>VTI-BRD-080</strong> — A VTC MUST record an audit event for the creation, change,
-closing and archiving of a board; for accepting, declining, merging and
+closing, archiving and deletion of a board, for each election closing a board
+closed or cancelled, for each change to the tombstone retention, and for removing
+a deleted board’s tombstones; for accepting, declining, merging and
 selecting an idea and moving one back to proposed; and for hiding a note. An
 audit record MUST name an idea or note by reference and MUST NOT carry its text.
 An audit record MUST NOT pair a party with any election’s ticket or ballot
@@ -9955,7 +10005,7 @@ marked <em>qualified</em> take a resource qualifier (VTI-ACL-035).</p>
 </tr>
 <tr>
 <td><code>vtc.boards.manage</code></td>
-<td>the community’s boards: creating and running them, deciding their ideas, and hiding notes on them (VTI-BRD-002, VTI-BRD-013)</td>
+<td>the community’s boards: creating and running them, deciding their ideas, hiding notes on them, closing them (which ends their elections) and, unqualified, deleting them (VTI-BRD-002, VTI-BRD-006, VTI-BRD-007, VTI-BRD-013)</td>
 <td>—</td>
 <td>by board (<code>board:&lt;id&gt;</code>)</td>
 </tr>
@@ -10901,8 +10951,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-04T02:10:06.176Z">
-                            Generated: 2026-11-04T02:10:06.176Z
+                        <time class="timestamp" datetime="2026-11-04T14:56:16.595Z">
+                            Generated: 2026-11-04T14:56:16.595Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
