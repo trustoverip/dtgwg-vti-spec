@@ -117,10 +117,25 @@ Before a board is deleted, a VTC MUST tell the party deleting it how long its
 tombstones will be kept and that, once they are gone, no voter can check a
 receipt against the community's record of those elections (VTI-VOT-053).
 
+**VTI-BRD-009** — While it keeps a tombstone, a VTC MUST show it to any active
+member and to any holder of `vtc.elections.manage` who names its election: the
+election's identifier, its manifest's digest, its ballot box, and each board head
+the community kept, with the ballot box's signed document that carried it exactly
+as received. A VTC MUST answer a request naming an election it keeps no tombstone
+of, or one the requester may not read, in the same way, and MUST NOT carry in a
+tombstone's answer anything VTI-BRD-007 forbids it to keep.
+
 *Rationale for VTI-BRD-008.* A tombstone holds nothing anyone wrote, only what
 lets a voter or auditor check that the ballot box's board was not rewritten. A
 community that held a board to collect session ideas may not want even that kept
 for ever, and one that ran a contested vote on it may want it kept for good.
+
+*Rationale for VTI-BRD-009.* A tombstone is kept so that a voter's agent can check
+a receipt against the community's record after the board itself is gone
+(VTI-VOT-053); a record nobody can read checks nothing. A board head names an
+election, a size and a hash, and the ballot box's signature over them; it says
+nothing about who voted or how, so the members the election concerned may read it
+without the election's roll, which a tombstone no longer holds.
 
 ### Ideas
 
