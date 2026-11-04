@@ -529,7 +529,9 @@ head, and the consistency of any two heads.
 **VTI-VOT-051** — A VTC MUST obtain and keep a signed head of each of its
 elections' boards at least when voting opens, when it closes and when the result
 is published, and MUST verify each against the one before. A VTC MAY have its
-witnesses sign the same heads.
+witnesses sign the same heads. It MUST keep them as long as it keeps the
+election, and for an election opened on a community board that is deleted, for
+that board's tombstone retention (VTI-BRD-008).
 
 **VTI-VOT-052** — A board MUST be either public, readable by anyone, or private,
 readable by the community, by the auditors the manifest names and, for the
@@ -610,7 +612,13 @@ it received.
 ### Governance
 
 **VTI-VOT-080** — Creating, closing early, cancelling and certifying an election
-MUST require `vtc.elections.manage`.
+MUST require `vtc.elections.manage`, except that closing a community board closes
+early or cancels the elections opened on it (VTI-BRD-006).
+
+*Rationale for the exception in VTI-VOT-080.* A board's elections are opened only
+from a template that a holder of `vtc.elections.manage` set (VTI-BRD-002), which
+must allow closing early (VTI-BRD-030). Closing the board ends what that template
+started; it cannot open, widen or certify an election.
 
 **VTI-VOT-081** — Creating an election whose manifest marks it binding on the
 community SHOULD require consent from a party other than the requester.
