@@ -23,6 +23,14 @@ may take part in. It does not act on a note by itself. Opening the thing a note
 points at is the member's choice, because opening it can tell its holder
 something about the member.
 
+Notes addressed to one of the member's own names — the name they joined a club
+under — wait at a post office box that only one key-holder may empty at a
+time. If the member's own device empties it, the device hands every note to
+the agent. If nothing does, the agent empties it itself, so that a member
+whose only device is a browser, which cannot hold the box, is not left with a
+box that nobody empties. The device and the agent agree, in writing and for a
+stated time, which of them holds the box, so that they never both reach for it.
+
 And because anyone can write a note, an agent takes notes only from parties it
 has a relationship with: a community it belongs to, a group or network it is a
 member of, a party it has chosen to hear from. A note relayed by a partner
@@ -47,9 +55,10 @@ relay must have.
 
 The operations are defined by the catalogue specification: one to deliver a
 notification, one to relay it; at a VTA, one each to list, read and dismiss the
-notifications held for a principal, and one by which the principal's client
+notifications held for a principal, one by which the principal's client
 hands the VTA a notification it received for an identifier whose keys the VTA
-holds; and at a VTC, one each by which its administrators list and read the
+holds, and one each by which a client claims, releases and lists the
+collection of messages for the principal's identifiers; and at a VTC, one each by which its administrators list and read the
 notifications addressed to the community and decide a relay of one to its
 members.
 
@@ -439,7 +448,8 @@ notification tells nobody anything; acting on it is the principal's decision.
 identifier it is addressed to, over the transport that identifier advertises
 (VTI-NTF-020), and the party holding that transport is not always the VTA: the
 mediator permits one connection per identifier, and for a persona identifier
-the principal's client usually holds it. Without a hand-over, a notification
+the principal's client may hold it under a collection claim (VTI-NTF-081).
+Without a hand-over, a notification
 addressed to the persona never reaches the principal's held notifications,
 and the principal's stated acceptance policy never sees it. A client that
 filtered what it handed over would be applying a policy the principal did not
@@ -567,6 +577,269 @@ the same: what each member is told about the community cannot be recalled,
 and a decision that reaches every member discloses the most. A community that
 holds its other irreversible acts for a step-up has the same reason to hold
 this one.
+
+### Collection for the principal's identifiers
+
+A notification addressed to an identifier that advertises a transport through a
+[[ref: mediator]] is delivered, as far as its sender can tell, when it is queued
+at that mediator; it reaches the identifier only when some party collects it.
+The mediator permits one connection per identifier, so at most one party can
+collect for an identifier at a time, and a second connection evicts the first.
+A VTA holds the keys of the identifiers it creates for its principal — a
+persona it presents to a community, for instance — but a client of the
+principal may be the party that holds the connection. A client that cannot
+hold it, such as a browser that does not hold the identifier's keys, leaves
+the identifier with no collector at all, and every notification and relay
+addressed to it waits at the mediator until it expires. This section makes the
+VTA the collector of every such identifier no client has claimed, and fixes how
+a client and the VTA agree which of them is the collector.
+
+In this section, to **collect** for an identifier is to retrieve the messages
+queued for it at the mediator its identifier document advertises, by whatever
+means that mediator provides and for every protocol it carries there. The
+identifier's **collector** is the party that does so. A **collection claim** is
+the VTA's record that one client of the principal is the collector of one
+identifier until a stated time, its **end**; the client is its **claimant**.
+
+**VTI-NTF-080** — Where collection by default is enabled (VTI-NTF-093), a VTA
+MUST collect for every identifier whose `messaging` keys it holds in one of its principal's trust contexts and whose identifier document
+advertises a transport through a mediator, from the time the document first
+advertises one, except:
+
+1. its own durable identity (VTI-KEY-001), which it collects for as a node and
+   for which it MUST NOT grant a collection claim;
+2. the durable identity of another node or host service, and an identity it
+   provisioned for another party (VTI-VTA-030 – VTI-VTA-033), which their
+   holders collect for; and
+3. an identifier for which a collection claim is in force.
+
+**VTI-NTF-081** — At most one party MUST collect for an identifier at a time. A
+VTA MUST NOT collect for an identifier while a collection claim for it is in
+force, and a client MUST NOT collect for an identifier VTI-NTF-080 requires the
+VTA to collect for except while it is the claimant of a collection claim for it
+that is in force.
+
+**VTI-NTF-082** — A VTA MUST grant a collection claim, through the catalogue's
+operation for claiming one, only to a client with authority in the trust
+context the identifier belongs to, only for an identifier VTI-NTF-080 requires
+it to collect for or one already claimed by the same client, and only where no
+claim by another client is in force for it. Before it answers a grant, the VTA
+MUST stop collecting for the identifier and close every connection it holds
+for it. A claim MUST state its end, no later than a maximum period from the
+grant that the VTA states, and the VTA MUST answer the grant with that end. A
+claimant MAY renew its claim through the same operation before the claim ends,
+and a renewal moves the end and is otherwise a grant. The VTA's stated maximum
+SHOULD NOT exceed thirty days.
+
+**VTI-NTF-083** — A claimant MUST NOT open a connection that collects for the
+identifier before it holds the VTA's grant, and MUST stop collecting for it,
+and close every such connection, before the claim's end less its clock-skew
+tolerance as its own clock reads, unless it has renewed the claim by then. A
+claimant SHOULD ask for a claim of twenty-four hours and SHOULD renew it once
+half of the period granted has passed. A
+claimant that releases its claim MUST stop collecting before it asks the VTA to
+release it.
+
+**VTI-NTF-084** — A claim ends at its end, or earlier when its claimant
+releases it through the catalogue's operation for releasing one. A party with
+authority in the identifier's context other than the claimant MAY release a
+claim through the same operation, and a claim MUST become unrenewable when it
+is so released, when the claimant's access control entry is removed or expires,
+or when the entry ceases to give it authority in that context; such a claim
+still ends at its end. A rollover of the claimant's entry (VTI-ACL-055 –
+VTI-ACL-057) and a rotation of its key (VTI-CLT-025) carry the claim to the
+successor. A VTA MUST NOT resume collecting for an identifier before the claim
+for it has ended and, unless the claimant released it, before the end plus the
+VTA's clock-skew tolerance.
+
+**VTI-NTF-085** — A collector whose connection for an identifier is closed by
+another connection for the same identifier MUST NOT re-open it repeatedly at
+once. It MUST back off between attempts, and MUST stop after a bound it states
+until the conflict is resolved. A VTA MUST record each such conflict on a
+connection it holds in the audit trail, and MUST show the identifier as in
+conflict in the listing of VTI-NTF-091 until it collects for it again.
+
+**VTI-NTF-086** — A VTA MUST treat a notification or relay it collects for an
+identifier exactly as one handed to it under VTI-NTF-054: VTI-NTF-055 applies,
+with the VTA in the place of the client and the time of collection in the
+place of the hand-over, and the relationship VTI-NTF-030 counts is the
+principal's with the party that delivered it. The VTA MUST answer the sender as
+the identifier collected for, with the reply VTI-NTF-023 requires, and that
+reply MUST be the same, from the same identifier, whichever party collected the
+document and whatever the VTA did with it.
+
+**VTI-NTF-087** — A VTA MUST NOT perform, hold or relay any other operation
+document it collects for an identifier, and MUST NOT treat one as a request to
+the VTA itself, whatever authority its sender holds at the VTA. It MUST answer
+each as an operation it does not serve (VTI-OPS-081), as the identifier
+collected for, and MUST NOT name
+its own identity in that refusal or in any other reply it makes as that
+identifier. A message of the transport's own, which carries no operation, it
+handles as that transport's specification requires of a recipient.
+
+**VTI-NTF-088** — The work a VTA spends on the messages it collects MUST be
+bounded by the same bounds that apply to the messages delivered to it directly
+(VTI-TRN-029): a sender with no standing at the VTA counts against the bound
+for senders without standing, and the bounds of VTI-NTF-033 apply to what one
+originator or one relayer delivers to every identifier the VTA collects for in
+a context, together with what is handed to it there under VTI-NTF-054. A VTA MUST
+NOT state or apply either bound per identifier collected for. A VTA MUST bound
+the number of identifiers it collects for, and MUST state that bound; an
+identifier it does not collect for because of the bound it MUST show as
+uncollected in the listing of VTI-NTF-091.
+
+**VTI-NTF-089** — A VTA MUST collect within the [[ref: protection boundary]]
+that holds the identifier's `messaging` keys, and MUST NOT give those keys, or
+a message it collected in the clear, to a process outside that boundary in
+order to collect. A VTA MUST NOT collect for identifiers of different trust
+contexts over one connection, and MUST document, as VTI-TRN-027 requires, what
+its connections for identifiers of different contexts reveal in common to the
+mediator.
+
+**VTI-NTF-090** — A rotation of an identifier's keys MUST NOT change its
+collector or end a claim for it. Where an identifier's document comes to name a
+different mediator, its collector MUST collect at the one now named, and the
+VTA, where it is the collector, SHOULD continue to collect at the one previously
+named for a period it states. When a VTA ceases to hold an identifier's keys,
+the identifier is deactivated, or its trust context is deleted, the VTA MUST
+stop collecting for it and MUST end every claim for it, and a claim so ended is
+not in force for the purposes of VTI-NTF-081.
+
+**VTI-NTF-091** — A VTA MUST let a party with authority in a trust context list,
+through the catalogue's operation for doing so, the identifiers there that
+VTI-NTF-080 names, and for each whether the VTA collects for it, a client holds
+a claim for it — with the claimant, the claim's end and whether it is
+renewable — or nobody collects for it, and why. It MUST NOT disclose any of
+this to a party without authority in that context (VTI-NTF-051).
+
+**VTI-NTF-092** — A claimant is bound by VTI-NTF-054 for every notification and
+relay it collects. A VTA MUST accept a document handed to it under VTI-NTF-056
+whether or not the client handing it over holds a claim, and whether or not the
+VTA collects for the identifier; VTI-NTF-022 makes one record of a document that
+reaches it both ways.
+
+**VTI-NTF-093** — A VTA MUST let its operator enable and disable collection by
+default, and MUST leave it disabled unless the operator enables it. While it is
+disabled, the VTA MUST NOT collect for any identifier under VTI-NTF-080, and
+MUST still grant, renew, release and list collection claims (VTI-NTF-082,
+VTI-NTF-084, VTI-NTF-091), showing each unclaimed identifier as collected by
+nobody because collection is disabled. An operator SHOULD enable it only once
+every client of the principal that collects for the principal's identifiers
+claims them first (VTI-NTF-083). Enabling or disabling it MUST be recorded in
+the audit trail. When it is disabled while the VTA collects, the VTA MUST stop
+collecting and close its connections for the identifiers it collected for.
+
+*Rationale for VTI-NTF-080.* The identifiers a VTA creates for its principal are
+the ones whose keys it holds and no node of their own collects for, so they are
+the ones a missing collector strands. Collecting for them unless a client has
+claimed them, rather than only when a client asks, puts the failure where it
+can be seen. A VTA that waited to be asked would leave every identifier of a
+principal whose only client is a browser exactly as uncollected as it is
+without this section, and nothing would report it: the sender holds collection
+evidence for nothing, and the principal is never told a notification was sent.
+The cost of collecting by default is the opposite case, a client that collects
+without claiming, and that case announces itself as a conflict (VTI-NTF-085)
+that the principal can see and resolve. The exceptions are the identities
+another holder collects for: a node's own and those it was given, which
+collecting for would take from their holders.
+
+*Rationale for VTI-NTF-081 – VTI-NTF-084.* Two collectors of one identifier do
+not share it: each connection evicts the other, each reconnects, and messages
+are lost to whichever was evicted mid-delivery. Exclusion therefore has to be
+agreed before either side connects, and the VTA, which holds the keys and the
+context, is the party that records it. The VTA stops before it grants and the
+client connects only after it holds the grant, so that the hand-over never has
+both connected. A claim is a lease rather than a standing assignment because
+the client that holds it can disappear without releasing it — uninstalled, a
+device lost, an entry revoked. A standing assignment would then leave the
+identifier with no collector for good and nobody told; a lease returns it to
+the VTA at its end, and the mediator holds what arrived in between. A release
+by another party ends a claim only at its end, and a revoked entry cannot
+renew one, because the claimant is still connected and only its own clock
+tells it to stop. Ending the claim at once would make the VTA the second
+connection. The VTA waits out its skew tolerance as well, because the
+claimant's clock is not the VTA's.
+
+*Rationale for VTI-NTF-085.* A party that collects without a claim — a client
+that predates this section, or one that holds the identifier's keys without
+standing — is a second connection the VTA cannot prevent. Two collectors that
+each reconnect at once lose messages to each other indefinitely while each
+reports itself connected. Backing off and stopping turns that into a conflict
+that the principal is shown, which is the only party able to settle it.
+
+*Rationale for VTI-NTF-086 and VTI-NTF-087.* What the VTA collects is what a
+client would have handed it, and accepting it on the same terms is what keeps
+the principal's acceptance policy the single policy, whoever collected. A reply
+that differed with the collector would tell every sender which of the
+principal's devices hold their personas, which is none of its business, and a
+reply from the VTA's own identity would link the persona to the principal's
+agent, which the persona exists to prevent. Other operations addressed to the
+identifier are not requests to the VTA: they are addressed to the persona, and
+the VTA performing them would be acting as the persona on authority nobody
+gave it — and would let any party with an entry at the VTA reach it through an
+identifier the entry does not name. Refusing rather than dropping is what
+keeps the sender's delivery honest: a message the VTA collected and then
+discarded is one the sender holds collection evidence for (VTI-TRN-040), so it
+records a delivery that performed nothing, whereas a refusal is a protocol
+reply it acts on.
+
+*Rationale for VTI-NTF-088 and VTI-NTF-089.* Every identifier a VTA collects
+for is another inbox a stranger can write to. Bounds stated per identifier
+would multiply what a sender without standing can spend by the number of the
+principal's personas, so each bound is the node's, whatever identifier a
+message was collected for. Collecting is decryption with the identifier's
+`messaging` keys, so it belongs where those keys are held: a VTA in a trusted
+execution environment collects inside it, and the host that carries its
+connections sees what the mediator sees and nothing more. One connection that
+collects for identifiers of several contexts would tell the mediator outright
+that they are one principal's, which separate contexts and separate routing
+identifiers (VTI-TRN-026) exist to withhold.
+
+*Rationale for VTI-NTF-090.* A collection claim is about an identifier, not
+about a key, so a rotation leaves it in place; a mediator change moves where
+the collector looks, and messages already queued at the previous mediator are
+still the identifier's. An identifier the VTA no longer holds keys of cannot be
+collected for by it, and a claim on it would block nothing that remains.
+
+*Rationale for VTI-NTF-093.* Clients that predate this section collect for the
+principal's personas without claiming them. A VTA that began collecting by
+default beside such a client would be the second connection to every persona it
+holds, and each side would evict the other (VTI-NTF-085) — losing exactly the
+notifications collection exists to deliver. The setting lets an operator turn
+on collection once the clients in use claim first, which is the transition
+Appendix F records. Claims are served while it is off so that those clients can
+adopt them before it is turned on; a claim made while the VTA collects nothing
+changes nothing but the record, and is already in place on the day the VTA
+starts.
+
+*Rationale for VTI-NTF-092.* The hand-over and collection by the VTA are two
+paths to the same record. A client that holds a claim hands over what it
+collects exactly as before, and a client that received a notification some
+other way may still hand it over, because refusing it would lose a
+notification for a reason that has nothing to do with whether it should be
+held.
+
+*Open issue.* A VTA refuses every operation other than a notification or a relay
+that it collects for an identifier (VTI-NTF-087), so a member whose only client
+is a browser does not receive the other operations a community addresses to
+its persona, such as a step of a credential exchange. A general inbox — the VTA
+holding such operations, unperformed, for the principal's client to fetch and
+perform — is not yet specified: what it may hold, for how long, under which
+acceptance policy, and how a client performs an operation addressed to an
+identifier whose keys only the VTA holds. Until it is, VTI-NTF-087 applies. A
+sender can also tell, from a refusal where a client would have performed the
+operation, that the persona has no claiming client.
+
+*Open issue.* A claim is ended by removing its claimant's standing, but a
+client that was given an identifier's `messaging` keys keeps them, and a
+revoked device can go on collecting for the identifier without a claim. The
+VTA then meets it as a conflict (VTI-NTF-085) and stops, which leaves the
+identifier collected by the revoked device. The remedy is to rotate the
+identifier's `messaging` keys, so that what is sent to it after the rotation is
+encrypted to keys the device does not hold, and to move it to a connection the
+device cannot open. How a VTA rotates a persona's keys on revoking a client,
+and what it tells the parties the persona holds relationships with, is not yet
+specified.
 
 *Open issue.* A notification's originator is compared by its identifier
 (VTI-NTF-022). A change of the identifier method an originator issues under —

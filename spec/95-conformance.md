@@ -44,9 +44,13 @@ hosts trigger links implements it under VTI-LNK-001.
 *Note on the `Notifications` profile.* It binds a target for the parts it
 plays. A VTA holds the notifications it accepts for its principal, offers
 their list, read and dismissal (VTI-NTF-050), and accepts those its
-principal's clients hand to it (VTI-NTF-055), so the profile is MUST for it. A
-client acting for a principal is bound by VTI-NTF-054 where it receives a
-notification for an identifier whose keys the principal's VTA holds. A VTC or
+principal's clients hand to it (VTI-NTF-055), and serves collection claims
+and, once its operator enables it, collects for the principal's identifiers
+that no client has claimed (VTI-NTF-080 – VTI-NTF-093), so the profile is MUST
+for it. A client acting for a principal is
+bound by VTI-NTF-054 where it receives a notification for an identifier whose
+keys the principal's VTA holds, and by VTI-NTF-081 and VTI-NTF-083 where it
+collects for one. A VTC or
 VTN is bound by the requirements on an originator, a recipient and a relayer
 only where it sends, accepts or relays a notification; a VTC that accepts one
 is also bound by VTI-NTF-070 – VTI-NTF-074. One that does none of these
@@ -89,7 +93,7 @@ Areas allocated:
 | `AUD` | Audit |
 | `KEY` | Identity, DIDs and key management |
 | `TRN` | Transports, messaging and delivery |
-| `NTF` | Notifications — the notification, kinds, delivery, acceptance, relaying, the recipient's agent, the `election` kind |
+| `NTF` | Notifications — the notification, kinds, delivery, acceptance, relaying, the recipient's agent, collection for the principal's identifiers, the `election` kind |
 | `SES` | Sessions and authentication |
 | `CLT` | Client onboarding and lifecycle |
 | `LNK` | Trigger links — the link, its fields, flows, readers, producers and link hosts |
