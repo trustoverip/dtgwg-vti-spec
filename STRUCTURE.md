@@ -146,7 +146,7 @@ where unresolved propositions are published with their status visible.
 | Audit | **drafted** (`AUD`) |
 | Identity, DIDs and key management | **drafted** (`KEY`) |
 | Transports, messaging and delivery | **drafted** (`TRN`) |
-| Notifications | **drafted** (`NTF`) — notify, relay with the originator's signature preserved, recipient acceptance, the VTA's held notifications, a client's hand-over of them and the VTA's collection for identifiers no client has claimed, a community's received notifications and its administrators' relay decision, the `election` kind |
+| Notifications | **drafted** (`NTF`) — notify, relay with the originator's signature preserved, recipient acceptance, the VTA's held notifications, a client's hand-over of them and the VTA's collection for identifiers no client has claimed and each trust context's setting for it, a community's received notifications and its administrators' relay decision, the `election` kind |
 | Sessions and authentication | **drafted** (`SES`) |
 | Client onboarding and lifecycle | **drafted** (`CLT`) |
 | Trigger links | **drafted** (`LNK`) — flows `sign-in` and `vta-claim`; agent names reserved; the `sign-in` exchange after the first request specified separately |
