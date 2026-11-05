@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-05T12:40:59.564Z"
+      "lastUpdated": "2026-11-05T14:18:56.105Z"
     }
   ]
 };</script>
@@ -10608,18 +10608,6 @@ different thing from a requirement that is met.</p>
 <td>The push engine shared by both node types states no expiry on the documents it pushes. A push whose deadline runs to a day, or thirty days for a removal notice, is acceptable at the recipient for the maximum age only, and is carried after that by new documents under VTI-TRN-046</td>
 <td>Stamp the push’s deadline, at most thirty days after the time of issue, as the expiry of the documents it sends, once recipients close their window at VTI-OPS-024’s acceptance end. Until they do, a recipient refuses the document at its maximum age whatever expiry it states, so the stamp changes nothing</td>
 </tr>
-<tr>
-<td>VTI-NTF-080 – VTI-NTF-092 <em>(observed)</em></td>
-<td>A VTA collects for every identifier of its principal’s whose keys it holds and that advertises a mediated transport, unless a client holds a collection claim for it</td>
-<td>The agent collects only for its own identity. A persona identifier is collected for only where a client opens its connection, which one client implementation does without any claim and a browser client cannot do at all, so a notification or relay addressed to the persona of a member with only a browser client is never collected, and its sender holds evidence of a delivery that reached nobody</td>
-<td>Implement the claim operations, collect by default, and refuse the operations of VTI-NTF-087. Ship the client’s claim before the agent’s default collection, since a client that connects without a claim is the second connection VTI-NTF-085 backs off from</td>
-</tr>
-<tr>
-<td>VTI-NTF-094 – VTI-NTF-098 <em>(observed, re-filed)</em></td>
-<td>Collection by default is a setting of each trust context, enabled unless a context administrator disables it, stored by the agent, changed at run time through an audited operation that takes effect when it is answered, and readable, with who last changed it, by any party with standing in the context; an operator may only suspend it everywhere</td>
-<td>The agent’s default collection ships behind one setting of its operator’s, read from its configuration when it starts and disabled unless the operator enables it, so that it collects for no unclaimed identifier in any context until the operator does, a change needs a restart, and no principal can see or change it. This entry was first recorded against VTI-NTF-080 – VTI-NTF-093, with that setting as the resolution; VTI-NTF-093 is now withdrawn in favour of VTI-NTF-094 – VTI-NTF-098, so the entry is re-filed against the requirements that now govern the behaviour, which it does not meet</td>
-<td>Store the setting per context, enabled for every context on upgrade, and serve the operations that read and change it. Replace the operator’s setting with an off-only suspension, or remove it. Clients that collect without claiming — those released before collection claims — are the case a principal disables a context for</td>
-</tr>
 </tbody>
 </table>
 </div><h4 id="f.4-signing%2C-audit-and-identifiers" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.4-signing%2C-audit-and-identifiers">§</a> F.4 Signing, audit and identifiers</h4>
@@ -10860,6 +10848,14 @@ requirements were drafted from the changes that closed them.</p>
 <td>VTI-OPS-061, VTI-OPS-067 <em>(observed, never listed)</em></td>
 <td>At the agent, the dispatcher claims an idempotency key before performing a keyed operation and records the outcome after it, in two writes. A process that stopped between the operation’s effect and the record left the claim in flight, and once a ten-minute grace had passed, the next attempt under that key took the claim and performed the operation again: a repeated key-creation request produced a second key. A claim older than the grace is now reported as abandoned and never taken. A repeat under that key is refused as of unknown outcome, naming when the lost attempt began, and the caller establishes what happened before asking again under a new key. A failure to read or write the record now refuses the request instead of performing it unguarded. A test holds both across two lifetimes of the node over one retained store, and fails under the earlier behaviour</td>
 </tr>
+<tr>
+<td>VTI-NTF-080 – VTI-NTF-092 <em>(observed)</em></td>
+<td>The agent collected only for its own identity, so a notification or relay addressed to the persona of a member with only a browser client reached nobody. It now collects for every identifier of its principal’s whose keys it holds and that advertises a mediated transport, unless a client holds a collection claim for it: the claim, release and listing operations are served, a claim is answered only after the agent’s own connection for the identifier is closed, and the collector re-reads the claim under the identifier’s lock before it opens one. A document it collects is answered as the identifier collected for, and every operation other than those VTI-NTF-086 names is answered as one it does not serve, naming the identifier and never the agent. A connection that another one keeps closing is counted, and at the bound the agent stops collecting for that identifier until a client claims it. The client implementation that connected without a claim now claims before it connects. What this does not close: a client released before collection claims still connects without one, which is the case a principal disables collection for its context for (VTI-NTF-094 – VTI-NTF-098, below)</td>
+</tr>
+<tr>
+<td>VTI-NTF-094 – VTI-NTF-098 <em>(observed, re-filed)</em></td>
+<td>Collection by default shipped behind one operator setting, read at start-up and disabled unless enabled. It is now a setting of each trust context, stored by the agent and enabled where nothing is stored, so every context collects on upgrade. A context administrator of the context or of an ancestor, or an unrestricted administrator, changes it at run time; the change is audited before it is applied and refused if the audit cannot be written. Disabling closes the context’s collecting connections before it is answered. Enabling begins collection without waiting for the connections to open, as the operation allows. Setting the value already held changes nothing, including who last changed it. Any party with standing in the context reads it, with who last changed it and when, and whether the operator has suspended collection. The operator’s setting is replaced by a suspension that can only stop collection, never changes a context’s setting, and is audited when the agent starts with it engaged or lifted; the earlier setting is ignored with a warning, whatever its value, so a configuration that names it still starts. What this does not close: integrations provisioned before the agent recorded provisioning are identified once, at the first start after upgrade, from what the agent’s own records still show of their provisioning, and one whose records were pruned or kept only outside the agent stays a candidate until its operator excludes it</td>
+</tr>
 </tbody>
 </table>
 </div><h4 id="f.5a-administrative-authority-at-a-community" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.5a-administrative-authority-at-a-community">§</a> F.5a Administrative authority at a community</h4>
@@ -11087,8 +11083,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-05T12:40:59.019Z">
-                            Generated: 2026-11-05T12:40:59.019Z
+                        <time class="timestamp" datetime="2026-11-05T14:18:55.517Z">
+                            Generated: 2026-11-05T14:18:55.517Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
