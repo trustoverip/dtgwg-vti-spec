@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-05T06:50:18.093Z"
+      "lastUpdated": "2026-11-05T12:40:59.564Z"
     }
   ]
 };</script>
@@ -3241,7 +3241,12 @@ time. If the member’s own device empties it, the device hands every note to
 the agent. If nothing does, the agent empties it itself, so that a member
 whose only device is a browser, which cannot hold the box, is not left with a
 box that nobody empties. The device and the agent agree, in writing and for a
-stated time, which of them holds the box, so that they never both reach for it.</p>
+stated time, which of them holds the box, so that they never both reach for it.
+The agent empties every box nobody has claimed unless the member tells it not
+to — a choice the member makes separately for each of the spaces the agent
+keeps apart for them, and can change at any time. The agent’s operator can stop it
+emptying any box for a while, but cannot make it empty one the member told it
+to leave.</p>
 <p>And because anyone can write a note, an agent takes notes only from parties it
 has a relationship with: a community it belongs to, a group or network it is a
 member of, a party it has chosen to hear from. A note relayed by a partner
@@ -3264,8 +3269,9 @@ relay must have.</p>
 notification, one to relay it; at a VTA, one each to list, read and dismiss the
 notifications held for a principal, one by which the principal’s client
 hands the VTA a notification it received for an identifier whose keys the VTA
-holds, and one each by which a client claims, releases and lists the
-collection of messages for the principal’s identifiers; and at a VTC, one each by which its administrators list and read the
+holds, one each by which a client claims, releases and lists the
+collection of messages for the principal’s identifiers, and one each by which
+a party reads and changes whether the VTA collects for them in a trust context; and at a VTC, one each by which its administrators list and read the
 notifications addressed to the community and decide a relay of one to its
 members.</p>
 <p>Throughout this chapter, the <strong>thing</strong> is what a notification points at — an
@@ -3728,7 +3734,8 @@ means that mediator provides and for every protocol it carries there. The
 identifier’s <strong>collector</strong> is the party that does so. A <strong>collection claim</strong> is
 the VTA’s record that one client of the principal is the collector of one
 identifier until a stated time, its <strong>end</strong>; the client is its <strong>claimant</strong>.</p>
-<p><strong>VTI-NTF-080</strong> — Where collection by default is enabled (VTI-NTF-093), a VTA
+<p><strong>VTI-NTF-080</strong> — Where collection by default is enabled for the trust context
+an identifier belongs to (VTI-NTF-094 – VTI-NTF-098), a VTA
 MUST collect for every identifier whose <code>messaging</code> keys it holds in one of its principal’s trust contexts and whose identifier document
 advertises a transport through a mediator, from the time the document first
 advertises one, except:</p>
@@ -3833,16 +3840,56 @@ relay it collects. A VTA MUST accept a document handed to it under VTI-NTF-056
 whether or not the client handing it over holds a claim, and whether or not the
 VTA collects for the identifier; VTI-NTF-022 makes one record of a document that
 reaches it both ways.</p>
-<p><strong>VTI-NTF-093</strong> — A VTA MUST let its operator enable and disable collection by
-default, and MUST leave it disabled unless the operator enables it. While it is
-disabled, the VTA MUST NOT collect for any identifier under VTI-NTF-080, and
-MUST still grant, renew, release and list collection claims (VTI-NTF-082,
+<p><strong>VTI-NTF-093</strong> — <em>Withdrawn.</em></p>
+<p><em>Note.</em> VTI-NTF-093 made collection by default a setting of the VTA’s operator,
+disabled unless the operator enabled it, and is withdrawn in favour of
+VTI-NTF-094 through VTI-NTF-098, which make it a setting of each trust context,
+enabled unless it is disabled there.</p>
+<p><strong>VTI-NTF-094</strong> — Collection by default MUST be a setting of each trust context
+of the principal’s, and a VTA MUST hold it enabled for a context unless it has
+been disabled for that context under VTI-NTF-095. A context’s setting MUST
+apply to the identifiers of that context alone, and not to those of its
+ancestors or descendants. The VTA MUST keep the setting where it survives the
+VTA’s restart, including the restart of a trusted execution
+environment that holds it, and MUST NOT require a restart, or a change to its
+configuration, in order to apply a change of it.</p>
+<p><strong>VTI-NTF-095</strong> — A VTA MUST let a party with administrative authority over a
+trust context (VTI-ACL-022) — an entry whose role is administrative and whose
+act scope covers the context — change the context’s setting, through the
+catalogue’s operation for doing so, and MUST refuse every other party. A change
+MUST take effect when the VTA answers it. When a change disables collection by
+default, the VTA MUST, before it answers, stop collecting under VTI-NTF-080 for
+the context’s identifiers and close every connection it held to do so. When a
+change enables it, the VTA MUST begin to collect for each identifier there that
+VTI-NTF-080 then names, including one it had stopped collecting for under
+VTI-NTF-085. A change to the value already held MUST succeed and change nothing
+but the record of VTI-NTF-096.</p>
+<p><strong>VTI-NTF-096</strong> — A VTA MUST record each change of a context’s setting in the
+audit trail, with the party that made it, the context and the value set. It
+MUST let a party with authority in the context read, through the catalogue’s
+operation for doing so, the context’s setting, the party that last changed it
+and when — or that it has never been changed — and whether a suspension under
+VTI-NTF-098 is in force. It MUST NOT disclose any of this to a party without
+authority in that context (VTI-NTF-051).</p>
+<p><strong>VTI-NTF-097</strong> — While collection by default is disabled for a context, the
+VTA MUST NOT collect for any of its identifiers under VTI-NTF-080, and MUST
+still grant, renew, release and list collection claims there (VTI-NTF-082,
 VTI-NTF-084, VTI-NTF-091), showing each unclaimed identifier as collected by
-nobody because collection is disabled. An operator SHOULD enable it only once
-every client of the principal that collects for the principal’s identifiers
-claims them first (VTI-NTF-083). Enabling or disabling it MUST be recorded in
-the audit trail. When it is disabled while the VTA collects, the VTA MUST stop
-collecting and close its connections for the identifiers it collected for.</p>
+nobody because collection by default is disabled. A party with administrative
+authority over a context SHOULD disable it there while a client of the
+principal collects for an identifier of that context without claiming it
+(VTI-NTF-083).</p>
+<p><strong>VTI-NTF-098</strong> — A VTA MAY let its operator suspend collection by default for
+every context at once. A suspension MUST only disable: while it is in force the
+VTA MUST treat every context as one for which collection by default is disabled
+(VTI-NTF-097), whatever the context’s setting, and MUST NOT change any
+context’s setting; once it is lifted, each context’s setting applies again. A
+VTA MUST NOT be suspended unless its operator has suspended it, and MUST NOT
+offer its operator a means of enabling collection by default for a context
+whose setting disables it. Suspending and lifting a suspension MUST be recorded
+in the audit trail. Suspending MUST stop collection as a change that disables
+it does under VTI-NTF-095, and lifting a suspension MUST resume it, in each
+context whose setting enables it, as a change that enables it does.</p>
 <p><em>Rationale for VTI-NTF-080.</em> The identifiers a VTA creates for its principal are
 the ones whose keys it holds and no node of their own collects for, so they are
 the ones a missing collector strands. Collecting for them unless a client has
@@ -3909,16 +3956,42 @@ about a key, so a rotation leaves it in place; a mediator change moves where
 the collector looks, and messages already queued at the previous mediator are
 still the identifier’s. An identifier the VTA no longer holds keys of cannot be
 collected for by it, and a claim on it would block nothing that remains.</p>
-<p><em>Rationale for VTI-NTF-093.</em> Clients that predate this section collect for the
-principal’s personas without claiming them. A VTA that began collecting by
-default beside such a client would be the second connection to every persona it
-holds, and each side would evict the other (VTI-NTF-085) — losing exactly the
-notifications collection exists to deliver. The setting lets an operator turn
-on collection once the clients in use claim first, which is the transition
-Appendix F records. Claims are served while it is off so that those clients can
-adopt them before it is turned on; a claim made while the VTA collects nothing
-changes nothing but the record, and is already in place on the day the VTA
-starts.</p>
+<p><em>Rationale for VTI-NTF-094 – VTI-NTF-098.</em> The default is the state that fails
+visibly. A VTA that collects beside a client that also collects without
+claiming meets it as a conflict (VTI-NTF-085), which it backs off from, records
+and lists, and which the principal can see and settle. A VTA that does not
+collect leaves a browser-only member’s personas collected by nobody, and
+nothing reports that at all: the sender holds collection evidence, and the
+member is never told a notification was sent. So collection is on unless it is
+turned off. Clients that predate collection claims are the case it was
+withheld for, and they are what VTI-NTF-097 lets a principal turn it off for.</p>
+<p>The setting belongs to the trust context, not to the node, because the parties
+who know whether a client collects without claiming are the principal’s, and
+the principal’s clients and personas are arranged by context: a principal who
+runs an older client for one context should not lose collection in every
+other. It belongs to a context administrator rather than to every party with
+standing there, because it decides for every client and every identifier in
+the context at once — turning it off strands the personas of every
+browser-only client there — which is administering the context
+(VTI-ACL-022), whereas a claim decides for one identifier and one client and
+needs only standing. It is not reserved to a super-administrator, which would
+return the decision to the operator, who does not know which clients a
+principal runs. It does not pass to descendants, so that each context’s
+setting is read from that context alone.</p>
+<p>A setting held in configuration is read when the node starts, so changing it
+means a restart, and a change made at run time without being stored is lost
+when a trusted execution environment restarts, which is the opposite of what
+whoever changed it decided. Storing it, and applying it when the change is
+answered, makes the setting what the reading of VTI-NTF-096 says it is.
+Claims are served while it is off so that a client can adopt them before it
+is turned on again; a claim made while the VTA collects nothing changes
+nothing but the record.</p>
+<p>An operator still needs to stop collection without asking every principal — a
+mediator that fails, a fault that makes the VTA’s connections evict its
+clients’. An off-only suspension gives that and nothing more: there is one
+place collection is turned on, the context, and an operator who could also
+turn it on would override a principal’s decision to turn it off, which is the
+one the principal makes knowing its clients.</p>
 <p><em>Rationale for VTI-NTF-092.</em> The hand-over and collection by the VTA are two
 paths to the same record. A client that holds a claim hands over what it
 collects exactly as before, and a client that received a notification some
@@ -8987,10 +9060,11 @@ hosts trigger links implements it under VTI-LNK-001.</p>
 <p><em>Note on the <code>Notifications</code> profile.</em> It binds a target for the parts it
 plays. A VTA holds the notifications it accepts for its principal, offers
 their list, read and dismissal (VTI-NTF-050), and accepts those its
-principal’s clients hand to it (VTI-NTF-055), and serves collection claims
-and, once its operator enables it, collects for the principal’s identifiers
-that no client has claimed (VTI-NTF-080 – VTI-NTF-093), so the profile is MUST
-for it. A client acting for a principal is
+principal’s clients hand to it (VTI-NTF-055), serves collection claims,
+collects for the principal’s identifiers that no client has claimed unless
+collection by default is disabled for their trust context, and holds that
+setting for each context, where a context administrator changes it at run time
+(VTI-NTF-080 – VTI-NTF-098), so the profile is MUST for it. A client acting for a principal is
 bound by VTI-NTF-054 where it receives a notification for an identifier whose
 keys the principal’s VTA holds, and by VTI-NTF-081 and VTI-NTF-083 where it
 collects for one. A VTC or
@@ -10535,10 +10609,16 @@ different thing from a requirement that is met.</p>
 <td>Stamp the push’s deadline, at most thirty days after the time of issue, as the expiry of the documents it sends, once recipients close their window at VTI-OPS-024’s acceptance end. Until they do, a recipient refuses the document at its maximum age whatever expiry it states, so the stamp changes nothing</td>
 </tr>
 <tr>
-<td>VTI-NTF-080 – VTI-NTF-093 <em>(observed)</em></td>
+<td>VTI-NTF-080 – VTI-NTF-092 <em>(observed)</em></td>
 <td>A VTA collects for every identifier of its principal’s whose keys it holds and that advertises a mediated transport, unless a client holds a collection claim for it</td>
 <td>The agent collects only for its own identity. A persona identifier is collected for only where a client opens its connection, which one client implementation does without any claim and a browser client cannot do at all, so a notification or relay addressed to the persona of a member with only a browser client is never collected, and its sender holds evidence of a delivery that reached nobody</td>
-<td>Implement the claim operations, collect by default, and refuse the operations of VTI-NTF-087. Ship the client’s claim before the agent’s default collection, since a client that connects without a claim is the second connection VTI-NTF-085 backs off from. The agent’s default collection ships behind the operator setting of VTI-NTF-093, off by default, and the entry closes for a deployment only once the setting is on there</td>
+<td>Implement the claim operations, collect by default, and refuse the operations of VTI-NTF-087. Ship the client’s claim before the agent’s default collection, since a client that connects without a claim is the second connection VTI-NTF-085 backs off from</td>
+</tr>
+<tr>
+<td>VTI-NTF-094 – VTI-NTF-098 <em>(observed, re-filed)</em></td>
+<td>Collection by default is a setting of each trust context, enabled unless a context administrator disables it, stored by the agent, changed at run time through an audited operation that takes effect when it is answered, and readable, with who last changed it, by any party with standing in the context; an operator may only suspend it everywhere</td>
+<td>The agent’s default collection ships behind one setting of its operator’s, read from its configuration when it starts and disabled unless the operator enables it, so that it collects for no unclaimed identifier in any context until the operator does, a change needs a restart, and no principal can see or change it. This entry was first recorded against VTI-NTF-080 – VTI-NTF-093, with that setting as the resolution; VTI-NTF-093 is now withdrawn in favour of VTI-NTF-094 – VTI-NTF-098, so the entry is re-filed against the requirements that now govern the behaviour, which it does not meet</td>
+<td>Store the setting per context, enabled for every context on upgrade, and serve the operations that read and change it. Replace the operator’s setting with an off-only suspension, or remove it. Clients that collect without claiming — those released before collection claims — are the case a principal disables a context for</td>
 </tr>
 </tbody>
 </table>
@@ -11007,8 +11087,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-05T06:50:17.508Z">
-                            Generated: 2026-11-05T06:50:17.508Z
+                        <time class="timestamp" datetime="2026-11-05T12:40:59.019Z">
+                            Generated: 2026-11-05T12:40:59.019Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
