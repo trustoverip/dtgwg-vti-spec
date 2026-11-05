@@ -1,3 +1,3 @@
 [[def: key-role identity]]
 
-~ An identity whose every published key, and its change authority, is bound to exactly one [[ref: key role]], under an identifier method whose profile makes it eligible, with a recovery key committed outside its VTA's [[ref: protection boundary]]. The durable identity of a VTA, a VTC and a VTN is one.
+~ A [[ref: service DID]] at [[ref: key assurance level]] 2 or 3: every key it publishes, and its change authority, is bound to exactly one [[ref: key role]], under an identifier method whose profile makes it eligible. At level 3 it also commits a recovery key held by a [[ref: recovery custodian]] outside its VTA's [[ref: protection boundary]].
