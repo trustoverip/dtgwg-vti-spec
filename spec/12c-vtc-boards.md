@@ -44,7 +44,8 @@ Throughout this chapter:
 - an **idea** is one proposal on a board, made by one member;
 - a **note** is a short text a member attaches to a board or to one idea on it;
 - a **facilitator** of a board is a party holding `vtc.boards.manage` for it,
-  unqualified or qualified by that board (VTI-ACL-035).
+  unqualified or qualified by that board (VTI-ACL-035), whether by a role or by an
+  appointment to that board (VTI-BRD-090).
 
 ### Boards
 
@@ -297,11 +298,59 @@ description cannot change once an election is opened for it.
 **VTI-BRD-080** — A VTC MUST record an audit event for the creation, change,
 closing, archiving and deletion of a board, for each election closing a board
 closed or cancelled, for each change to the tombstone retention, and for removing
-a deleted board's tombstones; for accepting, declining, merging and
+a deleted board's tombstones; for appointing a facilitator, for an appointment's
+removal, review and withdrawal; for accepting, declining, merging and
 selecting an idea and moving one back to proposed; and for hiding a note. An
 audit record MUST name an idea or note by reference and MUST NOT carry its text.
 An audit record MUST NOT pair a party with any election's ticket or ballot
 (VTI-VOT-100).
+
+### Facilitators
+
+**VTI-BRD-090** — A facilitator of a board MAY appoint an active member a
+facilitator of that board. An appointment MUST be `vtc.boards.manage` qualified by
+that one board and nothing else, written as a grant on the appointee's access
+control entry that names its appointer (VTI-ACL-070, VTI-ACL-072). It MUST sit
+beside any role the entry holds and never inside it, so that a member who holds no
+administrative role MAY be appointed. A VTC MUST refuse an appointment its
+appointer does not cover when it is written (VTI-ACL-071), and one of a party who
+already facilitates the board.
+
+**VTI-BRD-091** — An appointed facilitator MAY end their own appointment. Ending
+another party's appointment MUST require `vtc.boards.manage` unqualified; the
+facilitators of one board MUST NOT end one another's appointments. Holding
+`vtc.boards.manage` unqualified, or through a role, is not an appointment, and
+MUST NOT be ended under this rule.
+
+**VTI-BRD-092** — A VTC MUST withdraw every appointment to a board when it deletes
+the board (VTI-BRD-007), and every appointment a member holds when they depart.
+When an appointment's appointer departs, or no longer facilitates the board, a VTC
+MUST NOT leave the appointment standing unexamined: it MUST put it to the
+community's administrators for review and MUST withdraw it unless, by the review's
+deadline, an administrator who facilitates the board takes it over as its
+appointer.
+
+**VTI-BRD-093** — A VTC MUST show a board's appointed facilitators, by directory
+entry, to every facilitator of that board, and MUST NOT name them by identifier.
+A VTC MAY show them to the board's audience.
+
+*Rationale for VTI-BRD-090.* A community running an unconference wants the person
+who convenes a track to run its board without becoming an administrator of the
+community. An appointment is a delegation of one board and nothing more, so it
+holds no authority over the community's other boards, elections or members, and
+its holder decides and selects only within the template an elections manager
+fixed (VTI-BRD-002). Letting a board's facilitators appoint co-facilitators is the
+re-delegation this rule explicitly permits (VTI-ACL-073); it is no wider than the
+appointer's own holding, which is that board.
+
+*Rationale for VTI-BRD-091.* A disagreement between a board's facilitators is
+settled by someone who holds authority over all of them. If a facilitator could
+end a peer's appointment, the first to act would win.
+
+*Rationale for VTI-BRD-092.* An appointment outlives neither its board nor its
+holder's membership. Its appointer's departure is different: the appointment was
+sound when made, and the community's administrators, not the passage of time,
+should decide whether it stands.
 
 *Open issue.* A board's audience sees who proposed each idea. A community may
 want ideas proposed anonymously, as some unconferences take cards without names.

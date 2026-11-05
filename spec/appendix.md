@@ -284,7 +284,7 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `vtc.directory.notes` | reading and writing administrators' notes about members (VTI-DIR-030 – 033) | — | — |
 | `vtc.groups.manage` | community groups: creating, changing and deleting them, their membership, and their bindings to rooms and capabilities | — | by group (`group:<id>`) |
 | `vtc.elections.manage` | the community's elections: creating, closing early, cancelling and certifying them (VTI-VOT-080) | — | — |
-| `vtc.boards.manage` | the community's boards: creating and running them, deciding their ideas, hiding notes on them, closing them (which ends their elections) and, unqualified, deleting them (VTI-BRD-002, VTI-BRD-006, VTI-BRD-007, VTI-BRD-013) | — | by board (`board:<id>`) |
+| `vtc.boards.manage` | the community's boards: creating and running them, deciding their ideas, hiding notes on them, closing them (which ends their elections), appointing their facilitators and, unqualified, deleting them (VTI-BRD-002, VTI-BRD-006, VTI-BRD-007, VTI-BRD-013, VTI-BRD-090) | — | by board (`board:<id>`) |
 | `vtc.notifications.read` | listing and reading the notifications addressed to the community (VTI-NTF-070) | — | — |
 | `vtc.notifications.relay` | deciding that the community relays a notification it received to its members (VTI-NTF-071) | — | by group (`group:<id>`) |
 | `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
@@ -348,8 +348,10 @@ its holder create boards, together with `vtc.elections.manage`, which a board's
 election template needs because accepting an idea opens an election from it
 (VTI-BRD-002). Qualified by a board, it lets a member facilitate that board
 alone: accept, decline and merge its ideas, hide its notes and select among its
-ideas, opening elections only from the template a holder of
-`vtc.elections.manage` fixed, which is never binding (VTI-BRD-030). It confers
+ideas and appoint other members its facilitators, opening elections only from
+the template a holder of `vtc.elections.manage` fixed, which is never binding
+(VTI-BRD-030). A member with no administrative role holds it this way by
+appointment (VTI-BRD-090). It confers
 no authority to close, cancel or certify those elections (VTI-BRD-032). It is
 within `community-admin`'s ceiling.
 
