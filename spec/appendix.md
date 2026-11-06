@@ -285,6 +285,7 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `vtc.groups.manage` | community groups: creating, changing and deleting them, their membership, and their bindings to rooms and capabilities | — | by group (`group:<id>`) |
 | `vtc.elections.manage` | the community's elections: creating, closing early, cancelling and certifying them (VTI-VOT-080) | — | — |
 | `vtc.boards.manage` | the community's boards: creating and running them, deciding their ideas, hiding notes on them, closing them (which ends their elections), appointing their facilitators and, unqualified, deleting them (VTI-BRD-002, VTI-BRD-006, VTI-BRD-007, VTI-BRD-013, VTI-BRD-090) | — | by board (`board:<id>`) |
+| `vtc.badges.admin` | the community's badges: defining, changing, retiring and promoting them, and seeing every giving of a kudos badge (VTI-BDG-003, VTI-BDG-042, VTI-BDG-044) | — | — |
 | `vtc.notifications.read` | listing and reading the notifications addressed to the community (VTI-NTF-070) | — | — |
 | `vtc.notifications.relay` | deciding that the community relays a notification it received to its members (VTI-NTF-071) | — | by group (`group:<id>`) |
 | `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
@@ -354,6 +355,13 @@ the template a holder of `vtc.elections.manage` fixed, which is never binding
 appointment (VTI-BRD-090). It confers
 no authority to close, cancel or certify those elections (VTI-BRD-032). It is
 within `community-admin`'s ceiling.
+
+`vtc.badges.admin` serves the Community Badges chapter. It is not conferring:
+a badge grants nothing (VTI-BDG-002). It defines what badges the community
+offers; giving a community badge out and deciding who asks for it belong to the
+badge group's managers, that is to `vtc.groups.manage` qualified by the badge
+group (VTI-BDG-011), so a member with no administrative role owns a badge by
+appointment. It is within `community-admin`'s ceiling.
 
 `vtc.notifications.read` and `vtc.notifications.relay` serve the Notifications
 chapter. They are apart so that a community can let an administrator see what
