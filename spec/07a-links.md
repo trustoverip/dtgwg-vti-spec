@@ -59,8 +59,8 @@ This chapter specifies the [[ref: trigger link]]: the text an inviter shows as a
 code or a link to start an exchange with a wallet it cannot otherwise reach. It
 defines the link's form and how a reader parses it, the fields it carries, the
 flows it can name, what a reader does after reading it, what a producer must
-and must not emit, and the first two registered flows, `sign-in` and
-`vta-claim`.
+and must not emit, and the registered flows, `sign-in`, `vta-claim` and
+`step-up`.
 
 It does not define the exchange that follows the first request. That is the
 business of the flow. For the flows this specification registers, it is the
@@ -70,8 +70,8 @@ inviter's DID document advertises (Transports, messaging and delivery).
 The chapter has two parts. **The trigger-link format** is protocol-neutral:
 any party can use it, with any kind of first request. **VTI's use of trigger
 links** is what VTI adopts on top of it: the Trust Task first request
-(VTI-LNK-054), the flow registry (VTI-LNK-046), and the `sign-in` and
-`vta-claim` flows. Every VTI flow uses both parts; a party outside VTI can use
+(VTI-LNK-054), the flow registry (VTI-LNK-046), and the `sign-in`,
+`vta-claim` and `step-up` flows. Every VTI flow uses both parts; a party outside VTI can use
 the format alone.
 
 Terms used in this chapter:
@@ -79,9 +79,9 @@ Terms used in this chapter:
 | Term | Meaning |
 |---|---|
 | **Trigger link** | The text defined by this chapter. |
-| **Inviter** | The party that produces a trigger link and receives the first request. For `sign-in`, the service offering sign-in, such as a VTC; for `vta-claim`, the VTA Farm. |
+| **Inviter** | The party that produces a trigger link and receives the first request. For `sign-in`, the service offering sign-in, such as a VTC; for `vta-claim`, the VTA Farm; for `step-up`, the service that refused the operation. |
 | **Reader** | A client that reads a trigger link and acts on it: a wallet. |
-| **Producer** | Anything that emits a trigger link on the inviter's behalf: the inviter, or a page or service it operates. |
+| **Producer** | Anything that emits a trigger link on the inviter's behalf: the inviter, or a page or service it operates. For `step-up`, the party the inviter refused, from the hand-off the inviter gave it (VTI-LNK-127). |
 | **Link host** | The host named in the link's authority, which serves the platform association files and a page for people with no wallet. |
 | **Flow** | A named kind of exchange a trigger link can start, identified by a URI. |
 
@@ -185,7 +185,7 @@ failed or whether a contact was on a list.
 | Outcome | Reasons | Message |
 |---|---|---|
 | `update` | `unsupported-vid`, `unknown-flow`, `unsupported-version` | "This code needs a newer version of the app." |
-| `expired` | `expired` | "This code has expired. Get a new one." |
+| `expired` | `expired`, `step-up-gone` (VTI-LNK-129) | "This code has expired. Get a new one." |
 | `unreachable` | `no-common-transport` (VTI-LNK-053) | "This service can't be reached from your wallet." |
 | `pass-on` | `not-ours` | None. The text goes to the reader's other handlers, unchanged. |
 | `invalid` | every other reason | "This code can't be used." |
@@ -575,9 +575,10 @@ side and on each reader that implements it.
 |---|---|---|---|
 | Sign in to a service's portal | `https://link.trustoverip.org/vti/flow/sign-in/0.1` | the service's VID (a VTC, or another service offering sign-in, such as a DID hosting service) | required |
 | Claim a VTA from a VTA Farm | `https://link.trustoverip.org/vti/flow/vta-claim/0.1` | the Farm's VID | required |
+| Approve one operation a delegated key was refused | `https://link.trustoverip.org/vti/flow/step-up/0.1` | the VID of the service that refused it | required |
 
-*Note.* Step-up and device enrolment, if started by a trigger link, are
-separate flows, each named when it is designed.
+*Note.* Device enrolment, if started by a trigger link, is a separate flow,
+named when it is designed.
 
 #### The `sign-in` flow
 
@@ -765,6 +766,96 @@ level M, `_from` and `_id` share 163 bytes: `_from` is at most 141 with a
 22-character handle, and a Farm with a longer identifier renders its codes
 without a logo.
 
+#### The `step-up` flow
+
+The `step-up` flow lets a person approve, on their own device, one operation
+that a service refused until they step up, when the party that sent the
+operation cannot gather their factor. That party acts for the person with a key
+they delegated to it, such as an AI assistant's or an automation's, and it can
+redeem a step-up but never make one (VTI-APV-015). The service gives it a
+single-use handle beside the step-up request. It shows the person the handle as
+a link, and the person's wallet fetches the step-up from the service, shows the
+operation, and answers as the person. The contact is the service's VID: the
+service that refused the operation.
+
+The Trust Tasks of the exchange are `auth/step-up/requests/show/0.1`
+(trustoverip/dtgwg-trust-tasks-tf#1056), which carries the handle and returns
+the service's signed step-up request with the operation it is bound to, and
+`auth/step-up/approve-response`, which carries the person's answer.
+
+**VTI-LNK-125** — For `step-up`, `_exp` is required, and MUST be no later than
+the `expiresAt` of the hand-off it carries, and no later than 300 seconds after
+the link is made.
+
+**VTI-LNK-126** — A service MUST issue a `step-up` handle only as the
+`details.stepUpHandoff` of a refusal that carries the step-up request inline,
+sent to the party that sent the refused operation, for an operation bound under
+VTI-APV-015. It MUST answer each handle at most once, MUST answer every handle
+it cannot answer with the same refusal, and MUST NOT treat the reading of a
+handle as any part of an approval. A service SHOULD use a 16-byte handle (22
+characters).
+
+**VTI-LNK-127** — The party that sent the refused operation is the link's
+producer:
+`_from` is the VID of the service it sent the operation to, `_id` is the
+handle, and `_exp` is as VTI-LNK-125 requires. It MUST show the link only to
+the person the step-up's subject is, on the surface through which that person
+directs it, and MUST NOT present the inline step-up request as something the
+person approves: that request carries no proof, and what the person approves is
+what their wallet fetches.
+
+**VTI-LNK-128** — For `step-up`, a reader MUST act only for a service already
+in its own records. For one that is not, it MUST stop with `not-in-records`
+(outcome `invalid`), MUST send nothing, and MUST NOT offer to add it: a step-up
+is never a first contact. The contact rule (VTI-LNK-118) does not apply; the
+service qualified when the person added it.
+
+**VTI-LNK-129** — For `step-up`, the first request (VTI-LNK-054) is
+`auth/step-up/requests/show/0.1`, carrying the handle as `handle` as well as
+`parentThreadId`. A reader that receives the refusal for an unanswerable handle
+MUST stop with `step-up-gone` (outcome `expired`).
+
+**VTI-LNK-130** — On the response, a reader MUST verify the returned step-up
+request as a Trust Task document in its own right: signed by the contact,
+addressed to the step-up's subject, and valid against its specification. It
+MUST stop with `not-the-subject` (outcome `invalid`), and send nothing further,
+when its records hold no identity for that service that is the subject. It MUST
+recompute the binding from the returned operation and the request's challenge
+as VTI-APV-015 computes it, and MUST stop with `binding-mismatch` (outcome
+`invalid`) when the result differs from the request's. It MUST then show the
+person the name it holds for the service in its records, the identity, the
+service's reason, and the operation itself, rendered from the operation as
+returned (VTI-APV-013).
+
+**VTI-LNK-131** — If the person approves, a reader MUST gather the evidence the
+request accepts with user verification, and MUST send the answer as the
+subject, signed by the subject's key, to the contact over the transport chosen
+under VTI-LNK-053. It MUST NOT pass the evidence, or the answer, to the party
+that made the link. If the person declines, the reader sends nothing, and the
+step-up expires unanswered.
+
+*Rationale for VTI-LNK-125 to VTI-LNK-131.* A delegated key exists so that a
+person's assistant can act for them without holding their factor, so the
+assistant must never be able to perform the step-up, and it must not be able to
+get the person to approve something other than what it sent. The flow keeps
+both. The wallet shows the operation from the service's own signed request and
+the operation the service holds, not from anything the assistant says, and
+recomputing the binding proves the two belong together. The assistant could
+show a link to another service's step-up, but the wallet would then show that
+service's operation, which is still the operation that service would perform.
+The handle is the one thing an onlooker can take from the screen. Spending it
+first denies the person their read, which they see as an expired code and
+answer by having the assistant send the operation again for a new one, and it
+grants nothing: the answer takes the person's own factor and their own
+signature. The flow needs no new trust between the wallet and the service. The
+service is already in the wallet's records and the subject is already the
+person's identity there, so a step-up for anyone else is refused before the
+person is asked anything.
+
+*Note on the size budget.* With the path form on `link.trustoverip.org/t`, the
+parts of a `step-up` link other than `_from` and `_id` take 86 bytes, as for
+`sign-in`, and the same budget applies.
+
 #### The contact rule
 
 The contact rule decides which DIDs `sign-in` and `vta-claim` accept as a
@@ -920,3 +1011,20 @@ person continues, the reader shows `dids.example.org/farm-auth`, unverified:
 ```
 https://link.trustoverip.org/t#_from=did:webvh:QmXa7Rk2ZpLwT9vNc4HbYe1Jd8sMfU3qGo6PtVnEyKiBhW:dids.example.org:farm-auth&_id=Rv8LmQ2nX5tW9kPz3cJhYg&_exp=1791460920&_type=/vti/flow/vta-claim/0.1
 ```
+
+A `step-up` link with a `did:webvh` contact, 184 bytes. The reader acts on it
+only for a community already in its records:
+
+```
+https://link.trustoverip.org/t#_from=did:webvh:QmPEQVM1JPTyrvEgBcDXwjK4TeyLGSX1PxjgyeAisPviUx:members.example.org&_id=Hk2pQ9xV4mT7rW1sZ8yN3A&_exp=1791460920&_type=/vti/flow/step-up/0.1
+```
+
+| Input, as it differs from the link above | Result |
+|---|---|
+| The link above, for a community in the reader's records | accepted; the reader sends `auth/step-up/requests/show/0.1` once the person continues |
+| The link above, for a community not in the reader's records | `not-in-records` (`invalid`); nothing is sent |
+| `_exp` absent | `missing-exp` (`invalid`) |
+| `_from=did:key:z6Mk…` | `not-in-records` (`invalid`): no service in a reader's records is a `did:key` |
+| The service answers `notFound` (the handle was spent, or the step-up settled or expired) | `step-up-gone` (`expired`) |
+| The returned request names a subject the reader holds no identity for at that community | `not-the-subject` (`invalid`); nothing further is sent |
+| The returned operation's payload differs by one member from the one the binding was computed over | `binding-mismatch` (`invalid`); nothing further is sent |
