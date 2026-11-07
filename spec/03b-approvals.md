@@ -107,6 +107,12 @@ A signature satisfies it only where the key is bound to the caller as a
 re-authentication factor under VTI-APV-016, is distinct from every key that can
 sign the caller's operations, and is held where its use requires user
 verification.
+The caller is the subject the operation acts as: an operation signed by a key
+the subject has delegated to sign for it redeems the subject's
+re-authentication, but the re-authentication itself MUST be the subject's own
+gesture and MUST NOT be made with the delegated key. A node MAY deliver the
+challenge to the subject's own agent, rather than to the party that sent the
+operation, as the `step-up` trigger-link flow does (VTI-LNK-125 – VTI-LNK-131).
 
 **VTI-APV-016** — A node MUST bind a re-authentication factor to a subject only
 on evidence independent of the subject's signing keys: a single-use token
