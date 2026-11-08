@@ -234,7 +234,7 @@ be settled without changing them.
 | `room-present` | minting a scoped presentation for a data room (`rooms/keys/present`) |
 | `room-open` | opening a sealed data-room record (`rooms/keys/open`) |
 | `holder` *(additive)* | acting for the holder over their own identity across every context |
-| `context-create` *(additive)* | creating child contexts beneath a context the entry acts in (VTI-CTX-020), and giving a context it so created its first identifier |
+| `context-create` *(additive)* | creating child contexts beneath a context the entry acts in (VTI-CTX-020, VTI-CTX-026, VTI-CTX-027), and giving a context it so created its first identifier (VTI-CTX-028) |
 
 `holder` is marked additive because no role implies it: it reaches above the
 context tree rather than within it, so deriving it from an administrative role
