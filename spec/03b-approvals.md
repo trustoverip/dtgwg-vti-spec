@@ -231,6 +231,17 @@ factor gets its independence, so it is the binding that has to rest on
 something the signing key cannot produce; every later use of the factor
 inherits exactly the assurance its binding had.
 
+*Note.* A re-authentication factor named by a DID, and a key a subject has
+delegated to sign for it (VTI-APV-015), are identifiers the node records:
+in the binding, its audit and its list of the subject's keys. The same one
+bound or delegated at two nodes lets those nodes tell that one subject stands
+behind both, by comparing what each recorded, however distinct the subject's
+own identifiers there are (VTI-KEY-005, VTI-KEY-006). Neither node can detect
+the reuse, since each sees only its own records; only the party holding the
+key can. An agent that creates such a key for its principal therefore creates
+a distinct one for each node, and a node that shows a subject how to bind or
+delegate one says so.
+
 *Rationale for VTI-APV-017.* Holding an operation until its approvers are
 available is what lets a team that is not online together use consent at all.
 The cost is that the community may move between the request and its execution
