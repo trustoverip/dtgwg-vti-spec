@@ -388,7 +388,7 @@ grant is a delegation subject to VTI-ACL-071 and VTI-ACL-072.
 the community has verified or decided — community role, administrator-asserted
 and credential-sourced values, personhood and date of admission — and MUST NOT
 depend on a self-asserted value. A VTC MUST recompute it when a fact it depends
-on changes.
+on changes. A badge group's rule MAY also read the counts VTI-BDG-015 names.
 
 **VTI-DIR-073** — Group membership MUST be held against the entry identifier.
 
