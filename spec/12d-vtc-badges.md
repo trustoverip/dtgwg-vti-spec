@@ -282,12 +282,12 @@ names. Those locations MUST NOT disclose who holds the badge.
 
 ### Credentials
 
-**VTI-BDG-060** — A badge group MUST issue each holder a **badge credential** in
-place of a group membership credential (VTI-DIR-084): a credential whose issuer
-is the badge group's identifier, whose subject is the holder's membership
-identifier, that names the badge and its picture, that names the community as
-the badge's creator and carries the community's endorsement of it, and that
-evidences each award the holder accepted. A VTC MUST obtain it by a signing
+**VTI-BDG-060** — The community MUST issue each holder of a badge a **badge
+credential** in place of a group membership credential (VTI-DIR-084): a
+credential whose issuer is the community's identifier, named as the community
+names itself, whose subject is the holder's membership identifier, that names
+the badge and its picture, that names the community as the badge's creator, and
+that evidences each award the holder accepted. A VTC MUST obtain it by a signing
 request to its VTA (VTI-DIR-080) and MUST offer it to the holder as it offers
 any credential it issues. Its data model is the Open Badges 3.0 profile of the
 Verifiable Credentials Data Model, stated in the Trust Task specification.
@@ -311,11 +311,18 @@ Retiring the badge MUST also revoke the community's authorization credential to
 the badge group (VTI-DIR-083).
 
 **VTI-BDG-064** — A verifier relying on a badge credential MUST verify it and
-its validity, its status where it carries one, and that the community stands
-behind its issuer, by the community's endorsement in the credential, by the
-community's authorization credential to the group, or by a trust registry
-(VTI-BDG-080), and MUST refuse where any of them fails. VTI-DIR-087 applies: a
-VTC MUST NOT consult a badge credential to decide anything of its own.
+its validity, its status where it carries one, and that its issuer is the
+community that created the badge, and MUST refuse where any of them fails.
+VTI-DIR-087 applies: a VTC MUST NOT consult a badge credential to decide
+anything of its own.
+
+*Rationale for VTI-BDG-060 and VTI-BDG-064.* The community issues, not the
+badge group. A verifier outside the community knows the community by its
+identifier, its website and its registry entries, and nothing about a group's
+identifier; a credential issued by the group could be tied to the community
+only by evidence the verifier must find and check besides the credential. The
+badge group keeps everything else a badge needs: its owners, holders, requests
+and rules.
 
 *Rationale for VTI-BDG-061 and VTI-BDG-062.* The two regimes answer two uses. A
 badge seen only on a card inside the community needs no status check at all:
@@ -347,7 +354,7 @@ did not choose.
 ### Registries
 
 **VTI-BDG-080** — A VTC that publishes to a trust registry MUST publish each
-badge group as an issuer the community recognises, as a projection of its own
+community badge as one the community issues, as a projection of its own
 record, which stays the source of truth, and MUST remove it when the badge is retired.
 
 ### Departure and erasure
