@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-08T13:51:33.381Z"
+      "lastUpdated": "2026-11-08T19:05:44.567Z"
     }
   ]
 };</script>
@@ -1845,6 +1845,16 @@ first is the first factor twice. The binding is where a re-authentication
 factor gets its independence, so it is the binding that has to rest on
 something the signing key cannot produce; every later use of the factor
 inherits exactly the assurance its binding had.</p>
+<p><em>Note.</em> A re-authentication factor named by a DID, and a key a subject has
+delegated to sign for it (VTI-APV-015), are identifiers the node records:
+in the binding, its audit and its list of the subject’s keys. The same one
+bound or delegated at two nodes lets those nodes tell that one subject stands
+behind both, by comparing what each recorded, however distinct the subject’s
+own identifiers there are (VTI-KEY-005, VTI-KEY-006). Neither node can detect
+the reuse, since each sees only its own records; only the party holding the
+key can. An agent that creates such a key for its principal therefore creates
+a distinct one for each node, and a node that shows a subject how to bind or
+delegate one says so.</p>
 <p><em>Rationale for VTI-APV-017.</em> Holding an operation until its approvers are
 available is what lets a team that is not online together use consent at all.
 The cost is that the community may move between the request and its execution
@@ -11528,8 +11538,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-08T13:51:32.310Z">
-                            Generated: 2026-11-08T13:51:32.310Z
+                        <time class="timestamp" datetime="2026-11-08T19:05:44.040Z">
+                            Generated: 2026-11-08T19:05:44.040Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
