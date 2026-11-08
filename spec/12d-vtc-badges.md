@@ -117,6 +117,25 @@ join its badge group, decided by the badge's owners as any such request is, and
 never by the requester (VTI-DIR-071). A badge that is not marked as one members
 may ask for MUST have a closed badge group.
 
+**VTI-BDG-015** — An automatic badge's rule MAY also read, besides the facts of
+VTI-DIR-072, three counts the community keeps of its own records: the kudos
+awards the member has accepted (`kudosReceived`), the ideas they proposed that a
+board selected (`ideasSelected`, VTI-BRD-040), and the community's elections in
+which it issued them a ticket (`electionTickets`), each compared with a stated
+threshold. A VTC MUST count each from its own records when it evaluates the
+rule, MUST NOT let any group but a badge group read them, and MUST NOT offer a
+fact of whether a member cast a ballot: it never knows (VTI-VOT-001), and a
+ticket taken is not a vote cast.
+
+*Rationale for VTI-BDG-015.* Each count is something the community decided or
+recorded itself: an accepted kudos is a giving bounded by VTI-BDG-040 and
+accepted by its holder, a selected idea was chosen by the board's facilitators,
+and a ticket was issued by the community. None is self-asserted, so VTI-DIR-072's
+reason holds. They stay with badges because a badge is the one group a member
+holds for being recognised, not for what it lets them do (VTI-BDG-012); and an
+automatic badge on a member's card is theirs to decline by opting out
+(VTI-BDG-013).
+
 *Rationale for VTI-BDG-010.* A group already has what a badge needs and is
 expensive to get right: an identifier of its own held with the community's
 attestation keys, an authorization credential from the community that one bit
@@ -155,6 +174,35 @@ its renewal where it does not, and MUST tell the holder.
 
 **VTI-BDG-024** — An approved request for a badge (VTI-BDG-014) is the
 requester's consent: a VTC MUST admit them on approval without a further offer.
+
+### Claim codes
+
+**VTI-BDG-025** — A badge's owner, or a holder of `vtc.badges.admin`, MAY issue a
+**claim code** for an active community badge — for handing out at an event, say:
+a secret of at least 128 bits the community generates, with a label, a time
+after which it no longer admits anyone, and a number of claims it admits. A VTC
+MUST show the code to its issuer once, keep only a digest of it, and never
+derive it from anything.
+
+**VTI-BDG-026** — An active member who redeems a claim code MUST be admitted to
+the badge as on an approved request (VTI-BDG-024): the redemption is their
+consent, and it is recorded as an award of its own whose giver is the code's
+issuer. A VTC MUST refuse alike a code that is unknown, past its time, out of
+claims, withdrawn or for a retired badge; MUST refuse a member's second
+redemption of the same code; MUST refuse a redemption of a badge that is not
+repeatable by a member who already holds it; and MUST count each claim.
+
+**VTI-BDG-027** — An issuer MAY withdraw a claim code, after which it admits no
+one; claims already made stand. Retiring the badge MUST withdraw its codes.
+A code's list MUST show its label, time, limit and count of claims to the
+badge's owners and holders of `vtc.badges.admin`, never the code.
+
+*Rationale for VTI-BDG-025.* An automatic badge for coming to an event needs a
+fact the community verified, and an event's host is the one who saw who came.
+The code carries that knowledge from the room to the community: whoever was
+there to receive it may claim it, within the limit and the time the host set.
+It is a bearer secret, so the community keeps only its digest and refuses a bad
+one without saying why.
 
 *Rationale for VTI-BDG-020.* A badge on a card is a statement the member makes
 about themselves, in their own name, to everyone who sees the card. Nobody else
@@ -315,14 +363,11 @@ audited by reference, never with a picture or a note.
 ### Members' acts and the portal
 
 **VTI-BDG-095** — A holder's acts (accepting, declining, hiding, showing,
-arranging, giving kudos, making a kudos badge) MUST each be a document signed
+arranging, giving kudos, making a kudos badge, redeeming a claim code) MUST each be a document signed
 as the member. A member portal that holds a key the member authorized to sign
 for them for this chapter's tasks (`auth/oob` `signingScope`) MAY sign them
 with it, for the session that authorization arms, as VTI-BRD-050 allows for a
 board. A VTC MUST NOT accept such a key for defining, changing, retiring or
-promoting a community badge, for offering or taking back an award, or for
-changing badge settings.
+promoting a community badge, for offering or taking back an award, for issuing
+or withdrawing a claim code, or for changing badge settings.
 
-*Open issue.* An automatic badge for coming to an event needs a fact the
-community verified, such as a claim code the event's host hands out and a
-member redeems. This chapter does not yet specify it.
