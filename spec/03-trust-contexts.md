@@ -164,3 +164,69 @@ is NOT RECOMMENDED in any case.
 *Rationale for VTI-CTX-025.* An identifier that comes back into use inherits
 every grant that named it and was not cleaned up, which converts an
 administrative convenience into a silent restoration of authority.
+
+### Creating a context without administrative authority
+
+Some callers create contexts as a matter of course and ought not to be
+administrators. A process that mints a context for each software agent it
+manages, on a host that faces the network, is the case this section exists for:
+holding the administrative role would let a compromise of that process rewrite
+the access control entries of everything it created, and creating a context is
+the one power it needs.
+
+**VTI-CTX-026** — A node MAY let an entry that holds the additive capability
+`context-create` (Appendix C) create a context beneath a context that the
+entry's act scope covers, whatever the entry's role. Such a creation MUST meet
+every requirement on creating a context in this section, VTI-CTX-020 through
+VTI-CTX-022 included.
+
+**VTI-CTX-027** — The `context-create` capability MUST NOT permit creating a
+root context, and MUST NOT permit creating a context beneath one that the
+entry's act scope does not cover; both remain as VTI-CTX-020 states them. It
+MUST confer no other authority. In particular, creating a context MUST NOT
+write an access control entry for the creator and MUST NOT otherwise enlarge
+what the creator may do, so that the authority a creator holds over what it
+created is exactly what its entry already gave it over that part of the tree
+(VTI-CTX-017).
+
+**VTI-CTX-028** — An entry that holds `context-create` MAY set the primary DID
+of a context that its act scope covers, and only while that context has none.
+The identifier it names MUST be one that only keys the context holds can sign
+as, and, once set, the entry MUST NOT change or clear it; changing or clearing
+it remains an act of administrative authority.
+
+*Rationale for VTI-CTX-026 and VTI-CTX-027.* A context administrator can write
+access control entries scoped to the context, so making a creator an
+administrator of what it creates lets its authority accumulate, one context at a
+time, for as long as it runs — and an automated creator is the process that
+should hold it least. Making the capability additive (VTI-ACL-033) means no
+role implies it, so no change to a role hands creation to every holder of that
+role, and granting it needs unrestricted act authority: a single decision by a
+person, not something a process acquires. What it confers is bounded by rules
+that already hold. A root context still needs unrestricted act authority
+(VTI-CTX-020), and ancestry is still evaluated over whole segments
+(VTI-CTX-016), so the capability reads as "branch beneath what I already
+cover", never "create anywhere". It is consistent with VTI-VTA-032: creating a
+context confers no authority the creator was not already given.
+
+The alternative considered was a separate, always-available service that holds
+unrestricted act authority and creates contexts on callers' behalf. It was
+rejected because it is a new component whose only purpose is to hold the most
+powerful grant in the system.
+
+*Rationale for VTI-CTX-028.* A context with no primary DID exists but can be
+issued as nothing, so a creator that cannot name one has made something it
+cannot make usable and would need an administrator to finish every context it
+creates, which defeats the grant. Naming is permitted once and only once
+because changing a context's identity is how an automated process would quietly
+become something else, and that is rare enough to be an administrator's
+decision. The identifier has to be one the context's own keys control because
+otherwise a creator could name an identifier the context cannot sign as, and
+anything then issued as that context would claim an issuer nothing in it can
+produce.
+
+The requirement bounds naming by what the context holds and by the creator's act
+scope, and not by whether the entry created that particular context. A node need
+not record who created a context to enforce it: reaching the context and naming
+only an identifier its own keys control leave nothing for a creator to gain by
+filling the blank on a context it did not create.

@@ -232,11 +232,20 @@ be settled without changing them.
 | `room-present` | minting a scoped presentation for a data room (`rooms/keys/present`) |
 | `room-open` | opening a sealed data-room record (`rooms/keys/open`) |
 | `holder` *(additive)* | acting for the holder over their own identity across every context |
+| `context-create` *(additive)* | creating a context beneath one the entry's act scope covers, and naming its primary DID once (VTI-CTX-026 – VTI-CTX-028) |
 
 `holder` is marked additive because no role implies it: it reaches above the
 context tree rather than within it, so deriving it from an administrative role
 would hand it to every context administrator on upgrade. Granting it requires
 unrestricted act authority (VTI-ACL-033).
+
+`context-create` is additive for the same reason with a different edge: no role
+implies it, so a change to a role cannot hand context creation to every holder
+of that role, and an automated creator can hold it without holding the
+administrative role that would let it rewrite what it created. It reaches only
+beneath the entry's own act scope (VTI-CTX-027); it does not reach above the tree
+as `holder` does. Granting it requires unrestricted act authority
+(VTI-ACL-033).
 
 The separations in this table are deliberate and each has a reason worth
 keeping: `sign-trust-task` exists so that an agent can sign an envelope without
