@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-09T08:41:53.624Z"
+      "lastUpdated": "2026-11-09T10:53:33.250Z"
     }
   ]
 };</script>
@@ -2898,6 +2898,23 @@ carry a post-quantum <code>attestation</code> proof would ship classical keys an
 nothing. A key-agreement key computed from a signing key makes the <code>messaging</code>
 role a function of the <code>operational</code> one, which VTI-KEY-071 forbids by another
 route.</p>
+<p><strong>VTI-KEY-185</strong> — A party encrypting to an identifier whose keys are a KERI key
+state (<code>did:webs</code>, <code>did:keri</code>) MAY use the X25519 key converted from each Ed25519
+key of its current key state when the identifier has never designated a key
+agreement key or a key role, as KERI practice does. It MUST NOT use a converted
+key for an identifier of any other method, for a key-role identity, or for an
+identifier that has designated key agreement keys, even if every designation is
+since revoked. VTI-KEY-184 still applies: a node MUST NOT publish a converted key
+for an identity of its own.</p>
+<p><em>Rationale.</em> An identifier made by KERI software holds its key state and nothing
+else, and its controller decrypts with the converted key; refusing the conversion
+leaves a node unable to encrypt to any such identifier, over DIDComm or TSP. The
+cost VTI-KEY-184 guards against — an encryption key that is a function of the
+change authority, replaced only by rotating it — is the identifier’s controller’s
+choice and falls on that identifier, never on a node’s own; confining it to KERI
+methods keeps it from becoming a general fallback. An identifier that designated
+separate keys has said that it does not accept the conversion, and revoking its
+designation does not withdraw that.</p>
 <h3 id="identifier-method-profiles" tabindex="-1"><a class="toc-anchor d-print-none" href="#identifier-method-profiles">§</a> Identifier method profiles</h3>
 <p><strong>VTI-KEY-170</strong> — An identifier method can carry a key-role identity only if it
 provides: a verifiable history with a change authority; commitment to more than
@@ -11571,8 +11588,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-09T08:41:53.091Z">
-                            Generated: 2026-11-09T08:41:53.091Z
+                        <time class="timestamp" datetime="2026-11-09T10:53:32.924Z">
+                            Generated: 2026-11-09T10:53:32.924Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
