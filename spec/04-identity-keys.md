@@ -1093,6 +1093,25 @@ nothing. A key-agreement key computed from a signing key makes the `messaging`
 role a function of the `operational` one, which VTI-KEY-071 forbids by another
 route.
 
+**VTI-KEY-185** — A party encrypting to an identifier whose keys are a KERI key
+state (`did:webs`, `did:keri`) MAY use the X25519 key converted from each Ed25519
+key of its current key state when the identifier has never designated a key
+agreement key or a key role, as KERI practice does. It MUST NOT use a converted
+key for an identifier of any other method, for a key-role identity, or for an
+identifier that has designated key agreement keys, even if every designation is
+since revoked. VTI-KEY-184 still applies: a node MUST NOT publish a converted key
+for an identity of its own.
+
+*Rationale.* An identifier made by KERI software holds its key state and nothing
+else, and its controller decrypts with the converted key; refusing the conversion
+leaves a node unable to encrypt to any such identifier, over DIDComm or TSP. The
+cost VTI-KEY-184 guards against — an encryption key that is a function of the
+change authority, replaced only by rotating it — is the identifier's controller's
+choice and falls on that identifier, never on a node's own; confining it to KERI
+methods keeps it from becoming a general fallback. An identifier that designated
+separate keys has said that it does not accept the conversion, and revoking its
+designation does not withdraw that.
+
 ### Identifier method profiles
 
 **VTI-KEY-170** — An identifier method can carry a key-role identity only if it
