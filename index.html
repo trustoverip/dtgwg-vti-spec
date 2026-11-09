@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-08T23:38:05.979Z"
+      "lastUpdated": "2026-11-09T01:39:40.714Z"
     }
   ]
 };</script>
@@ -10413,12 +10413,26 @@ be settled without changing them.</p>
 <td><code>holder</code> <em>(additive)</em></td>
 <td>acting for the holder over their own identity across every context</td>
 </tr>
+<tr>
+<td><code>context-create</code> <em>(additive)</em></td>
+<td>creating child contexts beneath a context the entry acts in (VTI-CTX-020), and giving a context it so created its first identifier</td>
+</tr>
 </tbody>
 </table>
 </div><p><code>holder</code> is marked additive because no role implies it: it reaches above the
 context tree rather than within it, so deriving it from an administrative role
 would hand it to every context administrator on upgrade. Granting it requires
 unrestricted act authority (VTI-ACL-033).</p>
+<p><code>context-create</code> is marked additive for the opposite reason: it exists so that a
+non-administrative entry — an automated provisioner — can branch the tree
+without administering it, and a capability an entry’s role does not imply can
+reach that entry only additively. It confers no root creation (VTI-CTX-020
+still requires unrestricted act authority for that) and no reach the entry does
+not already have. Its holder may set the identifier of a context it created
+while that identifier is unset, and only to a <code>did:key</code> of a key the context
+itself holds; changing or clearing an established identifier, or setting one on
+a context it did not create, remains an administrator’s act. An administrator
+creating a child context does not need it.</p>
 <p>The separations in this table are deliberate and each has a reason worth
 keeping: <code>sign-trust-task</code> exists so that an agent can sign an envelope without
 holding the generic oracle; <code>sign-sshsig</code> exists so that a commit signer can sign
@@ -11537,15 +11551,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 08 November 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 09 November 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-08T23:38:05.439Z">
-                            Generated: 2026-11-08T23:38:05.439Z
+                        <time class="timestamp" datetime="2026-11-09T01:39:40.370Z">
+                            Generated: 2026-11-09T01:39:40.370Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
