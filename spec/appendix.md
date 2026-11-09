@@ -163,6 +163,7 @@ A representative entry:
   "keys": ["key-3f2a"],
   "approve": "none",
   "stepUp": { "require": "consent", "approver": "acme-approvers" },
+  "purposes": ["taskExecution"],
   "expiresAt": "2026-10-10T00:00:00Z",
   "label": "summariser agent, laptop",
   "createdAt": "2026-09-10T09:14:00Z",
@@ -180,6 +181,7 @@ A representative entry:
 | `keys` | which keys the subject may reach: `"all"`, `"none"`, or a non-empty list | VTI-ACL-006, VTI-ACL-007 |
 | `approve` | where the subject may bless another's change | independent of `act` (VTI-ACL-040) |
 | `stepUp` | an additional-human requirement carried on the entry | Approvals section |
+| `purposes` | what the subject may use content it reads for: `"any"` or a non-empty list | stated, never inferred (VTI-ACL-100, VTI-ACL-101); `any` excludes `modelTraining` (VTI-ACL-105) |
 | `expiresAt` | when the entry stops conferring | evaluated at every decision (VTI-ACL-004) |
 | `createdAt` / `createdBy` | provenance | VTI-ACL-002 |
 | `ext` | ecosystem-defined content | confers no authority (VTI-ACL-005) |
@@ -187,7 +189,7 @@ A representative entry:
 Every authority-bearing member is a three-valued statement rather than a
 collection whose emptiness carries meaning. `"act": []` is not a narrower grant
 than `"act": ["acme"]`; it is a malformed entry, and so is an entry with no
-`act` member at all. The same holds for `keys` and `approve`.
+`act` member at all. The same holds for `keys`, `approve` and `purposes`.
 
 This shape is deliberately more verbose than the encoding it replaces, in which
 authority was recovered by pairing a role with a possibly-empty list. The
@@ -706,7 +708,22 @@ kind names as it does to requirement identifiers).
 |---|---|---|---|---|---|---|---|---|---|
 | `election` | an election, poll or survey of a community | the community / the election's identifier | the catalogue's operation for reading one election | the identifier a credential roll names, or the community's own | nothing; the period is the voting period | yes | that the relayer is a member of the community | when voting closes | VTI-NTF-060 – VTI-NTF-063 |
 
-### Appendix H: Acknowledgements
+### Appendix H: Purpose registry
+
+This appendix is normative. It is the registry of purposes that VTI-ACL-109
+names. A purpose is registered by a change to this appendix that adds its row; a
+purpose defined elsewhere is named by an absolute IRI and needs no row. A
+registered name MUST NOT be reused for another purpose, and a purpose withdrawn
+from use is marked withdrawn and keeps its row.
+
+| Purpose | The subject uses the content to | Notes |
+|---|---|---|
+| `personalisation` | adapt what it does for the principal to the principal: tone, preferences, context carried between sessions | |
+| `taskExecution` | carry out a task the principal asked of it | |
+| `analytics` | derive aggregate measures or statistics, about the principal or across principals | |
+| `modelTraining` | train, fine-tune or evaluate a machine-learning model | never granted by `any` (VTI-ACL-105) |
+
+### Appendix I: Acknowledgements
 
 This specification draws on composition-assurance work carried out elsewhere in
 the DTG portfolio, recorded in Appendix E, and on operational experience from

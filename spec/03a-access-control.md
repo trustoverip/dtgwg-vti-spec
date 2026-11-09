@@ -488,3 +488,98 @@ decision that gets made twice, differently, and the disagreement surfaces as an
 authorization gap rather than as an error. The purpose of VTI-ACL-092 is that
 the gap is closed by refusal rather than by whichever implementation happens to
 be more permissive.
+
+### Purpose of use
+
+An entry says who may do what, where and until when. It can also say **what
+for**: the purposes for which its subject may use content it is given. A
+software agent granted a reading of its principal's memory for personalising a
+conversation has not thereby been granted the same content for analytics, or for
+training a model.
+
+A node cannot observe what a subject does with content once it has it. What it
+can do is hold the subject to what it declared: refuse a read made for a
+purpose the entry does not grant, and record the purpose of every read it
+serves, so that a principal can later see what each read was declared to be for
+and hold the subject to it.
+
+**VTI-ACL-100** — An entry MAY narrow the purposes for which its subject may use
+content it reads. The narrowing MUST be stated as either `any` or a non-empty
+list of purposes, in the entry's `purposes` member. An entry written with an
+empty list, or with a `purposes` member that is neither, MUST be refused when it
+is written.
+
+**VTI-ACL-101** — A node that implements this section MUST state `purposes` on
+every entry it holds. It MUST write `any` on an entry that predates it before it
+serves any purpose-bound operation under that entry, and MUST NOT serve one under
+an entry that does not state it.
+
+**VTI-ACL-102** — A **purpose-bound operation** is one that discloses to its
+caller content held for the principal: at least every read of the principal's
+agent memory, and every operation by which a node opens, or returns opened, a
+record of a data room for its principal. A refusal that carries such content —
+a conflict that returns the value it conflicted with — is a purpose-bound
+operation.
+
+**VTI-ACL-103** — A request for a purpose-bound operation MUST name the one
+purpose for which its caller will use the content. Where the entry lists exactly
+one purpose the request MAY omit it, and that purpose applies. Where the entry
+states `any`, a request that names none is served, and its purpose is recorded
+as unstated.
+
+**VTI-ACL-104** — A node MUST refuse a purpose-bound operation whose purpose the
+entry does not grant, and MUST refuse one that names no purpose under an entry
+listing more than one. The refusal MUST be distinguishable from a refusal of
+access, and MUST NOT disclose the content.
+
+**VTI-ACL-105** — `any` MUST NOT be read as granting `modelTraining`: training,
+fine-tuning or evaluating a machine-learning model on the content. That purpose
+is granted only by an entry that names it.
+
+**VTI-ACL-106** — The audit record of a purpose-bound operation, served or
+refused, MUST carry the purpose the request named, or state that it named none.
+
+**VTI-ACL-107** — The purposes of a delegated entry MUST be a subset of the
+purposes of the entry it derives from (VTI-ACL-071, VTI-ACL-073). An entry
+stating `any` MAY delegate a list; an entry stating a list MUST NOT delegate
+`any`, and MUST NOT delegate `modelTraining` unless it names it.
+
+**VTI-ACL-108** — A node MAY refuse, by policy, to write an entry granting a
+purpose. Such a refusal MUST be made when the entry is written, naming the
+purpose, and MUST NOT be made by writing the entry without it (VTI-ACL-031
+applies to purposes as it does to capabilities).
+
+**VTI-ACL-109** — A purpose is either a name registered in Appendix H or an
+absolute IRI, such as a purpose of the Data Privacy Vocabulary. A node MUST NOT
+treat a purpose it does not recognise as equal to any other purpose: it grants
+only a request that names exactly that purpose.
+
+**VTI-ACL-110** — Where authority over a resource is carried by a credential
+rather than by an entry — the authority credentials of a data room — the
+credential MAY state `purposes` with the meaning this section gives an entry's,
+and the node that verifies the credential applies VTI-ACL-103 – VTI-ACL-107 to
+it. A credential that does not state `purposes` grants `any`.
+
+*Rationale for VTI-ACL-100 and VTI-ACL-101.* Absence is not a grant
+(VTI-ACL-008). An entry that predates this section had no purpose narrowing, so
+`any` is the authority it already held; writing it down makes that authority a
+statement rather than an inference, and makes a narrower grant visible as a
+change to the entry.
+
+*Rationale for VTI-ACL-103 and VTI-ACL-106.* A purpose is a declaration, not a
+proof: no node can see what a subject does with what it read. Its value is that
+it binds the subject to something it said, in a record it cannot alter, at the
+moment it said it. A read recorded with its purpose can be held against a later
+use; a read recorded without one cannot.
+
+*Rationale for VTI-ACL-105.* Training a model on content changes what the
+content can do after the grant ends: it outlives revocation, deletion and the
+grant's expiry in a form nobody can withdraw. A purpose with that consequence
+should not be reachable by a grant whose author did not think about it, so the
+widest grant does not reach it.
+
+*Rationale for VTI-ACL-110.* A room's authority credential is a grant written as
+a credential, because a room's host holds no entries. It reaches content the
+same way an entry does, and the same declaration applies to it. Unlike an entry,
+a credential already issued cannot be rewritten to state `any`, so its silence
+is given that meaning here; an issuer that means less states less.
