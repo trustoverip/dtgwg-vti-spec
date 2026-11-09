@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-09T01:39:40.714Z"
+      "lastUpdated": "2026-11-09T07:27:45.058Z"
     }
   ]
 };</script>
@@ -2918,16 +2918,23 @@ profiles are published with the definitions of the key-role operations
 <p><strong>VTI-KEY-173</strong> — <code>did:webvh</code> and its <code>did:scid:vh:1</code> form meet VTI-KEY-170.
 <code>did:webs</code>, as published, does not: its document is derived from its key event
 log, every key of the current key state is placed in both <code>authentication</code> and
-<code>assertionMethod</code>, and there is no member for <code>keyRoles</code> or <code>revoked</code>. A node
-MUST NOT create a key-role identity under <code>did:webs</code> until the method, or an
-extension to it, lets the controller bind keys to roles in the derived document
-and keep the key-state keys out of every relationship.</p>
-<p><em>Open issue.</em> Making <code>did:webs</code> eligible needs either an extension to that method
-in which role keys are anchored in the key event log and the key-state keys are
-rendered into no relationship, or an amendment to VTI-KEY-093 tolerating a
-change-authority key that the method itself renders, absent from <code>keyRoles</code> and
-never used to sign anything but log events. The first keeps VTI-KEY-093 intact and
-is preferred; the method profile states the mapping either would use.</p>
+<code>assertionMethod</code>, and there is no member for <code>keyRoles</code> or <code>revoked</code>. <code>did:webs</code>
+meets VTI-KEY-170 only with the <em>key-role designation</em> extension its method
+profile states: role keys bound by a record anchored in the key event log,
+rendered into the relationships their roles require with <code>keyRoles</code> and
+<code>revoked</code>, and the key-state keys rendered into no relationship. A node MUST NOT
+create a key-role identity under <code>did:webs</code> without that extension.</p>
+<p><em>Open issue.</em> The key-role designation is proposed to the <code>did:webs</code>
+specification and has a reference implementation; until that specification
+adopts it, a <code>did:webs</code> resolver that does not implement it derives a different
+document and refuses the one published, so a key-role identity under <code>did:webs</code>
+is verifiable only by verifiers whose resolver implements the extension. The
+alternative — amending VTI-KEY-093 to tolerate a change-authority key that the
+method itself renders, absent from <code>keyRoles</code> and never used to sign anything but
+log events — is not taken, because it keeps the most protected key in two
+verification relationships. VTI-KEY-001 does not yet name <code>did:webs</code> for a node’s
+durable identity: naming it would require every peer to resolve <code>did:webs</code>
+(VTI-KEY-003), and waits on the extension’s adoption.</p>
 <h3 id="identities-that-do-not-bind-key-roles" tabindex="-1"><a class="toc-anchor d-print-none" href="#identities-that-do-not-bind-key-roles">§</a> Identities that do not bind key roles</h3>
 <p>An identity that does not state its key roles gives a verifier nothing to check
 VTI-KEY-101 against: a single key in both <code>assertionMethod</code> and
@@ -11558,8 +11565,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-09T01:39:40.370Z">
-                            Generated: 2026-11-09T01:39:40.370Z
+                        <time class="timestamp" datetime="2026-11-09T07:27:44.527Z">
+                            Generated: 2026-11-09T07:27:44.527Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
