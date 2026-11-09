@@ -1117,17 +1117,24 @@ profiles are published with the definitions of the key-role operations
 **VTI-KEY-173** — `did:webvh` and its `did:scid:vh:1` form meet VTI-KEY-170.
 `did:webs`, as published, does not: its document is derived from its key event
 log, every key of the current key state is placed in both `authentication` and
-`assertionMethod`, and there is no member for `keyRoles` or `revoked`. A node
-MUST NOT create a key-role identity under `did:webs` until the method, or an
-extension to it, lets the controller bind keys to roles in the derived document
-and keep the key-state keys out of every relationship.
+`assertionMethod`, and there is no member for `keyRoles` or `revoked`. `did:webs`
+meets VTI-KEY-170 only with the *key-role designation* extension its method
+profile states: role keys bound by a record anchored in the key event log,
+rendered into the relationships their roles require with `keyRoles` and
+`revoked`, and the key-state keys rendered into no relationship. A node MUST NOT
+create a key-role identity under `did:webs` without that extension.
 
-*Open issue.* Making `did:webs` eligible needs either an extension to that method
-in which role keys are anchored in the key event log and the key-state keys are
-rendered into no relationship, or an amendment to VTI-KEY-093 tolerating a
-change-authority key that the method itself renders, absent from `keyRoles` and
-never used to sign anything but log events. The first keeps VTI-KEY-093 intact and
-is preferred; the method profile states the mapping either would use.
+*Open issue.* The key-role designation is proposed to the `did:webs`
+specification and has a reference implementation; until that specification
+adopts it, a `did:webs` resolver that does not implement it derives a different
+document and refuses the one published, so a key-role identity under `did:webs`
+is verifiable only by verifiers whose resolver implements the extension. The
+alternative — amending VTI-KEY-093 to tolerate a change-authority key that the
+method itself renders, absent from `keyRoles` and never used to sign anything but
+log events — is not taken, because it keeps the most protected key in two
+verification relationships. VTI-KEY-001 does not yet name `did:webs` for a node's
+durable identity: naming it would require every peer to resolve `did:webs`
+(VTI-KEY-003), and waits on the extension's adoption.
 
 ### Identities that do not bind key roles
 
