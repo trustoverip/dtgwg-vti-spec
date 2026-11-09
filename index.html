@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-09T07:27:45.058Z"
+      "lastUpdated": "2026-11-09T08:41:53.624Z"
     }
   ]
 };</script>
@@ -11116,6 +11116,12 @@ different thing from a requirement that is met.</p>
 <td>Establish, and record the read</td>
 </tr>
 <tr>
+<td>VTI-AUD-005 <em>(observed)</em></td>
+<td>An audit record refers to personal data by reference or by salted commitment, never by embedding it</td>
+<td>At one agent node, the chained trail committed actor and DID-shaped target identifiers (closed below) but kept any other resource in the clear inside the hashed event, on the rule that only a DID is personal data. An agent-memory item’s key is not a DID and is personal — it names what was remembered, often a person — so every memory write recorded before the change named its item in the clear, where no erasure can reach it without breaking verification. Records written since name each item by a keyed commitment under the audit key, and reads record which items they returned the same way, so the trail still answers which agent touched which item. The records already written cannot be rewritten</td>
+<td>The earlier records leave the trail at the retention sweep, behind its watermark, and nothing else removes them. A node that must honour an erasure of one of those keys before then can only shorten retention. The rule that a non-DID resource is not personal data is still applied to the node’s other actions, and has not been established for each of them</td>
+</tr>
+<tr>
 <td>VTI-KEY-006 <em>(observed)</em></td>
 <td>A client identifier is not reused across trust contexts</td>
 <td>A client holds one identifier per node it is enrolled with, used in every context that entry is scoped to</td>
@@ -11565,8 +11571,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-09T07:27:44.527Z">
-                            Generated: 2026-11-09T07:27:44.527Z
+                        <time class="timestamp" datetime="2026-11-09T08:41:53.091Z">
+                            Generated: 2026-11-09T08:41:53.091Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
