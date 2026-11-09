@@ -220,6 +220,10 @@ scope, as required by VTI-ACL-081 and VTI-ACL-082.
 **VTI-VTA-043** — Every action a VTA performs at an agent's request MUST be
 recorded such that the principal's operator can observe what the agent did.
 
+**VTI-VTA-044** — An entry a VTA writes for a software agent SHOULD state the
+purposes the agent's task needs (VTI-ACL-100) rather than `any`, and a VTA that
+offers its operator a way to delegate to an agent SHOULD ask for them.
+
 *Rationale for VTI-VTA-040.* An agent operating under the principal's own
 credential cannot be revoked without revoking the principal, cannot be
 distinguished from the principal in any audit trail, and cannot be narrowed. It
