@@ -19,6 +19,7 @@ requirement identifiers.
 | `Core` | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; Identity, DIDs and key management; Sessions and authentication; Client onboarding and lifecycle; Operation surface; Credentials and presentations |
 | `Delivery` | Transports, messaging and delivery |
 | `Links` | Trigger links |
+| `Notifications` | Notifications |
 | `Community` | The Verifiable Trust Community; Membership lifecycle and community credentials; The community directory and groups; Community voting; Trust registries and cross-community recognition |
 | `Network` | The Verifiable Trust Network |
 | `Composition` | Composition requirements |
@@ -26,19 +27,35 @@ requirement identifiers.
 
 ### Targets
 
-| Target | `Core` | `Delivery` | `Links` | `Community` | `Network` | `Composition` | `Operations` |
-|---|---|---|---|---|---|---|---|
-| VTA | MUST | MUST | MAY | MAY | MAY | MUST | MUST |
-| VTC | MUST | MUST | MAY | MUST | MAY | MUST | MUST |
-| VTN *(provisional)* | MUST | MUST | MAY | MAY | MUST | MUST | MUST |
-| Client | MUST | MUST | MAY | MAY | MAY | MUST | MAY |
-| Mediator | MAY | MUST | MAY | MAY | MAY | MAY | MUST |
-| Host service | MAY | MUST | MAY | MAY | MAY | MAY | MUST |
-| Trust registry | MAY | MAY | MAY | MUST | MAY | MUST | MUST |
+| Target | `Core` | `Delivery` | `Links` | `Notifications` | `Community` | `Network` | `Composition` | `Operations` |
+|---|---|---|---|---|---|---|---|---|
+| VTA | MUST | MUST | MAY | MUST | MAY | MAY | MUST | MUST |
+| VTC | MUST | MUST | MAY | MUST | MUST | MAY | MUST | MUST |
+| VTN *(provisional)* | MUST | MUST | MAY | MUST | MAY | MUST | MUST | MUST |
+| Client | MUST | MUST | MAY | MAY | MAY | MAY | MUST | MAY |
+| Mediator | MAY | MUST | MAY | MAY | MAY | MAY | MAY | MUST |
+| Host service | MAY | MUST | MAY | MAY | MAY | MAY | MAY | MUST |
+| Trust registry | MAY | MAY | MAY | MAY | MUST | MAY | MUST | MUST |
 
 *Note on the `Links` profile.* It is MAY for every target because most
 implementations neither show nor read codes. A target that reads, produces or
 hosts trigger links implements it under VTI-LNK-001.
+
+*Note on the `Notifications` profile.* It binds a target for the parts it
+plays. A VTA holds the notifications it accepts for its principal, offers
+their list, read and dismissal (VTI-NTF-050), and accepts those its
+principal's clients hand to it (VTI-NTF-055), serves collection claims,
+collects for the principal's identifiers that no client has claimed unless
+collection by default is disabled for their trust context, and holds that
+setting for each context, where a context administrator changes it at run time
+(VTI-NTF-080 – VTI-NTF-098), so the profile is MUST for it. A client acting for a principal is
+bound by VTI-NTF-054 where it receives a notification for an identifier whose
+keys the principal's VTA holds, and by VTI-NTF-081 and VTI-NTF-083 where it
+collects for one. A VTC or
+VTN is bound by the requirements on an originator, a recipient and a relayer
+only where it sends, accepts or relays a notification; a VTC that accepts one
+is also bound by VTI-NTF-070 – VTI-NTF-074. One that does none of these
+satisfies the profile by doing none of them.
 
 *Note on the community directory and groups.* The chapter is in the
 `Community` profile, and binds a VTC only for what it offers: a VTC that offers
@@ -77,6 +94,7 @@ Areas allocated:
 | `AUD` | Audit |
 | `KEY` | Identity, DIDs and key management |
 | `TRN` | Transports, messaging and delivery |
+| `NTF` | Notifications — the notification, kinds, delivery, acceptance, relaying, the recipient's agent, collection for the principal's identifiers, the `election` kind |
 | `SES` | Sessions and authentication |
 | `CLT` | Client onboarding and lifecycle |
 | `LNK` | Trigger links — the link, its fields, flows, readers, producers and link hosts |
@@ -88,6 +106,7 @@ Areas allocated:
 | `MEM` | Membership lifecycle and community credentials |
 | `DIR` | The community directory and groups — cards, audiences, discoverability, introductions, groups, group identities and credentials, room and grant bindings |
 | `VOT` | Community voting — elections and manifests, tickets, casts, the ballot box and its board, secrecy levels and trustees, results and audit |
+| `BRD` | Community boards — boards and their audiences, ideas, notes, the elections opened for ideas, selection, members' acts through the portal |
 | `REG` | Trust registries and recognition |
 | `CMP` | Composition requirements |
 | `OPR` | Operational and assurance requirements |

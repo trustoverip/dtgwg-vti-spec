@@ -37,6 +37,7 @@ Three bodies of normative material:
 | | Audit | `spec/03c-audit.md` |
 | | Identity, DIDs and key management | `spec/04-identity-keys.md` |
 | | Transports, messaging and delivery | `spec/05-transports.md` |
+| | Notifications | `spec/05a-notifications.md` |
 | | Sessions and authentication | `spec/06-sessions-auth.md` |
 | | Client onboarding and lifecycle | `spec/07-clients.md` |
 | | Trigger links | `spec/07a-links.md` |
@@ -48,13 +49,15 @@ Three bodies of normative material:
 | | Membership lifecycle and community credentials | `spec/12-vtc-lifecycle.md` |
 | | The community directory and groups | `spec/12a-vtc-directory.md` |
 | | Community voting | `spec/12b-vtc-voting.md` |
+| | Community boards | `spec/12c-vtc-boards.md` |
+| | Community badges | `spec/12d-vtc-badges.md` |
 | | Trust registries and cross-community recognition | `spec/13-registries.md` |
 | D — System properties | Composition requirements | `spec/14-composition.md` |
 | | Operational and assurance requirements | `spec/15-operational.md` |
 | | Considerations (security, privacy, governance, i18n, accessibility) | `spec/90-considerations.md` |
 | | Conformance | `spec/95-conformance.md` |
 | | References | `spec/96-references.md` |
-| | Appendices A–F | `spec/appendix.md` |
+| | Appendices A–H | `spec/appendix.md` |
 
 One chapter per file, because `markdown_paths` order is the rendered order and
 the file split becomes the working group's unit of assignment and review. This
@@ -137,7 +140,7 @@ where unresolved propositions are published with their status visible.
 | Chapter | State |
 |---|---|
 | Introduction and scope | **drafted** |
-| Terminology | **drafted** — 39 terms, cross-linked, none dangling |
+| Terminology | **drafted** — 40 terms, cross-linked, none dangling |
 | Architecture and conformance targets | **drafted** |
 | Trust contexts | **drafted** (`CTX`) |
 | Access control and authority | **drafted** (`ACL`) |
@@ -145,6 +148,7 @@ where unresolved propositions are published with their status visible.
 | Audit | **drafted** (`AUD`) |
 | Identity, DIDs and key management | **drafted** (`KEY`) |
 | Transports, messaging and delivery | **drafted** (`TRN`) |
+| Notifications | **drafted** (`NTF`) — notify, relay with the originator's signature preserved, recipient acceptance, the VTA's held notifications, a client's hand-over of them and the VTA's collection for identifiers no client has claimed and each trust context's setting for it, a community's received notifications and its administrators' relay decision, the `election` kind |
 | Sessions and authentication | **drafted** (`SES`) |
 | Client onboarding and lifecycle | **drafted** (`CLT`) |
 | Trigger links | **drafted** (`LNK`) — flows `sign-in` and `vta-claim`; agent names reserved; the `sign-in` exchange after the first request specified separately |
@@ -168,6 +172,7 @@ where unresolved propositions are published with their status visible.
 | Appendix D — context path grammar | **drafted** |
 | Appendix E — composition catalogue | **drafted** — E.1 (record form) normative, the rest informative |
 | Appendix F — divergence register | **drafted**; seeded, and open for implementer entries |
+| Appendix G — notification kind registry | **drafted** — `election` registered |
 
 Known gaps. Every chapter and appendix now has text; what remains are the
 items only the working group can close:

@@ -130,17 +130,20 @@ idempotency key, as required by VTI-OPS-061.
 ### Delivery and the acceptance window
 
 A store-and-forward delivery can outlive the document it carries. A recipient
-refuses a document whose time of issue lies outside its acceptance window
-(VTI-OPS-024), and a message held by a mediator, refused by a hop, or escalated
-under VTI-TRN-042 can reach its recipient after that window has closed. The
-requirements below keep such a message from being counted as delivered, and say
-how a sender delivers the operation instead.
+refuses a document that lies outside its acceptance window (VTI-OPS-024), and a
+message held by a mediator, refused by a hop, or escalated under VTI-TRN-042
+can reach its recipient after that window has closed. The requirements below
+keep such a message from being counted as delivered, say how a sender keeps a
+long delivery inside the window, and say how it delivers the operation where
+the window has closed anyway.
 
-In this section, the **latest acceptable instant** of a document at a recipient
-is the earlier of: the document's time of issue plus the recipient's maximum
-age and its clock-skew tolerance; and the document's expiry, where it carries
-one. After that instant no recipient applying that window accepts the document,
-whatever its clock reads within its tolerance.
+In this section, a document's **acceptance end** at a recipient is the one
+VTI-OPS-024 defines with that recipient's maximum age: the document's expiry,
+no later than its expiry horizon (VTI-OPS-028), where it states one, and
+otherwise its time of issue plus the recipient's maximum age. Its **latest
+acceptable instant** is that acceptance end plus the recipient's clock-skew
+tolerance. After that instant no recipient applying that window accepts the
+document, whatever its clock reads within its tolerance.
 
 **VTI-TRN-044** — A sender MUST NOT treat evidence of the first or third class
 of VTI-TRN-040 as delivery where the message arrived after the latest
@@ -157,8 +160,8 @@ window the sender documents and applies to every recipient for which it has no
 other.
 
 **VTI-TRN-046** — A sender MUST NOT send a document after its latest
-acceptable instant at the recipient, and SHOULD NOT send one after its time of
-issue plus the recipient's maximum age. Where it would otherwise do so, where
+acceptable instant at the recipient, and SHOULD NOT send one after its
+acceptance end there. Where it would otherwise do so, where
 VTI-TRN-044 leaves an operation undelivered, and where the recipient has refused
 a document as outside its acceptance window, a sender that continues the
 delivery MUST deliver the operation as a new document: a new identifier
@@ -178,6 +181,12 @@ key (VTI-OPS-064). The sender:
 **VTI-TRN-047** — A node SHOULD advertise its acceptance window in its
 discovery response, where the discovery definition provides for it, and MUST
 NOT advertise a window longer than the one it applies.
+
+**VTI-TRN-048** — Where a sender's delivery window under VTI-TRN-042 can
+outlast the recipient's maximum age, the sender SHOULD state an expiry on the
+document it sends, no later than the close of that delivery window. A new
+document under VTI-TRN-046 carries the original's expiry unchanged, as it does
+every other member it does not replace.
 
 *Rationale for VTI-TRN-044.* Collection is evidence that the recipient was
 reachable, not that it accepted anything. A copy collected after its window has
@@ -202,6 +211,19 @@ while they are accepted, or recorded as delivered while they are refused. An
 advertised window longer than the one applied produces the second, which is
 why VTI-TRN-047 forbids it; one shorter than the one applied costs only the
 signatures spent on new documents the recipient did not need.
+
+*Rationale for VTI-TRN-048.* A document that states no expiry is acceptable for
+the recipient's maximum age, typically minutes, and a delivery that lasts a day
+then depends on a chain of new documents under VTI-TRN-046 and on each reaching
+the recipient before it goes stale. One that states the delivery's own deadline
+is acceptable for as long as the delivery runs, up to the thirty-day horizon of
+VTI-OPS-028, so a copy held by a mediator while its recipient is offline is
+still acceptable when collected, and new documents are needed only where a
+recipient applies a narrower window. Because every new document carries the
+same expiry and the same idempotency key, the recipient's record of the key
+(VTI-OPS-066) lasts as long as any of them can be accepted. The expiry is the
+close of the delivery window and not later: a document stated to stand longer
+than its sender will pursue it asks the recipient to remember it for nothing.
 
 *Rationale for VTI-TRN-046.* The obvious repair — re-stamping the time of issue
 and re-signing — produces a different document under an identifier the

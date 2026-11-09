@@ -70,12 +70,14 @@ through.
 **VTI-KEY-162** — A node SHOULD keep, for each SCID, the sources it has
 verified the identity's log at, and use them to resolve the DID when no `src`
 is given. A source is untrusted: the SCID makes the log verifiable wherever it
-is fetched from, but a source can serve an older version of it. A node MUST
-NOT accept, for a SCID, a log whose latest version precedes one it has already
-verified for that SCID, whatever the source. When it resolves a DID URL whose
-`src` is not one it holds for that identity, a node that holds other sources
-MUST also check what they serve, and MUST refuse the presented one if they
-serve a later version. A node MUST persist the sources and latest verified
+is fetched from, but a source can serve an older version of it, or a fork
+signed with a leaked update key. A node MUST NOT accept, for a SCID, a log
+whose latest version precedes one it has already verified for that SCID, or a
+log whose entry at that version's number is not the entry it verified,
+whatever the source. When it resolves a DID URL whose `src` is not one it holds
+for that identity, a node that holds other sources MUST also check what they
+serve, and MUST refuse the presented one if they serve a later version or one
+the presented log does not contain. A node MUST persist the sources and latest verified
 version of every `did:scid` identity it authorises — an access control
 entry's subject, an owner, a member, an administrator — so that a restart does
 not reset what it refuses.
@@ -100,14 +102,20 @@ address, encrypt to, verify, authorise and record the subject under the
 `did:scid` DID, and MUST NOT substitute the `did:webvh` form, or the reverse.
 The two forms are distinct identifiers. A node MUST NOT treat them as one
 subject unless the `did:webvh` form's document lists the `did:scid` form in
-`alsoKnownAs` (VTI-KEY-166), and MAY where it does, for example to carry an
-access control entry or a membership from one form to the other.
+`alsoKnownAs` (VTI-KEY-166), and then only as VTI-KEY-169 provides.
 
 **VTI-KEY-165** — A node that creates durable identities MUST create them as
 `did:webvh` logs, and MUST present each new identity in the `did:webvh` form
 unless the request, or the configuration of VTI-VTA-034 or VTI-VTC-004, selects
 the `did:scid` form. The log is the same either way; the form decides which
-identity the node gives out.
+identity the node gives out. The form MAY later be changed only as VTI-KEY-168
+provides. A node MUST NOT present an identity in the `did:scid` form unless its
+log is witnessed: every version from the first one the identity is presented
+from carries the `did:webvh` witness approvals its threshold requires, the
+threshold can be met only by witnesses the node holding the update keys does
+not control, and each of those witnesses refuses to approve an entry that
+conflicts with one it has already approved. A new identity presented in the
+`did:scid` form is witnessed from its first version.
 
 **VTI-KEY-166** — When it creates a `did:webvh` log, a node MUST, unless the
 request or its configuration says otherwise, list the `did:scid` DID URL of the
@@ -115,7 +123,46 @@ new log, with its `src`, in the first version's `alsoKnownAs`. It MUST list it
 where the identity is presented in the `did:scid` form, and MUST NOT offer an
 option to leave it out in that case.
 
-*Rationale for VTI-KEY-160 to VTI-KEY-166.* The `did:scid` form costs the
+**VTI-KEY-167** — A node that holds the update authority of an existing
+`did:webvh` log MAY list its `did:scid` DID URL in `alsoKnownAs` in a later
+version, or remove it. When it lists it, it MUST name the log's current
+location as `src`, and MUST replace, rather than keep beside it, an entry for
+the same SCID that names an earlier location. It MUST NOT remove it while it
+presents the identity in the `did:scid` form (VTI-KEY-166). The forms are one
+subject (VTI-KEY-164) only from the version that lists the alias: a node MUST
+NOT carry to the other form anything authorised against a version that did not
+list it, except by migration (VTI-KEY-169), and MUST stop treating the forms as
+one subject from a version that removes it.
+
+**VTI-KEY-168** — A node that holds the update authority of a `did:webvh` log
+and presents it as an identity it holds for a trust context, a persona, a group
+or a room MAY switch the form in which it presents it, in either direction. It
+MUST NOT switch the durable identity of a node (VTI-KEY-001), its own or one it
+holds for another node, whose form stays as created. It MUST NOT switch to the
+`did:scid` form unless the log's latest version lists the alias (VTI-KEY-166)
+and the log is witnessed (VTI-KEY-165), and unless it holds no private key that
+a version before the first witnessed one commits to as an update key. A switch
+publishes no version of its own. From the switch, the node MUST
+give the identity out in the new form (VTI-KEY-163) and MUST name it in that
+form wherever it names the identity as itself: as a sender, an issuer, a
+proof's verification method and a trust context's primary DID. An artefact it
+issued in the former form stays verifiable against the same log, and the node
+MUST NOT re-issue it for the switch alone.
+
+**VTI-KEY-169** — A node that recorded standing for one form of a `did:webvh`
+log — an access control entry, an ownership, a membership, an administrator, a
+consent grant, a credential's subject — MUST treat the other form as the
+subject of that standing if, and only if, the `did:webvh` document lists the
+alias in every version from the one in effect when the standing was recorded to
+the latest (recognition). Standing that recognition does not carry the node
+MAY carry by migration: recording it anew under the other form, as its own
+gating of that standing allows, on a request the subject signs in the form it
+moves to, after resolving that form and verifying that the log's latest
+version lists the alias. Migrated standing is dated by the migration. A
+session is not standing: a node MUST NOT carry one across forms, and the
+subject authenticates again in the form it presents.
+
+*Rationale for VTI-KEY-160 to VTI-KEY-169.* The `did:scid` form costs the
 durable position nothing it depends on: VTI-KEY-004's four properties come
 from the `did:webvh` log. What it adds is an identity that does not name its
 host. A `did:webvh` identifier changes when its log moves; a `did:scid`
@@ -141,7 +188,46 @@ VTI-KEY-164 keeps the two forms apart because a subject that chose one has not
 necessarily chosen the other. The alias in `alsoKnownAs` is the controller
 saying that it has, which is why it is listed by default (VTI-KEY-166): an
 identity created without it cannot later be recognised in the other form
-until it publishes a new version.
+until it publishes a new version, which VTI-KEY-167 provides for. The link is
+dated by the version that states it, because the alias is the controller's
+statement and a statement made today says nothing about what the subject chose
+before. A stale `src` is replaced rather than kept because a former location is
+the one a replayed old log is served from (VTI-KEY-162), and an alias naming it
+would point a recipient there.
+
+A switch (VTI-KEY-168) changes what the node gives out, not what the log
+proves, so it publishes nothing and leaves earlier artefacts as they are. It is
+limited to identities the node holds for others to address — a context, a
+persona, a group, a room — because a node's own durable identity is also the
+key of state that cannot follow it: a mediator registration, a deployment's
+configuration and, for a VTC, every member pseudonym, which is a digest over
+the community's DID. Recognition (VTI-KEY-169) is what lets a switch break
+nothing that was recorded while the alias was listed; requiring the alias in
+every version since closes the gap a removal and a later re-listing would
+otherwise open. Standing recorded before the alias is the case VTI-KEY-167
+refuses to carry, because the subject had stated nothing then; migration
+carries it only when the node that granted it decides to, on the subject's
+request in the new form, which is a new grant rather than an inference.
+Sessions are left out because a session proves who authenticated, in which
+form, and a switch is exactly a change of that answer.
+
+A leaked update key is worse under the `did:scid` form than under `did:webvh`.
+To forge a `did:webvh` identity, the holder of a leaked key also needs write
+access to the host its identifier names; a fork published anywhere else is a
+different identifier, to which nobody has granted anything. A `did:scid`
+identity names no host, so a fork signed with the key and served from any host
+is the same identity, and can be numbered past the controller's latest version
+so that a version floor alone does not refuse it. VTI-KEY-162 therefore refuses
+a log that does not contain the version already verified, and not only one
+that is older. That check needs something to compare against, and a node
+meeting the identity for the first time has nothing; witnesses put back the
+second factor the host provided (VTI-KEY-165). They protect only the versions
+they approve, because the witnesses that approve an entry are those named by
+the entry before it: a fork from an earlier version needs no approvals. That
+is why an existing log can switch only once the keys its unwitnessed versions
+committed to are gone (VTI-KEY-168). Witnesses do nothing against an old copy
+of the log served from a former host, which carries genuine approvals; the
+version floor of VTI-KEY-162 is what refuses that.
 
 *Note.* `did:webvh` stays the default form presented, so a deployment that
 configures nothing presents exactly what it did before. The new requirements
@@ -895,9 +981,13 @@ document. An attestation artefact carried inside such a document keeps its own
 challenge or domain MUST refuse it unless the document it covers carries an
 intended recipient, a time of issue and a document identifier (VTI-OPS-020,
 VTI-OPS-025), and MUST apply to that document VTI-OPS-023 (it is the intended
-recipient), VTI-OPS-024 (the time of issue is within its acceptance window) and
+recipient), VTI-OPS-024 (the document is within its acceptance window) and
 VTI-OPS-026 and VTI-OPS-027 (the identifier has not already been accepted, on
 any binding). A verifier that does not apply all four MUST refuse such a proof.
+This requirement applies to the document a verifier receives. A document
+carried inside it as evidence, where the carrying operation's definition says
+so (VTI-NTF-042), is not accepted by verifying its proof, and its replay is
+governed by that definition.
 
 *Rationale for VTI-KEY-107.* Challenge and domain are what bind an
 `authentication` proof to one verifier and one exchange. Without them the proof
@@ -1492,6 +1582,25 @@ nothing. A key-agreement key computed from a signing key makes the `messaging`
 role a function of the `operational` one, which VTI-KEY-071 forbids by another
 route.
 
+**VTI-KEY-185** — A party encrypting to an identifier whose keys are a KERI key
+state (`did:webs`, `did:keri`) MAY use the X25519 key converted from each Ed25519
+key of its current key state when the identifier has never designated a key
+agreement key or a key role, as KERI practice does. It MUST NOT use a converted
+key for an identifier of any other method, for a key-role identity, or for an
+identifier that has designated key agreement keys, even if every designation is
+since revoked. VTI-KEY-184 still applies: a node MUST NOT publish a converted key
+for an identity of its own.
+
+*Rationale.* An identifier made by KERI software holds its key state and nothing
+else, and its controller decrypts with the converted key; refusing the conversion
+leaves a node unable to encrypt to any such identifier, over DIDComm or TSP. The
+cost VTI-KEY-184 guards against — an encryption key that is a function of the
+change authority, replaced only by rotating it — is the identifier's controller's
+choice and falls on that identifier, never on a node's own; confining it to KERI
+methods keeps it from becoming a general fallback. An identifier that designated
+separate keys has said that it does not accept the conversion, and revoking its
+designation does not withdraw that.
+
 ### Identifier method profiles
 
 **VTI-KEY-170** — An identifier method can carry a key-role identity only if it
@@ -1517,17 +1626,24 @@ profiles are published with the definitions of the key-role operations
 **VTI-KEY-173** — `did:webvh` and its `did:scid:vh:1` form meet VTI-KEY-170.
 `did:webs`, as published, does not: its document is derived from its key event
 log, every key of the current key state is placed in both `authentication` and
-`assertionMethod`, and there is no member for `keyRoles` or `revoked`. A node
-MUST NOT create a key-role identity under `did:webs` until the method, or an
-extension to it, lets the controller bind keys to roles in the derived document
-and keep the key-state keys out of every relationship.
+`assertionMethod`, and there is no member for `keyRoles` or `revoked`. `did:webs`
+meets VTI-KEY-170 only with the *key-role designation* extension its method
+profile states: role keys bound by a record anchored in the key event log,
+rendered into the relationships their roles require with `keyRoles` and
+`revoked`, and the key-state keys rendered into no relationship. A node MUST NOT
+create a key-role identity under `did:webs` without that extension.
 
-*Open issue.* Making `did:webs` eligible needs either an extension to that method
-in which role keys are anchored in the key event log and the key-state keys are
-rendered into no relationship, or an amendment to VTI-KEY-093 tolerating a
-change-authority key that the method itself renders, absent from `keyRoles` and
-never used to sign anything but log events. The first keeps VTI-KEY-093 intact and
-is preferred; the method profile states the mapping either would use.
+*Open issue.* The key-role designation is proposed to the `did:webs`
+specification and has a reference implementation; until that specification
+adopts it, a `did:webs` resolver that does not implement it derives a different
+document and refuses the one published, so a key-role identity under `did:webs`
+is verifiable only by verifiers whose resolver implements the extension. The
+alternative — amending VTI-KEY-093 to tolerate a change-authority key that the
+method itself renders, absent from `keyRoles` and never used to sign anything but
+log events — is not taken, because it keeps the most protected key in two
+verification relationships. VTI-KEY-001 does not yet name `did:webs` for a node's
+durable identity: naming it would require every peer to resolve `did:webs`
+(VTI-KEY-003), and waits on the extension's adoption.
 
 ### Level-1 identities and raising a level
 

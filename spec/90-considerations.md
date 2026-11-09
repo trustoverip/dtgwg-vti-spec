@@ -54,9 +54,10 @@ requirements of its own; each item names the requirements that carry it.
     once, and invisibly: the resulting signature is indistinguishable from an
     intended one.
 15. **A signed document is replayable unless something remembers it**
-    (VTI-OPS-025 through VTI-OPS-027) — and the record has to be shared across
-    bindings, or the node's replay protection is as good as its least-used
-    transport.
+    (VTI-OPS-025 through VTI-OPS-027, VTI-OPS-029) — and the record has to be
+    shared across bindings and kept across restarts for as long as the document
+    is acceptable, or the node's replay protection is as good as its least-used
+    transport or its last restart.
 16. **Negotiation is an attacker's lever.** Discovery responses are
     authenticated and each operation has a version floor a peer cannot argue a
     node below (VTI-OPS-046, VTI-OPS-047); without the floor, retiring a
@@ -90,7 +91,7 @@ requirements of its own; each item names the requirements that carry it.
     refuses an artefact stripped of that proof, and a node says which suites it
     signs with so that the stripping can be seen (VTI-KEY-104, VTI-KEY-105).
     Operational proofs carry no challenge or domain, so their replay
-    protection rests entirely on VTI-OPS-023 through VTI-OPS-027
+    protection rests entirely on VTI-OPS-023 through VTI-OPS-029
     (VTI-KEY-107).
 22. **A stolen key writes whatever dates it likes.** The time an attestation was
     issued is established from the identifier's history or a VTA-written

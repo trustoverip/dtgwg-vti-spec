@@ -141,7 +141,7 @@ The specification is in four parts.
 | Part | Chapters | Binds |
 |---|---|---|
 | **A — Foundations** | Introduction; Terminology; Architecture and conformance targets | nothing normatively; fixes the vocabulary and names the targets |
-| **B — The common model** | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; Identity, DIDs and key management; Transports, messaging and delivery; Sessions and authentication; Client onboarding and lifecycle; Trigger links; Operation surface; Credentials and presentations | every node type |
+| **B — The common model** | Trust contexts; Access control and authority; Approvals, consent and step-up; Audit; Identity, DIDs and key management; Transports, messaging and delivery; Notifications; Sessions and authentication; Client onboarding and lifecycle; Trigger links; Operation surface; Credentials and presentations | every node type |
 | **C — Node specifications** | The Verifiable Trust Agent; The Verifiable Trust Community; The Verifiable Trust Network; Membership lifecycle and community credentials; The community directory and groups; Community voting; Trust registries and cross-community recognition | the named node |
 | **D — System properties** | Composition requirements; Operational and assurance requirements; Considerations; Conformance | the deployment and the relying party |
 

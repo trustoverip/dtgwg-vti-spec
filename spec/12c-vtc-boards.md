@@ -1,0 +1,366 @@
+## Community Boards
+
+This section is normative.
+
+### In plain terms
+
+A community holds an unconference. Someone pins a wall of cards: anyone in the
+community may write an idea for a session on a card and pin it up, and anyone may
+stick a note beside a card or on the wall itself. A facilitator walks the wall,
+merges two cards that say the same thing, takes down one that does not belong,
+and puts each card that stays to a show of hands. When the hands are counted the
+facilitator picks the sessions and writes them into the timetable.
+
+A board in a community is that wall. Proposing an idea and leaving a note are
+things a member does in their own name; everyone who can see the board can see
+who wrote what. Voting on an idea is different: each idea the facilitator
+accepts becomes an election of its own, run as the Community Voting chapter
+runs every election, so the board learns how many ballots an idea drew and,
+after the count, its result, and never who voted or how.
+
+### What this chapter defines
+
+This chapter specifies how a community keeps **boards**: shared spaces where its
+members propose **ideas**, leave **notes**, and vote on each idea through an
+election, and where the people running the board select among them.
+
+A VTC is not required to offer boards. A VTC that offers them MUST satisfy the
+requirements of this chapter; a VTC that does not is not bound by them. A VTC
+offering boards MUST offer voting (Community Voting chapter).
+
+The chapter adds no authority model. A board's result decides nothing by itself:
+which ideas are selected is a decision of the people running the board, made
+with the results in view, and nothing on a board grants, widens or removes any
+authority (VTI-VTC-020).
+
+The capability this chapter refers to is registered in Appendix C.3:
+`vtc.boards.manage`, the capability to create and run the community's boards,
+qualifiable by board.
+
+Throughout this chapter:
+
+- a **board** is one such space, with a title, the parties who may see and use it
+  (its **audience**), its schedule, and its **election template**;
+- an **idea** is one proposal on a board, made by one member;
+- a **note** is a short text a member attaches to a board or to one idea on it;
+- a **facilitator** of a board is a party holding `vtc.boards.manage` for it,
+  unqualified or qualified by that board (VTI-ACL-035), whether by a role or by an
+  appointment to that board (VTI-BRD-090).
+
+### Boards
+
+**VTI-BRD-001** — A board MUST state: its identifier, unique within the community
+and never reused; its title; its audience (VTI-BRD-003); the times proposals open
+and close, and the times voting opens and closes, with proposals opening before
+voting opens and voting closing after proposals close; and its election template
+(VTI-BRD-030). A board MAY state a description, the topics an idea may be filed
+under, the most ideas one member may propose to it, and a timetable of slots that
+selected ideas are placed in.
+
+**VTI-BRD-002** — Creating a board MUST require `vtc.boards.manage` unqualified and
+`vtc.elections.manage` (VTI-VOT-080), because its election template decides the
+elections its facilitators will open. Changing a board's election template MUST
+require the same. Changing any other part of a board, and closing or archiving
+it, MUST require `vtc.boards.manage` for that board.
+
+**VTI-BRD-003** — A board's audience MUST be either every active member of the
+community or the members of one of its groups. A VTC MUST show a board — any part
+of it, its ideas and its notes — and MUST confirm that it exists, only to a
+facilitator or to a party its audience admits as the VTC's records stand at the
+time of the read; to any other party it MUST answer as it answers for a board that
+does not exist. A list of boards given to a party MUST NOT include a board that
+party may not see, not even its identifier.
+
+**VTI-BRD-004** — Once voting has opened on a board, its audience and the times
+voting opens and closes MUST NOT change. Its title, description, topics and
+timetable MAY change at any time before it is archived.
+
+**VTI-BRD-005** — A closed board MUST refuse every new idea and note, and MUST
+NOT open an election for any idea. An archived board MUST refuse every change and
+MAY be withdrawn from members' lists; until it is deleted (VTI-BRD-007), a VTC
+MUST keep an archived board readable to its facilitators for as long as it keeps
+the elections it opened.
+
+**VTI-BRD-006** — Closing a board — moving it from open to closed, or straight to
+archived — MUST end the voting on it. For each of its ideas whose election has not
+closed, the VTC:
+
+1. MUST close the election early (VTI-VOT-013) where voting on it has opened and
+   its manifest allows closing early, so that the ballot box counts it as it
+   stands at that point and the count is final;
+2. MUST cancel the election where voting on it has not yet opened, or the ballot
+   box has not yet registered it; the idea moves to **not selected**
+   (VTI-BRD-032);
+3. MUST leave an election whose manifest does not allow closing early to close
+   when its manifest says, and MUST tell the facilitator which ideas those are.
+
+The VTC MUST record the board as closed before it asks the ballot box to close
+or cancel anything, and MUST keep asking until the ballot box has answered each
+request. Closing a board is the authority for these acts (VTI-VOT-080): the
+facilitator who closes it MUST NOT be required to hold `vtc.elections.manage`.
+
+**VTI-BRD-007** — Deleting a board MUST require `vtc.boards.manage` unqualified
+and a step-up bound to the deletion. A VTC MUST refuse to delete a board that is
+not closed or archived, and one with an idea whose election has not closed or
+been cancelled. Deleting a board MUST remove the board, its ideas and its notes,
+and, for each election opened on it, everything the community keeps of it but a
+**tombstone**: its identifier, its manifest's digest and the board heads the
+community kept (VTI-VOT-051). A tombstone MUST NOT carry the election's title,
+description or roll, or any record of the tickets it issued. A deleted board's
+identifier MUST NOT be used again.
+
+**VTI-BRD-008** — A VTC MUST keep a deleted board's tombstones for its **tombstone
+retention**: a period stated in its configuration, which SHOULD default to twelve
+months, MAY be unbounded, and MAY be zero, in which case deleting a board keeps
+no tombstone. A VTC MUST remove each tombstone once its retention has passed,
+counted from the deletion, and MUST apply the retention in force at the deletion.
+Before a board is deleted, a VTC MUST tell the party deleting it how long its
+tombstones will be kept and that, once they are gone, no voter can check a
+receipt against the community's record of those elections (VTI-VOT-053).
+
+**VTI-BRD-009** — While it keeps a tombstone, a VTC MUST show it to any active
+member and to any holder of `vtc.elections.manage` who names its election: the
+election's identifier, its manifest's digest, its ballot box, and each board head
+the community kept, with the ballot box's signed document that carried it exactly
+as received. A VTC MUST answer a request naming an election it keeps no tombstone
+of, or one the requester may not read, in the same way, and MUST NOT carry in a
+tombstone's answer anything VTI-BRD-007 forbids it to keep.
+
+*Rationale for VTI-BRD-008.* A tombstone holds nothing anyone wrote, only what
+lets a voter or auditor check that the ballot box's board was not rewritten. A
+community that held a board to collect session ideas may not want even that kept
+for ever, and one that ran a contested vote on it may want it kept for good.
+
+*Rationale for VTI-BRD-009.* A tombstone is kept so that a voter's agent can check
+a receipt against the community's record after the board itself is gone
+(VTI-VOT-053); a record nobody can read checks nothing. A board head names an
+election, a size and a hash, and the ballot box's signature over them; it says
+nothing about who voted or how, so the members the election concerned may read it
+without the election's roll, which a tombstone no longer holds.
+
+### Ideas
+
+**VTI-BRD-010** — A party the board's audience admits MAY propose an idea while
+proposals are open. An idea MUST record who proposed it, when, its title, its
+description, its format and its topic where the board states topics. A VTC MUST
+refuse a proposal from a party the audience does not admit, a proposal outside
+the board's proposal window, and a proposal that would take its proposer beyond
+the board's limit on ideas per member.
+
+**VTI-BRD-011** — An idea MUST be in exactly one of these states:
+
+1. **proposed**, awaiting a facilitator;
+2. **open**, accepted, with an election opened for it (VTI-BRD-031);
+3. **selected** or **not selected**, decided after its election closed
+   (VTI-BRD-040);
+4. **declined**, taken down by a facilitator, with a stated reason;
+5. **merged**, folded by a facilitator into another idea on the same board,
+   which the record MUST name;
+6. **withdrawn**, taken back by its proposer.
+
+A VTC MUST NOT move an idea out of a state in item 3, 4, 5 or 6, except that a
+facilitator MAY move a **declined** idea back to **proposed** while proposals
+are open.
+
+**VTI-BRD-012** — Only an idea's proposer MAY withdraw it, and only while it is
+**proposed**. Only an idea's proposer MAY change its title, description, format
+or topic, and only while it is **proposed**; once an election has been opened
+for it, the idea's title and description MUST be those the election's manifest
+carries (VTI-VOT-013).
+
+**VTI-BRD-013** — Accepting, declining and merging an idea, and moving it back to
+**proposed**, MUST require `vtc.boards.manage` for its board. A facilitator MUST
+NOT accept, decline or merge an idea they proposed, unless no other facilitator
+of the board exists; a VTC that permits that MUST record that it did. A
+declined or merged idea MUST stay visible to the board's audience in that state,
+with the reason or the idea it was merged into.
+
+### Notes
+
+**VTI-BRD-020** — A party the board's audience admits MAY attach a note to the
+board or to any idea on it that is not **withdrawn**, while the board is not
+closed. A note MUST record who wrote it, when, and what it is attached to. A VTC
+MUST bound a note's length and SHOULD bound the rate at which one party adds
+notes.
+
+**VTI-BRD-021** — A note's author MAY withdraw it. A facilitator MAY hide a note
+on their board, stating a reason. A withdrawn or hidden note MUST NOT be shown to
+anyone but its author and the board's facilitators; in its place the VTC MAY show
+that a note was withdrawn or hidden, and by whom, but MUST NOT show its text.
+Nobody MAY change a note's text after it is added.
+
+**VTI-BRD-022** — A note MUST NOT be carried into any election, manifest, ballot
+or ballot box. Nothing a member writes on a board is part of how an idea is
+decided except through a facilitator who reads it.
+
+### Elections
+
+**VTI-BRD-030** — A board's election template MUST state the question every idea's
+election asks, of a type the Community Voting chapter defines (VTI-VOT-010), and
+every member of a manifest except the election's identifier, title, description
+and times, which the VTC fills in when it opens an election. The template MUST NOT
+mark the election binding (VTI-VOT-081), and MUST allow closing early, so that
+closing the board can end it (VTI-BRD-006); a VTC MUST open every election on a
+board allowing closing early, whatever an earlier template stated; its roll MUST admit exactly the board's
+audience, as the roll rule of the community's active members or a credential roll
+naming the group (VTI-VOT-021, VTI-VOT-029); and it MUST name a ballot box the community
+may register elections with (VTI-VOT-082).
+
+**VTI-BRD-031** — Accepting an idea MUST open one election for it, from the
+board's template, whose manifest carries the idea's title and description, the
+board's voting times, and an identifier that names the board and the idea. The
+VTC MUST record the election's identifier on the idea, and MUST NOT record the
+idea as **open** until the ballot box has registered the election (VTI-VOT-012);
+an election the ballot box refuses leaves the idea **proposed**, and the VTC MUST
+tell the facilitator why. An idea MUST NOT have more than one election.
+
+**VTI-BRD-032** — An election opened for an idea is an election like any other:
+every requirement of the Community Voting chapter applies to it, and a holder of
+`vtc.elections.manage` MAY close it early or cancel it as that chapter allows.
+A facilitator who does not hold `vtc.elections.manage` MUST NOT close, cancel or
+certify it, except by closing its board (VTI-BRD-006). An idea whose election is cancelled MUST move to **not selected**.
+
+**VTI-BRD-033** — A board MUST NOT show, to anyone, whether a party took a ticket
+for, or cast a ballot in, an idea's election, and MUST NOT record either. What a
+board shows of an election while voting is open MUST be limited to the
+election's identifier, its stage, and, where its board is public (VTI-VOT-052),
+the number of ballots on it; a board SHOULD NOT show a running count of
+choices while voting is open, even where the ballot box's board would let anyone
+compute one.
+
+**VTI-BRD-034** — Where a board offers a party a way to request tickets for
+several of its elections at once, each ticket MUST still be requested, issued and
+recorded as the Community Voting chapter requires of one ticket in one election
+(VTI-VOT-020, VTI-VOT-022), and the VTC MUST NOT learn from the board which of its elections a
+party requested tickets for beyond what it learns as each election's registrar.
+Taking tickets ahead of voting this way serves VTI-VOT-033, and a board SHOULD
+offer it.
+
+### Selection
+
+**VTI-BRD-040** — After an idea's election has been tallied, a facilitator MUST
+decide whether the idea is **selected** or **not selected**, and MAY place a
+selected idea in a slot of the board's timetable. The decision MUST record the
+result it was made with: the election's identifier and the board head the result
+was computed from (VTI-VOT-070), and whether that result was certified
+(VTI-VOT-071).
+
+**VTI-BRD-041** — A board MUST show the result of a tallied idea's election beside
+the facilitator's decision, so that a member can see any decision that departs
+from the order of the results. A facilitator's decision MAY depart from it; a
+board that states a rule for selection (such as "the twelve ideas with the most
+support") SHOULD say so where the decision departs from that rule, and why.
+
+**VTI-BRD-042** — Selecting an idea MUST NOT grant, widen or remove any authority,
+and MUST NOT by itself admit anyone to anything. Anything the community does
+because an idea was selected is done through the authority model of the Access
+Control and Authority and the Approvals, Consent and Step-Up chapters
+(VTI-VTC-020), like any other change.
+
+### Members' acts and the portal
+
+**VTI-BRD-050** — A proposal, a change to one's own proposal, its withdrawal, a
+note and a note's withdrawal MUST each be a document signed as the member, so
+that what a member says on a board stays attributable to them after the
+transport has closed. A member portal that holds a key the member authorized to
+sign for them for this chapter's tasks (`auth/oob` `signingScope`) MAY sign them
+with it, for the session that authorization arms.
+
+**VTI-BRD-051** — A VTC MUST NOT accept a key authorized under VTI-BRD-050 for any
+act of this chapter that requires `vtc.boards.manage`, for an election's ticket,
+or for a ballot. Ticket requests and casts are made only through the member's
+own agent (VTI-VOT-022, VTI-VOT-023, VTI-VOT-030).
+
+### Departure and erasure
+
+**VTI-BRD-060** — When a member departs, a VTC MUST withdraw every idea of theirs
+that is still **proposed**, and MAY show their remaining ideas and notes as those
+of a former member without naming them. When a member's records are erased, a VTC
+MUST remove the text of their notes and of their ideas that are **proposed**,
+**declined** or **withdrawn**; an idea for which an election was opened keeps its
+title and description, which its manifest carries and which cannot change
+(VTI-VOT-013), but MUST NOT keep its proposer's name.
+
+**VTI-BRD-061** — A VTC MUST NOT use a board's ideas or notes, or who wrote them,
+for anything but the board, except as a member's own export of what they wrote.
+
+### Disclosure
+
+**VTI-BRD-070** — A VTC offering boards MUST show a member, before they first
+propose an idea or add a note on a board: that what they write is shown under
+their name to the board's audience; that its facilitators can decline, merge and
+hide what they write; that voting on an idea is a separate election in which the
+board learns no member's ticket or ballot; and that an idea's title and
+description cannot change once an election is opened for it.
+
+### Audit
+
+**VTI-BRD-080** — A VTC MUST record an audit event for the creation, change,
+closing, archiving and deletion of a board, for each election closing a board
+closed or cancelled, for each change to the tombstone retention, and for removing
+a deleted board's tombstones; for appointing a facilitator, for an appointment's
+removal, review and withdrawal; for accepting, declining, merging and
+selecting an idea and moving one back to proposed; and for hiding a note. An
+audit record MUST name an idea or note by reference and MUST NOT carry its text.
+An audit record MUST NOT pair a party with any election's ticket or ballot
+(VTI-VOT-100).
+
+### Facilitators
+
+**VTI-BRD-090** — A facilitator of a board MAY appoint an active member a
+facilitator of that board. An appointment MUST be `vtc.boards.manage` qualified by
+that one board and nothing else, written as a grant on the appointee's access
+control entry that names its appointer (VTI-ACL-070, VTI-ACL-072). It MUST sit
+beside any role the entry holds and never inside it, so that a member who holds no
+administrative role MAY be appointed. A VTC MUST refuse an appointment its
+appointer does not cover when it is written (VTI-ACL-071), and one of a party who
+already facilitates the board.
+
+**VTI-BRD-091** — An appointed facilitator MAY end their own appointment. Ending
+another party's appointment MUST require `vtc.boards.manage` unqualified; the
+facilitators of one board MUST NOT end one another's appointments. Holding
+`vtc.boards.manage` unqualified, or through a role, is not an appointment, and
+MUST NOT be ended under this rule.
+
+**VTI-BRD-092** — A VTC MUST withdraw every appointment to a board when it deletes
+the board (VTI-BRD-007), and every appointment a member holds when they depart.
+When an appointment's appointer departs, or no longer facilitates the board, a VTC
+MUST NOT leave the appointment standing unexamined: it MUST put it to the
+community's administrators for review and MUST withdraw it unless, by the review's
+deadline, an administrator who facilitates the board takes it over as its
+appointer.
+
+**VTI-BRD-093** — A VTC MUST show a board's appointed facilitators, by directory
+entry, to every facilitator of that board, and MUST NOT name them by identifier.
+A VTC MAY show them to the board's audience.
+
+*Rationale for VTI-BRD-090.* A community running an unconference wants the person
+who convenes a track to run its board without becoming an administrator of the
+community. An appointment is a delegation of one board and nothing more, so it
+holds no authority over the community's other boards, elections or members, and
+its holder decides and selects only within the template an elections manager
+fixed (VTI-BRD-002). Letting a board's facilitators appoint co-facilitators is the
+re-delegation this rule explicitly permits (VTI-ACL-073); it is no wider than the
+appointer's own holding, which is that board.
+
+*Rationale for VTI-BRD-091.* A disagreement between a board's facilitators is
+settled by someone who holds authority over all of them. If a facilitator could
+end a peer's appointment, the first to act would win.
+
+*Rationale for VTI-BRD-092.* An appointment outlives neither its board nor its
+holder's membership. Its appointer's departure is different: the appointment was
+sound when made, and the community's administrators, not the passage of time,
+should decide whether it stands.
+
+*Open issue.* A board's audience sees who proposed each idea. A community may
+want ideas proposed anonymously, as some unconferences take cards without names.
+An anonymous proposal that still enforces VTI-BRD-010's limit per member and
+VTI-BRD-012's proposer-only withdrawal needs a pseudonym scoped to the board, as
+the voting chapter's tag is scoped to an election. This chapter does not yet
+specify it.
+
+*Open issue.* VTI-BRD-034 lets a board offer a party all its tickets at once, but
+each request is still one election's registrar learning that the party asked. A
+registrar that is also the board's community learns, from the timing of those
+requests, that one party requested them together. Whether that matters, and how
+a batched request should be spread, is not yet specified.

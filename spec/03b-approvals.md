@@ -107,6 +107,12 @@ A signature satisfies it only where the key is bound to the caller as a
 re-authentication factor under VTI-APV-016, is distinct from every key that can
 sign the caller's operations, and is held where its use requires user
 verification.
+The caller is the subject the operation acts as: an operation signed by a key
+the subject has delegated to sign for it redeems the subject's
+re-authentication, but the re-authentication itself MUST be the subject's own
+gesture and MUST NOT be made with the delegated key. A node MAY deliver the
+challenge to the subject's own agent, rather than to the party that sent the
+operation, as the `step-up` trigger-link flow does (VTI-LNK-125 – VTI-LNK-131).
 
 **VTI-APV-016** — A node MUST bind a re-authentication factor to a subject only
 on evidence independent of the subject's signing keys: a single-use token
@@ -224,6 +230,17 @@ first is the first factor twice. The binding is where a re-authentication
 factor gets its independence, so it is the binding that has to rest on
 something the signing key cannot produce; every later use of the factor
 inherits exactly the assurance its binding had.
+
+*Note.* A re-authentication factor named by a DID, and a key a subject has
+delegated to sign for it (VTI-APV-015), are identifiers the node records:
+in the binding, its audit and its list of the subject's keys. The same one
+bound or delegated at two nodes lets those nodes tell that one subject stands
+behind both, by comparing what each recorded, however distinct the subject's
+own identifiers there are (VTI-KEY-005, VTI-KEY-006). Neither node can detect
+the reuse, since each sees only its own records; only the party holding the
+key can. An agent that creates such a key for its principal therefore creates
+a distinct one for each node, and a node that shows a subject how to bind or
+delegate one says so.
 
 *Rationale for VTI-APV-017.* Holding an operation until its approvers are
 available is what lets a team that is not online together use consent at all.

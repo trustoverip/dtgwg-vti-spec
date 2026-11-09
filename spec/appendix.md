@@ -232,11 +232,23 @@ be settled without changing them.
 | `room-present` | minting a scoped presentation for a data room (`rooms/keys/present`) |
 | `room-open` | opening a sealed data-room record (`rooms/keys/open`) |
 | `holder` *(additive)* | acting for the holder over their own identity across every context |
+| `context-create` *(additive)* | creating child contexts beneath a context the entry acts in (VTI-CTX-020), and giving a context it so created its first identifier |
 
 `holder` is marked additive because no role implies it: it reaches above the
 context tree rather than within it, so deriving it from an administrative role
 would hand it to every context administrator on upgrade. Granting it requires
 unrestricted act authority (VTI-ACL-033).
+
+`context-create` is marked additive for the opposite reason: it exists so that a
+non-administrative entry — an automated provisioner — can branch the tree
+without administering it, and a capability an entry's role does not imply can
+reach that entry only additively. It confers no root creation (VTI-CTX-020
+still requires unrestricted act authority for that) and no reach the entry does
+not already have. Its holder may set the identifier of a context it created
+while that identifier is unset, and only to a `did:key` of a key the context
+itself holds; changing or clearing an established identifier, or setting one on
+a context it did not create, remains an administrator's act. An administrator
+creating a child context does not need it.
 
 The separations in this table are deliberate and each has a reason worth
 keeping: `sign-trust-task` exists so that an agent can sign an envelope without
@@ -284,6 +296,10 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `vtc.directory.notes` | reading and writing administrators' notes about members (VTI-DIR-030 – 033) | — | — |
 | `vtc.groups.manage` | community groups: creating, changing and deleting them, their membership, and their bindings to rooms and capabilities | — | by group (`group:<id>`) |
 | `vtc.elections.manage` | the community's elections: creating, closing early, cancelling and certifying them (VTI-VOT-080) | — | — |
+| `vtc.boards.manage` | the community's boards: creating and running them, deciding their ideas, hiding notes on them, closing them (which ends their elections), appointing their facilitators and, unqualified, deleting them (VTI-BRD-002, VTI-BRD-006, VTI-BRD-007, VTI-BRD-013, VTI-BRD-090) | — | by board (`board:<id>`) |
+| `vtc.badges.admin` | the community's badges: defining, changing, retiring and promoting them, seeing every giving of a kudos badge, and issuing and withdrawing claim codes for any community badge (VTI-BDG-003, VTI-BDG-025, VTI-BDG-042, VTI-BDG-044) | — | — |
+| `vtc.notifications.read` | listing and reading the notifications addressed to the community (VTI-NTF-070) | — | — |
+| `vtc.notifications.relay` | deciding that the community relays a notification it received to its members (VTI-NTF-071) | — | by group (`group:<id>`) |
 | `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
 | `git.repo.manage` | creating, adopting, archiving and transferring repositories | — | by namespace or repository |
 | `git.commit.sign` | the commit right a namespace's checks accept | — | by namespace or repository |
@@ -337,6 +353,36 @@ conferring: a result decides what its manifest says and grants nothing by itself
 (VTI-VOT-080), and creating a binding election takes the consent VTI-VOT-081
 recommends however the requester came to hold the capability. It confers no
 access to ballots, which the community never holds (VTI-VOT-001). It is within
+`community-admin`'s ceiling.
+
+`vtc.boards.manage` serves the Community Boards chapter. It is not
+conferring: selecting an idea grants nothing (VTI-BRD-042). Unqualified it lets
+its holder create boards, together with `vtc.elections.manage`, which a board's
+election template needs because accepting an idea opens an election from it
+(VTI-BRD-002). Qualified by a board, it lets a member facilitate that board
+alone: accept, decline and merge its ideas, hide its notes and select among its
+ideas and appoint other members its facilitators, opening elections only from
+the template a holder of `vtc.elections.manage` fixed, which is never binding
+(VTI-BRD-030). A member with no administrative role holds it this way by
+appointment (VTI-BRD-090). It confers
+no authority to close, cancel or certify those elections (VTI-BRD-032). It is
+within `community-admin`'s ceiling.
+
+`vtc.badges.admin` serves the Community Badges chapter. It is not conferring:
+a badge grants nothing (VTI-BDG-002). It defines what badges the community
+offers; giving a community badge out and deciding who asks for it belong to the
+badge group's managers, that is to `vtc.groups.manage` qualified by the badge
+group (VTI-BDG-011), so a member with no administrative role owns a badge by
+appointment. It is within `community-admin`'s ceiling.
+
+`vtc.notifications.read` and `vtc.notifications.relay` serve the Notifications
+chapter. They are apart so that a community can let an administrator see what
+the community has been told without letting them pass it on: what a community
+has been told says what it belongs to, and a relay tells members so
+(VTI-NTF-046). Qualified by a group, `vtc.notifications.relay` permits a relay
+decision only to that group's members, so that a group's manager can pass a
+notification to their own group and no further. Neither is conferring: a
+relay grants its recipients nothing (VTI-NTF-004). Both are within
 `community-admin`'s ceiling.
 
 A community MAY define further roles, each a ceiling drawn from this registry;
@@ -519,6 +565,8 @@ different thing from a requirement that is met.
 | VTI-CLT-026 | The rotation request carries proof of control of the replacement identifier | The proof is optional in the operation definition and required by deployment policy | Make it required in the definition; a security property that depends on configuration is not a property |
 | VTI-OPS-027 *(observed, corrected)* | The record of accepted document identifiers is shared across every binding a node exposes | A replay guard claims each document identifier with its digest, on the dispatch path every binding shares, bounded by an acceptance window tied to the record's retention — so the requirement holds **within a process**. The guard is in memory, so a horizontally scaled deployment holds one record per replica and can accept the same document once per replica | Share the record across replicas. Note that the acceptance window and the retention are one bound: widening either alone reopens the gap |
 | VTI-OPS-046, VTI-OPS-047 *(open)* | Discovery responses are authenticated, and each operation has a version floor a peer cannot argue a node below | Not established | Determine whether discovery is authenticated on each binding, and whether a floor exists |
+| VTI-OPS-024, VTI-OPS-028 *(observed)* | A document stating an expiry is acceptable until that expiry, up to thirty days after its time of issue; the maximum age applies only to a document stating none | Both node types refuse every document more than their maximum age of ten minutes, plus sixty seconds of skew, past its time of issue, whatever expiry it states, so an expiry can only shorten acceptance. The framework library both build on applies the maximum age whether or not an expiry is stated. The community node also caps its record of accepted identifiers at that bound, so that a producer cannot choose how long it is remembered | Close the window at the acceptance end of VTI-OPS-024: the stated expiry, clamped to the horizon of VTI-OPS-028, and the maximum age only where none is stated. Keep the record of accepted identifiers (VTI-OPS-029) and of keyed operations (VTI-OPS-066) to the same end. The change starts in the framework library's freshness check, and needs the next entry first |
+| VTI-OPS-029 *(observed)* | The record of accepted document identifiers is kept to each document's acceptance end and survives a restart | The agent keeps its record in memory, bounded by capacity, so a restart forgets every identifier and a document accepted shortly before it is acceptable again for the rest of its window. Keyed operations are protected across a restart by the agent's idempotency record, which is persistent; operations without a key are not. The community node's record is persistent | Persist the agent's record in its store, on the dispatch path every binding shares. While windows close ten minutes after issue, the exposure is a restart inside those minutes; once the previous entry is closed, windows of up to thirty days make a restart inside one routine |
 
 #### F.3 Transports, sessions and resolution
 
@@ -528,6 +576,7 @@ different thing from a requirement that is met.
 | VTI-SES-042 | Where a session is bound to a client-held key, a request that does not demonstrate the key is refused | The binding is honoured by some services and silently ignored by others that accept the field | Implement uniformly, or refuse the field where it is not enforced. Accepting a security parameter and ignoring it is worse than not offering it |
 | VTI-KEY-061 | Negative resolution results cached briefly, and never when the failure was a transport failure | Long-lived negative caching that does not distinguish the two | Bound the lifetime; never cache a transport failure |
 | VTI-TRN-045 *(observed)* | A sender takes a recipient's acceptance window from what the recipient advertises | Both node types now advertise, in `trust-task-discovery/0.3`, the window they apply: a maximum age of ten minutes and a skew tolerance of sixty seconds, drawn from the same value their consumers enforce, so VTI-TRN-047 is met and the advertisement cannot be wider than what is applied. The push engine of both node types still reads no advertised window: it applies that same value, documented, to every recipient, which is VTI-TRN-045's final tier. Between the two node types this is correct, because it is the window each advertises. It is not correct for a recipient that applies a narrower window. Reading one needs what the engine lacks: pushes are one-way with no correlated reply path for a discovery exchange; the recipients pushed to today (approvers' devices, members' wallets, requesters) serve no discovery; the window matters only while a document is held, which is when the recipient cannot answer; and the engine does not observe an `expired` refusal, so the discovery definition's re-ask rule has nothing to trigger it | When a class of push recipient advertises a window: a per-recipient cache keyed by DID, with a lifetime, filled only from authenticated discovery responses, a per-type entry preferred to the response-level one and absence meaning nothing was learnt, read by the engine's staleness decisions. That first needs a correlated reply path, or a refusal routed back to the engine |
+| VTI-TRN-048 *(observed)* | A sender whose delivery can outlast the recipient's maximum age states an expiry on the document, no later than the close of its delivery window | The push engine shared by both node types states no expiry on the documents it pushes. A push whose deadline runs to a day, or thirty days for a removal notice, is acceptable at the recipient for the maximum age only, and is carried after that by new documents under VTI-TRN-046 | Stamp the push's deadline, at most thirty days after the time of issue, as the expiry of the documents it sends, once recipients close their window at VTI-OPS-024's acceptance end. Until they do, a recipient refuses the document at its maximum age whatever expiry it states, so the stamp changes nothing |
 
 #### F.4 Signing, audit and identifiers
 
@@ -535,6 +584,7 @@ different thing from a requirement that is met.
 |---|---|---|---|
 | VTI-SES-042 *(observed, corrected)* | Where a session is bound to a client-held key, a request that does not demonstrate the key is refused | Not implemented at one node type: its challenge request carries no such member, the internal field is set to absent at every call site, and no request path enforces a binding. The shared session type carries the member and other node types populate it, so the plumbing exists and this node does not use it | Implement the binding, or state that this node type does not offer it. This is an unimplemented SHOULD rather than a parameter accepted and ignored — the earlier entry said otherwise and was wrong |
 | VTI-AUD-006 *(open)* | Reading the audit trail is authorized and audited | The read operation exists; whether the read is itself recorded has not been established | Establish, and record the read |
+| VTI-AUD-005 *(observed)* | An audit record refers to personal data by reference or by salted commitment, never by embedding it | At one agent node, the chained trail committed actor and DID-shaped target identifiers (closed below) but kept any other resource in the clear inside the hashed event, on the rule that only a DID is personal data. An agent-memory item's key is not a DID and is personal — it names what was remembered, often a person — so every memory write recorded before the change named its item in the clear, where no erasure can reach it without breaking verification. Records written since name each item by a keyed commitment under the audit key, and reads record which items they returned the same way, so the trail still answers which agent touched which item. The records already written cannot be rewritten | The earlier records leave the trail at the retention sweep, behind its watermark, and nothing else removes them. A node that must honour an erasure of one of those keys before then can only shorten retention. The rule that a non-DID resource is not personal data is still applied to the node's other actions, and has not been established for each of them |
 | VTI-KEY-006 *(observed)* | A client identifier is not reused across trust contexts | A client holds one identifier per node it is enrolled with, used in every context that entry is scoped to | Derive a client identifier per context, or scope a client to one context. Until then a node can link a client's activity across every context it reaches, and so can anything that observes two of them |
 | VTI-KEY-013, VTI-TRN-026, VTI-APV-013 *(open)* | Retirable algorithms; per-relationship routing identifiers; the approver sees the octets that are digested | Not established | Establish each. VTI-APV-013 is the one to establish first: it is the requirement whose failure is invisible to everyone including the approver |
 
@@ -576,12 +626,13 @@ own limits are worth carrying: domain separation makes a signature unusable
 outside the domain it was requested in without making the signing of
 unparseable material safe, and a retention watermark restores verification
 across an honest sweep while resting on a record held in the same store as the
-log it vouches for. Two entries, VTI-APV-014 and VTI-TRN-044 with
-VTI-TRN-046, are recorded here although they were never listed above: each
-divergence was known to its implementer and closed before anyone added it, and
-the history is recorded so that the omission is not taken for conformance all
-along. The second was closed before the requirements it is recorded against
-were written; they were drafted from the change that closed it.
+log it vouches for. Three entries, VTI-APV-014, VTI-TRN-044 with VTI-TRN-046,
+and VTI-OPS-061 with VTI-OPS-067, are recorded here although they were never
+listed above: each divergence was known to its implementer and closed before
+anyone added it, and the history is recorded so that the omission is not taken
+for conformance all along. The second and third were closed before the
+requirements they are recorded against were written (VTI-OPS-061 apart); those
+requirements were drafted from the changes that closed them.
 
 | Requirement | Closed by |
 |---|---|
@@ -596,6 +647,9 @@ were written; they were drafted from the change that closed it.
 | VTI-TRN-044, VTI-TRN-046 *(observed, never listed)* | The push engine shared by both node types signed a document once and sent those bytes on every attempt for the whole of a push's deadline — up to a day for a credential-exchange step, thirty days for a removal notice — while both node types refuse a document more than about eleven minutes past its time of issue. Every escalation, every re-queue after a restart, every hop refused for longer than the window, and every copy collected by a recipient that had been offline therefore delivered a document the recipient refused as expired, and nothing told the sender. The last case was also recorded as delivered, on collection evidence. The engine now issues a new document instead — a new identifier, a new time of issue, the node's proof again, the original's thread and idempotency key — when it queues an attempt whose document is past the window, when an attempt never handed to a hop crosses it, and when a copy is collected after the latest acceptable instant; collection of such a copy is recorded as not counting. The push sites whose repeat leaves a second artefact now carry an idempotency key, and the agent's consumer now keys every task it serves that carries one, classified or not (VTI-OPS-062), so the new documents are one operation. The remaining push sites send notices and consent requests, whose repeat converges, so item 2 of VTI-TRN-046 holds by what each site sends rather than by a check in the engine. New documents per push are bounded, and none is issued for a document with no time of issue or past its own expiry. What this does not close: a copy a mediator already holds is sealed and cannot be recalled, so a recipient that reconnects after the window refuses that copy and then receives a new one. The window the engine applies is a constant rather than the recipient's own, which F.3 records against VTI-TRN-045 |
 | VTI-TRN-047 | Neither node type advertised the acceptance window it applies, because the discovery definition it served had no member to carry one. Both now answer `trust-task-discovery/0.3` and advertise, at response level, a maximum age of ten minutes and a skew tolerance of sixty seconds. The advertised value and the one their consumers enforce are one value, rounded down to whole seconds when advertised, so the advertisement cannot be wider than what is applied, and each node holds that with a test that reads the window back out of its own discovery answer and checks a document at the advertised edge is accepted and one past it refused. The agent also still answers the earlier discovery version. What this does not close: a sender reading the window a recipient advertises, which F.3 records against VTI-TRN-045 |
 | VTI-ACL-001, VTI-VTC-020 *(observed, closed)* | At one community node, the `git-ns/*` task family, which governs repositories on external forges, was authorized by a second model: *rights* held by a subject on a forge-qualified resource, in a store of their own, evaluated in code no policy reaches, with the signer's access control entry read only for membership and for the administrative role. The rights are now capabilities on the holder's own entry, qualified by the resource they apply to (VTI-ACL-035): namespace administration is `git.ns.admin` qualified by the namespace; ownership, maintenance and repository creation are `git.repo.manage` qualified by the repository's identifier or by the namespace, narrowed by a grade (owner, maintainer, creator) that confers less than the capability in full — the qualifier bounds what a capability confers from above, so a narrower grade is within it, and it is what keeps an owner's and a maintainer's roles on the forge apart and keeps the right to create a repository from conferring anything over the repositories already there; commit signing is `git.commit.sign` qualified by either. Each grant records the subject it was delegated from (VTI-ACL-072). There is no second store: the family's operations, the console and the node's approver sets all ask the entry, and the store that held the rights is migrated onto the entries at start-up and on restore, with anything that could not be mapped kept inert and raised for the administrators rather than dropped or granted. The two questions the entry left open are settled. A subject with no entry may hold no right: one that holds a right without being a member — the bridge serving a namespace, an external signer — holds it on an entry of an `application` community role that is never a membership, never authenticates a session, never receives a right that carries authority over others, and is removed with its last grant (VTI-ACL-037, VTI-ACL-070); the bridge's results and events are still accepted because the namespace records its identifier. A granted right is a delegation: it cannot exceed what the granter's own entry holds at a covering qualifier, checked beneath the family's own grant rules (VTI-ACL-037, VTI-ACL-071), and when its granter leaves the community it goes to review, is withdrawn if nobody re-affirms it under their own authority within the action lifetime, and is withdrawn at once if declined — the default that kept a departed granter's grants in force is gone. The family's fixed rules still run before the community's policy, which can only refuse (VTI-VTC-022). What this does not close: a grant goes to review when its granter departs, not when the granter keeps its membership but loses the right it delegated from, because the family's own transfer hands that right away by design; and the step-up and publication entries above, on the same family, are unaffected |
+| VTI-OPS-061, VTI-OPS-067 *(observed, never listed)* | At the agent, the dispatcher claims an idempotency key before performing a keyed operation and records the outcome after it, in two writes. A process that stopped between the operation's effect and the record left the claim in flight, and once a ten-minute grace had passed, the next attempt under that key took the claim and performed the operation again: a repeated key-creation request produced a second key. A claim older than the grace is now reported as abandoned and never taken. A repeat under that key is refused as of unknown outcome, naming when the lost attempt began, and the caller establishes what happened before asking again under a new key. A failure to read or write the record now refuses the request instead of performing it unguarded. A test holds both across two lifetimes of the node over one retained store, and fails under the earlier behaviour |
+| VTI-NTF-080 – VTI-NTF-092 *(observed)* | The agent collected only for its own identity, so a notification or relay addressed to the persona of a member with only a browser client reached nobody. It now collects for every identifier of its principal's whose keys it holds and that advertises a mediated transport, unless a client holds a collection claim for it: the claim, release and listing operations are served, a claim is answered only after the agent's own connection for the identifier is closed, and the collector re-reads the claim under the identifier's lock before it opens one. A document it collects is answered as the identifier collected for, and every operation other than those VTI-NTF-086 names is answered as one it does not serve, naming the identifier and never the agent. A connection that another one keeps closing is counted, and at the bound the agent stops collecting for that identifier until a client claims it. The client implementation that connected without a claim now claims before it connects. What this does not close: a client released before collection claims still connects without one, which is the case a principal disables collection for its context for (VTI-NTF-094 – VTI-NTF-098, below) |
+| VTI-NTF-094 – VTI-NTF-098 *(observed, re-filed)* | Collection by default shipped behind one operator setting, read at start-up and disabled unless enabled. It is now a setting of each trust context, stored by the agent and enabled where nothing is stored, so every context collects on upgrade. A context administrator of the context or of an ancestor, or an unrestricted administrator, changes it at run time; the change is audited before it is applied and refused if the audit cannot be written. Disabling closes the context's collecting connections before it is answered. Enabling begins collection without waiting for the connections to open, as the operation allows. Setting the value already held changes nothing, including who last changed it. Any party with standing in the context reads it, with who last changed it and when, and whether the operator has suspended collection. The operator's setting is replaced by a suspension that can only stop collection, never changes a context's setting, and is audited when the agent starts with it engaged or lifted; the earlier setting is ignored with a warning, whatever its value, so a configuration that names it still starts. What this does not close: integrations provisioned before the agent recorded provisioning are identified once, at the first start after upgrade, from what the agent's own records still show of their provisioning, and one whose records were pruned or kept only outside the agent stays a candidate until its operator excludes it |
 
 #### F.5a Administrative authority at a community
 
@@ -634,7 +688,24 @@ parameter as accepted-and-ignored when the node in question never accepted it.
 A register that quietly drops such entries teaches its readers not to trust the
 ones that remain.
 
-### Appendix G: Acknowledgements
+### Appendix G: Notification kind registry
+
+This appendix is normative. It is the registry of notification kinds that
+VTI-NTF-010 names. A kind is registered by a change to this appendix that adds
+its row and the definition VTI-NTF-011 requires, and registering one changes no
+operation: the notification operation's schema fixes only the form of a kind's
+name — a lowerCamelCase name registered here, or `<reverse-DNS domain>:<name>`
+for a kind defined under a domain its definer controls, which needs no row.
+
+A registered kind's name MUST NOT be reused for another kind, and a kind
+withdrawn from use is marked withdrawn and keeps its row (VTI-CNF-004 applies to
+kind names as it does to requirement identifiers).
+
+| Kind | Thing | Holder / identifier | Opened by | Audience | Carries beyond VTI-NTF-002 | Relayable | A relay discloses | Lapses | Defined by |
+|---|---|---|---|---|---|---|---|---|---|
+| `election` | an election, poll or survey of a community | the community / the election's identifier | the catalogue's operation for reading one election | the identifier a credential roll names, or the community's own | nothing; the period is the voting period | yes | that the relayer is a member of the community | when voting closes | VTI-NTF-060 – VTI-NTF-063 |
+
+### Appendix H: Acknowledgements
 
 This specification draws on composition-assurance work carried out elsewhere in
 the DTG portfolio, recorded in Appendix E, and on operational experience from
