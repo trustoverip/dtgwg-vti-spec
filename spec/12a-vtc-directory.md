@@ -430,7 +430,8 @@ created by the VTA the community is provisioned on. The VTC MUST NOT hold the
 group's keys, and MUST obtain every artefact signed under the group's
 identifier by a signing request to that VTA, as VTI-KEY-111 requires for the
 community's own attestation keys. The key that signs the group's credentials
-MUST be held with the custody VTI-KEY-110 requires of an `attestation` key.
+MUST be held with the custody VTI-KEY-110 requires of an `attestation` key at the
+community's own key assurance level.
 
 **VTI-DIR-081** — A VTC MUST NOT record a group before its identifier exists.
 
