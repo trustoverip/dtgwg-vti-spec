@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-10T00:26:47.615Z"
+      "lastUpdated": "2026-11-10T05:01:30.152Z"
     }
   ]
 };</script>
@@ -11096,10 +11096,10 @@ different thing from a requirement that is met.</p>
 <td>Include the direction in the cursor binding and refuse a mismatched resume</td>
 </tr>
 <tr>
-<td>VTI-ACL-102, VTI-ACL-110 <em>(reported)</em></td>
-<td>Every operation by which a node opens a data-room record for its principal is purpose-bound, and a room’s authority credential may state purposes</td>
-<td>At one agent node, the reads of its principal’s agent memory are purpose-bound — a request names its purpose, one the entry does not grant is refused, and the audit record carries it — but the operations by which it opens a room record for its principal take no purpose and are served under any entry that may open them, and the room authority credentials it issues and verifies state none</td>
-<td>Room-record operations gain a purpose member and are held to the caller’s entry as memory reads are; authority credentials state <code>purposes</code>, and a verifier applies VTI-ACL-103 – VTI-ACL-107 to them. Until then a room read is recorded without a purpose, and a narrowed entry’s narrowing does not reach room content</td>
+<td>VTI-ACL-110 <em>(reported)</em></td>
+<td>A room’s authority credential may state purposes, and the node that verifies it applies VTI-ACL-103 – VTI-ACL-107 to it</td>
+<td>At one agent node, opening a room record for its principal is purpose-bound — the request names its purpose, and one the caller’s entry does not grant is refused and recorded — and the purpose is passed to the room’s host. But the authority credentials it issues state no purposes, and the hosts that verify them hold no read to any: the credential format defines no such member, and the verifier library refuses a credential carrying one</td>
+<td>The credential format gains the member (trustoverip/dtgwg-cred-spec#84) and the verifier library reads it and applies the chain rule; then the node writes it into the credentials it issues, and the hosts hold <code>rooms/records/get</code> 0.4 to it. Until then a chain grants <code>any</code>, and only the caller’s entry narrows a room read</td>
 </tr>
 <tr>
 <td>VTI-ACL-107 <em>(reported)</em></td>
@@ -11729,8 +11729,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-10T00:26:47.147Z">
-                            Generated: 2026-11-10T00:26:47.147Z
+                        <time class="timestamp" datetime="2026-11-10T05:01:29.612Z">
+                            Generated: 2026-11-10T05:01:29.612Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
