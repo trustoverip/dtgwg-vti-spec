@@ -57,7 +57,7 @@ Three bodies of normative material:
 | | Considerations (security, privacy, governance, i18n, accessibility) | `spec/90-considerations.md` |
 | | Conformance | `spec/95-conformance.md` |
 | | References | `spec/96-references.md` |
-| | Appendices A–H | `spec/appendix.md` |
+| | Appendices A–I | `spec/appendix.md` |
 
 One chapter per file, because `markdown_paths` order is the rendered order and
 the file split becomes the working group's unit of assignment and review. This
