@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-10T09:12:27.605Z"
+      "lastUpdated": "2026-11-10T11:15:18.585Z"
     }
   ]
 };</script>
@@ -11790,12 +11790,6 @@ different thing from a requirement that is met.</p>
 <td>At least one paginated listing does not bind direction, so a resumed listing can change question mid-sweep</td>
 <td>Include the direction in the cursor binding and refuse a mismatched resume</td>
 </tr>
-<tr>
-<td>VTI-ACL-107 <em>(reported)</em></td>
-<td>A delegated entry’s purposes are within those of the entry it derives from</td>
-<td>At the same node, the access-control operations bound a written entry’s purposes by the writer’s own, and so does the shared write path most grants take; entries the node writes on its other paths — registering a device, creating a context’s administrator, a step-up approval’s grant, and the steps of provisioning an integration that write directly — state <code>any</code> without consulting the writer’s purposes</td>
-<td>Each such path writes purposes within the writer’s own, or refuses where the writer’s entry lists purposes. Until then an entry whose own purposes are listed should not be used to provision on those paths</td>
-</tr>
 </tbody>
 </table>
 </div><h4 id="f.2-operations-and-versioning" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.2-operations-and-versioning">§</a> F.2 Operations and versioning</h4>
@@ -12152,6 +12146,10 @@ requirements were drafted from the changes that closed them.</p>
 <td>VTI-ACL-110</td>
 <td>A room’s authority credential now states purposes: the credential format defines the member (trustoverip/dtgwg-cred-spec#84, context v2) and the verifier library reads it, applying the chain rule — a link stating none takes its parent’s, and a chain in which a link states purposes its parent does not grant is refused whole. The agent node writes the purposes a grant asks for into the credential it issues, unchanged (<code>rooms/owner/issue-authority</code> 0.3), and refuses a grant wider than the caller’s own entry — a purpose the caller does not hold, or none at all from a caller whose entry lists purposes, since a credential stating none grants <code>any</code> — rather than issuing one narrower or wider. The hosts that verify those credentials hold every read to the purposes the chain grants (<code>rooms/records/get</code> 0.4), refusing one it does not grant with <code>purposeNotGranted</code> before any record is read, and record the purpose each read was served for. A version of the read that cannot name a purpose is decided as one naming none, so a chain listing more than one purpose is refused there rather than read as <code>any</code></td>
 </tr>
+<tr>
+<td>VTI-ACL-107 <em>(corrected)</em></td>
+<td>The provisioning of an integration now writes the administrator it creates with the provisioner’s own purposes, which are within them by construction; it had written <code>any</code>, which the shared grant path refused to a provisioner whose entry lists purposes, so such a provisioner could not provision at all. The entry also named three paths that, on inspection, write no delegated entry over the network: registering a device and the agent’s other device operations change an existing entry and keep its purposes, a context’s administrator is created by the access-control grant operation, which bounds purposes by the writer’s, and a step-up approval issues a short-lived token the node signs, writing no access-control entry. Key rotation (<code>acl/swap-key</code>) and a hand-off successor carry the entry’s own purposes. Entries written by the node’s offline administrative commands are written by the operator at the node, not delegated from an entry</td>
+</tr>
 </tbody>
 </table>
 </div><h4 id="f.5a-administrative-authority-at-a-community" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.5a-administrative-authority-at-a-community">§</a> F.5a Administrative authority at a community</h4>
@@ -12416,8 +12414,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-10T09:12:27.083Z">
-                            Generated: 2026-11-10T09:12:27.083Z
+                        <time class="timestamp" datetime="2026-11-10T11:15:18.114Z">
+                            Generated: 2026-11-10T11:15:18.114Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
