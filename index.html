@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-10T05:01:30.152Z"
+      "lastUpdated": "2026-11-10T09:11:04.952Z"
     }
   ]
 };</script>
@@ -11096,12 +11096,6 @@ different thing from a requirement that is met.</p>
 <td>Include the direction in the cursor binding and refuse a mismatched resume</td>
 </tr>
 <tr>
-<td>VTI-ACL-110 <em>(reported)</em></td>
-<td>A room’s authority credential may state purposes, and the node that verifies it applies VTI-ACL-103 – VTI-ACL-107 to it</td>
-<td>At one agent node, opening a room record for its principal is purpose-bound — the request names its purpose, and one the caller’s entry does not grant is refused and recorded — and the purpose is passed to the room’s host. But the authority credentials it issues state no purposes, and the hosts that verify them hold no read to any: the credential format defines no such member, and the verifier library refuses a credential carrying one</td>
-<td>The credential format gains the member (trustoverip/dtgwg-cred-spec#84) and the verifier library reads it and applies the chain rule; then the node writes it into the credentials it issues, and the hosts hold <code>rooms/records/get</code> 0.4 to it. Until then a chain grants <code>any</code>, and only the caller’s entry narrows a room read</td>
-</tr>
-<tr>
 <td>VTI-ACL-107 <em>(reported)</em></td>
 <td>A delegated entry’s purposes are within those of the entry it derives from</td>
 <td>At the same node, the access-control operations bound a written entry’s purposes by the writer’s own, and so does the shared write path most grants take; entries the node writes on its other paths — registering a device, creating a context’s administrator, a step-up approval’s grant, and the steps of provisioning an integration that write directly — state <code>any</code> without consulting the writer’s purposes</td>
@@ -11465,6 +11459,10 @@ requirements were drafted from the changes that closed them.</p>
 <td>VTI-NTF-094 – VTI-NTF-098 <em>(observed, re-filed)</em></td>
 <td>Collection by default shipped behind one operator setting, read at start-up and disabled unless enabled. It is now a setting of each trust context, stored by the agent and enabled where nothing is stored, so every context collects on upgrade. A context administrator of the context or of an ancestor, or an unrestricted administrator, changes it at run time; the change is audited before it is applied and refused if the audit cannot be written. Disabling closes the context’s collecting connections before it is answered. Enabling begins collection without waiting for the connections to open, as the operation allows. Setting the value already held changes nothing, including who last changed it. Any party with standing in the context reads it, with who last changed it and when, and whether the operator has suspended collection. The operator’s setting is replaced by a suspension that can only stop collection, never changes a context’s setting, and is audited when the agent starts with it engaged or lifted; the earlier setting is ignored with a warning, whatever its value, so a configuration that names it still starts. What this does not close: integrations provisioned before the agent recorded provisioning are identified once, at the first start after upgrade, from what the agent’s own records still show of their provisioning, and one whose records were pruned or kept only outside the agent stays a candidate until its operator excludes it</td>
 </tr>
+<tr>
+<td>VTI-ACL-110</td>
+<td>A room’s authority credential now states purposes: the credential format defines the member (trustoverip/dtgwg-cred-spec#84, context v2) and the verifier library reads it, applying the chain rule — a link stating none takes its parent’s, and a chain in which a link states purposes its parent does not grant is refused whole. The agent node writes the purposes a grant asks for into the credential it issues, unchanged (<code>rooms/owner/issue-authority</code> 0.3), and refuses a grant wider than the caller’s own entry — a purpose the caller does not hold, or none at all from a caller whose entry lists purposes, since a credential stating none grants <code>any</code> — rather than issuing one narrower or wider. The hosts that verify those credentials hold every read to the purposes the chain grants (<code>rooms/records/get</code> 0.4), refusing one it does not grant with <code>purposeNotGranted</code> before any record is read, and record the purpose each read was served for. A version of the read that cannot name a purpose is decided as one naming none, so a chain listing more than one purpose is refused there rather than read as <code>any</code></td>
+</tr>
 </tbody>
 </table>
 </div><h4 id="f.5a-administrative-authority-at-a-community" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.5a-administrative-authority-at-a-community">§</a> F.5a Administrative authority at a community</h4>
@@ -11729,8 +11727,8 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-10T05:01:29.612Z">
-                            Generated: 2026-11-10T05:01:29.612Z
+                        <time class="timestamp" datetime="2026-11-10T09:11:04.627Z">
+                            Generated: 2026-11-10T09:11:04.627Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
