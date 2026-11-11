@@ -109,7 +109,7 @@ customElements.define("slide-panels",class extends HTMLElement{static get observ
       ],
       "source": "xref",
       "termId": "term:credential",
-      "lastUpdated": "2026-11-10T11:15:18.585Z"
+      "lastUpdated": "2026-11-11T10:39:52.188Z"
     }
   ]
 };</script>
@@ -2065,17 +2065,34 @@ open.</p>
 them, the roles a node’s keys play, and the lifecycle of all three.</p>
 <h3 id="identifier-methods" tabindex="-1"><a class="toc-anchor d-print-none" href="#identifier-methods">§</a> Identifier methods</h3>
 <p><strong>VTI-KEY-001</strong> — The durable identity of a VTA, a VTC or a host service MUST
-be a <code>did:webvh</code> identifier, or a <code>did:scid:vh:1</code> identifier whose source is a
-<code>did:webvh</code> log (VTI-KEY-160). <code>did:webvh</code> is the default (VTI-KEY-165).</p>
+be a <code>did:webvh</code> identifier, a <code>did:scid:vh:1</code> identifier whose source is a
+<code>did:webvh</code> log (VTI-KEY-160), or a <code>did:webs</code> identifier [DID-WEBS].
+<code>did:webvh</code> is the default (VTI-KEY-165). <code>did:webs</code> is an optional method
+(VTI-KEY-003), at alpha maturity: a node MAY use it for its durable identity
+only toward peers that have declared they resolve it (VTI-KEY-008). A
+<code>did:webs</code> durable identity at key assurance level 2 or 3 MUST carry the
+key-role designation extension (VTI-KEY-173); one without the extension is at
+level 1 (VTI-KEY-146).</p>
 <p><strong>VTI-KEY-002</strong> — A client bootstrap identity MUST be a <code>did:key</code> identifier, as
 required by VTI-CLT-003.</p>
-<p><strong>VTI-KEY-003</strong> — A node MAY support further identifier methods, and MUST NOT
-require a peer to support a method other than those named in VTI-KEY-001 and
-VTI-KEY-002.</p>
+<p><strong>VTI-KEY-003</strong> — Every node MUST be able to resolve <code>did:webvh</code>,
+<code>did:scid:vh:1</code> (VTI-KEY-161) and <code>did:key</code> (VTI-KEY-002), the <em>required
+methods</em>. A node MAY support further identifier methods, each an <em>optional
+method</em>; <code>did:webs</code> is one, although VTI-KEY-001 admits it to the durable
+position. A node MUST NOT require a peer to resolve an optional method, and
+MUST NOT use a durable identity of an optional method toward a peer except as
+VTI-KEY-008 permits.</p>
 <p><strong>VTI-KEY-004</strong> — An identifier method serving the durable position MUST provide:
 resolution by a party with no prior relationship to the subject; a verifiable
 history of the identifier’s updates; rotation of key material without change of
 the identifier; and deactivation.</p>
+<p><em>Note.</em> <code>did:webvh</code> and its <code>did:scid:vh:1</code> form meet VTI-KEY-004 through the
+log. <code>did:webs</code> meets it through its key event log (KEL): a stranger resolves it
+from the host the identifier names, verifying the document against the KEL; the
+KEL, with its witness receipts, is the verifiable history; a rotation event
+replaces the current keys under the next-key commitments, and the identifier,
+which ends in the KERI autonomic identifier (AID) fixed at inception, does not
+change; and a rotation to no next keys deactivates it.</p>
 <p><em>Rationale.</em> The two positions have opposite requirements, which is why two
 methods are required rather than one. A node’s identity outlives its keys and
 has to be resolvable by strangers, so it needs a log and a history. A client’s
@@ -2085,6 +2102,70 @@ VTI-KEY-004 states what the durable position depends on, so that a future
 method can be evaluated against the requirement rather than against the name.
 Which methods can carry a key-role identity is a stricter question, answered
 by VTI-KEY-170 to VTI-KEY-173.</p>
+<p><strong>VTI-KEY-008</strong> — A node MUST NOT initiate an exchange as a durable identity
+(VTI-KEY-001) of an optional method — send a message, a Trust Task document or
+an attestation artefact to a peer as that identity — unless the peer has declared that it
+resolves that method. A peer declares the optional methods it resolves in its
+own identifier document, in a top-level <code>resolvedMethods</code> member: an array of
+method names, each the method-name component of a DID (<code>"webs"</code> for
+<code>did:webs</code>), without duplicates. A node MUST take the declaration from the
+peer’s verified current document, and MUST NOT take it from any other source.
+A node whose durable identity is of an optional method MUST resolve that
+method, and by using it declares it, whether or not its document carries
+<code>resolvedMethods</code>. A node MAY also act as that identity toward a party that
+has itself addressed the node under it — by an authenticated message or a
+session whose audience is that identity — since doing so shows that the party
+resolves it. The required methods (VTI-KEY-003) need no declaration, and a <code>resolvedMethods</code>
+that omits one MUST NOT be read as withdrawing it. Where an identifier
+document is processed as JSON-LD, its <code>@context</code> MUST define <code>resolvedMethods</code>
+with the term definition below:</p>
+<pre><code class="language-json"><span class="token punctuation">{</span> <span class="token property">"resolvedMethods"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"@id"</span><span class="token operator">:</span> <span class="token string">"https://w3id.org/vti#resolvedMethods"</span><span class="token punctuation">,</span> <span class="token property">"@type"</span><span class="token operator">:</span> <span class="token string">"@json"</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+</code></pre>
+<p><strong>VTI-KEY-009</strong> — A node that would act as a durable identity of an optional
+method toward a peer that has not declared it (VTI-KEY-008) MUST fail the exchange
+with a refusal that carries the discriminator <code>methodNotDeclared</code> and names the
+method (VTI-OPS-033), distinguishable from a transport failure (VTI-OPS-034),
+and MUST send nothing. It MUST NOT downgrade: it MUST NOT act toward the peer
+under another identifier in its place, nor send without authenticating. A
+party that receives material it can rely on only by resolving an identifier of
+a method it does not resolve MUST refuse it, and, where it answers, MUST answer
+with a refusal that carries the discriminator <code>unsupportedDidMethod</code> and names
+the method; it MUST NOT treat the material as unauthenticated and process it
+anyway.</p>
+<p><em>Note (alpha).</em> <code>did:webs</code> is admitted to the durable position at alpha
+maturity. The <code>did:webs</code> specification and the KERI specifications it rests on
+are not final, and the key-role designation it needs above level 1 is proposed
+to it and not yet adopted (VTI-KEY-173). A <code>did:webs</code> durable identity created
+now may have to be re-created, under a new identifier, as they settle; every
+party that recorded standing for the old identifier would then have to learn
+the new one. This specification may change VTI-KEY-001, VTI-KEY-003,
+VTI-KEY-008 and VTI-KEY-009 as they do.</p>
+<p><em>Open issue.</em> A <code>did:webs</code> document is derived from its key event log, and the
+method as published renders no member a controller chooses, so a node whose
+own identity is <code>did:webs</code> cannot list <code>resolvedMethods</code> for any further
+optional method it resolves. It declares <code>did:webs</code> by using it (VTI-KEY-008),
+and nothing more, until the <code>did:webs</code> specification provides a way to render
+such a member.</p>
+<p><em>Rationale for VTI-KEY-003, VTI-KEY-008 and VTI-KEY-009.</em> A method every node
+must resolve raises the cost of being a node; a method no peer is obliged to
+resolve costs only the parties that choose it. <code>did:webs</code> is admitted on the
+second terms: a node that chooses it takes on the burden of finding peers that
+can resolve it, and a peer that cannot is never made to. The declaration lives
+in the peer’s identifier document because that is the one source a node
+already resolves and verifies before it sends anything, as it does to choose a
+transport; a discovery exchange would need the node to authenticate as the
+identity the peer cannot yet resolve. A party that addresses the node under its
+identity has already resolved it, so it needs to declare nothing, which is how
+a client, whose <code>did:key</code> carries no document, reaches a node that uses
+<code>did:webs</code>. The failure is named on both sides because the silent alternatives
+are each worse: a node that falls back to another identifier presents a subject
+the peer recorded no standing for, and a peer that processes what it could not
+authenticate has accepted it on nobody’s word. A party that relies on a node’s
+artefacts without exchanging with it, such as a verifier of a community’s
+credentials, can declare nothing to the node; it either resolves the method or
+refuses the artefact, and an operator choosing <code>did:webs</code> for an identity whose
+artefacts strangers rely on accepts that refusal, unless a governance framework
+its relying parties follow requires them to resolve the method.</p>
 <h3 id="the-did%3Ascid-form-of-a-did%3Awebvh-identifier" tabindex="-1"><a class="toc-anchor d-print-none" href="#the-did%3Ascid-form-of-a-did%3Awebvh-identifier">§</a> The <code>did:scid</code> form of a <code>did:webvh</code> identifier</h3>
 <p><code>did:scid</code> [DID-SCID] is a metamethod: a <code>did:scid</code> identifier is a
 self-certifying identifier of a source method, and its <code>src</code> parameter says
@@ -2150,7 +2231,8 @@ The two forms are distinct identifiers. A node MUST NOT treat them as one
 subject unless the <code>did:webvh</code> form’s document lists the <code>did:scid</code> form in
 <code>alsoKnownAs</code> (VTI-KEY-166), and then only as VTI-KEY-169 provides.</p>
 <p><strong>VTI-KEY-165</strong> — A node that creates durable identities MUST create them as
-<code>did:webvh</code> logs, and MUST present each new identity in the <code>did:webvh</code> form
+<code>did:webvh</code> logs, except one the request names as a <code>did:webs</code> identity
+(VTI-KEY-001), and MUST present each new identity in the <code>did:webvh</code> form
 unless the request, or the configuration of VTI-VTA-034 or VTI-VTC-004, selects
 the <code>did:scid</code> form. The log is the same either way; the form decides which
 identity the node gives out. The form MAY later be changed only as VTI-KEY-168
@@ -2399,7 +2481,7 @@ by identifier method, and states which requirements of this chapter bind each.</
 <tr>
 <td><a class="term-reference" href="#term:service-did">service DID</a></td>
 <td>The durable identity of a node or a service: a VTA, a VTC, a VTN, a trust registry, a host service, a mediator, an integration</td>
-<td><code>did:webvh</code>, <code>did:scid:vh:1</code> (VTI-KEY-001)</td>
+<td><code>did:webvh</code>, <code>did:scid:vh:1</code>; <code>did:webs</code>, optional and alpha (VTI-KEY-001, VTI-KEY-008)</td>
 <td>Chosen by its operator as a <a class="term-reference" href="#term:key-assurance-level">key assurance level</a> (VTI-KEY-194)</td>
 </tr>
 </tbody>
@@ -3645,9 +3727,14 @@ is verifiable only by verifiers whose resolver implements the extension. The
 alternative — amending VTI-KEY-093 to tolerate a change-authority key that the
 method itself renders, absent from <code>keyRoles</code> and never used to sign anything but
 log events — is not taken, because it keeps the most protected key in two
-verification relationships. VTI-KEY-001 does not yet name <code>did:webs</code> for a node’s
-durable identity: naming it would require every peer to resolve <code>did:webs</code>
-(VTI-KEY-003), and waits on the extension’s adoption.</p>
+verification relationships. VTI-KEY-001 names <code>did:webs</code> for a node’s durable
+identity as an optional method, used only toward peers that declare they resolve
+it (VTI-KEY-008), so naming it obliges no peer to resolve it. That does not
+settle the extension: a peer that declares <code>did:webs</code> but whose resolver lacks
+the extension still refuses the document of a <code>did:webs</code> identity at level 2 or
+3, so until the extension is adopted a node at those levels can rely only on
+peers whose resolver implements it, and a plain <code>did:webs</code> durable identity is at
+level 1.</p>
 <h3 id="level-1-identities-and-raising-a-level" tabindex="-1"><a class="toc-anchor d-print-none" href="#level-1-identities-and-raising-a-level">§</a> Level-1 identities and raising a level</h3>
 <p>Every node identity created before key roles has one key in both
 <code>assertionMethod</code> and <code>authentication</code>, held by the service process and signing
@@ -10544,6 +10631,11 @@ identities by VTI-KEY-001.</li>
 Foundation — the <code>did:scid</code> metamethod, whose <code>vh</code> format is the alternative
 form of a durable node identity under VTI-KEY-001 and VTI-KEY-160.
 <a href="https://lf-toip.atlassian.net/wiki/spaces/HOME/pages/88572360/DID+SCID+Method+Specification">https://lf-toip.atlassian.net/wiki/spaces/HOME/pages/88572360/DID+SCID+Method+Specification</a></li>
+<li>[DID-WEBS] <em>The did:webs DID Method Specification</em>, Trust over IP Foundation
+KERI Suite Working Group — the optional method, at alpha maturity, for
+durable node identities under VTI-KEY-001, with its key-role designation
+extension (VTI-KEY-173).
+<a href="https://trustoverip.github.io/kswg-did-method-webs-specification/">https://trustoverip.github.io/kswg-did-method-webs-specification/</a></li>
 <li>[DID-CONFIG] <em>Well-Known DID Configuration</em>, v1.0, Decentralized Identity
 Foundation — the DID configuration resource and Domain Linkage Credentials
 for route B of the contact rule (VTI-LNK-120, VTI-LNK-121).
@@ -11937,6 +12029,12 @@ different thing from a requirement that is met.</p>
 <td>Not established</td>
 <td>Establish each. VTI-APV-013 is the one to establish first: it is the requirement whose failure is invisible to everyone including the approver</td>
 </tr>
+<tr>
+<td>VTI-KEY-008, VTI-KEY-009 <em>(open)</em></td>
+<td>A node acts as a <code>did:webs</code> (or other optional-method) durable identity only toward a peer that declares the method in <code>resolvedMethods</code>, or has addressed it under that identity; a node that cannot, and a party that cannot resolve the method, refuse with a named discriminator and never downgrade</td>
+<td>No node creates or uses a <code>did:webs</code> durable identity: both node types refuse one as their own identity, citing the earlier VTI-KEY-001, so the sending side of VTI-KEY-008 is not exercised. Whether any node reads a peer’s <code>resolvedMethods</code>, and whether a node that receives material it cannot resolve refuses it with <code>unsupportedDidMethod</code>, has not been established</td>
+<td>Establish the receiving side of VTI-KEY-009 at each node type. Read <code>resolvedMethods</code> and enforce VTI-KEY-008 and VTI-KEY-009 before a node type accepts a <code>did:webs</code> durable identity</td>
+</tr>
 </tbody>
 </table>
 </div><h4 id="f.5-community-defined-authority-and-publication" tabindex="-1"><a class="toc-anchor d-print-none" href="#f.5-community-defined-authority-and-publication">§</a> F.5 Community-defined authority and publication</h4>
@@ -12407,15 +12505,15 @@ This work is licensed under a Creative Commons Attribution 4.0 International Lic
                 </div>
             </div>
             <hr id="external-ref-changes-divider" style="display: none;">
-            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 10 November 2026</p>
+            <p class="d-none ps-3 pe-3" id="w3c-state">W3C Recommendation, 11 November 2026</p>
             <!-- Build Information Section -->
             <div class="ps-3 pe-3">
                 <p class="mb-2 fw-bold">Build Information:</p>
                 <div id="build-info" class="small text-muted">
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-calendar-event me-2" aria-hidden="true"></i>
-                        <time class="timestamp" datetime="2026-11-10T11:15:18.114Z">
-                            Generated: 2026-11-10T11:15:18.114Z
+                        <time class="timestamp" datetime="2026-11-11T10:39:51.702Z">
+                            Generated: 2026-11-11T10:39:51.702Z
                         </time>
                     </div>
                     <div class="d-flex align-items-center mb-1">
