@@ -8,20 +8,38 @@ them, the roles a node's keys play, and the lifecycle of all three.
 ### Identifier methods
 
 **VTI-KEY-001** — The durable identity of a VTA, a VTC or a host service MUST
-be a `did:webvh` identifier, or a `did:scid:vh:1` identifier whose source is a
-`did:webvh` log (VTI-KEY-160). `did:webvh` is the default (VTI-KEY-165).
+be a `did:webvh` identifier, a `did:scid:vh:1` identifier whose source is a
+`did:webvh` log (VTI-KEY-160), or a `did:webs` identifier [DID-WEBS].
+`did:webvh` is the default (VTI-KEY-165). `did:webs` is an optional method
+(VTI-KEY-003), at alpha maturity: a node MAY use it for its durable identity
+only toward peers that have declared they resolve it (VTI-KEY-008). A
+`did:webs` durable identity at key assurance level 2 or 3 MUST carry the
+key-role designation extension (VTI-KEY-173); one without the extension is at
+level 1 (VTI-KEY-146).
 
 **VTI-KEY-002** — A client bootstrap identity MUST be a `did:key` identifier, as
 required by VTI-CLT-003.
 
-**VTI-KEY-003** — A node MAY support further identifier methods, and MUST NOT
-require a peer to support a method other than those named in VTI-KEY-001 and
-VTI-KEY-002.
+**VTI-KEY-003** — Every node MUST be able to resolve `did:webvh`,
+`did:scid:vh:1` (VTI-KEY-161) and `did:key` (VTI-KEY-002), the *required
+methods*. A node MAY support further identifier methods, each an *optional
+method*; `did:webs` is one, although VTI-KEY-001 admits it to the durable
+position. A node MUST NOT require a peer to resolve an optional method, and
+MUST NOT use a durable identity of an optional method toward a peer except as
+VTI-KEY-008 permits.
 
 **VTI-KEY-004** — An identifier method serving the durable position MUST provide:
 resolution by a party with no prior relationship to the subject; a verifiable
 history of the identifier's updates; rotation of key material without change of
 the identifier; and deactivation.
+
+*Note.* `did:webvh` and its `did:scid:vh:1` form meet VTI-KEY-004 through the
+log. `did:webs` meets it through its key event log (KEL): a stranger resolves it
+from the host the identifier names, verifying the document against the KEL; the
+KEL, with its witness receipts, is the verifiable history; a rotation event
+replaces the current keys under the next-key commitments, and the identifier,
+which ends in the KERI autonomic identifier (AID) fixed at inception, does not
+change; and a rotation to no next keys deactivates it.
 
 *Rationale.* The two positions have opposite requirements, which is why two
 methods are required rather than one. A node's identity outlives its keys and
@@ -32,6 +50,77 @@ VTI-KEY-004 states what the durable position depends on, so that a future
 method can be evaluated against the requirement rather than against the name.
 Which methods can carry a key-role identity is a stricter question, answered
 by VTI-KEY-170 to VTI-KEY-173.
+
+**VTI-KEY-008** — A node MUST NOT initiate an exchange as a durable identity
+(VTI-KEY-001) of an optional method — send a message, a Trust Task document or
+an attestation artefact to a peer as that identity — unless the peer has declared that it
+resolves that method. A peer declares the optional methods it resolves in its
+own identifier document, in a top-level `resolvedMethods` member: an array of
+method names, each the method-name component of a DID (`"webs"` for
+`did:webs`), without duplicates. A node MUST take the declaration from the
+peer's verified current document, and MUST NOT take it from any other source.
+A node whose durable identity is of an optional method MUST resolve that
+method, and by using it declares it, whether or not its document carries
+`resolvedMethods`. A node MAY also act as that identity toward a party that
+has itself addressed the node under it — by an authenticated message or a
+session whose audience is that identity — since doing so shows that the party
+resolves it. The required methods (VTI-KEY-003) need no declaration, and a `resolvedMethods`
+that omits one MUST NOT be read as withdrawing it. Where an identifier
+document is processed as JSON-LD, its `@context` MUST define `resolvedMethods`
+with the term definition below:
+
+```json
+{ "resolvedMethods": { "@id": "https://w3id.org/vti#resolvedMethods", "@type": "@json" } }
+```
+
+**VTI-KEY-009** — A node that would act as a durable identity of an optional
+method toward a peer that has not declared it (VTI-KEY-008) MUST fail the exchange
+with a refusal that carries the discriminator `methodNotDeclared` and names the
+method (VTI-OPS-033), distinguishable from a transport failure (VTI-OPS-034),
+and MUST send nothing. It MUST NOT downgrade: it MUST NOT act toward the peer
+under another identifier in its place, nor send without authenticating. A
+party that receives material it can rely on only by resolving an identifier of
+a method it does not resolve MUST refuse it, and, where it answers, MUST answer
+with a refusal that carries the discriminator `unsupportedDidMethod` and names
+the method; it MUST NOT treat the material as unauthenticated and process it
+anyway.
+
+*Note (alpha).* `did:webs` is admitted to the durable position at alpha
+maturity. The `did:webs` specification and the KERI specifications it rests on
+are not final, and the key-role designation it needs above level 1 is proposed
+to it and not yet adopted (VTI-KEY-173). A `did:webs` durable identity created
+now may have to be re-created, under a new identifier, as they settle; every
+party that recorded standing for the old identifier would then have to learn
+the new one. This specification may change VTI-KEY-001, VTI-KEY-003,
+VTI-KEY-008 and VTI-KEY-009 as they do.
+
+*Open issue.* A `did:webs` document is derived from its key event log, and the
+method as published renders no member a controller chooses, so a node whose
+own identity is `did:webs` cannot list `resolvedMethods` for any further
+optional method it resolves. It declares `did:webs` by using it (VTI-KEY-008),
+and nothing more, until the `did:webs` specification provides a way to render
+such a member.
+
+*Rationale for VTI-KEY-003, VTI-KEY-008 and VTI-KEY-009.* A method every node
+must resolve raises the cost of being a node; a method no peer is obliged to
+resolve costs only the parties that choose it. `did:webs` is admitted on the
+second terms: a node that chooses it takes on the burden of finding peers that
+can resolve it, and a peer that cannot is never made to. The declaration lives
+in the peer's identifier document because that is the one source a node
+already resolves and verifies before it sends anything, as it does to choose a
+transport; a discovery exchange would need the node to authenticate as the
+identity the peer cannot yet resolve. A party that addresses the node under its
+identity has already resolved it, so it needs to declare nothing, which is how
+a client, whose `did:key` carries no document, reaches a node that uses
+`did:webs`. The failure is named on both sides because the silent alternatives
+are each worse: a node that falls back to another identifier presents a subject
+the peer recorded no standing for, and a peer that processes what it could not
+authenticate has accepted it on nobody's word. A party that relies on a node's
+artefacts without exchanging with it, such as a verifier of a community's
+credentials, can declare nothing to the node; it either resolves the method or
+refuses the artefact, and an operator choosing `did:webs` for an identity whose
+artefacts strangers rely on accepts that refusal, unless a governance framework
+its relying parties follow requires them to resolve the method.
 
 ### The `did:scid` form of a `did:webvh` identifier
 
@@ -105,7 +194,8 @@ subject unless the `did:webvh` form's document lists the `did:scid` form in
 `alsoKnownAs` (VTI-KEY-166), and then only as VTI-KEY-169 provides.
 
 **VTI-KEY-165** — A node that creates durable identities MUST create them as
-`did:webvh` logs, and MUST present each new identity in the `did:webvh` form
+`did:webvh` logs, except one the request names as a `did:webs` identity
+(VTI-KEY-001), and MUST present each new identity in the `did:webvh` form
 unless the request, or the configuration of VTI-VTA-034 or VTI-VTC-004, selects
 the `did:scid` form. The log is the same either way; the form decides which
 identity the node gives out. The form MAY later be changed only as VTI-KEY-168
@@ -384,7 +474,7 @@ by identifier method, and states which requirements of this chapter bind each.
 |---|---|---|---|
 | [[ref: relationship DID]] | An identifier for one relationship, one community or one trust context: a pairwise identifier, a client's bootstrap identity, a member's per-community identifier | `did:peer`, `did:key`, any | One key is normal; no key roles, no level |
 | [[ref: persona DID]] | A person's own identity: the identifier under which a person, through their VTA, acts as themselves | `did:webvh`, any | One key, and passkeys bound to `authenticator`; no other key role, no level |
-| [[ref: service DID]] | The durable identity of a node or a service: a VTA, a VTC, a VTN, a trust registry, a host service, a mediator, an integration | `did:webvh`, `did:scid:vh:1` (VTI-KEY-001) | Chosen by its operator as a [[ref: key assurance level]] (VTI-KEY-194) |
+| [[ref: service DID]] | The durable identity of a node or a service: a VTA, a VTC, a VTN, a trust registry, a host service, a mediator, an integration | `did:webvh`, `did:scid:vh:1`; `did:webs`, optional and alpha (VTI-KEY-001, VTI-KEY-008) | Chosen by its operator as a [[ref: key assurance level]] (VTI-KEY-194) |
 
 **VTI-KEY-190** — A relationship DID is an identifier a party uses for one
 relationship, one community or one trust context and for nothing else, as
@@ -1641,9 +1731,14 @@ is verifiable only by verifiers whose resolver implements the extension. The
 alternative — amending VTI-KEY-093 to tolerate a change-authority key that the
 method itself renders, absent from `keyRoles` and never used to sign anything but
 log events — is not taken, because it keeps the most protected key in two
-verification relationships. VTI-KEY-001 does not yet name `did:webs` for a node's
-durable identity: naming it would require every peer to resolve `did:webs`
-(VTI-KEY-003), and waits on the extension's adoption.
+verification relationships. VTI-KEY-001 names `did:webs` for a node's durable
+identity as an optional method, used only toward peers that declare they resolve
+it (VTI-KEY-008), so naming it obliges no peer to resolve it. That does not
+settle the extension: a peer that declares `did:webs` but whose resolver lacks
+the extension still refuses the document of a `did:webs` identity at level 2 or
+3, so until the extension is adopted a node at those levels can rely only on
+peers whose resolver implements it, and a plain `did:webs` durable identity is at
+level 1.
 
 ### Level-1 identities and raising a level
 
