@@ -743,7 +743,10 @@ history, and MUST NOT take a level higher than the structure supports:
    method's next-key commitments in that version, or the named commitments are
    all of them; where it names a threshold t with t < 2 or t ≥ the number of
    commitments; where the method has witnesses and the version is not witnessed
-   (VTI-KEY-129); or where the recovery commitment differs from the previous
+   (VTI-KEY-129), unless the method's next-key threshold makes the recovery
+   custodian's signature necessary for every change of the change authority — the
+   threshold VTI-KEY-129 lets stand in for the witness — and the version's history
+   is published at the one location its identifier names; or where the recovery commitment differs from the previous
    version's and the version is neither authorized by the previous recovery key
    — by t of its members, for a threshold custodian (VTI-KEY-215) — nor
    witnessed.
@@ -1501,8 +1504,10 @@ whose policy refuses an entry that:
 A level-2 identity SHOULD be witnessed by a witness whose policy refuses the first.
 Where the method can require the recovery key for every rotation of the change
 authority by a next-key threshold, its profile SHOULD so require, and that
-threshold MAY stand in for the witness. A witness MAY be operated by the identity's
-recovery custodian.
+threshold MAY stand in for the witness. Where it stands in, the identity SHOULD
+still be witnessed: a witness also detects a duplicitous history — two histories
+published for one identifier — which no threshold can. A witness MAY be operated by
+the identity's recovery custodian.
 
 *Rationale for VTI-KEY-126 and VTI-KEY-127.* `revoked` is already defined, already
 in the contexts a Multikey document uses, and already acted on by generic Data
@@ -1661,16 +1666,22 @@ reach, so a bound step-up there is a SHOULD.
 **VTI-KEY-184** — A successor key MUST keep its predecessor's algorithm unless the
 request names another. A node MUST NOT substitute an algorithm for one a request
 names or a template lists, and MUST refuse a change it cannot make with it. At
-level 2 and 3, a node MUST NOT publish an X25519 key computed from an Ed25519 key,
-or any key computed from a key of another role. A new level-1 identity SHOULD NOT
-publish an X25519 key computed from its Ed25519 key; an existing one MAY keep the
-key it has.
+level 2 and 3, a node MUST NOT publish a key computed from a key it publishes or
+from a key of another role: an X25519 key computed from a published Ed25519 key is
+one. A node SHOULD derive each key agreement key independently of every signing
+key; an X25519 key computed from an Ed25519 key that is derived for it alone, and
+published and used nowhere else, is not computed from a key of another role. A new
+level-1 identity SHOULD NOT publish an X25519 key computed from its Ed25519 key; an
+existing one MAY keep the key it has.
 
 *Rationale.* A substitution is a downgrade nobody approved: a deployment meant to
 carry a post-quantum `attestation` proof would ship classical keys and report
 nothing. A key-agreement key computed from a signing key makes the `messaging`
 role a function of the `operational` one, which VTI-KEY-071 forbids by another
-route.
+route. What that forbids is a dependence between published keys, or between roles:
+an X25519 key that is the image of an Ed25519 key derived only to produce it — as a
+key hierarchy that derives on one curve does — depends on nothing a verifier or
+another role holds, so it is restricted no further than as best practice.
 
 **VTI-KEY-185** — A party encrypting to an identifier whose keys are a KERI key
 state (`did:webs`, `did:keri`) MAY use the X25519 key converted from each Ed25519
