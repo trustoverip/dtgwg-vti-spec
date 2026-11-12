@@ -28,8 +28,8 @@ their current versions before this specification leaves Working Draft.
   form of a durable node identity under VTI-KEY-001 and VTI-KEY-160.
   <https://lf-toip.atlassian.net/wiki/spaces/HOME/pages/88572360/DID+SCID+Method+Specification>
 - [DID-WEBS] *The did:webs DID Method Specification*, Trust over IP Foundation
-  KERI Suite Working Group — the optional method, at alpha maturity, for
-  durable node identities under VTI-KEY-001, with its key-role designation
+  KERI Suite Working Group — a method, at alpha maturity, for durable node
+  identities under VTI-KEY-001, which every node resolves (VTI-KEY-003), with its key-role designation
   extension (VTI-KEY-173).
   <https://trustoverip.github.io/kswg-did-method-webs-specification/>
 - [DID-CONFIG] *Well-Known DID Configuration*, v1.0, Decentralized Identity
