@@ -122,10 +122,69 @@ VTI-TRN-044, it MUST record the evidence and that it was not counted.
 sender MUST NOT assume delivery. It MUST escalate: re-resolve the recipient and
 attempt an alternate binding offered by the recipient's identifier document
 where one exists; otherwise mark the delivery failed and surface it to the
-operator.
+operator. Where the sender established when it sent that no class of evidence
+was available on the path (VTI-TRN-064), it MAY instead record the delivery as
+**unconfirmable** under VTI-TRN-041 — no class was available — and need not
+escalate. Escalation still applies to a recipient known to send receipts
+(VTI-TRN-064 item 1): for such a recipient, a missing receipt is silence, not an
+absent path. A sender MUST NOT present an unconfirmable delivery as delivered,
+and MUST NOT report it as a failure.
 
 **VTI-TRN-043** — A receiver MUST deduplicate redelivered messages by their
 idempotency key, as required by VTI-OPS-061.
+
+### Delivery receipts
+
+The first class of VTI-TRN-040 is a receipt from the recipient's delivery
+layer. Its wire form is the Trust Task
+`https://trusttasks.org/spec/messaging/receipt/0.1`, requested per message by a
+delivery id the binding carries: the `deliveryId` envelope member of the TSP
+binding `0.2`, or the `delivery_id` header of the DIDComm binding `0.2`.
+
+**VTI-TRN-060** — A sender that wants a receipt MUST request one per message, by
+stamping a delivery id through the binding. It MUST choose a delivery id that
+identifies the delivery it tracks, is not derived from the message's content,
+and is never reused for another recipient. A retry of the same delivery carries
+the same delivery id.
+
+**VTI-TRN-061** — A receiver SHOULD send a receipt for a message that requests
+one, and MAY decline. It MUST send one only for a message that requests one; only
+to that message's transport-authenticated sender, never to an in-band issuer the
+transport did not authenticate; and only once it holds the message durably and
+has deduplicated it under VTI-TRN-043. A redelivered message is receipted again.
+A receipt MUST state only that the message is held, and MUST NOT be delayed,
+withheld or varied according to the validation, acceptance or outcome of the
+operation it carries.
+
+**VTI-TRN-062** — A sender MUST count a receipt as first-class evidence only
+where its `confirms` equals a delivery id the sender stamped and its
+transport-authenticated sender is the party that delivery was addressed to. A
+receipt that fails either test, or names a delivery already settled, MUST be
+ignored silently. A sender MUST NOT answer a receipt, and a receipt MUST NOT
+itself request one.
+
+**VTI-TRN-063** — Until the earlier form is withdrawn, a sender MUST also accept
+a receipt in the delivery layer's earlier form — a message body
+`{"type": "https://affinidi.com/delivery/1.0/receipt", "confirms": …}` correlated
+on the thread identifier — under the conditions of VTI-TRN-062, and a receiver MAY
+send that form to a sender that asked for one in that form. A receiver MUST
+answer a request made with a delivery id with the Trust Task form.
+
+**VTI-TRN-064** — When it sends, a sender MUST establish which classes of
+evidence are available on the path:
+
+1. the first class, only where the recipient is **known to send receipts** —
+   it has sent the sender a receipt satisfying VTI-TRN-062 within a period the
+   sender states;
+2. the second class, only where the operation defines a correlated reply;
+3. the third class, only where the transport can report collection of this
+   message to the sender — for a mediated transport, only where the sender's own
+   mediator holds the message for the recipient. A message the sender's mediator
+   relays to another mediator leaves it, and that mediator can report nothing
+   about it.
+
+A sender MUST NOT poll for evidence of a class it has established is
+unavailable.
 
 ### Delivery and the acceptance window
 
@@ -254,6 +313,86 @@ rests on.
 *Rationale for VTI-TRN-042.* A dead mediator is not a dead peer. Re-resolving
 before failing is what distinguishes the two, and doing it in that order is what
 prevents a transport outage from being recorded as a peer that will not answer.
+
+The exception for an unconfirmable delivery exists because escalation is a
+response to silence, and some paths can only ever be silent. A message relayed
+to a recipient on another mediator, under an operation with no reply, to a
+recipient that does not send receipts, has no evidence path at all: no window
+will produce evidence for it, and escalating sends the recipient a second copy
+over another transport for a message it may have had for an hour. Recording
+such a delivery as failed is the same error as recording it as delivered, in the
+other direction. The exception does not reach a recipient known to send
+receipts, because for that recipient the path exists and its silence means
+something.
+
+*Rationale for VTI-TRN-060 – VTI-TRN-064.* A mediator can answer only for
+messages it still holds, which makes collection evidence exact between parties
+that share a mediator and unavailable between parties that do not. The receipt
+is the class that does not depend on any mediator. It is requested per message
+rather than sent for everything because a receipt tells the sender when the
+recipient came online: sent unasked, it would hand that signal to any party
+able to reach the recipient. A receipt is accepted only from the party the
+message was addressed to, so a delivery id is not a credential, and a receipt is
+never answered, so a lost receipt costs one redelivery and nothing recurses.
+VTI-TRN-063 exists because the receipt was deployed before it was specified:
+senders already settle on the earlier form, and a receiver that switched
+outright would leave them without evidence.
+
+### Waking a recipient
+
+A recipient that cannot hold a connection — a phone the operating system has
+suspended — collects its messages when it is next opened. A push gateway can
+wake it sooner, but only for a trigger its controller allowed, and a sender with
+no standing at the recipient's device, such as a node asking a named approver
+to decide on a held operation, is rightly not such a trigger. The recipient's
+own mediator is: it holds the recipient's queue and knows whether it is
+connected. These requirements let such a sender ask that mediator to ring,
+through `https://trusttasks.org/spec/messaging/wake/request/0.1`, which a
+recipient enables by giving its mediator its wake handle
+(`https://trusttasks.org/spec/messaging/wake/set/0.1`).
+
+**VTI-TRN-070** — A node that wakes a peer for which it holds no wake binding of
+its own MUST do so only through the peer's own mediator, by a wake request
+naming the messages it has queued for that peer by the identifiers that mediator
+stores them under. It MUST NOT seek, hold or use the peer's wake handle for the
+purpose.
+
+**VTI-TRN-071** — A wake request, and the wake it causes, MUST be contentless:
+they MUST NOT carry the operation's type, a reason, the relying party or anything
+derived from the queued message (VTI-TRN-025, VTI-TRN-028). A requester MAY state
+one bit of urgency, and MUST NOT choose it by operation type beyond that bit.
+
+**VTI-TRN-072** — A node MUST NOT re-ring a pending request. It MUST send at most
+one wake request for a queued message, and MUST NOT send another while the
+operation it carries is pending — including when it polls for that operation's
+outcome or re-sends its status. A mediator MUST ring for a message at most once,
+however many requests name it.
+
+**VTI-TRN-073** — Holding a wake handle MUST NOT be treated as authority to wake.
+A gateway rings only for a trigger its controller placed on the handle's
+allowlist; a mediator rings only for a requester that has mail queued for the
+recipient, fresh and undelivered, that the recipient has not blocked, while the
+recipient is not connected, and within per-requester and per-recipient limits.
+A wake confers no authority on anyone, and is no evidence of delivery.
+
+**VTI-TRN-074** — A mediator MUST answer every wake request it processes in the
+same way, whatever it did, and a requester MUST NOT infer anything from the
+answer, its absence or its timing. A requester MUST send a wake request without
+waiting on it, and MUST treat a mediator that refuses the operation as one that
+does not wake: the recipient then collects on its next connection, and that MUST
+NOT be reported as an error.
+
+*Rationale for VTI-TRN-070 – VTI-TRN-074.* A wake channel is the most
+sensitive thing a device gives away short of its keys: whoever can ring it can
+make a person look at their phone. Handing the handle to every party that might
+need to reach the device — every agent that names it as an approver — would make
+it as widely held as the device's identifier. Routing the request through the
+recipient's own mediator keeps the handle with one party the recipient chose,
+and the rules a mediator applies tie each ring to mail actually waiting from the
+party asking. The answer is constant because any other answer tells a stranger
+holding a DID whether it is registered, wakeable or online. A pending request is
+not re-rung because the person it is for has either seen it or is not going to,
+and a second ring for the same request is pressure, not delivery.
 
 ### Bounded waits and honest health
 

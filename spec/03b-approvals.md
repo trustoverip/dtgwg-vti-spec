@@ -130,6 +130,16 @@ pending request has expired. A re-authentication the caller performed when
 submitting the operation MAY stand for that execution only under these
 conditions.
 
+**VTI-APV-024** — A node that sends a consent request to an approver MAY wake
+the approver's device only as VTI-TRN-070 – VTI-TRN-074 provide where the
+approver holds no entry and no wake binding at that node, which is the expected
+case for a named approver. It MUST NOT require an approver to hold an entry, a
+device binding or any other standing in order to be woken, and MUST NOT wake an
+approver again for a request that is still pending (VTI-TRN-072), including when
+the requester asks for the request's status. Waking an approver confers no
+authority on it, and its decision is evaluated exactly as an unwoken
+approver's would be.
+
 **VTI-APV-018** — Granting a capability that permits its holder to create or
 widen authority — an **authority-conferring capability** — or widening an
 entry to hold one, SHOULD require consent from a party other than the
