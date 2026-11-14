@@ -160,14 +160,21 @@ This section is informative.
     operation-revealing metadata stays inside the envelope (VTI-TRN-025).
 11. **A push service is an intermediary nobody chose.** A wake notification
     carries no content and nothing that reveals what is waiting (VTI-TRN-028).
-12. **Herd privacy is only privacy while the crowd is real.** A status list
+    A party with no standing at a device asks the device's own mediator to ring
+    rather than holding its wake handle, and the mediator's answer is the same
+    whatever it did, so it cannot be asked whether an identifier is wakeable or
+    online (VTI-TRN-070, VTI-TRN-074).
+12. **A receipt says when the recipient came online.** Receipts are requested
+    per message and may be declined, so that a party able to reach a recipient
+    is not told by default when it collects (VTI-TRN-060, VTI-TRN-061).
+13. **Herd privacy is only privacy while the crowd is real.** A status list
     allocated per subject, or in issuance order, has the shape of a herd and
     the behaviour of a unique identifier (VTI-CRD-014).
-13. **A verifier learns things it may not pass on** (VTI-CRD-043).
-14. **An identifier document says who the issuer is, and nothing about how it
+14. **A verifier learns things it may not pass on** (VTI-CRD-043).
+15. **An identifier document says who the issuer is, and nothing about how it
     is built.** Key roles are generic, identifiers of keys are opaque, and no
     custody, host or personal detail is published (VTI-KEY-150, VTI-KEY-151).
-15. **A signing key is a coarse timestamp.** The key that signed a credential,
+16. **A signing key is a coarse timestamp.** The key that signed a credential,
     read against the published history of the issuer's keys, dates its
     issuance; rotation frequent enough, or timed to a member's own events,
     partitions or identifies the membership (VTI-KEY-153). A message that need
