@@ -678,6 +678,14 @@ requirements were drafted from the changes that closed them.
 | VTI-VTC-022, VTI-APV-018 *(observed)* | Community policy cannot confer authority, and authority-conferring changes take another party's consent | At one community node any administrator, including one scoped to contexts, may replace the policy for role changes and removals — including the default rule that refuses removing an administrator | Implement: policy changes are gated by the `vtc.policy.admin` capability per purpose, and those deciding authority are consent-gated |
 | VTI-APV-023 *(observed)* | Changes to join criteria, the trusted-witness list and personhood policy take another administrator's consent | At one community node the trusted-witness list is consent-gated, but join criteria are added, replaced and deleted, hidden vetting is published on and withdrawn from them, and the personhood policy is replaced or activated, by one administrator alone | Implement: every runtime change to a join criterion (hidden-vetting publication and withdrawal included) and to the personhood policy is held for the other administrators' consent; single-administrator mode waives it on the requester's operation-bound re-authentication (VTI-APV-022) |
 
+#### F.5b Community events
+
+| Requirement | This specification requires | Reported behaviour | Resolution |
+|---|---|---|---|
+| VTI-EVT-100, VTI-EVT-130 *(reported)* | An event's invitation mode, whether members may invite, and the partner communities its audience names are part of the event every operation that answers it states | At one community node, publishing and cancelling an event answer the event without its invitation mode, whether members may invite, or its partner communities, because the operations' only versions answer the earlier event shape; every other event operation states them | Specify publish and cancel versions that answer the current event shape (trustoverip/dtgwg-trust-tasks-tf#1407), then serve them |
+| VTI-EVT-037, VTI-EVT-135 *(reported)* | A partner community's member may withdraw their own registration at any time, as a member may | At one community node, a partner community's member who registered by presentation cannot withdraw: the withdrawal operation carries no presentation, so the node cannot establish who is withdrawing | Specify an optional presentation on withdrawal, verified as at registration (trustoverip/dtgwg-trust-tasks-tf#1407), then accept it |
+| VTI-EVT-103 *(reported)* | A host may revoke an invitation they or another host made, withdrawing its notification and leaving any registration | At one community node no operation revokes an invitation; an invitation ends only when its invitee leaves the event's audience or the event is cancelled | Specify an operation to revoke an invitation (trustoverip/dtgwg-trust-tasks-tf#1407), then serve it |
+
 #### F.8 How to add an entry
 
 An entry needs the requirement identifier, how the behaviour was established,
