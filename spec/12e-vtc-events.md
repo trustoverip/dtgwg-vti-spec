@@ -390,10 +390,155 @@ allows for a board. A VTC MUST NOT accept such a key for creating, changing,
 publishing, cancelling or deleting a calendar or an event, for deciding or
 removing a registration, or for appointing or ending a host.
 
+### Invitations
+
+**VTI-EVT-100** — An event MUST state how it invites its audience: `none`, in
+which members of the audience find it themselves; `notify`, in which the VTC
+invites each member of the audience; or `expect`, in which it invites them and
+records that a reply is expected. An invitation MUST NOT register anyone: an
+invited member is `going`, `maybe` or neither only by their own act
+(VTI-EVT-104).
+
+**VTI-EVT-101** — Under `notify` or `expect`, a VTC MUST invite each member of
+an event's audience once the event is published, and each member who comes into
+the audience afterwards, while the event is published and has not ended. It
+MUST NOT invite a member who holds a registration for the event, who has
+already been invited to it, or who has opted out under VTI-EVT-110.
+
+**VTI-EVT-102** — A VTC MUST invite by sending the member a notification of the
+kind `event` (VTI-NTF-064), and MUST record the invitation before it sends
+anything. A member MUST have at most one invitation to an event. A VTC MUST
+send each invitation from one place that retries until the notification is
+delivered or lapses; a task MUST NOT send one itself.
+
+**VTI-EVT-103** — An event's hosts MAY invite members by name. A member a host
+invites MUST be treated as in the event's audience while the invitation stands,
+so that a host can hold an event only the members they invite may see. A host
+MAY revoke an invitation they or another host made; revoking it withdraws its
+notification (VTI-NTF-065) and leaves any registration the member made.
+
+**VTI-EVT-104** — An invited member MUST be able to answer their invitation:
+`going` or `maybe`, which registers them as VTI-EVT-030 – VTI-EVT-038 require,
+or `decline`, which records on the invitation that they will not come and
+registers nothing. Declining an invitation is not a host declining a
+registration (VTI-EVT-032) and MUST NOT be shown as one. A member who declined
+MAY register later, as any member of the audience may.
+
+**VTI-EVT-105** — An event MAY let members invite other members of its
+audience. A VTC MUST then accept an invitation from any member of the audience,
+MUST NOT let a member's invitation admit anyone the audience does not
+(VTI-EVT-020), and MUST limit the invitations one member makes in a day to a
+number the community sets.
+
+**VTI-EVT-106** — Hosts MUST be able to list an event's invitations: who was
+invited, by whom (a host, a member, or the audience under VTI-EVT-101), and
+each invitation's answer. Under `expect` the list MUST show who has not
+answered. A member MUST be able to list their own invitations. No other party
+may list them.
+
+**VTI-EVT-107** — An event's hosts MAY make invitation links: a trigger link
+(VTI-LNK) whose code, once redeemed by an active member of the community,
+invites that member as VTI-EVT-103 does. A VTC MUST keep only a digest of the
+code, MUST refuse a code past the expiry, or beyond the number of redemptions,
+its hosts set, and MUST refuse a revoked one. A code MUST NOT be redeemed twice
+by the same member, and a refusal MUST NOT say which of these it was.
+
+**VTI-EVT-108** — Changing an event's invitation mode from `none` to `notify` or
+`expect` on a published event MUST invite its audience as VTI-EVT-101 does.
+Changing it to `none` MUST NOT withdraw invitations already sent.
+
+*Rationale for VTI-EVT-100 and VTI-EVT-104.* A meeting the whole committee is
+expected at is different from an evening anyone may drop in on, and the
+difference is whether someone is waiting for an answer. It is never whether the
+member is registered: a member is listed as coming only by saying so.
+
+*Rationale for VTI-EVT-102.* An invitation sent from a request's handler is
+sent once, or twice, or not at all, depending on where a crash falls. A record
+written first, and one sender that reads it, sends each exactly once and can say
+which were sent.
+
+*Rationale for VTI-EVT-105.* "Bring a friend who is in the community" is an
+invitation; "bring a friend the community has not admitted to this event" is a
+widening of its audience by someone who does not run it.
+
+### Opt-outs
+
+**VTI-EVT-110** — A member MUST be able to opt out of invitations to one event or
+from one calendar, and to withdraw an opt-out. A VTC MUST NOT invite a member
+under VTI-EVT-101 to an event an opt-out covers. An opt-out MUST NOT remove the
+member from any audience, and MUST NOT stop a host's invitation by name
+(VTI-EVT-103), which the member may decline.
+
+*Rationale.* An audience rule re-evaluated as membership changes reaches members
+who never asked to hear about a group's every meetup. The member, not the rule,
+decides whether they hear.
+
+### Announcements
+
+**VTI-EVT-120** — An event's hosts MAY post announcements to it. A VTC MUST let
+the event's hosts, and its registrants who are `going`, `maybe`, `pending` or
+`waitlisted`, read its announcements, and no one else.
+
+**VTI-EVT-121** — An announcement MUST NOT change the event's time, place or
+status; a host changes those by changing the event (VTI-EVT-006). A VTC MUST
+mark the event changed for its registrants' agents when an announcement is
+posted, and MUST NOT carry an announcement's text in any notification.
+
+*Rationale.* An announcement is how a host says "bring a laptop" or "we start
+fifteen minutes late". If it could move the event in words, a member's calendar,
+which reads the event's time and not its prose, would be wrong.
+
+### Partner communities
+
+**VTI-EVT-130** — An event's audience MAY name partner communities: communities
+that are members of this one, or with which it holds a relationship in force. A
+VTC MUST refuse a partner that is neither.
+
+**VTI-EVT-131** — Once an event naming a partner is published, a VTC MUST send
+the partner a notification of the kind `event` (VTI-NTF-064) whose audience is
+the partner's identifier. The partner decides whether and to whom to relay it
+(VTI-NTF-071). The VTC MUST NOT send anything to the partner's members, whom it
+does not know.
+
+**VTI-EVT-132** — A party who is not a member of the community is in an event's
+audience, for that request only, when the request carries a presentation of a
+membership credential that a partner the audience names issued to them, made by
+the credential's subject who signs the request and bound to it, verified as
+VTI-VOT-016 verifies a presentation for an election, valid and unrevoked when
+presented.
+
+**VTI-EVT-133** — A VTC MUST verify such a presentation before, and without
+reference to, the event the request names, MUST use its outcome only for an
+event whose audience names the credential's issuer, and MUST discard the
+presentation once it has decided. Without a presentation that passes, an event
+the party may not otherwise see MUST be answered as VTI-EVT-023 requires.
+
+**VTI-EVT-134** — A registration by a party who is not a member MUST name them
+by their identifier, not a directory entry, and MUST be shown to the event's
+hosts. It MUST NOT be shown by identifier to other registrants: a roster view
+(VTI-EVT-053) counts such registrants without naming them.
+
+**VTI-EVT-135** — The requirements on registration (VTI-EVT-030 – VTI-EVT-039)
+apply to a partner's member as to a member, except that their departure from
+the partner is learnt only when they next present (VTI-EVT-132), and a
+registration they hold MUST NOT let them read the event without a presentation
+that passes.
+
+*Rationale for VTI-EVT-131 and VTI-EVT-132.* The community holding the event
+does not know who the partner's members are and has no right to; the partner
+does, and decides what its members hear. Each member then shows, when they open
+the event, the one thing the holding community needs: that the partner says they
+are a member.
+
+*Rationale for VTI-EVT-133.* Verifying the presentation first, and the same way
+whatever the event, keeps the verification from becoming a probe of which
+events exist for which partner.
+
 ### Operations
 
 *This subsection is informative.* The operations of this chapter are the
-`vtc/events/*/0.1` Trust Tasks:
+`vtc/events/*` Trust Tasks (0.1, and 0.2 where invitations and partners changed
+an event's or a registration's shape):
 
 | Operation | Requirements |
 |---|---|
@@ -406,16 +551,17 @@ removing a registration, or for appointing or ending a host.
 | `vtc/events/registrations/list`, `decide`, `remove` | VTI-EVT-033, 053, 073 |
 | `vtc/events/hosts/appoint`, `remove`, `list` | VTI-EVT-070 – 074 |
 | `vtc/events/report` | VTI-EVT-081 |
+| `vtc/events/invitations/send`, `list`, `respond` | VTI-EVT-100 – 106 |
+| `vtc/events/invitations/links/create`, `revoke`, `redeem` | VTI-EVT-107 |
+| `vtc/events/optouts/set`, `list` | VTI-EVT-110 |
+| `vtc/events/announcements/send`, `list` | VTI-EVT-120 – 121 |
+| `vtc/events/show`, `registrations/register` 0.2 (a partner member's presentation) | VTI-EVT-130 – 135 |
 
 ### Later phases
 
 *This subsection is informative.* These are designed but not yet specified; a
 later revision of this chapter states them normatively:
 
-- **Invitations and the `event` notification kind**: inviting by audience rule,
-  re-evaluated as membership changes, with notifications that name the event and
-  its period and carry nothing else (VTI-NTF-003); invitation links; changes and
-  cancellations as revisions and withdrawals; relay to partner communities.
 - **The member's calendar** (`vta/calendar/*`): a member's VTA reading their
   events from every community they belong to, firing their reminders, keeping the
   receipts of VTI-EVT-092, and serving them as calendar feeds.

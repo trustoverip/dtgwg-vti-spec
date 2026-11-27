@@ -524,6 +524,55 @@ election exists that their party's members may take part in. What the election
 asks, and whether this member may vote in it, they learn only by opening it and
 presenting the credential that makes them one, which is the member's choice.
 
+### The event kind
+
+The notification kind registry (Appendix G) registers the kind `event`, which
+this section defines and the Community Events chapter uses for invitations
+(VTI-EVT-101 – VTI-EVT-108) and for events reaching partner communities
+(VTI-EVT-130 – VTI-EVT-135).
+
+**VTI-NTF-064** — A notification of the kind `event` MUST name the community as
+the thing's holder, the event's identifier as the thing's identifier, and the
+catalogue's operation for reading one event as the operation that opens it. Its
+audience MUST be the identifier of the member it invites — the identifier the
+member holds their membership under — or, for an event that names a partner
+community in its audience, that community's identifier. It MAY state the event's
+start and end as its period, and lapses when the event ends. It MUST carry
+nothing else of the event: not its title, its place, its hosts or who else was
+invited (VTI-NTF-003).
+
+**VTI-NTF-065** — A VTC MUST issue a new revision of an `event` notification it
+has sent, to every party it sent it to, whenever the event's sequence changes
+(VTI-EVT-006), so that the period the notification states stays the event's.
+It MUST withdraw the notification when the event is cancelled, when the invitation
+it carries is revoked, and when the member it invites is no longer in the
+event's audience; a withdrawal goes to every party an earlier revision went to,
+as VTI-NTF-005 requires.
+
+**VTI-NTF-066** — An `event` notification MAY be relayed. A relay of it
+discloses that the relayer is a member of the community, or a partner the
+community named. A party receiving a relayed `event` notification learns from
+it only that the community says an event exists in which the relayer's members
+may take part; whether a particular member may, they learn by opening it
+(VTI-EVT-133).
+
+**VTI-NTF-067** — A member's agent that shows a member their events MUST show an
+event it holds an `event` notification for only as notified — its community,
+identifier, audience and period — until the member opens it, and MUST open it
+only by reading the event from the community (VTI-NTF-053).
+
+*Rationale for VTI-NTF-064 and VTI-NTF-067.* An invitation travels to every
+member an audience rule admits, and further when a partner relays it. A title
+alone can say a great deal — "Support group for …", "Interviews for the
+treasurer's post" — to anyone who sees the traffic or the agent's held
+notifications. The event says what it is to the people the community lets read
+it, when they read it; the notification only says where to look and when.
+
+*Rationale for VTI-NTF-065.* A notification whose period is no longer the
+event's points a member's calendar at the wrong evening, and a member who left
+the group an event is for keeps being told they may come unless the notification
+is withdrawn.
+
 ### A community's received notifications
 
 **VTI-NTF-070** — A VTC MUST hold each notification it accepts, and MUST let an
