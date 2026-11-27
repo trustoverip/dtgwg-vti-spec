@@ -722,6 +722,7 @@ kind names as it does to requirement identifiers).
 | Kind | Thing | Holder / identifier | Opened by | Audience | Carries beyond VTI-NTF-002 | Relayable | A relay discloses | Lapses | Defined by |
 |---|---|---|---|---|---|---|---|---|---|
 | `election` | an election, poll or survey of a community | the community / the election's identifier | the catalogue's operation for reading one election | the identifier a credential roll names, or the community's own | nothing; the period is the voting period | yes | that the relayer is a member of the community | when voting closes | VTI-NTF-060 – VTI-NTF-063 |
+| `event` | an event of a community | the community / the event's identifier | the catalogue's operation for reading one event | the invited member's membership identifier, or a partner community's identifier | nothing; the period is the event's start and end | yes | that the relayer is a member of the community, or a partner it named | when the event ends | VTI-NTF-064 – VTI-NTF-067 |
 
 ### Appendix H: Purpose registry
 
