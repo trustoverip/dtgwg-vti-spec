@@ -44,6 +44,7 @@ Three bodies of normative material:
 | | Operation surface | `spec/08-operations.md` |
 | | Credentials and presentations | `spec/09-credentials.md` |
 | C — Nodes | The Verifiable Trust Agent | `spec/10-vta.md` |
+| | The member's calendar | `spec/10b-vta-calendar.md` |
 | | The Verifiable Trust Community | `spec/11-vtc.md` |
 | | The Verifiable Trust Network | `spec/11a-vtn.md` |
 | | Membership lifecycle and community credentials | `spec/12-vtc-lifecycle.md` |

@@ -412,6 +412,32 @@ once about the task, and once about the foreign protocol's own guarantees —
 which its own specification makes, and which VTI-OPS-098 requires a node to take
 whole.
 
+**VTI-OPS-111** — A node MAY expose a *subscription interface*: an endpoint that a
+counterparty able only to fetch a URL repeatedly — a calendar application reading
+an iCalendar subscription, for example — reads to obtain a projection a catalogue
+task configured. A subscription interface that meets VTI-OPS-112 and VTI-OPS-113
+is a foreign-protocol interface whose exchange lasts until the subscription
+expires or is revoked; VTI-OPS-098's requirement that an exchange be single-use
+does not apply to it, and its other requirements do.
+
+**VTI-OPS-112** — A subscription interface MUST be read-only and MUST NOT confer
+authority, accept input beyond its address, or begin an operation. It MUST serve
+only what the task that created it configured, and MUST be created, listed and
+revoked through catalogue tasks. Its address MUST be the only credential it
+accepts, MUST carry at least 256 bits of randomness, and MUST expire.
+
+**VTI-OPS-113** — A node MUST record, for each subscription interface, when it was
+last read and how often, and MUST make both readable through a catalogue task. A
+node MUST NOT log a subscription interface's address.
+
+*Rationale for VTI-OPS-111 – VTI-OPS-113.* Some counterparties can do less than
+present in a foreign protocol: they can only fetch a URL, and they do so for
+months. Refusing them leaves a member copying their calendar by hand; treating
+the URL as an exchange like any other would have it expire after one read. These
+requirements admit exactly that counterparty and no more: nothing goes in, the
+address is the whole credential and is treated as one, and its use is visible to
+the party who made it.
+
 ### The catalogue and its registries
 
 Task identifiers, capability names and refusal codes are extension points.
