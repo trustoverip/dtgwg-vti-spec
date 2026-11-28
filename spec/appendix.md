@@ -300,6 +300,7 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `vtc.elections.manage` | the community's elections: creating, closing early, cancelling and certifying them (VTI-VOT-080) | — | — |
 | `vtc.boards.manage` | the community's boards: creating and running them, deciding their ideas, hiding notes on them, closing them (which ends their elections), appointing their facilitators and, unqualified, deleting them (VTI-BRD-002, VTI-BRD-006, VTI-BRD-007, VTI-BRD-013, VTI-BRD-090) | — | by board (`board:<id>`) |
 | `vtc.badges.admin` | the community's badges: defining, changing, retiring and promoting them, seeing every giving of a kudos badge, and issuing and withdrawing claim codes for any community badge (VTI-BDG-003, VTI-BDG-025, VTI-BDG-042, VTI-BDG-044) | — | — |
+| `vtc.events.manage` | the community's calendars and events: creating and changing calendars, creating, changing, publishing, cancelling and deleting events, deciding and removing registrations, appointing hosts and, unqualified, receiving reports of events (VTI-EVT-013, VTI-EVT-070, VTI-EVT-073, VTI-EVT-081) | — | by group (`group:<id>`) or by event (`event:<id>`) |
 | `vtc.notifications.read` | listing and reading the notifications addressed to the community (VTI-NTF-070) | — | — |
 | `vtc.notifications.relay` | deciding that the community relays a notification it received to its members (VTI-NTF-071) | — | by group (`group:<id>`) |
 | `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
@@ -376,6 +377,15 @@ offers; giving a community badge out and deciding who asks for it belong to the
 badge group's managers, that is to `vtc.groups.manage` qualified by the badge
 group (VTI-BDG-011), so a member with no administrative role owns a badge by
 appointment. It is within `community-admin`'s ceiling.
+
+`vtc.events.manage` serves the Community Events chapter. It is not conferring:
+an event grants nothing (VTI-EVT-002). Unqualified it runs the community's own
+calendar and every event; qualified by a group it runs that group's calendar,
+which the group's managers also run through `vtc.groups.manage` (VTI-EVT-013);
+qualified by an event it is a host's appointment to that one event, which sits
+beside any role the entry holds so that a member with no administrative role
+hosts an event by appointment (VTI-EVT-070). It is within `community-admin`'s
+ceiling.
 
 `vtc.notifications.read` and `vtc.notifications.relay` serve the Notifications
 chapter. They are apart so that a community can let an administrator see what
@@ -668,6 +678,14 @@ requirements were drafted from the changes that closed them.
 | VTI-VTC-022, VTI-APV-018 *(observed)* | Community policy cannot confer authority, and authority-conferring changes take another party's consent | At one community node any administrator, including one scoped to contexts, may replace the policy for role changes and removals — including the default rule that refuses removing an administrator | Implement: policy changes are gated by the `vtc.policy.admin` capability per purpose, and those deciding authority are consent-gated |
 | VTI-APV-023 *(observed)* | Changes to join criteria, the trusted-witness list and personhood policy take another administrator's consent | At one community node the trusted-witness list is consent-gated, but join criteria are added, replaced and deleted, hidden vetting is published on and withdrawn from them, and the personhood policy is replaced or activated, by one administrator alone | Implement: every runtime change to a join criterion (hidden-vetting publication and withdrawal included) and to the personhood policy is held for the other administrators' consent; single-administrator mode waives it on the requester's operation-bound re-authentication (VTI-APV-022) |
 
+#### F.5b Community events
+
+| Requirement | This specification requires | Reported behaviour | Resolution |
+|---|---|---|---|
+| VTI-EVT-100, VTI-EVT-130 *(reported)* | An event's invitation mode, whether members may invite, and the partner communities its audience names are part of the event every operation that answers it states | At one community node, publishing and cancelling an event answer the event without its invitation mode, whether members may invite, or its partner communities, because the operations' only versions answer the earlier event shape; every other event operation states them | Specify publish and cancel versions that answer the current event shape (trustoverip/dtgwg-trust-tasks-tf#1407), then serve them |
+| VTI-EVT-037, VTI-EVT-135 *(reported)* | A partner community's member may withdraw their own registration at any time, as a member may | At one community node, a partner community's member who registered by presentation cannot withdraw: the withdrawal operation carries no presentation, so the node cannot establish who is withdrawing | Specify an optional presentation on withdrawal, verified as at registration (trustoverip/dtgwg-trust-tasks-tf#1407), then accept it |
+| VTI-EVT-103 *(reported)* | A host may revoke an invitation they or another host made, withdrawing its notification and leaving any registration | At one community node no operation revokes an invitation; an invitation ends only when its invitee leaves the event's audience or the event is cancelled | Specify an operation to revoke an invitation (trustoverip/dtgwg-trust-tasks-tf#1407), then serve it |
+
 #### F.8 How to add an entry
 
 An entry needs the requirement identifier, how the behaviour was established,
@@ -712,6 +730,7 @@ kind names as it does to requirement identifiers).
 | Kind | Thing | Holder / identifier | Opened by | Audience | Carries beyond VTI-NTF-002 | Relayable | A relay discloses | Lapses | Defined by |
 |---|---|---|---|---|---|---|---|---|---|
 | `election` | an election, poll or survey of a community | the community / the election's identifier | the catalogue's operation for reading one election | the identifier a credential roll names, or the community's own | nothing; the period is the voting period | yes | that the relayer is a member of the community | when voting closes | VTI-NTF-060 – VTI-NTF-063 |
+| `event` | an event of a community | the community / the event's identifier | the catalogue's operation for reading one event | the invited member's membership identifier, or a partner community's identifier | nothing; the period is the event's start and end | yes | that the relayer is a member of the community, or a partner it named | when the event ends | VTI-NTF-064 – VTI-NTF-067 |
 
 ### Appendix H: Purpose registry
 

@@ -51,6 +51,7 @@ Three bodies of normative material:
 | | Community voting | `spec/12b-vtc-voting.md` |
 | | Community boards | `spec/12c-vtc-boards.md` |
 | | Community badges | `spec/12d-vtc-badges.md` |
+| | Community events | `spec/12e-vtc-events.md` |
 | | Trust registries and cross-community recognition | `spec/13-registries.md` |
 | D — System properties | Composition requirements | `spec/14-composition.md` |
 | | Operational and assurance requirements | `spec/15-operational.md` |
