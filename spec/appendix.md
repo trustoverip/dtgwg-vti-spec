@@ -301,6 +301,7 @@ marked *qualified* take a resource qualifier (VTI-ACL-035).
 | `vtc.boards.manage` | the community's boards: creating and running them, deciding their ideas, hiding notes on them, closing them (which ends their elections), appointing their facilitators and, unqualified, deleting them (VTI-BRD-002, VTI-BRD-006, VTI-BRD-007, VTI-BRD-013, VTI-BRD-090) | — | by board (`board:<id>`) |
 | `vtc.badges.admin` | the community's badges: defining, changing, retiring and promoting them, seeing every giving of a kudos badge, and issuing and withdrawing claim codes for any community badge (VTI-BDG-003, VTI-BDG-025, VTI-BDG-042, VTI-BDG-044) | — | — |
 | `vtc.events.manage` | the community's calendars and events: creating and changing calendars, creating, changing, publishing, cancelling and deleting events, deciding and removing registrations, appointing hosts and, unqualified, receiving reports of events (VTI-EVT-013, VTI-EVT-070, VTI-EVT-073, VTI-EVT-081) | — | by group (`group:<id>`) or by event (`event:<id>`) |
+| `vtc.events.checkin` | an event's door: obtaining door challenges, recording check-ins and reading the names the event's hosts see (VTI-EVT-160 – 163) | — | by event (`event:<id>`) |
 | `vtc.notifications.read` | listing and reading the notifications addressed to the community (VTI-NTF-070) | — | — |
 | `vtc.notifications.relay` | deciding that the community relays a notification it received to its members (VTI-NTF-071) | — | by group (`group:<id>`) |
 | `git.ns.admin` | a repository namespace | yes, within the namespace | by namespace |
@@ -386,6 +387,11 @@ qualified by an event it is a host's appointment to that one event, which sits
 beside any role the entry holds so that a member with no administrative role
 hosts an event by appointment (VTI-EVT-070). It is within `community-admin`'s
 ceiling.
+
+`vtc.events.checkin` is the door's capability, apart from `vtc.events.manage` so
+that a host can let someone check people in without letting them change the
+event or decide registrations (VTI-EVT-160). It is not conferring, is held by
+appointment to one event, and is within `community-admin`'s ceiling.
 
 `vtc.notifications.read` and `vtc.notifications.relay` serve the Notifications
 chapter. They are apart so that a community can let an administrator see what
