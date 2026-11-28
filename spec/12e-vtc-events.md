@@ -591,10 +591,12 @@ not members of the community — as `none`, `invited` or `open`. Absent, it admi
 none.
 
 **VTI-EVT-151** — A guest MUST be a party identified by its own identifier,
-signing its own requests. A VTC MUST admit a guest only under `invited`, when an
-invitation names them or a link they redeemed was made for guests
-(VTI-EVT-107), or under `open`; and MUST NOT let the audience (VTI-EVT-020)
-admit a guest.
+signing its own requests. A VTC MUST admit a guest only under `invited`, when
+they present the code of an invitation link made for guests (VTI-EVT-107), or
+under `open`; MUST NOT let a link made for members admit a guest, nor one made
+for guests admit a member; and MUST NOT let the audience (VTI-EVT-020) admit a
+guest. A guest MUST be able to withdraw their registration as a member can
+(VTI-EVT-037).
 
 **VTI-EVT-152** — A guest MUST NOT become a member, appear in the directory, join
 a group, or see any record of the community but the event they registered for,
@@ -755,7 +757,8 @@ an event's or a registration's shape):
 | `vtc/events/announcements/send`, `list` | VTI-EVT-120 – 121 |
 | `vtc/events/show`, `registrations/register` 0.2 (a partner member's presentation) | VTI-EVT-130 – 135 |
 | `vtc/events/create`, `update`, `show` 0.3 (identity, guests, tickets, attendance) | VTI-EVT-140 – 145, 150, 170, 180, 186 |
-| `vtc/events/guests/register` | VTI-EVT-150 – 154 |
+| `vtc/events/guests/register`, `guests/withdraw`, `invitations/links/create` 0.2 (`forGuests`) | VTI-EVT-150 – 154 |
+| `vtc/events/calendars/create`, `update`, `list` 0.2 (self check-in, attendance default) | VTI-EVT-164, 180 |
 | `vtc/events/checkin/challenge`, `checkin/record`, `checkin/list` | VTI-EVT-160 – 166 |
 | `vtc/events/tickets/show` | VTI-EVT-170 – 174 |
 | `vtc/events/attendance/show` | VTI-EVT-180 – 185 |
