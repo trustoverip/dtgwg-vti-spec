@@ -164,3 +164,128 @@ is NOT RECOMMENDED in any case.
 *Rationale for VTI-CTX-025.* An identifier that comes back into use inherits
 every grant that named it and was not cleaned up, which converts an
 administrative convenience into a silent restoration of authority.
+
+### Creating a context without administrative authority
+
+Some callers create contexts as a matter of course and ought not to be
+administrators. A process that mints a context for each software agent it
+manages, on a host that faces the network, is the case this section exists for:
+holding the administrative role would let a compromise of that process rewrite
+the access control entries of everything it created, and creating a context is
+the one power it needs.
+
+**VTI-CTX-026** — A node MAY let an entry that holds the additive capability
+`context-create` (Appendix C) create a context beneath a context that the
+entry's act scope covers, whatever the entry's role. Such a creation MUST meet
+every requirement on creating a context in this section, VTI-CTX-020 through
+VTI-CTX-022 included.
+
+**VTI-CTX-027** — The `context-create` capability MUST NOT permit creating a
+root context, and MUST NOT permit creating a context beneath one that the
+entry's act scope does not cover; both remain as VTI-CTX-020 states them. It
+MUST confer no other authority. In particular, creating a context MUST NOT
+write an access control entry for the creator and MUST NOT otherwise enlarge
+what the creator may do, so that the authority a creator holds over what it
+created is exactly what its entry already gave it over that part of the tree
+(VTI-CTX-017).
+
+A context's **primary DID** is the identifier the context is issued as and
+names itself by: the issuer of what is issued as the context, and the identity
+the node presents for it (VTI-KEY-168). A context has none from its creation
+until one is set. "Has none" means that no primary DID is recorded for it; an
+empty or placeholder value is not a primary DID and does not stand in for one.
+
+**VTI-CTX-028** — An entry that holds `context-create` MAY set the primary DID
+of a context that it created under VTI-CTX-026, and only while that context has
+none. The identifier it sets MUST be a `did:key` of a key the context itself
+holds whose published purposes (VTI-KEY-020) include signing; a key authorized
+only for key agreement MUST NOT be named. The entry MUST NOT set the primary DID
+of a context it did not create, and MUST NOT change or clear a primary DID once
+set; each of these remains an act of administrative authority. Deleting or
+rotating the named key afterwards MUST NOT clear or change the primary DID, and
+replacing it is likewise an act of administrative authority. A node that
+permits this MUST record, for each context created under VTI-CTX-026, which
+entry created it (VTI-CTX-029). A node MUST refuse the request when it cannot
+establish both that the caller's entry is the recorded creator of the context
+and that the context has no primary DID, including when no creator is recorded
+for the context and when reading either record fails.
+
+**VTI-CTX-029** — The creator record VTI-CTX-028 requires MUST identify the
+creating entry, not only its subject identifier, and MUST be bound to the one
+context it was made for:
+
+1. A rotation (VTI-CLT-025) moves the entry, so the record follows it: the
+   rotated entry remains the creator.
+2. A hand-off rollover (VTI-ACL-054) writes a different entry, so the successor
+   entry is not the creator.
+3. Once the creating entry is removed, no entry is the creator; an entry later
+   written for the same subject is a different entry and is not the creator.
+4. Deleting a context MUST delete its creator record. A context later created at
+   the same identifier (VTI-CTX-025) has a creator only if it is itself created
+   under VTI-CTX-026, and then the creator is the entry that created it.
+
+*Rationale for VTI-CTX-026 and VTI-CTX-027.* A context administrator can write
+access control entries scoped to the context, so making a creator an
+administrator of what it creates lets its authority accumulate, one context at a
+time, for as long as it runs — and an automated creator is the process that
+should hold it least. Making the capability additive (VTI-ACL-033) means no
+role implies it, so no change to a role hands creation to every holder of that
+role, and granting it needs unrestricted act authority: a single decision by a
+person, not something a process acquires. What it confers is bounded by rules
+that already hold. A root context still needs unrestricted act authority
+(VTI-CTX-020), and ancestry is still evaluated over whole segments
+(VTI-CTX-016), so the capability reads as "branch beneath what I already
+cover", never "create anywhere". It applies to creating a context the
+principle VTI-VTA-032 applies to provisioning, that the act confers no
+authority: all authority still comes from an access control entry
+(VTI-ACL-001), and creating a context writes none (VTI-CTX-027).
+
+The alternative considered was a separate, always-available service that holds
+unrestricted act authority and creates contexts on callers' behalf. It was
+rejected because it is a new component whose only purpose is to hold the most
+powerful grant in the system.
+
+*Rationale for VTI-CTX-028.* A context with no primary DID exists but can be
+issued as nothing, so a creator that cannot name one has made something it
+cannot make usable and would need an administrator to finish every context it
+creates, which defeats the grant. Naming is permitted once and only once
+because changing a context's identity is how an automated process would quietly
+become something else, and that is rare enough to be an administrator's
+decision.
+
+The identifier is limited to a `did:key` of a key the context holds because
+that is the one form whose control can be checked from the identifier alone: the
+key is the identifier, so a node confirms the context holds it without
+resolving anything. Any other method would make the node trust a resolution, or
+the creator, to establish that the context can sign as what it is named, and a
+creator could otherwise name an identifier the context cannot sign as, so that
+anything issued as that context would claim an issuer nothing in it can
+produce. A context that needs a different primary DID gets it from an
+administrator.
+
+Naming is limited to contexts the entry created, rather than to every context
+its act scope covers, so that the capability completes the creator's own work
+and nothing more. Without that limit a provisioner could fill the blank on a
+context an administrator made and deliberately left unnamed, deciding its
+identity for it. Recording the creator is what makes the limit enforceable.
+
+The identifier is further limited to a signing key because a key-agreement key
+is held by the context but cannot sign as it, and naming one reopens the gap
+the `did:key` limit closes. A name set once does not follow its key: if the key
+is later deleted or rotated, the context keeps the name and an administrator
+decides what replaces it, for the same reason a creator cannot rename.
+
+The check is written to refuse when the node cannot answer it, because it reads
+two stored records. VTI-CTX-018 keeps the context-authority gate free of stored
+state; this permission cannot be, so it states the outcome of a missing record
+or a failed read instead of leaving it to be decided, wrongly, in code.
+
+*Rationale for VTI-CTX-029.* The creator record grants a power, so it has to
+mean one entry and one context. Keyed by subject identifier, it would fail a
+provisioner that rotated its key before naming its context, and would pass a
+later, unrelated entry that happened to reuse the subject. Left behind after the
+context it describes is deleted, it would let its creator name a context an
+administrator re-created at the same path and chose to leave unnamed — which is
+the outcome VTI-CTX-028's limit exists to prevent. A rotation keeps the entry
+and so keeps the record; a hand-off writes a new entry under a new granter's
+decision, and the successor that needs to name a context asks an administrator.
