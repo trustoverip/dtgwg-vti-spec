@@ -36,9 +36,10 @@ attended one, is a fact shown to people; it is not a role, a capability or a
 membership, and nothing an event says grants, widens or removes any authority
 (VTI-VTC-020).
 
-The capability this chapter refers to is registered in Appendix C.3:
+The capabilities this chapter refers to are registered in Appendix C.3:
 `vtc.events.manage`, the capability to run the community's calendars and the
-events in them, qualified by group or by event.
+events in them, qualified by group or by event; and `vtc.events.checkin`, an
+event's door.
 
 Throughout this chapter:
 
@@ -52,6 +53,9 @@ Throughout this chapter:
 - the **roster** of an event is the set of its registrations, and its **roster
   setting** who other than its hosts may see it;
 - an event's **access details** are where it happens and how to join it.
+- a **guest** is a registrant who is not a member of the community;
+- a **check-in** is the record that a registrant came, and **door staff** those
+  who record it.
 
 ### Events
 
@@ -534,6 +538,200 @@ are a member.
 whatever the event, keeps the verification from becoming a probe of which
 events exist for which partner.
 
+### An event's own identity
+
+**VTI-EVT-140** — An event MAY have an identifier of its own, chosen when the
+event is created and fixed for its life. An event without one MUST have every
+artefact issued for it — a ticket (VTI-EVT-170), an attendance record — issued
+by the community.
+
+**VTI-EVT-141** — An event's identifier MUST be created by the VTA the community
+is provisioned on, as a group's is (VTI-DIR-080), from a template of the kind
+`vtc-event`. The VTC MUST NOT hold its keys, MUST obtain every artefact signed
+under it by a signing request to that VTA, and MUST NOT record the event as
+having an identifier before the identifier exists. The identifier MUST be
+published where the community publishes the identifiers it mints for its
+groups.
+
+**VTI-EVT-142** — The community MUST authorize an event's identifier to issue
+by an authorization credential, issued by the community to the identifier,
+which is an attestation artefact of the community (VTI-KEY-080) with a status in
+the community's revocation list. The community MUST revoke it when the event is
+cancelled, deleted or archived, and a verifier MUST treat every artefact the
+identifier issued as void from the time it is revoked.
+
+**VTI-EVT-143** — An event's identifier document MUST NOT carry the event's
+title, its description, its place or anything else that identifies it or its
+registrants, and MUST NOT advertise a transport at which the community does not
+serve it (VTI-KEY-050).
+
+**VTI-EVT-144** — A series of events MUST have at most one identifier, shared by
+every occurrence, and MUST NOT be given one per occurrence.
+
+**VTI-EVT-145** — An event's identifier MAY sign the tickets and attendance
+records of its event, and nothing else. A VTC MUST NOT read anything an event's
+identifier signed in an authorization decision (VTI-EVT-002), and a grant held
+at an event's identifier confers nothing beyond that event.
+
+*Rationale for VTI-EVT-140 and VTI-EVT-144.* An identifier is created, published
+and revoked; most events — a weekly meetup — need none, and one per occurrence
+would leave a trail of identifiers to host for ever. An identifier earns its
+keep where something outside the community must check what the event issued: a
+door run by another party, a conference, an event co-hosted with partners.
+
+*Rationale for VTI-EVT-142.* The authorization credential is what ties the
+event's identifier to the community for a verifier who knows the community but
+not the event; revoking it ends everything the event issued with one bit, as
+deleting a group does (VTI-DIR-083).
+
+### Guests
+
+**VTI-EVT-150** — An event MUST state whether it admits guests — parties who are
+not members of the community — as `none`, `invited` or `open`. Absent, it admits
+none.
+
+**VTI-EVT-151** — A guest MUST be a party identified by its own identifier,
+signing its own requests. A VTC MUST admit a guest only under `invited`, when an
+invitation names them or a link they redeemed was made for guests
+(VTI-EVT-107), or under `open`; and MUST NOT let the audience (VTI-EVT-020)
+admit a guest.
+
+**VTI-EVT-152** — A guest MUST NOT become a member, appear in the directory, join
+a group, or see any record of the community but the event they registered for,
+its access details once they are going (VTI-EVT-060), its announcements
+(VTI-EVT-120) and their own registration.
+
+**VTI-EVT-153** — A guest's registration MUST name them by their identifier, MUST
+count against the event's capacity as any registration does, and MUST be shown
+to the event's hosts. It MUST NOT be shown by identifier to other registrants: a
+roster view counts guests without naming them (VTI-EVT-134).
+
+**VTI-EVT-154** — A VTC MUST charge every operation a guest sends to the bounds
+for senders without standing (VTI-TRN-029), whatever the event, and MAY refuse
+`open` by its events policy (VTI-EVT-080).
+
+*Rationale for VTI-EVT-151.* The audience is a rule over what the community
+knows of its members; a guest is someone it knows nothing about, so a guest
+comes in only by a host's decision (`invited`) or the event's (`open`), never by
+satisfying a rule written for members.
+
+### Check-in
+
+**VTI-EVT-160** — An event's hosts MAY appoint door staff: a capability
+`vtc.events.checkin` qualified by the event. Door staff MUST be able to record
+check-ins for that event and see the names its hosts see, and nothing else.
+
+**VTI-EVT-161** — Door staff MUST obtain a **door challenge** from the community
+for the event: a fresh random value of at least 128 bits, bound to the event,
+that the community accepts for a stated short time and MUST NOT accept after it.
+A VTC MUST issue a new challenge on each request and MAY accept several at once.
+
+**VTI-EVT-162** — A registrant MUST check in by signing a request that carries a
+door challenge the community issued for the event and that is still accepted.
+A VTC MUST record the check-in only for a registration that is `going`, MUST
+record at most one check-in per registration, and MUST refuse a challenge it did
+not issue, one for another event, or one no longer accepted, with one refusal for
+all three.
+
+**VTI-EVT-163** — Door staff MAY check in a registrant by name. A VTC MUST record
+who did so, and MUST distinguish that record from a registrant's own check-in.
+
+**VTI-EVT-164** — A calendar MAY allow **self check-in** for its events: a
+registrant checking in without a door challenge during the event. A VTC MUST
+refuse a check-in without a door challenge for an event whose calendar does not
+allow it.
+
+**VTI-EVT-165** — A check-in MUST be recorded against the registration as
+`attended`, and is shown to the event's hosts and door staff and to the
+registrant. A VTC MUST NOT record, show or announce who did not check in.
+
+**VTI-EVT-166** — Check-in records are registrants' records for VTI-EVT-090: a
+VTC MUST delete them on the schedule it applies to answers, keeping only what
+VTI-EVT-185 keeps.
+
+*Rationale for VTI-EVT-161 and VTI-EVT-162.* A code printed on a screen at the
+door proves nothing if it can be photographed and replayed; a challenge the
+community issued moments ago, signed over by the registrant's own key, proves
+that this registrant was in front of this door now. The single refusal keeps
+the check-in from telling a stranger which challenges exist.
+
+*Rationale for VTI-EVT-165.* A list of who stayed away is a list nobody agreed to
+be on; recording only who came is enough for every purpose this chapter has.
+
+### Tickets
+
+**VTI-EVT-170** — An event MAY issue **tickets**: a credential issued to a
+registrant when their registration becomes `going`, by the event's identifier
+where it has one (VTI-EVT-140) and by the community otherwise, naming the
+registrant's identifier as subject — their membership identifier, a partner
+member's identifier (VTI-EVT-134) or a guest's (VTI-EVT-153) — and the event.
+
+**VTI-EVT-171** — A ticket MUST be valid from its issue until the event ends, and
+MUST NOT outlive it.
+
+**VTI-EVT-172** — A ticket MUST carry a status in the community's shared status
+set (VTI-CRD-014), never in a set of the event's own. A VTC MUST revoke a ticket
+when its registration stops being `going` and when the event is cancelled.
+
+**VTI-EVT-173** — A VTC checking a ticket at the door MUST request it as a
+presentation with a fresh nonce per presentation, through the community's
+OpenID4VP verifier, MUST verify the issuer, the subject's binding to the
+presenter, the validity period and the status, and MUST record each ticket it
+admits so that a ticket admits once.
+
+**VTI-EVT-174** — A registrant MUST be able to read their own ticket. A VTC MUST
+NOT show a ticket to anyone else.
+
+*Rationale for VTI-EVT-170 and VTI-EVT-173.* The community can check a
+registration live, so a door it runs needs no ticket. A ticket is for a door that
+cannot ask the community — offline, or run by another party — and for a guest,
+whom the community knows only by their identifier; it says, verifiably and
+without a call home, that this subject is going to this event.
+
+*Rationale for VTI-EVT-172.* A status list of one event's tickets would tell
+anyone who checks a ticket how small the event is and which entries changed;
+the community's shared set hides each ticket among all the community's
+credentials.
+
+### Attendance
+
+**VTI-EVT-180** — An event MAY state that it does not count toward attendance;
+absent, it counts. A calendar MAY set the default for its events.
+
+**VTI-EVT-181** — A member's attendance MUST be counted only from check-ins
+(VTI-EVT-165), never from registrations. A check-in without a door challenge
+(VTI-EVT-164) MUST count only where the event's calendar allows self check-in to
+count.
+
+**VTI-EVT-182** — One event MUST count at most once for a member, however many
+times they checked in, and every occurrence of a series is one event.
+
+**VTI-EVT-183** — A guest's, a partner member's, a persona's or an anonymous
+registration MUST NOT count toward any member's attendance.
+
+**VTI-EVT-184** — A dynamic group's rule MAY read a member's attendance as a
+count — events attended, optionally only in one calendar and only within a stated
+period before the rule is evaluated — compared with a stated threshold, as a
+badge group's rule reads the counts of VTI-BDG-015.
+
+**VTI-EVT-185** — A VTC MUST keep, as the record attendance is counted from, the
+number of counting events each member attended per calendar per month, and
+nothing finer once the check-in records are deleted (VTI-EVT-166). A member MUST
+be able to read their own counts.
+
+**VTI-EVT-186** — An event MAY name an attendance badge. A VTC MUST offer it to a
+member when their check-in is recorded, as an award they accept or decline
+(VTI-BDG-020), and MUST NOT give it without their acceptance.
+
+*Rationale for VTI-EVT-181 and VTI-EVT-182.* Attendance feeds badges, which are
+public recognition; counting registrations would reward signing up, and counting
+check-ins per session or per occurrence twice would let one evening count as
+several.
+
+*Rationale for VTI-EVT-185.* A monthly tally per calendar answers every rule
+VTI-EVT-184 allows — a count, a calendar, a period of months — and keeps no
+record of which evening anyone came.
+
 ### Operations
 
 *This subsection is informative.* The operations of this chapter are the
@@ -556,6 +754,11 @@ an event's or a registration's shape):
 | `vtc/events/optouts/set`, `list` | VTI-EVT-110 |
 | `vtc/events/announcements/send`, `list` | VTI-EVT-120 – 121 |
 | `vtc/events/show`, `registrations/register` 0.2 (a partner member's presentation) | VTI-EVT-130 – 135 |
+| `vtc/events/create`, `update`, `show` 0.3 (identity, guests, tickets, attendance) | VTI-EVT-140 – 145, 150, 170, 180, 186 |
+| `vtc/events/guests/register` | VTI-EVT-150 – 154 |
+| `vtc/events/checkin/challenge`, `checkin/record`, `checkin/list` | VTI-EVT-160 – 166 |
+| `vtc/events/tickets/show` | VTI-EVT-170 – 174 |
+| `vtc/events/attendance/show` | VTI-EVT-180 – 185 |
 
 ### Later phases
 
@@ -565,13 +768,10 @@ later revision of this chapter states them normatively:
 - **The member's calendar** (`vta/calendar/*`): a member's VTA reading their
   events from every community they belong to, firing their reminders, keeping the
   receipts of VTI-EVT-092, and serving them as calendar feeds.
-- **Check-in and tickets**: check-in by a nonce the member's wallet answers;
-  ticket credentials checked by OpenID4VP; attendance counted for badges.
 - **Anonymous and persona registration**: registration by a zero-knowledge proof
   of membership and a per-event tag, on the predicate credential system the
   community runs for hidden vetting.
 - **Meetings**: agenda, chair, roll call, quorum, motions decided by the
   community's elections, minutes, action items.
 - **Recurrence**: series of events, with changes to one occurrence.
-- **An event's own identity**, **guests who are not members**, and **events
-  hosted by a person** from their own VTA.
+- **Events hosted by a person** from their own VTA.

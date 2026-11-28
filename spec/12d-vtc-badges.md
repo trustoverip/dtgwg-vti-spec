@@ -125,7 +125,8 @@ which it issued them a ticket (`electionTickets`), each compared with a stated
 threshold. A VTC MUST count each from its own records when it evaluates the
 rule, MUST NOT let any group but a badge group read them, and MUST NOT offer a
 fact of whether a member cast a ballot: it never knows (VTI-VOT-001), and a
-ticket taken is not a vote cast.
+ticket taken is not a vote cast. A fourth count, the events a member attended
+(`eventsAttended`), is defined by VTI-EVT-184 and read the same way.
 
 *Rationale for VTI-BDG-015.* Each count is something the community decided or
 recorded itself: an accepted kudos is a giving bounded by VTI-BDG-040 and
