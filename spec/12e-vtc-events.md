@@ -247,7 +247,8 @@ event; firing the reminder there tells nobody anything.
 
 **VTI-EVT-050** — An event MUST have one of two roster settings: `visible`, in
 which registrants who are `going` or `maybe` may see one another; or `hidden`, in
-which no registrant may see another.
+which no registrant may see another. Where a community offers it, an event MAY
+instead be `anonymous` (VTI-EVT-210), which is `hidden` and more.
 
 **VTI-EVT-051** — A VTC MUST fix an event's roster setting when the event is
 published, and MUST refuse a change to it afterwards. It MUST NOT park such a
@@ -734,6 +735,179 @@ several.
 VTI-EVT-184 allows — a count, a calendar, a period of months — and keeps no
 record of which evening anyone came.
 
+### Recurring series
+
+**VTI-EVT-190** — An event MAY be a series: one event that recurs by rule. Its
+rule MUST be expressed as JSCalendar recurrence rules, limited to: a frequency of
+daily, weekly, monthly or yearly; an interval; the days of the week (optionally
+with an ordinal for a monthly or yearly series, such as the second Tuesday); the
+days of the month; and an end, as a number of occurrences or a last date, never
+both and never neither. A VTC MUST refuse any other rule part.
+
+**VTI-EVT-191** — An occurrence MUST be identified by its original start: the
+local date-time the rule gives it, in the series' time zone, before any change
+to it. A series' own start MUST be its first occurrence. A VTC MUST expand a
+series in its own time zone, so that a weekly event keeps its local time across
+a change of daylight-saving time, and MUST resolve a local time the zone skips or
+repeats as VTI-EVT-005 resolves one.
+
+**VTI-EVT-192** — A VTC MUST expand a series only when it is read, for the window
+the reader asks for, and MUST NOT store occurrences ahead of time. A VTC MUST
+bound what one read expands, refusing a window longer than 400 days.
+
+**VTI-EVT-193** — A host MAY change one occurrence — its start, duration, title,
+description, place summary or access details — or cancel it, without changing
+the others. A change MUST be kept against the occurrence's original start, and
+MUST raise the series' `sequence` (VTI-EVT-006) where it changes the occurrence's
+time, access details or status.
+
+**VTI-EVT-194** — A series MUST state, fixed when it is published, whether a
+registration is for the whole series or for one occurrence. A registration for
+the whole series MUST count as a registration for every occurrence that has not
+yet ended; a registration for one occurrence MUST name that occurrence by its
+original start.
+
+**VTI-EVT-195** — Capacity, the waitlist (VTI-EVT-033), access details
+(VTI-EVT-060), check-in (VTI-EVT-160 – 166) and attendance (VTI-EVT-180 – 185)
+MUST apply to each occurrence on its own: a registration for the whole series
+holds a place in each occurrence, and each occurrence a member checks in to is
+one event attended (VTI-EVT-182).
+
+**VTI-EVT-196** — When an occurrence is cancelled, a VTC MUST keep every
+registration for it, show the occurrence as cancelled to its registrants, release
+no access details for it and count no attendance for it. A registration for the
+whole series MUST be unaffected for every other occurrence. A withdrawal from a
+cancelled occurrence MUST change nothing (VTI-EVT-037).
+
+**VTI-EVT-197** — A host MAY change a series from one occurrence onward ("this
+and following"). A VTC MUST then end the series before that occurrence and make
+the change a new series that starts with it, linked to the first as its
+continuation, and MUST carry every registration that concerns the new series'
+occurrences into it with its state, its guests and its answers.
+
+**VTI-EVT-198** — A VTC MUST state, in a notification of a series (VTI-NTF-064),
+no period beyond the series' next occurrence, and MUST revise the notification
+when that occurrence ends, moves or is cancelled.
+
+*Rationale for VTI-EVT-191.* An occurrence that is moved still has to be the
+same occurrence to the people registered for it; its original start is the one
+name for it that a change does not alter, which is why JSCalendar and iCalendar
+both key a change by it.
+
+*Rationale for VTI-EVT-192.* A series with no end date is infinite. Storing its
+occurrences ahead of time would either stop somewhere arbitrary or never stop;
+expanding on read for a bounded window answers every reader exactly.
+
+*Rationale for VTI-EVT-196.* Deleting the registrations of a cancelled occurrence
+would tell their holders nothing and make the cancellation invisible in their own
+calendars; keeping them, marked cancelled, is what a registrant expects to see.
+
+### Anonymous registration
+
+**VTI-EVT-210** — An event MAY have the roster setting `anonymous`, fixed when it
+is published (VTI-EVT-051), only where the community runs a predicate credential
+system [PCS] for its members, as it may for voting (VTI-VOT-020). Under `anonymous`,
+a registration MUST name no member: a VTC MUST hold, for each registration, a tag
+(VTI-EVT-213) and the registration's state and number of guests, and nothing that
+identifies the registrant. The event's hosts and the community MUST see a count
+only, as every other registrant does.
+
+**VTI-EVT-211** — The audience of an `anonymous` event MUST be the community's
+active members or the members of named groups (VTI-EVT-020), and nothing a member
+cannot prove anonymously: a VTC MUST refuse an `anonymous` event whose audience
+names roles, a rule, partner communities or guests.
+
+**VTI-EVT-212** — A community offering anonymous registration MUST issue each
+active member, by blind issuance, a class credential for the membership and one
+for each group the member belongs to, under class labels shared by every holder —
+one per class and period, never one per member — and MUST state the length of a
+period. A member's agent MUST obtain them again for each period, and a VTC MUST
+NOT issue a credential for a period to a party that is not then an active member
+of the class. The key a member's agent holds for these credentials MUST be
+derived for this purpose alone, never the key it holds for hidden vetting.
+
+**VTI-EVT-213** — When an `anonymous` event is published, a VTC MUST make it an
+identity in the predicate credential system, used for that event alone, and show
+it with the event. A registration MUST carry an attestation, made by the member's
+agent with a credential for a live class of the event's audience, to the event's
+identity; its tag — determined by the member's key and the event's identity, the
+same for one member at one event and unlinkable between events — MUST be the
+registration's only identifier. A VTC MUST verify the attestation under its own
+verification key, MUST check that its class is a live class of the event's
+audience, and MUST keep one registration per tag.
+
+**VTI-EVT-214** — An attestation MUST be bound to the operation it is sent with:
+to the event, the operation's name, and the identifier and signer of the document
+that carries it. A document carrying one MUST be signed by a key made for that
+document alone, and SHOULD be sent from a connection that does not identify the
+member, after a pause, as a ballot is cast (VTI-VOT-004). A VTC MUST refuse an
+attestation that was carried before.
+
+**VTI-EVT-215** — A registrant MUST change, withdraw from or check in to an
+`anonymous` event with a fresh attestation carrying the same tag. A check-in's
+attestation MUST also be bound to the door's challenge (VTI-EVT-161).
+
+**VTI-EVT-216** — An `anonymous` event MUST NOT take registrations by approval,
+MUST NOT ask questions, MUST NOT issue tickets, and MUST NOT name an attendance
+badge; its registrations MUST NOT count toward any member's attendance
+(VTI-EVT-183).
+
+**VTI-EVT-217** — A VTC MUST refuse to publish an `anonymous` event unless the
+number of members holding a credential for a live class of its audience in the
+current period is at least the community's floor, which MUST NOT be below 10, and
+MUST show that number with the event.
+
+**VTI-EVT-218** — A VTC MUST show, with an `anonymous` event, the length of the
+community's period, since a party that stops being a member keeps a credential
+until its period ends.
+
+*Rationale for VTI-EVT-211.* A member can prove anonymously only what a credential
+they hold says; the community issues credentials for its membership and its
+groups. A role or a rule over a member's records would have to be checked against
+the member, which is what anonymity forbids.
+
+*Rationale for VTI-EVT-213.* The tag gives the event exactly what it needs and no
+more: the same member cannot register twice, because their second attestation
+carries the same tag; their registration can be changed, because they can make
+the tag again; and nothing ties it to another event, because the tag for another
+event is unrelated to it.
+
+*Rationale for VTI-EVT-214.* A registration sent over the member's own session, or
+signed by a key the community knows to be theirs, would name them however
+anonymous its contents. The binding to the document stops a captured attestation
+being replayed for another operation.
+
+*Rationale for VTI-EVT-217.* An anonymous registration hides one member among the
+holders of the class. Among three, it hides little; the floor and the number shown
+let every registrant judge how well hidden they are.
+
+*Rationale for VTI-EVT-218.* Credentials are revoked by their period running out,
+not one by one: a member who leaves can still register, anonymously, until their
+period ends. Saying so is part of the event's promise.
+
+### Persona registration
+
+**VTI-EVT-230** — On an event that does not require identified registration, a
+member MAY register under a persona identifier — any identifier of theirs other
+than the one they are a member by — with an attestation as VTI-EVT-213 describes
+it, so that one member cannot register twice under two personas. The roster and
+the hosts MUST then show the persona identifier and never the member.
+
+**VTI-EVT-231** — An event MAY require identified registration, fixed when it is
+published; a VTC MUST then refuse a persona registration. A meeting whose quorum
+counts members by role, and an event that expects a reply from its invitees
+(VTI-EVT-101), SHOULD require it.
+
+**VTI-EVT-232** — Persona registration MUST be refused where the event's audience
+cannot be proven anonymously (VTI-EVT-211). A persona registration MUST NOT count
+toward the member's attendance, and an attendance badge MUST NOT be offered to the
+member for it.
+
+*Rationale for VTI-EVT-230.* A member who does not want to be recognised at an
+event, on a `visible` roster (VTI-EVT-055), registers as another of their
+identities. The attestation proves that identity is a member's without saying
+whose, and its tag stops one member taking two places.
+
 ### Operations
 
 *This subsection is informative.* The operations of this chapter are the
@@ -762,6 +936,13 @@ an event's or a registration's shape):
 | `vtc/events/checkin/challenge`, `checkin/record`, `checkin/list` | VTI-EVT-160 – 166 |
 | `vtc/events/tickets/show` | VTI-EVT-170 – 174 |
 | `vtc/events/attendance/show` | VTI-EVT-180 – 185 |
+| `vtc/events/create`, `update`, `show`, `list`, `publish`, `cancel` 0.4 (series, anonymity, identified registration) | VTI-EVT-190 – 194, 210 – 213, 217 – 218, 231 |
+| `vtc/events/occurrences/update`, `vtc/events/series/split` | VTI-EVT-193, 196, 197 |
+| `vtc/events/registrations/*` 0.3, `mine/list` 0.3, `checkin/*` 0.2, `access/show` 0.2 (an occurrence) | VTI-EVT-194 – 196 |
+| `vtc/events/classes/show`, `classes/enrol` | VTI-EVT-212 |
+| `vtc/events/anonymous/register`, `anonymous/withdraw`, `anonymous/checkin` | VTI-EVT-213 – 216 |
+| `vtc/events/personas/register`, `personas/withdraw` | VTI-EVT-230 – 232 |
+| `vta/pcs/member/enrol-request`, `enrol-accept`, `attest` (the member's agent) | VTI-EVT-212 – 215, 230 |
 
 ### Later phases
 
@@ -771,10 +952,8 @@ later revision of this chapter states them normatively:
 - **The member's calendar** (`vta/calendar/*`): a member's VTA reading their
   events from every community they belong to, firing their reminders, keeping the
   receipts of VTI-EVT-092, and serving them as calendar feeds.
-- **Anonymous and persona registration**: registration by a zero-knowledge proof
-  of membership and a per-event tag, on the predicate credential system the
-  community runs for hidden vetting.
 - **Meetings**: agenda, chair, roll call, quorum, motions decided by the
   community's elections, minutes, action items.
-- **Recurrence**: series of events, with changes to one occurrence.
+- **Booking pages**: a member's page where others book time with them, with
+  rules per tier.
 - **Events hosted by a person** from their own VTA.
